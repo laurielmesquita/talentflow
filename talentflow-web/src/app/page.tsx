@@ -15,9 +15,10 @@ interface Candidate {
 
 async function getCandidates(category?: string): Promise<{ candidates: Candidate[]; total: number }> {
   try {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
     const url = category
-      ? `http://localhost:8000/api/candidates?category=${encodeURIComponent(category)}`
-      : 'http://localhost:8000/api/candidates';
+      ? `${API_URL}/api/candidates?category=${encodeURIComponent(category)}`
+      : `${API_URL}/api/candidates`;
 
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) return { candidates: [], total: 0 };

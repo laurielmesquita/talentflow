@@ -41,6 +41,8 @@ class Candidate(Base):
     address = Column(String, nullable=True)
     photo_url = Column(String, nullable=True)
     original_pdf_url = Column(String, nullable=True)
+    quality_score = Column(Float, nullable=True)       # 0–100: nota de legibilidade do currículo
+    quality_alerts = Column(Text, nullable=True)       # JSON: lista de alertas de campos ausentes
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     categories = relationship("Category", secondary=candidate_category, back_populates="candidates")

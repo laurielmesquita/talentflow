@@ -1,7 +1,75 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { X, Mail, Phone } from "lucide-react";
+import { X, Mail, Phone, ShieldCheck, ShieldAlert, ShieldX, AlertTriangle } from "lucide-react";
+
+// ── CV Quality Section (interna ao modal) ──────────────────────────────
+function QualitySection({
+  score,
+  tier,
+  alerts,
+}: {
+  score: number | null;
+  tier: string | null;
+  alerts: string[];
+}) {
+  if (score === null) return null;
+
+  const tierConfig = {
+    high:   { Icon: ShieldCheck, color: "text-emerald-400", bar: "bg-emerald-500",  label: "Alto",  border: "border-emerald-500/20", bg: "bg-emerald-500/8"  },
+    medium: { Icon: ShieldAlert, color: "text-amber-400",   bar: "bg-amber-500",    label: "Médio", border: "border-amber-500/20",   bg: "bg-amber-500/8"    },
+    low:    { Icon: ShieldX,     color: "text-rose-400",    bar: "bg-rose-500",     label: "Baixo", border: "border-rose-500/20",    bg: "bg-rose-500/8"     },
+  };
+
+  const cfg = tierConfig[(tier ?? "low") as keyof typeof tierConfig];
+  const { Icon } = cfg;
+
+  return (
+    <div className={`mb-8 p-4 rounded-xl border ${cfg.border} ${cfg.bg}`}>
+      <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
+        Qualidade do Currículo
+      </h4>
+
+      {/* Score + tier */}
+      <div className="flex items-center justify-between mb-2">
+        <div className={`flex items-center gap-2 font-bold text-lg ${cfg.color}`}>
+          <Icon className="w-5 h-5" />
+          <span>{score}<span className="text-sm font-normal text-slate-500">/100</span></span>
+        </div>
+        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${cfg.border} ${cfg.color}`}>
+          {cfg.label}
+        </span>
+      </div>
+
+      {/* Barra de progresso */}
+      <div className="w-full bg-slate-800 rounded-full h-1.5 mb-4">
+        <div
+          className={`h-1.5 rounded-full transition-all duration-700 ${cfg.bar}`}
+          style={{ width: `${Math.max(score, 2)}%` }}
+        />
+      </div>
+
+      {/* Alertas de campos ausentes */}
+      {alerts.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-xs text-slate-500 font-medium uppercase tracking-wide">Campos que merecem atenção</p>
+          {alerts.map((alert, i) => {
+            // Extrai o nome do campo do alerta para exibir de forma limpa
+            const match = alert.match(/Campo '([^']+)'/);
+            const fieldName = match ? match[1] : alert;
+            return (
+              <div key={i} className="flex items-start gap-2 text-xs text-amber-300/80">
+                <AlertTriangle className="w-3.5 h-3.5 mt-0.5 shrink-0 text-amber-500" />
+                <span>{fieldName} está sem informação no currículo.</span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 
 export default function CandidateModal({ candidateId, onClose }: { candidateId: string, onClose: () => void }) {
   const [candidate, setCandidate] = useState<any>(null);
@@ -76,6 +144,12 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
                   </div>
                 )}
               </div>
+
+              <QualitySection
+                score={candidate.quality_score ?? null}
+                tier={candidate.quality_tier ?? null}
+                alerts={candidate.quality_alerts ?? []}
+              />
 
               <div className="mb-8">
                 <h4 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Skills</h4>

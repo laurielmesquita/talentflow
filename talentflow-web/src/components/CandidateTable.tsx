@@ -2,8 +2,31 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX } from "lucide-react";
 import CandidateModal from "./CandidateModal";
+
+// ── CV Quality Badge ──────────────────────────────────────────────────────────
+function QualityBadge({ score, tier }: { score: number | null; tier: string | null }) {
+  if (score === null || tier === null) {
+    return <span className="text-xs text-slate-600 italic">—</span>;
+  }
+
+  const configs = {
+    high:   { label: `${score}`, icon: ShieldCheck, color: "text-emerald-400", bg: "bg-emerald-500/10 border-emerald-500/25" },
+    medium: { label: `${score}`, icon: ShieldAlert, color: "text-amber-400",   bg: "bg-amber-500/10 border-amber-500/25" },
+    low:    { label: `${score}`, icon: ShieldX,     color: "text-rose-400",    bg: "bg-rose-500/10 border-rose-500/25" },
+  };
+
+  const cfg = configs[tier as keyof typeof configs] ?? configs.low;
+  const Icon = cfg.icon;
+
+  return (
+    <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md border text-xs font-semibold ${cfg.bg} ${cfg.color}`}>
+      <Icon className="w-3 h-3" />
+      {cfg.label}<span className="font-normal opacity-60">/100</span>
+    </span>
+  );
+}
 
 export default function CandidateTable({
   candidates,
@@ -117,13 +140,14 @@ export default function CandidateTable({
               <th className="px-6 py-4">Candidato</th>
               <th className="px-6 py-4">Cargo Atual / Último</th>
               <th className="px-6 py-4">Skills Identificadas</th>
+              <th className="px-6 py-4">Qualidade CV</th>
               <th className="px-6 py-4 text-right">Ação</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-800">
             {candidates.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-slate-500">Nenhum candidato encontrado.</td>
+                <td colSpan={5} className="px-6 py-8 text-center text-slate-500">Nenhum candidato encontrado.</td>
               </tr>
             ) : (
               candidates.map((cand: any) => (
@@ -163,6 +187,9 @@ export default function CandidateTable({
                         </span>
                       ))}
                     </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <QualityBadge score={cand.quality_score} tier={cand.quality_tier} />
                   </td>
                   <td className="px-6 py-4 text-right">
                     <button 

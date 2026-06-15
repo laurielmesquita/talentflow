@@ -45,8 +45,8 @@ def _configure_cloudinary():
 # ---------------------------------------------------------------------------
 
 class ExperienceItem(BaseModel):
-    company_name: str
-    job_title: str
+    company_name: Optional[str] = None
+    job_title: Optional[str] = None
     start_date: Optional[str] = None
     end_date: Optional[str] = None
     is_current: bool = False
@@ -301,6 +301,17 @@ def process_single_pdf(path: Path, db: Session) -> None:
             raw_json = response.choices[0].message.content
             data = CandidateExtraction.model_validate_json(raw_json)
 
+        # 4.5. Calcula o CV Quality Score e emite alertas estruturados
+        from app.services.quality_score import calculate_quality_score, score_tier
+        quality_score, quality_alerts = calculate_quality_score(data)
+
+        if quality_alerts:
+            print(f"[ingest] ⚠️  {len(quality_alerts)} alerta(s) de qualidade para '{data.full_name}':")
+            for alert in quality_alerts:
+                print(f"[ingest]    {alert}")
+        else:
+            print(f"[ingest] ✅ Currículo de '{data.full_name}' sem alertas de qualidade (score: {quality_score}/100).")
+
         # 5. Verifica duplicata por nome
         existing = db.query(Candidate).filter(Candidate.full_name == data.full_name).first()
         if existing:
@@ -316,6 +327,8 @@ def process_single_pdf(path: Path, db: Session) -> None:
             address=data.address,
             photo_url=photo_url,
             original_pdf_url=pdf_url,
+            quality_score=quality_score,
+            quality_alerts=json.dumps(quality_alerts, ensure_ascii=False) if quality_alerts else None,
         )
         db.add(candidate)
 
@@ -347,15 +360,15 @@ def process_single_pdf(path: Path, db: Session) -> None:
         for exp in data.experiences:
             db.add(Experience(
                 candidate=candidate,
-                company_name=exp.company_name,
-                job_title=exp.job_title,
+                company_name=exp.company_name.strip() if exp.company_name else "Não informado",
+                job_title=exp.job_title.strip() if exp.job_title else "Não informado",
                 description=exp.description,
                 is_current=exp.is_current,
             ))
 
         db.commit()
         db.refresh(candidate)
-        print(f"[ingest] OK: '{data.full_name}' salvo com {len(data.skills)} skill(s) e {len(data.experiences)} experiencia(s).")
+        print(f"[ingest] ✅ '{data.full_name}' salvo — {len(data.skills)} skill(s), {len(data.experiences)} experiência(s), quality_score={quality_score}/100.")
 
     except ValidationError as e:
         print(f"[ingest] ERRO de validacao Pydantic em {path.name}: {e}")

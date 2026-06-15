@@ -4,9 +4,11 @@ from sqlalchemy.orm import Session
 from pathlib import Path
 from typing import Optional
 import tempfile
+import json
 
 from app.core.database import SessionLocal
 from app.models.domain import Candidate, Category, Skill, Experience
+from app.services.quality_score import score_tier
 
 router = APIRouter()
 
@@ -67,6 +69,9 @@ def list_candidates(
             "added_at": c.created_at.isoformat() if c.created_at else None,
             "skills": skills,
             "photo_url": c.photo_url,
+            "quality_score": c.quality_score,
+            "quality_tier": score_tier(c.quality_score) if c.quality_score is not None else None,
+            "quality_alerts": json.loads(c.quality_alerts) if c.quality_alerts else [],
         })
 
     return {"candidates": results, "total": len(results)}
@@ -92,6 +97,9 @@ def get_candidate(candidate_id: str, db: Session = Depends(get_db)):
         "added_at": c.created_at.isoformat() if c.created_at else None,
         "pdf_url": c.original_pdf_url,
         "photo_url": c.photo_url,
+        "quality_score": c.quality_score,
+        "quality_tier": score_tier(c.quality_score) if c.quality_score is not None else None,
+        "quality_alerts": json.loads(c.quality_alerts) if c.quality_alerts else [],
     }
 
 

@@ -7,7 +7,12 @@ connect_args = {}
 if "neon.tech" in settings.DATABASE_URL:
     connect_args = {"sslmode": "require"}
 
-engine = create_engine(settings.DATABASE_URL, connect_args=connect_args)
+engine = create_engine(
+    settings.DATABASE_URL,
+    connect_args=connect_args,
+    pool_pre_ping=True,   # testa a conexão antes de usar — reconecta se fechada
+    pool_recycle=300,     # recicla conexões a cada 5 minutos (Neon fecha ociosas)
+)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()

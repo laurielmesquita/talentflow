@@ -13,9 +13,9 @@
   <a href="https://github.com/laurielmesquita">
     <img alt="Made by Space Square" src="https://img.shields.io/static/v1?label=made%20by&message=Space%20Square&color=bd93f9&labelColor=282a36">
   </a>
-  <img alt="Top Language" src="https://img.shields.io/github/languages/top/laurielmesquita/talentflow?color=ff79c6&labelColor=282a36">
+  <img alt="Languages" src="https://img.shields.io/badge/languages-TypeScript%20%2F%20Python-ff79c6?labelColor=282a36">
   <img alt="Code Style" src="https://img.shields.io/static/v1?label=code%20style&message=standard&color=f1fa8c&labelColor=282a36">
-  <img alt="Repository Size" src="https://img.shields.io/github/repo-size/laurielmesquita/talentflow?color=8be9fd&labelColor=282a36">
+  <img alt="Project Type" src="https://img.shields.io/badge/project-monorepo-8be9fd?labelColor=282a36">
   <img alt="License" src="https://img.shields.io/static/v1?label=license&message=MIT&color=50fa7b&labelColor=282a36">
 </p>
 

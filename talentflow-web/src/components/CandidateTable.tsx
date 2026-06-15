@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
+import { Loader2, Sparkles } from "lucide-react";
 import CandidateModal from "./CandidateModal";
 
 export default function CandidateTable({
@@ -10,10 +12,104 @@ export default function CandidateTable({
   candidates: any[];
   initialCandidateId?: string;
 }) {
+  const router = useRouter();
   const [selectedId, setSelectedId] = useState<string | null>(initialCandidateId ?? null);
+  const [processingCount, setProcessingCount] = useState<number>(0);
+  const [newCandidateIds, setNewCandidateIds] = useState<Set<string>>(new Set());
+
+  // Rastreia IDs dos candidatos da renderização anterior
+  const prevCandidateIdsRef = useRef<Set<string>>(new Set(candidates.map(c => c.id)));
+  // Timeout de segurança do polling
+  const pollingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Escuta evento global de novos uploads
+  useEffect(() => {
+    const handleProcessingStarted = (e: Event) => {
+      const customEvent = e as CustomEvent<{ count: number }>;
+      const count = customEvent.detail?.count || 1;
+      
+      setProcessingCount(prev => prev + count);
+
+      // Inicia ou reinicia o timeout de segurança para parar após 60 segundos
+      if (pollingTimeoutRef.current) clearTimeout(pollingTimeoutRef.current);
+      pollingTimeoutRef.current = setTimeout(() => {
+        setProcessingCount(0);
+      }, 60000);
+    };
+
+    window.addEventListener("candidates-processing-started", handleProcessingStarted);
+    return () => {
+      window.removeEventListener("candidates-processing-started", handleProcessingStarted);
+      if (pollingTimeoutRef.current) clearTimeout(pollingTimeoutRef.current);
+    };
+  }, []);
+
+  // Loop de polling enquanto houver itens pendentes no back-end
+  useEffect(() => {
+    if (processingCount <= 0) return;
+
+    const interval = setInterval(() => {
+      router.refresh();
+    }, 2500);
+
+    return () => clearInterval(interval);
+  }, [processingCount, router]);
+
+  // Compara candidatos para identificar novos registros e atualizar progresso
+  useEffect(() => {
+    const currentIds = new Set(candidates.map(c => c.id));
+    const prevIds = prevCandidateIdsRef.current;
+
+    // Filtra IDs que estão presentes agora mas não estavam antes
+    const newlyAddedIds = candidates
+      .map(c => c.id)
+      .filter(id => !prevIds.has(id));
+
+    if (newlyAddedIds.length > 0) {
+      // Adiciona novos candidatos no estado de destaque visual (Glow)
+      setNewCandidateIds(prev => {
+        const updated = new Set(prev);
+        newlyAddedIds.forEach(id => updated.add(id));
+        return updated;
+      });
+
+      // Remove destaque após a animação de 5 segundos
+      setTimeout(() => {
+        setNewCandidateIds(prev => {
+          const updated = new Set(prev);
+          newlyAddedIds.forEach(id => updated.delete(id));
+          return updated;
+        });
+      }, 5000);
+
+      // Decrementa o contador de processamentos pendentes
+      setProcessingCount(prev => Math.max(0, prev - newlyAddedIds.length));
+
+      // Limpa o timeout de segurança se finalizou
+      if (processingCount - newlyAddedIds.length <= 0 && pollingTimeoutRef.current) {
+        clearTimeout(pollingTimeoutRef.current);
+      }
+    }
+
+    // Atualiza a referência para a próxima re-renderização
+    prevCandidateIdsRef.current = currentIds;
+  }, [candidates, processingCount]);
 
   return (
     <>
+      {processingCount > 0 && (
+        <div className="mb-4 flex items-center justify-between gap-3 px-4 py-3 rounded-lg bg-indigo-500/10 border border-indigo-500/20 text-indigo-300 text-sm font-medium animate-pulse">
+          <div className="flex items-center gap-2.5">
+            <Loader2 className="w-4 h-4 animate-spin text-indigo-400" />
+            <span>Processando {processingCount} currículo{processingCount !== 1 ? 's' : ''} no motor de triagem...</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-indigo-400">
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Extraindo skills via IA</span>
+          </div>
+        </div>
+      )}
+
       <div className="bg-slate-900/50 border border-slate-800 rounded-xl overflow-hidden">
         <table className="w-full text-left text-sm text-slate-300">
           <thead className="bg-slate-900/80 text-xs uppercase text-slate-500 border-b border-slate-800 font-semibold tracking-wider">
@@ -31,7 +127,12 @@ export default function CandidateTable({
               </tr>
             ) : (
               candidates.map((cand: any) => (
-                <tr key={cand.id} className="hover:bg-slate-800/30 transition-colors group">
+                <tr 
+                  key={cand.id} 
+                  className={`hover:bg-slate-800/30 transition-all duration-300 group ${
+                    newCandidateIds.has(cand.id) ? 'animate-new-glow border-l-2 border-indigo-500' : ''
+                  }`}
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
                       {cand.photo_url ? (

@@ -46,6 +46,13 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
 
     if (successCount > 0) {
       setStatus('success');
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(
+          new CustomEvent('candidates-processing-started', {
+            detail: { count: successCount },
+          })
+        );
+      }
       router.refresh();
       onSuccess?.();
       setTimeout(() => setStatus('idle'), 3000);

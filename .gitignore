@@ -1,0 +1,51 @@
+# ========================
+# TalentFlow — Monorepo
+# ========================
+
+# Segredos — nunca versionar
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python
+talentflow-api/venv/
+talentflow-api/__pycache__/
+talentflow-api/**/__pycache__/
+talentflow-api/**/*.pyc
+talentflow-api/**/*.pyo
+talentflow-api/.pytest_cache/
+talentflow-api/*.egg-info/
+
+# Alembic — manter o código, ignorar apenas o cache
+talentflow-api/alembic/__pycache__/
+
+# Next.js
+talentflow-web/.next/
+talentflow-web/out/
+talentflow-web/build/
+talentflow-web/node_modules/
+talentflow-web/.pnp
+talentflow-web/.pnp.*
+
+# Logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# TypeScript
+talentflow-web/*.tsbuildinfo
+talentflow-web/next-env.d.ts
+
+# Vercel
+talentflow-web/.vercel

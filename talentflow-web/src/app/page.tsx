@@ -11,6 +11,7 @@ interface Candidate {
   match_score: number;
   added_at: string | null;
   skills: string[];
+  photo_url: string | null;
 }
 
 async function getCandidates(category?: string): Promise<{ candidates: Candidate[]; total: number }> {

@@ -34,9 +34,17 @@ export default function CandidateTable({
                 <tr key={cand.id} className="hover:bg-slate-800/30 transition-colors group">
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-slate-400 border border-slate-700">
-                        {cand.full_name.substring(0, 2).toUpperCase()}
-                      </div>
+                      {cand.photo_url ? (
+                        <img 
+                          src={cand.photo_url} 
+                          alt={cand.full_name} 
+                          className="w-10 h-10 rounded-full object-cover border border-slate-700" 
+                        />
+                      ) : (
+                        <div className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-slate-400 border border-slate-700">
+                          {cand.full_name.substring(0, 2).toUpperCase()}
+                        </div>
+                      )}
                       <div>
                         <div className="font-semibold text-slate-200">{cand.full_name}</div>
                         <div className="text-xs text-slate-500">{cand.categories[0] || 'Geral'}</div>

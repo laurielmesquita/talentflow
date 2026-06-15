@@ -10,7 +10,8 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
   useEffect(() => {
     async function fetchCandidate() {
       try {
-        const res = await fetch(`http://localhost:8000/api/candidates/${candidateId}`);
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const res = await fetch(`${API_URL}/api/candidates/${candidateId}`);
         if (res.ok) {
           setCandidate(await res.json());
         }
@@ -42,9 +43,17 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
           ) : candidate ? (
             <>
               <div className="flex items-center gap-4 mb-8">
-                <div className="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl font-bold text-indigo-400 uppercase shrink-0">
-                  {candidate.full_name.substring(0, 2)}
-                </div>
+                {candidate.photo_url ? (
+                  <img
+                    src={candidate.photo_url}
+                    alt={candidate.full_name}
+                    className="w-16 h-16 rounded-full object-cover border border-indigo-500/30 shrink-0"
+                  />
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-xl font-bold text-indigo-400 uppercase shrink-0">
+                    {candidate.full_name.substring(0, 2)}
+                  </div>
+                )}
                 <div>
                   <h2 className="text-xl font-bold text-slate-100">{candidate.full_name}</h2>
                   <div className="flex flex-wrap gap-2 mt-2">

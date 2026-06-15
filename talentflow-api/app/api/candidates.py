@@ -47,6 +47,7 @@ def list_candidates(category: Optional[str] = None, db: Session = Depends(get_db
             "match_score": 88,  # Placeholder para o motor de match futuro
             "added_at": c.created_at.isoformat() if c.created_at else None,
             "skills": skills,
+            "photo_url": c.photo_url,
         })
 
     return {"candidates": results, "total": len(results)}
@@ -71,6 +72,7 @@ def get_candidate(candidate_id: str, db: Session = Depends(get_db)):
         ],
         "added_at": c.created_at.isoformat() if c.created_at else None,
         "pdf_url": c.original_pdf_url,
+        "photo_url": c.photo_url,
     }
 
 

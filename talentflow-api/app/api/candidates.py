@@ -25,6 +25,9 @@ def list_candidates(
     q: Optional[str] = None,
     db: Session = Depends(get_db)
 ):
+    """
+    Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo, empresa).
+    """
     query = db.query(Candidate)
 
     if category:

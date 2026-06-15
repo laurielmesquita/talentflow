@@ -1,7 +1,8 @@
-import { Search, Filter, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import Link from 'next/link';
 import CandidateTable from '@/components/CandidateTable';
 import BatchUploadButton from '@/components/BatchUploadButton';
+import SearchAndFilters from '@/components/SearchAndFilters';
 
 interface Candidate {
   id: string;
@@ -14,12 +15,19 @@ interface Candidate {
   photo_url: string | null;
 }
 
-async function getCandidates(category?: string): Promise<{ candidates: Candidate[]; total: number }> {
+interface Category {
+  id: string;
+  name: string;
+}
+
+async function getCandidates(category?: string, q?: string): Promise<{ candidates: Candidate[]; total: number }> {
   try {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    const url = category
-      ? `${API_URL}/api/candidates?category=${encodeURIComponent(category)}`
-      : `${API_URL}/api/candidates`;
+    const params = new URLSearchParams();
+    if (category) params.set('category', category);
+    if (q) params.set('q', q);
+    
+    const url = `${API_URL}/api/candidates?${params.toString()}`;
 
     const res = await fetch(url, { cache: 'no-store' });
     if (!res.ok) return { candidates: [], total: 0 };
@@ -29,13 +37,27 @@ async function getCandidates(category?: string): Promise<{ candidates: Candidate
   }
 }
 
+async function getCategories(): Promise<Category[]> {
+  try {
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    const res = await fetch(`${API_URL}/api/categories`, { cache: 'no-store' });
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
+
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Promise<{ category?: string; candidateId?: string }>;
+  searchParams: Promise<{ category?: string; candidateId?: string; q?: string }>;
 }) {
-  const { category, candidateId } = await searchParams;
-  const data = await getCandidates(category);
+  const { category, candidateId, q } = await searchParams;
+  const [data, categories] = await Promise.all([
+    getCandidates(category, q),
+    getCategories(),
+  ]);
   const candidates = data.candidates || [];
 
   return (
@@ -92,19 +114,8 @@ export default async function Home({
         </div>
 
         {/* Search & Filters */}
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
-            <input
-              type="text"
-              placeholder="Buscar por nome, cargo ou skill..."
-              className="w-full bg-slate-900 border border-slate-800 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"
-            />
-          </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-lg text-sm font-medium text-slate-300 transition-colors">
-            <Filter className="w-4 h-4" />
-            Filtros Avançados
-          </button>
+        <div className="mb-8">
+          <SearchAndFilters categories={categories} activeCategory={category} activeQuery={q} />
         </div>
 
         {/* Candidate List (Client Component) */}

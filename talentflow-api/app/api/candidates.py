@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, UploadFile, File
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 from pathlib import Path
 from typing import Optional
 import tempfile
 
 from app.core.database import SessionLocal
-from app.models.domain import Candidate, Category
+from app.models.domain import Candidate, Category, Skill, Experience
 
 router = APIRouter()
 
@@ -19,11 +20,26 @@ def get_db():
 
 
 @router.get("/candidates")
-def list_candidates(category: Optional[str] = None, db: Session = Depends(get_db)):
+def list_candidates(
+    category: Optional[str] = None,
+    q: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
     query = db.query(Candidate)
 
     if category:
         query = query.join(Candidate.categories).filter(Category.name == category)
+
+    if q:
+        search_filter = f"%{q}%"
+        query = query.outerjoin(Candidate.skills).outerjoin(Candidate.experiences).filter(
+            or_(
+                Candidate.full_name.ilike(search_filter),
+                Skill.name.ilike(search_filter),
+                Experience.job_title.ilike(search_filter),
+                Experience.company_name.ilike(search_filter)
+            )
+        ).distinct()
 
     candidates = query.order_by(Candidate.created_at.desc()).limit(50).all()
     results = []

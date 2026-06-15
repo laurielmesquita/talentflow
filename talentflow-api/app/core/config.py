@@ -11,6 +11,9 @@ class Settings(BaseSettings):
     # Groq API — substitui Gemini
     GROQ_API_KEY: str = ""
 
+    # Gemini API para OCR em PDFs escaneados
+    GEMINI_API_KEY: str = ""
+
     # Cloudinary — armazenamento de PDFs e fotos
     CLOUDINARY_CLOUD_NAME: str = ""
     CLOUDINARY_API_KEY: str = ""

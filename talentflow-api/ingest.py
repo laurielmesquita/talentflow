@@ -1,12 +1,13 @@
 """
-TalentFlow — Ingestor de Curriculos via Groq + pdfplumber + Cloudinary.
+TalentFlow — Ingestor de Curriculos via Groq + Gemini OCR + pdfplumber + Cloudinary.
 
 Fluxo:
-  1. Extrai texto do PDF com pdfplumber (suporte a PDFs com texto selecionavel).
-  2. Extrai a primeira imagem do PDF com PyMuPDF (foto do candidato).
-  3. Faz upload da foto e do PDF para o Cloudinary.
-  4. Envia o texto ao Groq (Llama 3.3 70B) solicitando JSON estruturado.
-  5. Valida e persiste no PostgreSQL.
+  1. Extrai texto do PDF com pdfplumber.
+  2. Se não houver texto selecionável suficiente (ex: PDF escaneado), ativamos o OCR via Gemini.
+  3. Extrai a primeira imagem do PDF com PyMuPDF (foto do candidato, ignorando páginas escaneadas inteiras).
+  4. Faz upload da foto e do PDF para o Cloudinary.
+  5. Envia o texto ao Groq (Llama 3.3 70B) ou as páginas ao Gemini (gemini-2.5-flash) para extração de JSON estruturado.
+  6. Valida e persiste no PostgreSQL.
 """
 
 import json
@@ -20,6 +21,8 @@ import cloudinary.uploader
 import fitz  # PyMuPDF
 import pdfplumber
 from groq import Groq
+from google import genai
+from google.genai import types
 from pydantic import BaseModel, ValidationError
 from sqlalchemy.orm import Session
 
@@ -102,6 +105,7 @@ def extract_and_upload_photo(path: Path) -> Optional[str]:
     """
     Extrai a primeira imagem do PDF (geralmente a foto do candidato)
     e faz upload para o Cloudinary. Retorna a URL publica ou None.
+    Ignora imagens grandes que cobrem quase a página inteira (páginas escaneadas).
     """
     try:
         doc = fitz.open(path)
@@ -109,6 +113,17 @@ def extract_and_upload_photo(path: Path) -> Optional[str]:
             image_list = page.get_images(full=True)
             for img_index, img in enumerate(image_list):
                 xref = img[0]
+                
+                # Se a imagem cobrir a maior parte da página, é provavelmente a página escaneada em si e não uma foto
+                rects = page.get_image_rects(xref)
+                if rects:
+                    img_rect = rects[0]
+                    page_area = page.rect.width * page.rect.height
+                    img_area = img_rect.width * img_rect.height
+                    if img_area / page_area > 0.7:
+                        # Pula pois é imagem da página inteira (PDF escaneado)
+                        continue
+
                 base_image = doc.extract_image(xref)
                 image_bytes = base_image["image"]
                 image_ext = base_image["ext"]
@@ -148,6 +163,72 @@ def upload_pdf(path: Path) -> Optional[str]:
     return None
 
 
+def process_ocr_via_gemini(path: Path, gemini_api_key: str) -> CandidateExtraction:
+    """
+    Renderiza as páginas do PDF como imagens e envia para a API do Gemini
+    (gemini-2.5-flash) para fazer OCR e extração estruturada de dados.
+    """
+    print(f"[ingest] Convertendo páginas de {path.name} em imagens para OCR via Gemini...")
+    doc = fitz.open(path)
+    contents = []
+
+    for i, page in enumerate(doc):
+        # Renderiza a página com DPI de 150 para otimização de banda/qualidade
+        pix = page.get_pixmap(dpi=150)
+        img_bytes = pix.tobytes("png")
+        
+        contents.append(
+            types.Part.from_bytes(
+                data=img_bytes,
+                mime_type="image/png"
+            )
+        )
+        print(f"[ingest] Página {i + 1} renderizada ({len(img_bytes)} bytes).")
+
+    # Prompt customizado para o modelo multimodal
+    prompt_multimodal = (
+        "Você é um extrator de dados de currículos em português.\n"
+        "A partir das imagens das páginas do currículo fornecidas, realize o OCR do texto e retorne SOMENTE um JSON válido.\n"
+        "Não inclua markdown, não inclua explicações, não inclua texto antes ou depois do JSON.\n\n"
+        "O JSON deve ter exatamente estes campos:\n"
+        "- full_name: string com o nome completo do candidato\n"
+        "- email: string ou null\n"
+        "- phone: string ou null\n"
+        "- birth_date: string no formato YYYY-MM-DD ou null\n"
+        "- address: string com cidade e estado ou null\n"
+        "- categories: array de strings com áreas de atuação (exemplos: 'Atendimento', 'Tecnologia', 'Vendas', 'Administracao', 'Saude', 'Educacao', 'Servicos Gerais', 'Estoque', 'Tecnico')\n"
+        "- skills: array de strings com competências técnicas e comportamentais\n"
+        "- experiences: array de objetos, cada um com: company_name (string), job_title (string), start_date (string YYYY-MM ou null), end_date (string YYYY-MM ou null), is_current (boolean), description (string ou null)\n\n"
+        "Se um campo não for encontrado no texto, use null ou array vazio conforme o tipo.\n"
+        "Retorne apenas o JSON, nada mais."
+    )
+    contents.append(prompt_multimodal)
+
+    import time
+    
+    max_attempts = 4
+    for attempt in range(1, max_attempts + 1):
+        try:
+            print(f"[ingest] Chamando API do Gemini (gemini-2.5-flash) - tentativa {attempt}...")
+            client = genai.Client(api_key=gemini_api_key)
+            response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=contents,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=CandidateExtraction,
+                    temperature=0.1
+                )
+            )
+            raw_json = response.text
+            return CandidateExtraction.model_validate_json(raw_json)
+        except Exception as e:
+            if attempt == max_attempts:
+                raise e
+            print(f"[ingest] AVISO: erro na chamada do Gemini ({e}). Retrying em {attempt * 2}s...")
+            time.sleep(attempt * 2)
+
+
 # ---------------------------------------------------------------------------
 # Funcao principal de processamento
 # ---------------------------------------------------------------------------
@@ -155,35 +236,41 @@ def upload_pdf(path: Path) -> Optional[str]:
 def process_single_pdf(path: Path, db: Session) -> None:
     """
     Processa um unico PDF: extrai texto e foto, faz upload para Cloudinary,
-    chama o Groq, valida com Pydantic e persiste no PostgreSQL.
-    Chamado pelo endpoint de upload via BackgroundTasks.
+    chama o Groq ou Gemini (OCR), valida com Pydantic e persiste no PostgreSQL.
+    Chamado pelo endpoint de upload via BackgroundTasks ou via CLI.
     """
     from app.models.domain import Candidate, Skill, Experience, Category
 
     print(f"[ingest] Iniciando processamento: {path.name}")
 
     groq_api_key = os.getenv("GROQ_API_KEY", "")
-    if not groq_api_key:
-        try:
-            from app.core.config import settings
+    gemini_api_key = os.getenv("GEMINI_API_KEY", "")
+    try:
+        from app.core.config import settings
+        if not groq_api_key:
             groq_api_key = settings.GROQ_API_KEY
-        except Exception:
-            pass
-
-    if not groq_api_key:
-        print(f"[ingest] ERRO: GROQ_API_KEY nao definida. Abortando {path.name}.")
-        _cleanup(path)
-        return
+        if not gemini_api_key:
+            gemini_api_key = settings.GEMINI_API_KEY
+    except Exception:
+        pass
 
     _configure_cloudinary()
 
     try:
-        # 1. Extrai texto
+        # 1. Extrai texto e decide se precisa de OCR
         text = extract_text(path)
-        if not text:
-            print(f"[ingest] AVISO: PDF sem texto extraivel (provavelmente escaneado) — {path.name}")
-            _cleanup(path)
-            return
+        is_scanned = not text or len(text.strip()) < 50
+
+        if is_scanned:
+            if not gemini_api_key:
+                print(f"[ingest] AVISO: PDF '{path.name}' parece escaneado, mas GEMINI_API_KEY não está configurada. Pulando.")
+                _cleanup(path)
+                return
+        else:
+            if not groq_api_key:
+                print(f"[ingest] ERRO: GROQ_API_KEY nao definida. Abortando {path.name}.")
+                _cleanup(path)
+                return
 
         # 2. Extrai e faz upload da foto
         print(f"[ingest] Extraindo foto de {path.name}...")
@@ -196,21 +283,23 @@ def process_single_pdf(path: Path, db: Session) -> None:
         if pdf_url:
             print(f"[ingest] PDF enviado para Cloudinary: {pdf_url}")
 
-        # 4. Chama o Groq
-        print(f"[ingest] Enviando texto ao Groq (Llama 3.3 70B)...")
-        client = Groq(api_key=groq_api_key)
-        response = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
-            messages=[
-                {"role": "system", "content": SYSTEM_PROMPT},
-                {"role": "user", "content": f"Texto do curriculo:\n\n{text[:8000]}"},
-            ],
-            response_format={"type": "json_object"},
-            temperature=0.1,
-        )
-
-        raw_json = response.choices[0].message.content
-        data = CandidateExtraction.model_validate_json(raw_json)
+        # 4. Extrai os dados do candidato (OCR via Gemini ou Texto via Groq)
+        if is_scanned:
+            data = process_ocr_via_gemini(path, gemini_api_key)
+        else:
+            print(f"[ingest] Enviando texto ao Groq (Llama 3.3 70B)...")
+            client_groq = Groq(api_key=groq_api_key)
+            response = client_groq.chat.completions.create(
+                model="llama-3.3-70b-versatile",
+                messages=[
+                    {"role": "system", "content": SYSTEM_PROMPT},
+                    {"role": "user", "content": f"Texto do curriculo:\n\n{text[:8000]}"},
+                ],
+                response_format={"type": "json_object"},
+                temperature=0.1,
+            )
+            raw_json = response.choices[0].message.content
+            data = CandidateExtraction.model_validate_json(raw_json)
 
         # 5. Verifica duplicata por nome
         existing = db.query(Candidate).filter(Candidate.full_name == data.full_name).first()

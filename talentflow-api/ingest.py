@@ -5,7 +5,7 @@ Fluxo:
   1. Extrai texto do PDF com pdfplumber (suporte a PDFs com texto selecionavel).
   2. Extrai a primeira imagem do PDF com PyMuPDF (foto do candidato).
   3. Faz upload da foto e do PDF para o Cloudinary.
-  4. Envia o texto ao Groq (Llama 3.1 70B) solicitando JSON estruturado.
+  4. Envia o texto ao Groq (Llama 3.3 70B) solicitando JSON estruturado.
   5. Valida e persiste no PostgreSQL.
 """
 
@@ -197,10 +197,10 @@ def process_single_pdf(path: Path, db: Session) -> None:
             print(f"[ingest] PDF enviado para Cloudinary: {pdf_url}")
 
         # 4. Chama o Groq
-        print(f"[ingest] Enviando texto ao Groq (Llama 3.1 70B)...")
+        print(f"[ingest] Enviando texto ao Groq (Llama 3.3 70B)...")
         client = Groq(api_key=groq_api_key)
         response = client.chat.completions.create(
-            model="llama-3.1-70b-versatile",
+            model="llama-3.3-70b-versatile",
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": f"Texto do curriculo:\n\n{text[:8000]}"},

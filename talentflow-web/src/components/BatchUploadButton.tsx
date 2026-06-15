@@ -29,7 +29,8 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
       try {
         const form = new FormData();
         form.append('file', file);
-        const res = await fetch('http://localhost:8000/api/upload', {
+        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+        const res = await fetch(`${API_URL}/api/upload`, {
           method: 'POST',
           body: form,
         });

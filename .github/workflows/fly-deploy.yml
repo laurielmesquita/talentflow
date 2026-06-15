@@ -21,7 +21,7 @@ jobs:
         uses: superfly/flyctl-actions/setup-flyctl@master
         
       - name: Deploy to Fly.io
-        run: flyctl deploy --project talentflow-api-frosty-seastar-3318
+        run: flyctl deploy
         working-directory: talentflow-api
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

@@ -25,24 +25,30 @@
 
 <br><br><br>
 
-## 🚀 Tecnologias
+## 🚀 Tecnologias e Arquitetura (Design Engineering)
 
-Este projeto foi construído sobre uma Stack de alta performance, utilizando as seguintes tecnologias:
+Este projeto foi estruturado sob o conceito de **Design Engineering**, unindo processamento backend robusto com uma interface visual de performance cirúrgica (60fps). 
 
-- [FastAPI](https://fastapi.tiangolo.com) — Framework web em Python de alto desempenho para APIs modernas.
-- [Next.js](https://nextjs.org) — Framework React com suporte a renderização no servidor (SSR) e otimizações nativas.
-- [PostgreSQL](https://www.postgresql.org) — Banco de dados relacional robusto para armazenar dados estruturados de candidatos e vagas.
-- [Docker](https://www.docker.com) — Conteinerização do banco de dados para garantir portabilidade e reprodutibilidade do ambiente.
-- [Google Gemini API](https://ai.google.dev) — Processamento inteligente de documentos não estruturados (PDFs) para extração determinística via `response_schema`.
-- [TailwindCSS](https://tailwindcss.com) — Framework CSS utilitário para estilização premium e responsiva.
+### Backend & AI (Data Ingestion)
+- **[FastAPI](https://fastapi.tiangolo.com)** — Framework web assíncrono em Python de altíssimo desempenho, ideal para suportar fluxos pesados de I/O.
+- **[Google Gemini API (2.0 Flash)](https://ai.google.dev)** — Responsável pela extração determinística via `response_schema`, transformando PDFs desestruturados em JSON mapeado.
+- **[PostgreSQL](https://www.postgresql.org) & [Docker](https://www.docker.com)** — Banco relacional em container para persistência isolada e previsível.
+
+### Frontend & UI Experience (Camada de Visão)
+- **[Next.js v16](https://nextjs.org) & [React v19](https://react.dev)** — Utilizando o *App Router* para isolamento estrito entre server/client components, assegurando performance no *First Contentful Paint*.
+- **[Tailwind CSS v4](https://tailwindcss.com) (CSS-First)** — Todo o *Design System* foi refatorado para operar no espaço de cores perceptual **OKLCH**. Isso provê controle matemático sobre Luminância e Croma, blindando a UI contra *Gamut Clipping* no Dark Mode.
+- **[Framer Motion](https://www.framer.com/motion/)** — Motor de física de mola (spring) do projeto. Substituímos tabelas estáticas por *Interactive Expandable Lists* usando o atributo `layout`. As tags surgem em *staggered cascates* para facilitar o *scanning* ocular do recrutador.
+- **[Next-Themes](https://github.com/pacocoursey/next-themes)** — Gestão de *Dual-Theme* isolada no servidor/cliente sem disparar os temidos erros de *Hydration Mismatch*.
 
 ## 💻 Projeto
 
-O **TalentFlow** é uma plataforma inteligente voltada para otimização do pipeline de recrutamento e seleção (R&S). Ele resolve o gargalo histórico de triagem manual ao extrair dados de arquivos PDF (currículos) de forma estruturada e automatizada através do modelo **Gemini 2.0 Flash**, calculando dinamicamente a aderência do perfil frente aos requisitos das vagas publicadas (*Smart Match*).
+O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 focada em otimização do pipeline de Recrutamento e Seleção (R&S). A aplicação foca na intersecção perfeita entre inteligência artificial e design fluido:
+1. Elimina a triagem analógica ao ingerir currículos via simulação algorítmica e extração por IA.
+2. Encanta o usuário através de uma interface tátil, adotando padrões visuais de **Bento UI** e **Glassmorphism**.
 
-Desenvolvido sob uma arquitetura de monorepo estruturado, o TalentFlow possui:
-- **`talentflow-api/`**: API de alta performance em Python rodando processos pesados de leitura e upload assíncronos (via FastAPI `BackgroundTasks`).
-- **`talentflow-web/`**: Interface administrativa responsiva de altíssimo nível visual (dark mode, glassmorphism e micro-interações) integrada nativamente via rotas dinâmicas do Next.js.
+Dentro do modelo monorepo da aplicação, o fluxo de dados atua em dois blocos:
+- **`talentflow-api/`**: Roda pipelines complexos através de *BackgroundTasks*, liberando o client imediatamente.
+- **`talentflow-web/`**: Dashboard interativo. Não há tabelas mortas. O recrutador navega em cards elásticos com *Ambient Glows* de fundo, painéis modais integrados e anéis SVG animados via trigonometria (`ScoreRing`).
 
 ## ⚙️ Instalação
 

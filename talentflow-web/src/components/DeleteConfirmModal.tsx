@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { AlertTriangle, Trash2, X } from 'lucide-react';
 
 interface DeleteConfirmModalProps {
@@ -19,8 +20,15 @@ export default function DeleteConfirmModal({
   const [step, setStep] = useState<1 | 2>(1);
   const [confirmText, setConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   if (!isOpen) return null;
+  if (!mounted) return null;
 
   async function handleDelete() {
     if (confirmText !== 'EXCLUIR') return;
@@ -44,7 +52,7 @@ export default function DeleteConfirmModal({
     onClose();
   };
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
       {/* Overlay */}
       <div 
@@ -160,6 +168,7 @@ export default function DeleteConfirmModal({
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

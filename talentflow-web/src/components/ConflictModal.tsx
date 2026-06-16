@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { 
   X, 
   ArrowLeft, 
@@ -65,8 +66,15 @@ export default function ConflictModal({
   const [phase, setPhase] = useState<'decision' | 'diff'>('decision');
   const [showIdentical, setShowIdentical] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
 
   if (!isOpen || !conflictData) return null;
+  if (!mounted) return null;
 
   const { existing_candidate: oldCand, extracted_data: newCand } = conflictData;
 
@@ -150,7 +158,7 @@ export default function ConflictModal({
     hasSkillsDiff ||
     hasExpDiff;
 
-  return (
+  return createPortal(
     <>
       {/* ── FASE 1: DECISÃO COMPACTA ──────────────────────────────────────── */}
       {phase === 'decision' && (
@@ -460,6 +468,7 @@ export default function ConflictModal({
           </div>
         </div>
       )}
-    </>
+    </>,
+    document.body
   );
 }

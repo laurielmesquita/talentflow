@@ -15,7 +15,8 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:3000",
         "https://talentflow-web-flame.vercel.app",
-        "https://talentflow-web.vercel.app"
+        "https://talentflow-web.vercel.app",
+        "https://tlntflow.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],

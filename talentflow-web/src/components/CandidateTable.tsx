@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX } from "lucide-react";
+import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX, Trash2 } from "lucide-react";
 import CandidateModal from "./CandidateModal";
+import DeleteConfirmModal from "./DeleteConfirmModal";
 
 // ── CV Quality Badge ──────────────────────────────────────────────────────────
 function QualityBadge({ score, tier }: { score: number | null; tier: string | null }) {
@@ -39,6 +40,25 @@ export default function CandidateTable({
   const [selectedId, setSelectedId] = useState<string | null>(initialCandidateId ?? null);
   const [processingCount, setProcessingCount] = useState<number>(0);
   const [newCandidateIds, setNewCandidateIds] = useState<Set<string>>(new Set());
+  const [deleteCandidateId, setDeleteCandidateId] = useState<string | null>(null);
+  const [deleteCandidateName, setDeleteCandidateName] = useState<string>("");
+
+  async function handleDeleteConfirm() {
+    if (!deleteCandidateId) return;
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_URL}/api/candidates/${deleteCandidateId}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        router.refresh();
+      } else {
+        console.error('Falha ao deletar candidato');
+      }
+    } catch (e) {
+      console.error('Erro ao chamar endpoint de deleção:', e);
+    }
+  }
 
   // Rastreia IDs dos candidatos da renderização anterior
   const prevCandidateIdsRef = useRef<Set<string>>(new Set(candidates.map(c => c.id)));
@@ -192,12 +212,25 @@ export default function CandidateTable({
                     <QualityBadge score={cand.quality_score} tier={cand.quality_tier} />
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <button 
-                      onClick={() => setSelectedId(cand.id)} 
-                      className="text-indigo-400 hover:text-indigo-300 font-medium transition-colors"
-                    >
-                      Ver Perfil
-                    </button>
+                    <div className="flex items-center justify-end gap-4">
+                      <button 
+                        onClick={() => setSelectedId(cand.id)} 
+                        className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
+                      >
+                        Ver Perfil
+                      </button>
+                      <button
+                        onClick={() => {
+                          setDeleteCandidateId(cand.id);
+                          setDeleteCandidateName(cand.full_name);
+                        }}
+                        className="text-slate-500 hover:text-rose-450 transition-colors p-1"
+                        title="Excluir Candidato"
+                        aria-label={`Excluir candidato ${cand.full_name}`}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))
@@ -209,6 +242,13 @@ export default function CandidateTable({
       {selectedId && (
         <CandidateModal candidateId={selectedId} onClose={() => setSelectedId(null)} />
       )}
+
+      <DeleteConfirmModal
+        isOpen={deleteCandidateId !== null}
+        onClose={() => setDeleteCandidateId(null)}
+        onConfirm={handleDeleteConfirm}
+        candidateName={deleteCandidateName}
+      />
     </>
   );
 }

@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { UploadCloud, CheckCircle, AlertCircle } from 'lucide-react';
+import ConflictModal from './ConflictModal';
 
 interface BatchUploadButtonProps {
   onSuccess?: () => void;
@@ -15,6 +16,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const inputRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [progress, setProgress] = useState({ done: 0, total: 0 });
+  const [conflictQueue, setConflictQueue] = useState<any[]>([]);
 
   async function handleFiles(e: React.ChangeEvent<HTMLInputElement>) {
     const files = Array.from(e.target.files || []);
@@ -24,6 +26,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
     setProgress({ done: 0, total: files.length });
 
     let successCount = 0;
+    const conflicts: any[] = [];
 
     for (const file of files) {
       try {
@@ -34,11 +37,23 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
           method: 'POST',
           body: form,
         });
-        if (res.ok) successCount++;
-      } catch {
-        // Continua processando os demais arquivos mesmo em caso de erro individual
+        
+        if (res.ok) {
+          successCount++;
+        } else if (res.status === 409) {
+          const errData = await res.json();
+          if (errData && errData.detail) {
+            conflicts.push(errData.detail);
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao fazer upload de arquivo:', err);
       }
       setProgress((p) => ({ ...p, done: p.done + 1 }));
+    }
+
+    if (conflicts.length > 0) {
+      setConflictQueue(conflicts);
     }
 
     // Reset o input para permitir re-upload do mesmo arquivo
@@ -57,8 +72,47 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
       onSuccess?.();
       setTimeout(() => setStatus('idle'), 3000);
     } else {
-      setStatus('error');
-      setTimeout(() => setStatus('idle'), 4000);
+      if (conflicts.length > 0) {
+        setStatus('idle');
+      } else {
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 4000);
+      }
+    }
+  }
+
+  async function handleConflictResolve(action: 'replace' | 'keep_both') {
+    const currentConflict = conflictQueue[0];
+    if (!currentConflict) return;
+
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_URL}/api/candidates/${currentConflict.existing_candidate.id}/replace`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action,
+          extracted_data: currentConflict.extracted_data,
+          photo_url: currentConflict.photo_url,
+          original_pdf_url: currentConflict.original_pdf_url,
+          quality_score: currentConflict.quality_score,
+          quality_alerts: currentConflict.quality_alerts,
+        }),
+      });
+
+      if (res.ok) {
+        router.refresh();
+        onSuccess?.();
+      } else {
+        console.error('Erro ao resolver conflito:', res.statusText);
+      }
+    } catch (error) {
+      console.error('Erro na chamada de resolucao de conflito:', error);
+    } finally {
+      // Remove o primeiro conflito da fila e continua para os proximos (se houver)
+      setConflictQueue((prev) => prev.slice(1));
     }
   }
 
@@ -108,6 +162,13 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         {icon[status]}
         {label[status]}
       </button>
+
+      <ConflictModal
+        isOpen={conflictQueue.length > 0}
+        onClose={() => setConflictQueue((prev) => prev.slice(1))}
+        conflictData={conflictQueue[0] || null}
+        onResolve={handleConflictResolve}
+      />
     </>
   );
 }

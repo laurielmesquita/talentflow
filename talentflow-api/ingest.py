@@ -233,16 +233,15 @@ def process_ocr_via_gemini(path: Path, gemini_api_key: str) -> CandidateExtracti
 # Funcao principal de processamento
 # ---------------------------------------------------------------------------
 
-def process_single_pdf(path: Path, db: Session) -> None:
-    """
-    Processa um unico PDF: extrai texto e foto, faz upload para Cloudinary,
-    chama o Groq ou Gemini (OCR), valida com Pydantic e persiste no PostgreSQL.
-    Chamado pelo endpoint de upload via BackgroundTasks ou via CLI.
-    """
-    from app.models.domain import Candidate, Skill, Experience, Category
+# ---------------------------------------------------------------------------
+# Funcao principal de processamento e extracao
+# ---------------------------------------------------------------------------
 
-    print(f"[ingest] Iniciando processamento: {path.name}")
-
+def extract_candidate_from_pdf(path: Path) -> dict:
+    """
+    Processa o PDF: extrai texto, foto, envia para o Cloudinary, chama a IA (Groq/Gemini)
+    e calcula o CV Quality Score. Retorna os dados extraídos sem persistir no banco.
+    """
     groq_api_key = os.getenv("GROQ_API_KEY", "")
     gemini_api_key = os.getenv("GEMINI_API_KEY", "")
     try:
@@ -256,119 +255,165 @@ def process_single_pdf(path: Path, db: Session) -> None:
 
     _configure_cloudinary()
 
+    # 1. Extrai texto e decide se precisa de OCR
+    text = extract_text(path)
+    is_scanned = not text or len(text.strip()) < 50
+
+    if is_scanned:
+        if not gemini_api_key:
+            raise ValueError(f"PDF '{path.name}' parece escaneado, mas GEMINI_API_KEY não está configurada. Pulando.")
+    else:
+        if not groq_api_key:
+            raise ValueError(f"GROQ_API_KEY nao definida. Abortando {path.name}.")
+
+    # 2. Extrai e faz upload da foto
+    print(f"[ingest] Extraindo foto de {path.name}...")
+    photo_url = extract_and_upload_photo(path)
+    if photo_url:
+        print(f"[ingest] Foto enviada para Cloudinary: {photo_url}")
+
+    # 3. Faz upload do PDF original
+    pdf_url = upload_pdf(path)
+    if pdf_url:
+        print(f"[ingest] PDF enviado para Cloudinary: {pdf_url}")
+
+    # 4. Extrai os dados do candidato (OCR via Gemini ou Texto via Groq)
+    if is_scanned:
+        data = process_ocr_via_gemini(path, gemini_api_key)
+    else:
+        print(f"[ingest] Enviando texto ao Groq (Llama 3.3 70B)...")
+        client_groq = Groq(api_key=groq_api_key)
+        response = client_groq.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[
+                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "user", "content": f"Texto do curriculo:\n\n{text[:8000]}"},
+            ],
+            response_format={"type": "json_object"},
+            temperature=0.1,
+        )
+        raw_json = response.choices[0].message.content
+        data = CandidateExtraction.model_validate_json(raw_json)
+
+    # 4.5. Calcula o CV Quality Score e emite alertas estruturados
+    from app.services.quality_score import calculate_quality_score
+    quality_score, quality_alerts = calculate_quality_score(data)
+
+    if quality_alerts:
+        print(f"[ingest] ⚠️  {len(quality_alerts)} alerta(s) de qualidade para '{data.full_name}':")
+        for alert in quality_alerts:
+            print(f"[ingest]    {alert}")
+    else:
+        print(f"[ingest] ✅ Currículo de '{data.full_name}' sem alertas de qualidade (score: {quality_score}/100).")
+
+    return {
+        "data": data,
+        "photo_url": photo_url,
+        "pdf_url": pdf_url,
+        "quality_score": quality_score,
+        "quality_alerts": quality_alerts
+    }
+
+
+def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, version: int = 1):
+    """
+    Persiste as informações extraídas no banco de dados, configurando a versão e o parent_id se necessário.
+    """
+    from app.models.domain import Candidate, Category, Skill, Experience
+
+    data = extraction["data"]
+    photo_url = extraction["photo_url"]
+    pdf_url = extraction["pdf_url"]
+    quality_score = extraction["quality_score"]
+    quality_alerts = extraction["quality_alerts"]
+
+    candidate = Candidate(
+        full_name=data.full_name,
+        email=data.email,
+        phone=data.phone,
+        address=data.address,
+        photo_url=photo_url,
+        original_pdf_url=pdf_url,
+        quality_score=quality_score,
+        quality_alerts=json.dumps(quality_alerts, ensure_ascii=False) if quality_alerts else None,
+        version=version,
+        parent_id=parent_id,
+        is_active=True
+    )
+
+    if data.birth_date:
+        try:
+            from datetime import datetime
+            candidate.birth_date = datetime.strptime(data.birth_date, "%Y-%m-%d").date()
+        except Exception:
+            pass
+
+    db.add(candidate)
+
+    # Upsert de categorias
+    for cat_name in data.categories:
+        normalized = cat_name.strip().title()
+        if not normalized:
+            continue
+        cat = db.query(Category).filter(Category.name == normalized).first()
+        if not cat:
+            cat = Category(name=normalized)
+            db.add(cat)
+        if cat not in candidate.categories:
+            candidate.categories.append(cat)
+
+    # Upsert de skills
+    for skill_name in data.skills:
+        normalized = skill_name.strip().title()
+        if not normalized:
+            continue
+        sk = db.query(Skill).filter(Skill.name == normalized).first()
+        if not sk:
+            sk = Skill(name=normalized)
+            db.add(sk)
+        if sk not in candidate.skills:
+            candidate.skills.append(sk)
+
+    # Persiste experiencias
+    for exp in data.experiences:
+        db.add(Experience(
+            candidate=candidate,
+            company_name=exp.company_name.strip() if exp.company_name else "Não informado",
+            job_title=exp.job_title.strip() if exp.job_title else "Não informado",
+            description=exp.description,
+            is_current=exp.is_current,
+        ))
+
+    db.commit()
+    db.refresh(candidate)
+    return candidate
+
+
+def process_single_pdf(path: Path, db: Session) -> Optional[Candidate]:
+    """
+    Processa um unico PDF: extrai texto/foto, faz upload para Cloudinary,
+    e persiste no PostgreSQL (se nao for duplicado).
+    """
+    from app.models.domain import Candidate
+    print(f"[ingest] Iniciando processamento: {path.name}")
     try:
-        # 1. Extrai texto e decide se precisa de OCR
-        text = extract_text(path)
-        is_scanned = not text or len(text.strip()) < 50
+        extraction = extract_candidate_from_pdf(path)
+        data = extraction["data"]
 
-        if is_scanned:
-            if not gemini_api_key:
-                print(f"[ingest] AVISO: PDF '{path.name}' parece escaneado, mas GEMINI_API_KEY não está configurada. Pulando.")
-                _cleanup(path)
-                return
-        else:
-            if not groq_api_key:
-                print(f"[ingest] ERRO: GROQ_API_KEY nao definida. Abortando {path.name}.")
-                _cleanup(path)
-                return
+        # Verifica duplicata por nome
+        existing = db.query(Candidate).filter(
+            Candidate.full_name == data.full_name,
+            Candidate.is_active == True,
+            Candidate.deleted_at == None
+        ).first()
 
-        # 2. Extrai e faz upload da foto
-        print(f"[ingest] Extraindo foto de {path.name}...")
-        photo_url = extract_and_upload_photo(path)
-        if photo_url:
-            print(f"[ingest] Foto enviada para Cloudinary: {photo_url}")
-
-        # 3. Faz upload do PDF original
-        pdf_url = upload_pdf(path)
-        if pdf_url:
-            print(f"[ingest] PDF enviado para Cloudinary: {pdf_url}")
-
-        # 4. Extrai os dados do candidato (OCR via Gemini ou Texto via Groq)
-        if is_scanned:
-            data = process_ocr_via_gemini(path, gemini_api_key)
-        else:
-            print(f"[ingest] Enviando texto ao Groq (Llama 3.3 70B)...")
-            client_groq = Groq(api_key=groq_api_key)
-            response = client_groq.chat.completions.create(
-                model="llama-3.3-70b-versatile",
-                messages=[
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": f"Texto do curriculo:\n\n{text[:8000]}"},
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.1,
-            )
-            raw_json = response.choices[0].message.content
-            data = CandidateExtraction.model_validate_json(raw_json)
-
-        # 4.5. Calcula o CV Quality Score e emite alertas estruturados
-        from app.services.quality_score import calculate_quality_score, score_tier
-        quality_score, quality_alerts = calculate_quality_score(data)
-
-        if quality_alerts:
-            print(f"[ingest] ⚠️  {len(quality_alerts)} alerta(s) de qualidade para '{data.full_name}':")
-            for alert in quality_alerts:
-                print(f"[ingest]    {alert}")
-        else:
-            print(f"[ingest] ✅ Currículo de '{data.full_name}' sem alertas de qualidade (score: {quality_score}/100).")
-
-        # 5. Verifica duplicata por nome
-        existing = db.query(Candidate).filter(Candidate.full_name == data.full_name).first()
         if existing:
             print(f"[ingest] SKIP: '{data.full_name}' ja existe no banco.")
-            _cleanup(path)
-            return
+            return None
 
-        # 6. Persiste candidato
-        candidate = Candidate(
-            full_name=data.full_name,
-            email=data.email,
-            phone=data.phone,
-            address=data.address,
-            photo_url=photo_url,
-            original_pdf_url=pdf_url,
-            quality_score=quality_score,
-            quality_alerts=json.dumps(quality_alerts, ensure_ascii=False) if quality_alerts else None,
-        )
-        db.add(candidate)
-
-        # 7. Upsert de categorias
-        for cat_name in data.categories:
-            normalized = cat_name.strip().title()
-            if not normalized:
-                continue
-            cat = db.query(Category).filter(Category.name == normalized).first()
-            if not cat:
-                cat = Category(name=normalized)
-                db.add(cat)
-            if cat not in candidate.categories:
-                candidate.categories.append(cat)
-
-        # 8. Upsert de skills
-        for skill_name in data.skills:
-            normalized = skill_name.strip().title()
-            if not normalized:
-                continue
-            sk = db.query(Skill).filter(Skill.name == normalized).first()
-            if not sk:
-                sk = Skill(name=normalized)
-                db.add(sk)
-            if sk not in candidate.skills:
-                candidate.skills.append(sk)
-
-        # 9. Persiste experiencias
-        for exp in data.experiences:
-            db.add(Experience(
-                candidate=candidate,
-                company_name=exp.company_name.strip() if exp.company_name else "Não informado",
-                job_title=exp.job_title.strip() if exp.job_title else "Não informado",
-                description=exp.description,
-                is_current=exp.is_current,
-            ))
-
-        db.commit()
-        db.refresh(candidate)
-        print(f"[ingest] ✅ '{data.full_name}' salvo — {len(data.skills)} skill(s), {len(data.experiences)} experiência(s), quality_score={quality_score}/100.")
+        candidate = save_candidate_to_db(db, extraction)
+        print(f"[ingest] ✅ '{data.full_name}' salvo — {len(data.skills)} skill(s), {len(data.experiences)} experiência(s), quality_score={extraction['quality_score']}/100.")
+        return candidate
 
     except ValidationError as e:
         print(f"[ingest] ERRO de validacao Pydantic em {path.name}: {e}")

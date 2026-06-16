@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Date, Boolean, Text, ForeignKey, Float, DateTime, Table
+from sqlalchemy import Column, String, Date, Boolean, Text, ForeignKey, Float, DateTime, Table, Integer
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
@@ -43,6 +43,10 @@ class Candidate(Base):
     original_pdf_url = Column(String, nullable=True)
     quality_score = Column(Float, nullable=True)       # 0–100: nota de legibilidade do currículo
     quality_alerts = Column(Text, nullable=True)       # JSON: lista de alertas de campos ausentes
+    version = Column(Integer, default=1, nullable=False)   # número da versão
+    is_active = Column(Boolean, default=True, nullable=False) # versão ativa
+    parent_id = Column(UUID(as_uuid=True), ForeignKey("candidates.id"), nullable=True) # aponta para versão anterior
+    deleted_at = Column(DateTime(timezone=True), nullable=True) # soft delete (LGPD audit trail)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     categories = relationship("Category", secondary=candidate_category, back_populates="candidates")

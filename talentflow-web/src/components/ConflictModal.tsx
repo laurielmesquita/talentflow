@@ -132,12 +132,12 @@ export default function ConflictModal({
 
           <div className="space-y-4 text-sm text-muted-foreground">
             <p>
-              O currículo em PDF enviado é **exatamente idêntico** ao documento de{' '}
+              O currículo em PDF enviado é <strong>exatamente idêntico</strong> ao documento de{' '}
               <strong className="text-foreground font-semibold">"{oldCand.full_name}"</strong> cadastrado em{' '}
               <strong className="text-muted-foreground font-semibold">{formattedDate}</strong>.
             </p>
             <p className="bg-primary/5 border border-primary/10 rounded-xl p-4 text-xs text-primary leading-relaxed">
-              ℹ️ **Análise de Integridade (Hash SHA-256):** O TalentFlow verificou a assinatura digital do arquivo e confirmou que os bytes são 100% idênticos. O upload foi bloqueado para evitar duplicidade redundante.
+              ℹ️ <strong>Análise de Integridade (Hash SHA-256):</strong> O TalentFlow verificou a assinatura digital do arquivo e confirmou que os bytes são 100% idênticos. O upload foi bloqueado para evitar duplicidade redundante.
             </p>
           </div>
 

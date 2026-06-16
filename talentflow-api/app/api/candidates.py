@@ -49,6 +49,7 @@ class ReplaceRequest(BaseModel):
     extracted_data: dict
     photo_url: Optional[str] = None
     original_pdf_url: Optional[str] = None
+    pdf_hash: Optional[str] = None
     quality_score: Optional[float] = None
     quality_alerts: Optional[list] = None
 
@@ -165,8 +166,29 @@ async def upload_resume(
         # 1. Extrai dados do PDF de forma síncrona
         extraction = extract_candidate_from_pdf(tmp_path)
         data = extraction["data"]
+        pdf_hash = extraction.get("pdf_hash")
 
-        # 2. Verifica duplicata no banco (apenas perfis ativos)
+        # 1.5. Verifica integridade do arquivo por hash SHA-256 (duplicata exata)
+        if pdf_hash:
+            identical_candidate = db.query(Candidate).filter(
+                Candidate.pdf_hash == pdf_hash,
+                Candidate.is_active == True,
+                Candidate.deleted_at == None
+            ).first()
+            if identical_candidate:
+                raise HTTPException(
+                    status_code=409,
+                    detail={
+                        "status": "identical",
+                        "existing_candidate": {
+                            "id": str(identical_candidate.id),
+                            "full_name": identical_candidate.full_name,
+                            "added_at": identical_candidate.created_at.isoformat() if identical_candidate.created_at else None
+                        }
+                    }
+                )
+
+        # 2. Verifica duplicata no banco por nome (apenas perfis ativos)
         existing = db.query(Candidate).filter(
             Candidate.full_name == data.full_name,
             Candidate.is_active == True,
@@ -281,6 +303,7 @@ def replace_candidate(
         "data": data,
         "photo_url": req.photo_url,
         "pdf_url": req.original_pdf_url,
+        "pdf_hash": req.pdf_hash,
         "quality_score": req.quality_score,
         "quality_alerts": req.quality_alerts
     }

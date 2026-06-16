@@ -97,6 +97,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
           extracted_data: currentConflict.extracted_data,
           photo_url: currentConflict.photo_url,
           original_pdf_url: currentConflict.original_pdf_url,
+          pdf_hash: currentConflict.pdf_hash,
           quality_score: currentConflict.quality_score,
           quality_alerts: currentConflict.quality_alerts,
         }),

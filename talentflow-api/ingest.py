@@ -13,6 +13,7 @@ Fluxo:
 import json
 import os
 import tempfile
+import hashlib
 from pathlib import Path
 from typing import Optional
 
@@ -25,6 +26,19 @@ from google import genai
 from google.genai import types
 from pydantic import BaseModel, ValidationError
 from sqlalchemy.orm import Session
+
+
+# ---------------------------------------------------------------------------
+# Utilitário de Integridade de Arquivos
+# ---------------------------------------------------------------------------
+
+def calculate_file_hash(path: Path) -> str:
+    """Calcula o hash SHA-256 do arquivo original para checar integridade e duplicatas exatas."""
+    hasher = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hasher.update(chunk)
+    return hasher.hexdigest()
 
 
 # ---------------------------------------------------------------------------
@@ -230,10 +244,6 @@ def process_ocr_via_gemini(path: Path, gemini_api_key: str) -> CandidateExtracti
 
 
 # ---------------------------------------------------------------------------
-# Funcao principal de processamento
-# ---------------------------------------------------------------------------
-
-# ---------------------------------------------------------------------------
 # Funcao principal de processamento e extracao
 # ---------------------------------------------------------------------------
 
@@ -254,6 +264,9 @@ def extract_candidate_from_pdf(path: Path) -> dict:
         pass
 
     _configure_cloudinary()
+
+    # 0. Calcula o hash SHA-256 de integridade do arquivo
+    pdf_hash = calculate_file_hash(path)
 
     # 1. Extrai texto e decide se precisa de OCR
     text = extract_text(path)
@@ -310,6 +323,7 @@ def extract_candidate_from_pdf(path: Path) -> dict:
         "data": data,
         "photo_url": photo_url,
         "pdf_url": pdf_url,
+        "pdf_hash": pdf_hash,
         "quality_score": quality_score,
         "quality_alerts": quality_alerts
     }
@@ -324,6 +338,7 @@ def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, versio
     data = extraction["data"]
     photo_url = extraction["photo_url"]
     pdf_url = extraction["pdf_url"]
+    pdf_hash = extraction.get("pdf_hash")
     quality_score = extraction["quality_score"]
     quality_alerts = extraction["quality_alerts"]
 
@@ -334,6 +349,7 @@ def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, versio
         address=data.address,
         photo_url=photo_url,
         original_pdf_url=pdf_url,
+        pdf_hash=pdf_hash,
         quality_score=quality_score,
         quality_alerts=json.dumps(quality_alerts, ensure_ascii=False) if quality_alerts else None,
         version=version,

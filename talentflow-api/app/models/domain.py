@@ -36,11 +36,12 @@ class Candidate(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     full_name = Column(String, nullable=False, index=True)
     birth_date = Column(Date, nullable=True)
-    email = Column(String, unique=True, index=True, nullable=True)
+    email = Column(String, index=True, nullable=True)
     phone = Column(String, nullable=True)
     address = Column(String, nullable=True)
     photo_url = Column(String, nullable=True)
     original_pdf_url = Column(String, nullable=True)
+    pdf_hash = Column(String, index=True, nullable=True) # hash sha255 do arquivo original
     quality_score = Column(Float, nullable=True)       # 0–100: nota de legibilidade do currículo
     quality_alerts = Column(Text, nullable=True)       # JSON: lista de alertas de campos ausentes
     version = Column(Integer, default=1, nullable=False)   # número da versão

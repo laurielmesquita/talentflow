@@ -69,18 +69,18 @@ export default function SearchAndFilters({
       {/* Search Input and Toggle Button */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-500" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <input
             type="text"
             placeholder="Buscar por nome, cargo ou skill..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-800 rounded-lg pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all shadow-inner"
+            className="w-full bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all shadow-sm"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-200 transition-colors"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Limpar busca"
             >
               <X className="w-4 h-4" />
@@ -91,23 +91,23 @@ export default function SearchAndFilters({
         <div className="flex gap-2">
           <button
             onClick={() => setShowAdvanced(!showAdvanced)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all duration-200 ${
               showAdvanced || activeCategory
-                ? 'bg-indigo-500/10 border-indigo-500/40 text-indigo-300'
-                : 'bg-slate-900 border-slate-800 hover:bg-slate-800 text-slate-300'
+                ? 'bg-primary/10 border-primary/40 text-primary'
+                : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 text-foreground'
             }`}
           >
             <Filter className="w-4 h-4" />
             Filtros Avançados
             {activeCategory && (
-              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             )}
           </button>
 
           {hasActiveFilters && (
             <button
               onClick={handleClearFilters}
-              className="flex items-center gap-1.5 px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-sm font-medium text-rose-400 hover:text-rose-300 transition-colors"
+              className="flex items-center gap-1.5 px-4 py-2.5 bg-white dark:bg-white/5 hover:bg-rose-50 dark:hover:bg-rose-950/20 border border-slate-200 dark:border-white/10 rounded-lg text-sm font-medium text-rose-500 hover:text-rose-600 dark:hover:text-rose-400 transition-colors"
             >
               Limpar Tudo
             </button>
@@ -117,9 +117,9 @@ export default function SearchAndFilters({
 
       {/* Collapsible Advanced Filters Panel */}
       {showAdvanced && (
-        <div className="bg-slate-900/40 border border-slate-800/80 rounded-xl p-5 backdrop-blur-sm transition-all duration-300 animate-in fade-in slide-in-from-top-2">
+        <div className="bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl p-5 backdrop-blur-sm transition-all duration-300 animate-in fade-in slide-in-from-top-2">
           <div className="flex flex-col gap-3">
-            <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
               <Tag className="w-3.5 h-3.5" />
               Filtrar por Área / Categoria
             </h4>
@@ -131,10 +131,10 @@ export default function SearchAndFilters({
                   <button
                     key={cat.id}
                     onClick={() => handleCategorySelect(cat.name)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all ${
+                    className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-all duration-200 ${
                       isActive
-                        ? 'bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-900/30'
-                        : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
+                        ? 'bg-primary border-primary/50 text-primary-foreground shadow-md'
+                        : 'bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-muted-foreground hover:border-slate-300 dark:hover:border-white/20 hover:text-foreground'
                     }`}
                   >
                     {cat.name}
@@ -142,7 +142,7 @@ export default function SearchAndFilters({
                 );
               })}
               {categories.length === 0 && (
-                <p className="text-xs text-slate-500 italic">Nenhuma categoria ativa cadastrada no banco.</p>
+                <p className="text-xs text-muted-foreground italic">Nenhuma categoria ativa cadastrada no banco.</p>
               )}
             </div>
           </div>

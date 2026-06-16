@@ -243,6 +243,7 @@ async def upload_resume(
                     "extracted_data": extracted_serialized,
                     "photo_url": extraction["photo_url"],
                     "original_pdf_url": extraction["pdf_url"],
+                    "pdf_hash": pdf_hash,
                     "quality_score": extraction["quality_score"],
                     "quality_alerts": extraction["quality_alerts"]
                 }

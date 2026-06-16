@@ -278,12 +278,12 @@ export default function ConflictModal({
         </div>
       )}
 
-      {/* ── FASE 2: FOCUS MODE DIFF VIEW (95VH DRAWER) ────────────────────────── */}
+      {/* ── FASE 2: FOCUS MODE DIFF VIEW (CENTERED DIALOG) ───────────────────── */}
       {phase === 'diff' && (
-        <div className="fixed inset-0 z-[130] flex flex-col justify-end">
+        <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 md:p-6">
           <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onClick={() => setPhase('decision')} />
 
-          <div className="relative w-full h-[95vh] bg-slate-900 border-t border-slate-800 rounded-t-3xl shadow-2xl flex flex-col text-slate-100 overflow-hidden animate-in slide-in-from-bottom duration-300">
+          <div className="relative w-full max-w-7xl h-[90vh] bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl flex flex-col text-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             
             {/* Header Sticky */}
             <div className="sticky top-0 z-10 bg-slate-950/90 backdrop-blur border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">
@@ -488,18 +488,17 @@ export default function ConflictModal({
                           {/* Coluna Nova */}
                           <div>
                             {item.newExp ? (
-                              <div className={`p-5 rounded-2xl border space-y-2.5 relative ${
+                              <div className={`p-5 rounded-2xl border space-y-2.5 ${
                                 item.status === 'added' ? 'border-emerald-500/20 bg-emerald-500/5' :
                                 item.status === 'changed' ? 'border-amber-500/20 bg-amber-500/5' :
                                 'border-slate-800 bg-slate-850/20'
                               }`}>
-                                <span className={`absolute top-4 right-4 text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase ${diffColors[item.status]}`}>
-                                  {item.status === 'equal' ? 'Igual' : 
-                                   item.status === 'added' ? 'Adicionado' : 'Alterado'}
-                                </span>
-
-                                <div className="flex items-start justify-between pr-20 gap-3">
+                                <div className="flex items-start justify-between gap-3">
                                   <div className="font-bold text-slate-100 text-sm leading-snug">{item.newExp.job_title}</div>
+                                  <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded border uppercase shrink-0 ${diffColors[item.status]}`}>
+                                    {item.status === 'equal' ? 'Igual' : 
+                                     item.status === 'added' ? 'Adicionado' : 'Alterado'}
+                                  </span>
                                 </div>
                                 <div className="text-xs text-slate-350 flex items-center gap-1.5"><Briefcase className="w-3.5 h-3.5 text-slate-400" /> {item.newExp.company_name}</div>
                                 {item.newExp.description && (

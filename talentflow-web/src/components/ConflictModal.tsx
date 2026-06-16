@@ -162,7 +162,7 @@ export default function ConflictModal({
   // Helper de comparação simples de strings/valores
   function getFieldDiffStatus(field: 'full_name' | 'email' | 'phone' | 'address') {
     const oldVal = (oldCand[field] || '').trim();
-    const newVal = (newCand[field] || '').trim();
+    const newVal = (newCand?.[field] || '').trim();
 
     if (oldVal === newVal) return { label: 'Igual', code: 'equal', color: 'text-slate-500 bg-slate-500/10 border-slate-800' };
     if (!oldVal && newVal) return { label: 'Adicionado', code: 'added', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20' };
@@ -453,7 +453,7 @@ export default function ConflictModal({
                     {experiencesComparison.map((item, idx) => {
                       if (item.status === 'equal' && !showIdentical) return null;
 
-                      const diffColors = {
+                      const diffColors: Record<string, string> = {
                         equal: 'border-slate-800/80 bg-slate-850/5 text-slate-500',
                         changed: 'border-amber-550/25 bg-amber-550/5 text-amber-400',
                         added: 'border-emerald-550/25 bg-emerald-550/5 text-emerald-400',
@@ -531,6 +531,7 @@ export default function ConflictModal({
           </div>
         </div>
       )}
-    </>
+    </>,
+    document.body
   );
 }

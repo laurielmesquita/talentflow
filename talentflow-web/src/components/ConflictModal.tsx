@@ -304,7 +304,7 @@ export default function ConflictModal({
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               
               {/* Cabeçalho das colunas */}
-              <div className="grid grid-cols-2 gap-8 sticky top-0 bg-slate-900 py-2 border-b border-slate-800/40 z-[5] text-sm font-bold tracking-wider text-slate-400 uppercase">
+              <div className="sticky top-0 bg-slate-900 py-2 border-b border-slate-800/40 z-[5] text-sm font-bold tracking-wider text-slate-400 uppercase" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                 <div>Perfil Atual <span className="ml-1 text-xs px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-semibold border border-slate-700">v{oldCand.version}</span></div>
                 <div>Novo Currículo <span className="ml-1 text-xs px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 font-semibold border border-indigo-500/25">v{oldCand.version + 1}</span></div>
               </div>
@@ -320,7 +320,7 @@ export default function ConflictModal({
                 if (diff.code === 'equal' && !showIdentical) return null;
 
                 return (
-                  <div key={key} className="grid grid-cols-2 gap-8 py-4 border-b border-slate-800/40 hover:bg-slate-850/5 rounded-lg transition-colors px-2">
+                  <div key={key} className="py-4 border-b border-slate-800/40 hover:bg-slate-850/5 rounded-lg transition-colors px-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                     <div className="space-y-1">
                       <div className="text-xs text-slate-500 font-bold uppercase tracking-wider">{label}</div>
                       <div className="text-slate-350 text-sm font-medium">{oldCand[key] || <span className="text-slate-700 italic">Não informado</span>}</div>
@@ -342,7 +342,7 @@ export default function ConflictModal({
 
               {/* Skills Section */}
               {(!hasSkillsDiff && !showIdentical) ? null : (
-                <div className="grid grid-cols-2 gap-8 py-4 border-b border-slate-800/40 hover:bg-slate-850/5 rounded-lg transition-colors px-2">
+                <div className="py-4 border-b border-slate-800/40 hover:bg-slate-850/5 rounded-lg transition-colors px-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                   <div className="space-y-2">
                     <div className="text-xs text-slate-500 font-bold uppercase tracking-wider">Habilidades (Skills)</div>
                     <div className="flex flex-wrap gap-1.5">
@@ -398,7 +398,7 @@ export default function ConflictModal({
                       };
 
                       return (
-                        <div key={idx} className="grid grid-cols-2 gap-8 border-b border-slate-800/30 pb-4">
+                        <div key={idx} className="border-b border-slate-800/30 pb-4" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                           
                           {/* Coluna Antiga */}
                           <div>

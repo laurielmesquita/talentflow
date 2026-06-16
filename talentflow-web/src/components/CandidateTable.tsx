@@ -175,6 +175,8 @@ export default function CandidateTable({
                   key={cand.id} 
                   className={`hover:bg-slate-800/30 transition-all duration-300 group ${
                     newCandidateIds.has(cand.id) ? 'animate-new-glow border-l-2 border-indigo-500' : ''
+                  } ${
+                    cand.is_flagged ? 'opacity-60 border-l-2 border-red-500 bg-red-950/5' : ''
                   }`}
                 >
                   <td className="px-6 py-4">
@@ -191,7 +193,14 @@ export default function CandidateTable({
                         </div>
                       )}
                       <div>
-                        <div className="font-semibold text-slate-200">{cand.full_name}</div>
+                        <div className="font-semibold text-slate-200 flex items-center gap-1.5">
+                          {cand.full_name}
+                          {cand.is_flagged && (
+                            <span className="inline-flex items-center text-red-400" title={`Sinalizado: ${cand.flagged_reason}`}>
+                              <ShieldAlert className="w-3.5 h-3.5 fill-red-500/10 text-red-500" />
+                            </span>
+                          )}
+                        </div>
                         <div className="text-xs text-slate-500">{cand.categories[0] || 'Geral'}</div>
                       </div>
                     </div>

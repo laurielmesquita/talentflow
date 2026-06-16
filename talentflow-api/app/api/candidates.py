@@ -54,6 +54,10 @@ class ReplaceRequest(BaseModel):
     quality_alerts: Optional[list] = None
 
 
+class FlagRequest(BaseModel):
+    reason: str
+
+
 @router.get("/candidates")
 def list_candidates(
     category: Optional[str] = None,
@@ -111,7 +115,10 @@ def list_candidates(
             "quality_tier": score_tier(c.quality_score) if c.quality_score is not None else None,
             "quality_alerts": json.loads(c.quality_alerts) if c.quality_alerts else [],
             "version": c.version,
-            "is_active": c.is_active
+            "is_active": c.is_active,
+            "is_flagged": c.is_flagged,
+            "flagged_reason": c.flagged_reason,
+            "flagged_at": c.flagged_at.isoformat() if c.flagged_at else None
         })
 
     return {"candidates": results, "total": len(results)}
@@ -143,7 +150,10 @@ def get_candidate(candidate_id: str, db: Session = Depends(get_db)):
         "quality_alerts": json.loads(c.quality_alerts) if c.quality_alerts else [],
         "version": c.version,
         "is_active": c.is_active,
-        "parent_id": str(c.parent_id) if c.parent_id else None
+        "parent_id": str(c.parent_id) if c.parent_id else None,
+        "is_flagged": c.is_flagged,
+        "flagged_reason": c.flagged_reason,
+        "flagged_at": c.flagged_at.isoformat() if c.flagged_at else None
     }
 
 
@@ -300,9 +310,11 @@ def replace_candidate(
         experiences=exps
     )
 
+    photo_url = req.photo_url or existing.photo_url
+
     extraction = {
         "data": data,
-        "photo_url": req.photo_url,
+        "photo_url": photo_url,
         "pdf_url": req.original_pdf_url,
         "pdf_hash": req.pdf_hash,
         "quality_score": req.quality_score,
@@ -410,3 +422,58 @@ def delete_candidate(candidate_id: str, db: Session = Depends(get_db)):
     db.delete(c)
     db.commit()
     return
+
+
+@router.post("/candidates/{candidate_id}/flag")
+def flag_candidate(
+    candidate_id: str,
+    req: FlagRequest,
+    db: Session = Depends(get_db)
+):
+    c = db.query(Candidate).filter(
+        Candidate.id == candidate_id,
+        Candidate.deleted_at == None
+    ).first()
+    if not c:
+        raise HTTPException(status_code=404, detail="Candidato não encontrado")
+
+    c.is_flagged = True
+    c.flagged_reason = req.reason.strip()
+    c.flagged_at = func.now()
+
+    db.commit()
+    db.refresh(c)
+
+    return {
+        "status": "success",
+        "id": str(c.id),
+        "is_flagged": c.is_flagged,
+        "flagged_reason": c.flagged_reason,
+        "flagged_at": c.flagged_at.isoformat() if c.flagged_at else None
+    }
+
+
+@router.post("/candidates/{candidate_id}/unflag")
+def unflag_candidate(
+    candidate_id: str,
+    db: Session = Depends(get_db)
+):
+    c = db.query(Candidate).filter(
+        Candidate.id == candidate_id,
+        Candidate.deleted_at == None
+    ).first()
+    if not c:
+        raise HTTPException(status_code=404, detail="Candidato não encontrado")
+
+    c.is_flagged = False
+    c.flagged_reason = None
+    c.flagged_at = None
+
+    db.commit()
+    db.refresh(c)
+
+    return {
+        "status": "success",
+        "id": str(c.id),
+        "is_flagged": c.is_flagged
+    }

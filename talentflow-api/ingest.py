@@ -405,7 +405,7 @@ def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, versio
     return candidate
 
 
-def process_single_pdf(path: Path, db: Session) -> Optional[Candidate]:
+def process_single_pdf(path: Path, db: Session) -> Optional["Candidate"]:
     """
     Processa um unico PDF: extrai texto/foto, faz upload para Cloudinary,
     e persiste no PostgreSQL (se nao for duplicado).

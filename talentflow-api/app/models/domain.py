@@ -48,6 +48,9 @@ class Candidate(Base):
     is_active = Column(Boolean, default=True, nullable=False) # versão ativa
     parent_id = Column(UUID(as_uuid=True), ForeignKey("candidates.id"), nullable=True) # aponta para versão anterior
     deleted_at = Column(DateTime(timezone=True), nullable=True) # soft delete (LGPD audit trail)
+    is_flagged = Column(Boolean, default=False, nullable=False) # se o candidato foi sinalizado (blacklist)
+    flagged_reason = Column(Text, nullable=True)                 # motivo da sinalização
+    flagged_at = Column(DateTime(timezone=True), nullable=True) # data/hora da sinalização
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
     categories = relationship("Category", secondary=candidate_category, back_populates="candidates")

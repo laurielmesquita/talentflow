@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { X, Mail, Phone, ShieldCheck, ShieldAlert, ShieldX, AlertTriangle } from "lucide-react";
 
 // ── CV Quality Section (interna ao modal) ──────────────────────────────
@@ -72,8 +73,12 @@ function QualitySection({
 
 
 export default function CandidateModal({ candidateId, onClose }: { candidateId: string, onClose: () => void }) {
+  const router = useRouter();
   const [candidate, setCandidate] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [flagging, setFlagging] = useState(false);
+  const [flagReason, setFlagReason] = useState("");
+  const [submittingFlag, setSubmittingFlag] = useState(false);
 
   useEffect(() => {
     async function fetchCandidate() {
@@ -91,6 +96,59 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
     }
     fetchCandidate();
   }, [candidateId]);
+
+  async function handleFlag() {
+    if (!flagReason.trim()) return;
+    setSubmittingFlag(true);
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_URL}/api/candidates/${candidateId}/flag`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ reason: flagReason }),
+      });
+      if (res.ok) {
+        const updatedCandidate = await res.json();
+        setCandidate((prev: any) => ({
+          ...prev,
+          is_flagged: updatedCandidate.is_flagged,
+          flagged_reason: updatedCandidate.flagged_reason,
+          flagged_at: updatedCandidate.flagged_at
+        }));
+        setFlagging(false);
+        setFlagReason("");
+        router.refresh();
+      }
+    } catch (e) {
+      console.error("Erro ao sinalizar candidato:", e);
+    } finally {
+      setSubmittingFlag(false);
+    }
+  }
+
+  async function handleUnflag() {
+    if (!window.confirm("Deseja realmente remover a sinalização deste candidato?")) return;
+    try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+      const res = await fetch(`${API_URL}/api/candidates/${candidateId}/unflag`, {
+        method: 'POST',
+      });
+      if (res.ok) {
+        const updatedCandidate = await res.json();
+        setCandidate((prev: any) => ({
+          ...prev,
+          is_flagged: updatedCandidate.is_flagged,
+          flagged_reason: null,
+          flagged_at: null
+        }));
+        router.refresh();
+      }
+    } catch (e) {
+      console.error("Erro ao remover sinalização do candidato:", e);
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-[100] flex justify-end">
@@ -110,6 +168,27 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
             </div>
           ) : candidate ? (
             <>
+              {candidate.is_flagged && (
+                <div className="mb-6 p-4 rounded-xl border border-red-500/25 bg-red-500/10 flex items-start gap-3">
+                  <ShieldAlert className="w-5 h-5 mt-0.5 shrink-0 text-red-400" />
+                  <div>
+                    <h4 className="text-sm font-bold text-red-200">Candidato Sinalizado (Blacklist)</h4>
+                    <p className="text-xs text-red-300/80 mt-1 leading-relaxed">{candidate.flagged_reason}</p>
+                    {candidate.flagged_at && (
+                      <p className="text-[10px] text-red-400/60 mt-1.5 font-medium uppercase">
+                        Sinalizado em: {new Date(candidate.flagged_at).toLocaleDateString('pt-BR', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        })}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
               <div className="flex items-center gap-4 mb-8">
                 {candidate.photo_url ? (
                   <img
@@ -141,6 +220,62 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
                 {candidate.phone && (
                   <div className="flex items-center gap-3 text-sm text-slate-300">
                     <Phone className="w-4 h-4 text-slate-500" /> {candidate.phone}
+                  </div>
+                )}
+              </div>
+
+              {/* Blacklist Control Section */}
+              <div className="mb-6 p-4 rounded-xl border border-slate-800 bg-slate-900/40">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+                    Sinalização / Blacklist
+                  </span>
+                  {!candidate.is_flagged ? (
+                    !flagging && (
+                      <button
+                        onClick={() => setFlagging(true)}
+                        className="text-xs font-semibold text-red-400 hover:text-red-300 transition-colors uppercase"
+                      >
+                        Sinalizar Perfil
+                      </button>
+                    )
+                  ) : (
+                    <button
+                      onClick={handleUnflag}
+                      className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 transition-colors uppercase"
+                    >
+                      Remover Blacklist
+                    </button>
+                  )}
+                </div>
+
+                {flagging && (
+                  <div className="mt-3 space-y-3">
+                    <textarea
+                      placeholder="Motivo da sinalização..."
+                      value={flagReason}
+                      onChange={(e) => setFlagReason(e.target.value)}
+                      className="w-full h-20 p-2.5 rounded-lg border border-slate-800 bg-slate-950 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:border-red-500/50 resize-none transition-all"
+                    />
+                    <div className="flex justify-end gap-2">
+                      <button
+                        onClick={() => {
+                          setFlagging(false);
+                          setFlagReason("");
+                        }}
+                        disabled={submittingFlag}
+                        className="px-2.5 py-1.5 rounded-md text-xs font-medium text-slate-400 bg-slate-800 hover:bg-slate-700 transition-all"
+                      >
+                        Cancelar
+                      </button>
+                      <button
+                        onClick={handleFlag}
+                        disabled={submittingFlag || !flagReason.trim()}
+                        className="px-2.5 py-1.5 rounded-md text-xs font-bold text-white bg-red-600 hover:bg-red-500 disabled:opacity-55 disabled:cursor-not-allowed transition-all"
+                      >
+                        {submittingFlag ? "Sinalizando..." : "Confirmar"}
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>

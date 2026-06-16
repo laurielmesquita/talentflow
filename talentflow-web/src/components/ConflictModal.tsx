@@ -283,7 +283,7 @@ export default function ConflictModal({
         <div className="fixed inset-0 z-[130] flex items-center justify-center p-4 md:p-6">
           <div className="absolute inset-0 bg-slate-950/90 backdrop-blur-md" onClick={() => setPhase('decision')} />
 
-          <div className="relative w-full max-w-7xl h-[90vh] bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl flex flex-col text-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-7xl h-[85vh] max-h-[85vh] min-h-0 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl flex flex-col text-slate-100 overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             
             {/* Header Sticky */}
             <div className="sticky top-0 z-10 bg-slate-950/90 backdrop-blur border-b border-slate-800/80 px-6 py-4 flex items-center justify-between">

@@ -45,7 +45,7 @@ export default function JobFormDrawer({
   const [responsibilities, setResponsibilities] = useState("");
   const [requirements, setRequirements] = useState("");
   const [benefits, setBenefits] = useState("");
-  const [appEmail, setAppEmail] = useState("");
+  const [appEmail, setAppEmail] = useState("adm.the@outlook.com");
   const [appSubject, setAppSubject] = useState("");
   const [deadline, setDeadline] = useState("");
   
@@ -82,7 +82,7 @@ export default function JobFormDrawer({
       setResponsibilities("");
       setRequirements("");
       setBenefits("");
-      setAppEmail("");
+      setAppEmail("adm.the@outlook.com");
       setAppSubject("");
       setDeadline("");
       setSkills([]);

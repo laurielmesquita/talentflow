@@ -1,45 +1,44 @@
-# TalentFlow 🚀
+# TalentFlow Web 🚀
 
-Banco de Talentos com Triagem Inteligente de Currículos. Uma plataforma SaaS Tier-1 desenhada para otimizar o fluxo de RH, unindo processamento de currículos com uma interface de altíssima performance estruturada nos pilares de **Design Engineering**.
+O painel visual e dashboard interativo do **TalentFlow**. Uma plataforma SaaS Tier-1 desenhada para otimizar o fluxo de RH, unindo processamento de currículos com uma interface de altíssima performance estruturada nos pilares de **Design Engineering**.
 
 ---
 
 ## 🧬 Arquitetura de UI e Experiência
-O sistema abandonou o modelo clássico de tabelas de dados em prol de um **Grid de Cards Interativos (Interactive Expandable List)**. A interface adota os princípios do **Bento UI** e **Glassmorphism**, garantindo uma navegação fluida, densidade de dados equilibrada e micro-interações que recompensam a ação do usuário.
+O sistema adota os princípios de **Bento UI** e **Glassmorphism**, fornecendo uma navegação fluida através de grids de cards interativos, modais integrados e transições que aumentam a produtividade visual do recrutador.
 
 ---
 
-## 🛠 Stack Tecnológico e Fundamentos (Estudos das Tecnologias)
+## 🛠 Stack Tecnológico e Fundamentos
 
-A arquitetura do TalentFlow foi intencionalmente desenhada para entregar escalabilidade e performance visual fluida a 60fps. Abaixo, o racional técnico das nossas escolhas de stack:
+A arquitetura do TalentFlow foi desenhada para entregar escalabilidade e performance visual fluida a 60fps.
 
-### 1. Core Frameworks
-- **Next.js v16 (App Router):** Roteamento em servidor e isolamento de layouts. Permite uma segregação estrita entre as rotas de servidor e os componentes altamente interativos (Client Components), otimizando o *First Contentful Paint*.
-- **React v19:** Base da engine de renderização, tirando proveito das melhorias de concorrência e estrutura refinada dos hooks sob a chancela do compilador moderno.
+### 1. Core Frameworks & Componentes
+- **Next.js v16 (App Router):** Roteamento no servidor e geração de páginas dinâmicas ou estáticas, segregando de forma limpa as rotas de servidor e os componentes interativos do cliente (*Client Components*).
+- **React v19:** Base de renderização e concorrência com o suporte moderno ao React Compiler.
+- **Base UI (@base-ui/react):** Componentes headless e acessíveis (WAI-ARIA) que servem de fundação estrutural para as abas, formulários e gavetas (drawers) da aplicação.
+- **Shadcn/ui:** Primitivos de componentes do sistema, facilitando a customização e flexibilidade do design system.
+- **Next-Themes:** Injetado via `ThemeProvider` central para alteração dinâmica de tema no cliente, evitando erros de *Hydration Mismatch*.
+- **Lucide React:** Iconografia em formato de vetor de baixo peso.
 
 ### 2. Styling Engine (Tailwind v4)
-- **CSS-First Approach:** Adotamos a nova infraestrutura do Tailwind CSS v4 (`@tailwindcss/postcss`), que injeta propriedades com extrema agilidade em *build-time*.
-- **OKLCH Color Space (Dual-Theme):** A paleta de cores inteira foi arquitetada no espaço perceptual **OKLCH** (onde L = Lightness, C = Chroma, H = Hue). Isso nos permite um controle matemático perfeito sobre saturação e luminância, blindando o layout contra o fenômeno de *Gamut Clipping* (onde cores estouram para o cinza/branco) e garantindo uma leitura impecável tanto no *Light* quanto no *Dark Mode*.
-- **Arquitetura Semântica:** Substituição de declarações literais (ex: `bg-slate-900`) por Tokens Semânticos (`bg-background`, `text-foreground`, `border-border`). Isso permite que toda a árvore DOM responda organicamente ao gatilho de troca de tema.
+- **CSS-First Approach:** Adotamos a nova infraestrutura do Tailwind CSS v4 (`@tailwindcss/postcss`), injetada com agilidade em tempo de build.
+- **OKLCH Color Space (Dual-Theme):** A paleta inteira opera sob o espaço perceptual **OKLCH** (onde L = Lightness, C = Chroma, H = Hue). Isso nos permite um controle perfeito sobre saturação e luminância, blindando o layout contra o fenômeno de *Gamut Clipping* (onde cores estouram para o cinza/branco) e garantindo uma leitura impecável tanto no *Light* quanto no *Dark Mode*.
+- **Arquitetura Semântica:** Substituição de declarações literais (ex: `bg-slate-900`) por Tokens Semânticos (`bg-background`, `text-foreground`, `border-border`) que respondem organicamente ao tema ativo.
 
-### 3. Físicas e Animações (Framer Motion)
-- A imersão espacial da aplicação é orquestrada pelo **Framer Motion**, fugindo das transições secas do CSS tradicional.
-- **Layout Morphing (`layout` prop):** Usado para criar o efeito *Accordion* no Card do candidato. A expansão de um container recalcula as posições dos componentes irmãos na tela através de uma equação de mola (*spring physics*, com `bounce: 0`), mantendo a integridade espacial.
-- **Staggered Children:** As *Skills Identificadas* não surgem secas. Elas entram em cascata anatômica assim que o card renderiza (*Staggered Entrance*), guiando o *Scanning* ocular do recrutador.
-- **Trigonometria SVG:** O medidor de Quality Score (`ScoreRing`) utiliza animação matemática baseada no preenchimento gradual da propriedade `strokeDashoffset` para revelar o match do candidato.
-
-### 4. Gestão de Domínio Front-end
-- **Next-Themes:** Injetado via um `ThemeProvider` central. Fundamental para alterar o DOM no lado do cliente sem desencadear erros de *Hydration Mismatch* na árvore do React, injetando uma classe limpa na tag `<html>`.
-- **Tipografia Otimizada:** Fontes carregadas pelo `next/font` sem bloqueio de renderização (*render-blocking*). **Inter** garante clareza absurda em UI, enquanto **JetBrains Mono** isola dados focais.
-- **Lucide React:** Iconografia em formato de vetor purista e de baixo peso computacional.
+### 3. Físicas e Animações (Framer Motion & 21st.dev)
+- **21st.dev:** Nossa referência e hub principal para injeção de ideias de design e micro-interações de componentes prontos baseados em Tailwind CSS e Framer Motion.
+- **Layout Morphing (`layout` prop):** Usado no card do candidato e nas abas de controle de vagas para animar a transição espacial e o dimensionamento dinâmico baseado em física de mola (*spring physics*).
+- **Staggered Entrance:** Efeito de cascata gradual ao renderizar badges de competências e listas de candidatos, suavizando a leitura e o foco visual.
+- **Trigonometria SVG:** Animação matemática baseada no preenchimento gradual da propriedade `strokeDashoffset` para revelar o match do candidato (`ScoreRing`).
 
 ---
 
 ## ⚙️ Features Core
-- **Dashboard Otimista e Híbrido:** Transição Light/Dark sem recarregamento, suportada por *Ambient Glows* (Glassmorphism no fundo da tela).
-- **Ingestão em Lote e Polling:** Motor de upload com indicadores em tempo real, integrando extração de skills sintéticas baseada na simulação inteligente de processamento.
-- **Superfícies Isoladas:** Modal de resolução de conflitos para dados de currículos duplicados (Focus Mode Diff), e modals limpos e agressivos de zona de perigo (Delete Confirmation).
-- **Motor de Busca e Filtros:** Pesquisa semântica *debounce-ready* no painel principal, com suporte a categorização rápida em pílulas dinâmicas.
+- **Dashboard Otimista:** Transição de tema sem flicker visual, suportada por *Ambient Glows* translúcidos.
+- **Triagem de Vagas (Smart Match):** Aba dedicada a calcular a aderência das habilidades dos candidatos com os requisitos da vaga.
+- **Descrição Detalhada das Vagas:** Visualização de detalhes com renderização inteligente de listas, informações de contato e contraste otimizado para o modo claro.
+- **Gestão de Categorias:** Rota para criar, renomear e excluir tags de categorização de talentos.
 
 ---
 
@@ -48,24 +47,23 @@ A arquitetura do TalentFlow foi intencionalmente desenhada para entregar escalab
 ### Pré-requisitos
 Certifique-se de ter instalado:
 - **Node.js** v18.x ou superior.
-- **npm**, **yarn** ou **pnpm**.
+- Um gerenciador de pacotes (**npm**, **yarn** ou **pnpm**).
 
 ### Script de Inicialização
 
-1. **Clone o repositório** e entre no diretório front-end do TalentFlow:
+1. Acesse o diretório front-end do TalentFlow:
 ```bash
-cd 05-Projetos/talentflow-web
+cd talentflow-web
 ```
 
-2. **Instale as dependências** e bibliotecas do ecossistema de Design:
+2. Instale as dependências:
 ```bash
 npm install
 ```
 
-3. **Gatilho de Renderização (Dev Server):**
+3. Inicie o servidor de desenvolvimento:
 ```bash
 npm run dev
 ```
 
-A aplicação fará o *cold boot* e instanciará a porta primária.
 Abra [http://localhost:3000](http://localhost:3000) no seu navegador para acessar a suíte de triagem.

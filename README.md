@@ -49,13 +49,25 @@ Este projeto foi estruturado sob o conceito de **Design Engineering**, unindo pr
 
 ## 💻 Projeto
 
-O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 focada em otimização do pipeline de Recrutamento e Seleção (R&S). A aplicação foca na intersecção perfeita entre inteligência artificial e design fluido:
-1. Elimina a triagem analógica ao ingerir currículos via simulação algorítmica e extração por IA.
-2. Encanta o usuário através de uma interface tátil, adotando padrões visuais de **Bento UI** e **Glassmorphism**.
+O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 focada em otimização do pipeline de Recrutamento e Seleção (R&S). A aplicação foca na intersecção perfeita entre inteligência artificial e design fluido.
 
+### Principais Funcionalidades (Resumo)
+* **Ingestão Inteligente:** Extração automática de dados de qualquer PDF (texto ou escaneado/imagem) e anexação da foto de perfil do candidato.
+* **Tratamento de Duplicados:** Detecção de duplicatas exatas por hash de arquivo ou colisões de nomes com atualização automática por versionamento.
+* **Painel Interativo:** Listagem dinâmica com expansão vertical de perfil (inline), histórico de versões de currículo e sinalização interna de candidatos (Blacklist).
+* **Score de Qualidade:** Avaliação automática (0 a 100) da integridade do currículo com alertas visuais de campos cruciais ausentes.
+* **Smart Match:** Cadastro de vagas e ranking automático de compatibilidade baseado em competências exigidas.
+* **Filtros e Categorias:** Segmentação rápida do banco de candidatos por áreas de atuação.
+
+> [!NOTE]
+> Para uma documentação detalhada das funcionalidades voltada ao negócio ou à arquitetura técnica, consulte:
+> * [Funcionalidades & Diferenciais (Visão Comercial)](file:///Users/laurielmesquita/Space%20Square/02-Customers/TalentFlow/01-Documentos/features_business.md)
+> * [Funcionalidades & Arquitetura (Visão Técnica)](file:///Users/laurielmesquita/Space%20Square/02-Customers/TalentFlow/01-Documentos/features_technical.md)
+
+### Estrutura do Monorepo
 Dentro do modelo monorepo da aplicação, o fluxo de dados atua em dois blocos:
-- **`talentflow-api/`**: Roda pipelines complexos através de *BackgroundTasks*, liberando o client imediatamente.
-- **`talentflow-web/`**: Dashboard interativo. Não há tabelas mortas. O recrutador navega em cards elásticos com *Ambient Glows* de fundo, painéis modais integrados e anéis SVG animados via trigonometria (`ScoreRing`).
+* **`talentflow-api/`**: API RESTful construída em Python (FastAPI), responsável pela leitura e análise cognitiva dos currículos, gerência dos dados e orquestração de triagem automatizada.
+* **`talentflow-web/`**: Dashboard interativo em Next.js, com animações e componentes táteis projetados para maximizar a velocidade de varredura ocular do recrutador.
 
 ## ⚙️ Instalação
 

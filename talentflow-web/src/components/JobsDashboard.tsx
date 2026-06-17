@@ -119,7 +119,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
     if (!text) return null;
     const lines = text.split("\n");
     return (
-      <ul className="list-disc pl-5 space-y-2 text-sm text-slate-300">
+      <ul className="list-disc pl-5 space-y-2 text-sm text-slate-700 dark:text-slate-300">
         {lines.map((line, idx) => {
           const cleaned = line.replace(/^[•\-\*\s]+/, "").trim();
           if (!cleaned) return null;
@@ -134,7 +134,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
     if (text.includes("•") || text.includes("\n-") || text.includes("\n*") || text.split("\n").length > 2) {
       return formatListText(text);
     }
-    return <p className="text-sm text-slate-300 whitespace-pre-line leading-relaxed">{text}</p>;
+    return <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">{text}</p>;
   }
 
   return (
@@ -399,19 +399,19 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                       {(selectedJob.application_email || selectedJob.application_subject) && (
                         <div className="space-y-2">
                           <h4 className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Como se Candidatar</h4>
-                          <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-indigo-400 space-y-2">
-                            <p className="text-xs text-indigo-300 font-semibold uppercase tracking-wider">Instruções de envio:</p>
+                          <div className="p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5 text-indigo-600 dark:text-indigo-400 space-y-2">
+                            <p className="text-xs text-indigo-600 dark:text-indigo-300 font-semibold uppercase tracking-wider">Instruções de envio:</p>
                             <div className="space-y-1.5 text-sm">
                               {selectedJob.application_email && (
                                 <div className="flex items-center gap-2">
                                   <Mail className="w-4 h-4 text-indigo-500" />
-                                  <span>E-mail: <strong className="text-slate-200">{selectedJob.application_email}</strong></span>
+                                  <span>E-mail: <strong className="text-slate-900 dark:text-slate-200 font-semibold">{selectedJob.application_email}</strong></span>
                                 </div>
                               )}
                               {selectedJob.application_subject && (
                                 <div className="flex items-center gap-2">
                                   <Clock className="w-4 h-4 text-indigo-500" />
-                                  <span>Assunto do e-mail: <strong className="text-slate-200">"{selectedJob.application_subject}"</strong></span>
+                                  <span>Assunto do e-mail: <strong className="text-slate-900 dark:text-slate-200 font-semibold">"{selectedJob.application_subject}"</strong></span>
                                 </div>
                               )}
                             </div>

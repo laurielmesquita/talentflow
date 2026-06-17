@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Zap, Database, Brain, Code2, Globe } from "lucide-react";
+import { Mail } from "lucide-react";
 
 interface FooterProps {
   version?: string;
@@ -14,13 +14,6 @@ const navLinks = [
   { href: "/categories", label: "Categorias" },
 ];
 
-const stackItems = [
-  { icon: Globe, label: "Next.js 16" },
-  { icon: Zap, label: "FastAPI" },
-  { icon: Database, label: "PostgreSQL" },
-  { icon: Brain, label: "Groq AI" },
-  { icon: Code2, label: "Python" },
-];
 
 const containerVariants = {
   hidden: {},
@@ -70,8 +63,8 @@ export default function Footer({ version = "0.1.0" }: FooterProps) {
             generativa.
           </p>
           <div className="flex items-center gap-2 mt-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               Live
             </span>
             <span className="text-xs text-muted-foreground font-mono">
@@ -109,22 +102,21 @@ export default function Footer({ version = "0.1.0" }: FooterProps) {
           </ul>
         </motion.div>
 
-        {/* ── Col 3: Stack ── */}
+        {/* ── Col 3: Contato ── */}
         <motion.div variants={itemVariants} className="flex flex-col gap-4">
           <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Stack
+            Contato
           </h3>
-          <div className="flex flex-wrap gap-2">
-            {stackItems.map(({ icon: Icon, label }) => (
-              <span
-                key={label}
-                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-muted/60 border border-border text-xs font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 cursor-default"
-              >
-                <Icon className="w-3 h-3 text-primary/70" />
-                {label}
-              </span>
-            ))}
-          </div>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            Precisa de suporte ou quer falar com a equipe?
+          </p>
+          <a
+            href="mailto:suporte@spacesquare.com.br"
+            className="inline-flex items-center gap-2 px-4 py-2 mt-1 rounded-lg bg-muted/60 border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 w-fit"
+          >
+            <Mail className="w-4 h-4 text-primary/70" />
+            suporte@spacesquare.com.br
+          </a>
         </motion.div>
       </motion.div>
 

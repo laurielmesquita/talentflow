@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from pydantic import BaseModel
 from typing import List, Optional
 from app.core.database import SessionLocal
@@ -140,7 +140,7 @@ def match_candidates(job_id: str, db: Session = Depends(get_db)):
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
         
-    candidates = db.query(Candidate).all()
+    candidates = db.query(Candidate).options(selectinload(Candidate.skills)).all()
     req_skills = [s.strip().lower() for s in job.required_skills.split(",")] if job.required_skills else []
     
     results = []

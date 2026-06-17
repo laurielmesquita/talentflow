@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy import or_, func
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 from pathlib import Path
 from typing import Optional, List
 import tempfile
@@ -69,7 +69,11 @@ def list_candidates(
     Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo, empresa).
     Filtra por padrão apenas os ativos (is_active=True) e não excluídos (deleted_at=None).
     """
-    query = db.query(Candidate)
+    query = db.query(Candidate).options(
+        selectinload(Candidate.categories),
+        selectinload(Candidate.experiences),
+        selectinload(Candidate.skills)
+    )
 
     if not include_archived:
         query = query.filter(Candidate.is_active == True, Candidate.deleted_at == None)

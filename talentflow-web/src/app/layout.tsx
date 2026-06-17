@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import Footer from "@/components/Footer";
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const { version } = require("../../package.json") as { version: string };
 
 const inter = Inter({
   variable: "--font-sans",
@@ -37,6 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Footer version={version} />
         </ThemeProvider>
       </body>
     </html>

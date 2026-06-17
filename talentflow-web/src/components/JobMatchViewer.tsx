@@ -51,7 +51,8 @@ export default function JobMatchViewer() {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:8000/api/jobs/${jobId}/match`)
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+    fetch(`${API_URL}/api/jobs/${jobId}/match`)
       .then((r) => {
         if (!r.ok) throw new Error(`HTTP ${r.status}`);
         return r.json();

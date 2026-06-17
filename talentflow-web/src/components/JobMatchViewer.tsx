@@ -19,15 +19,15 @@ interface MatchResponse {
 
 function SkeletonRow() {
   return (
-    <div className="flex items-center justify-between p-4 rounded-lg border border-slate-800/50 bg-slate-900/80 animate-pulse">
+    <div className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-white/5 bg-slate-100/50 dark:bg-white/5 animate-pulse">
       <div className="flex items-center gap-4">
-        <div className="w-8 h-8 rounded-full bg-slate-700" />
+        <div className="w-8 h-8 rounded-full bg-slate-200 dark:bg-slate-800" />
         <div className="space-y-2">
-          <div className="h-4 w-36 bg-slate-700 rounded" />
-          <div className="h-3 w-24 bg-slate-800 rounded" />
+          <div className="h-4 w-36 bg-slate-200 dark:bg-slate-800 rounded" />
+          <div className="h-3 w-24 bg-slate-200/60 dark:bg-slate-900 rounded" />
         </div>
       </div>
-      <div className="h-8 w-16 bg-slate-700 rounded" />
+      <div className="h-8 w-16 bg-slate-200 dark:bg-slate-800 rounded" />
     </div>
   );
 }
@@ -78,9 +78,9 @@ export default function JobMatchViewer() {
   // Estado vazio
   if (!jobId) {
     return (
-      <div className="h-full flex flex-col items-center justify-center text-slate-500 py-24">
+      <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-24">
         <Target className="w-12 h-12 mb-4 opacity-20" />
-        <p className="text-lg font-medium text-slate-400">Selecione uma vaga ao lado</p>
+        <p className="text-lg font-medium text-muted-foreground">Selecione uma vaga ao lado</p>
         <p className="text-sm mt-1">O motor de inteligência irá cruzar os perfis automaticamente.</p>
       </div>
     );
@@ -91,8 +91,8 @@ export default function JobMatchViewer() {
     return (
       <div className="space-y-3 pt-2">
         <div className="flex items-center gap-3 mb-6">
-          <div className="h-6 w-48 bg-slate-700 rounded animate-pulse" />
-          <div className="h-5 w-32 bg-slate-800 rounded animate-pulse" />
+          <div className="h-6 w-48 bg-slate-200 dark:bg-slate-800 rounded animate-pulse" />
+          <div className="h-5 w-32 bg-slate-200/60 dark:bg-slate-900 rounded animate-pulse" />
         </div>
         {[1, 2, 3, 4].map((i) => (
           <SkeletonRow key={i} />

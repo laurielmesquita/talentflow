@@ -113,33 +113,33 @@ export default function JobMatchViewer() {
   // Resultado
   return (
     <>
-      <div className="flex items-center justify-between border-b border-slate-800 pb-4 mb-6">
+      <div className="flex items-center justify-between border-b border-border dark:border-white/5 pb-4 mb-6">
         <div>
-          <h3 className="text-xl font-bold text-slate-100">{data?.job_title}</h3>
-          <p className="text-sm text-indigo-400 font-medium mt-1">Ranking de Compatibilidade</p>
+          <h3 className="text-xl font-bold text-foreground">{data?.job_title}</h3>
+          <p className="text-sm text-primary font-medium mt-1">Ranking de Compatibilidade</p>
         </div>
       </div>
 
       <div className="space-y-3">
         {!data?.matches?.length ? (
-          <p className="text-sm text-slate-500">Nenhum candidato possui as skills exigidas por esta vaga.</p>
+          <p className="text-sm text-muted-foreground">Nenhum candidato possui as skills exigidas por esta vaga.</p>
         ) : (
           data.matches.map((cand, idx) => (
             <div
               key={cand.candidate_id}
-              className="flex items-center justify-between p-4 rounded-lg border border-slate-800/50 bg-slate-900/80 hover:bg-slate-800 transition-colors"
+              className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 transition-colors"
             >
               <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-full bg-slate-800 text-slate-400 flex items-center justify-center text-xs font-bold border border-slate-700">
+                <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-muted-foreground flex items-center justify-center text-xs font-bold border border-slate-200 dark:border-white/5">
                   #{idx + 1}
                 </div>
                 <div>
-                  <p className="font-semibold text-slate-200">{cand.full_name}</p>
+                  <p className="font-semibold text-foreground">{cand.full_name}</p>
                   <div className="flex gap-2 mt-1 flex-wrap">
                     {cand.matched_skills.map((s, i) => (
                       <span
                         key={i}
-                        className="text-[10px] uppercase font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"
+                        className="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"
                       >
                         {s}
                       </span>
@@ -150,14 +150,14 @@ export default function JobMatchViewer() {
 
               <div className="flex items-center gap-6">
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-emerald-400">{cand.match_score}%</div>
-                  <div className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
+                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{cand.match_score}%</div>
+                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
                     Match Score
                   </div>
                 </div>
                 <Link
                   href={`/?candidateId=${cand.candidate_id}`}
-                  className="p-2 rounded-lg bg-indigo-600/10 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-all border border-indigo-500/20"
+                  className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all border border-primary/20"
                 >
                   <ArrowRight className="w-4 h-4" />
                 </Link>

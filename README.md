@@ -29,10 +29,14 @@
 
 Este projeto foi estruturado sob o conceito de **Design Engineering**, unindo processamento backend robusto com uma interface visual de performance cirúrgica (60fps). 
 
-### Backend & AI (Data Ingestion)
-- **[FastAPI](https://fastapi.tiangolo.com)** — Framework web assíncrono em Python de altíssimo desempenho, ideal para suportar fluxos pesados de I/O.
-- **[Google Gemini API (2.0 Flash)](https://ai.google.dev)** — Responsável pela extração determinística via `response_schema`, transformando PDFs desestruturados em JSON mapeado.
-- **[PostgreSQL](https://www.postgresql.org) & [Docker](https://www.docker.com)** — Banco relacional em container para persistência isolada e previsível.
+### Backend, Infraestrutura & AI (Data Ingestion)
+- **[FastAPI](https://fastapi.tiangolo.com)** — Framework web assíncrono em Python, ideal para fluxos pesados de I/O.
+- **[Uvicorn](https://www.uvicorn.org)** — Servidor ASGI de altíssimo desempenho para execução local da API.
+- **[Google Gemini API (2.5 Flash)](https://ai.google.dev)** — Modelo multimodal inteligente utilizado para OCR e extração estruturada de PDFs digitalizados/escaneados.
+- **[Groq API (Llama 3.3 70B)](https://groq.com)** — Extração de dados estruturados em JSON de arquivos PDF com texto legível com baixíssima latência.
+- **[Neon.tech (PostgreSQL)](https://neon.tech)** — Banco de dados relacional serverless hospedado em nuvem para persistência ágil.
+- **[Alembic](https://alembic.sqlalchemy.org)** — Ferramenta de versionamento e controle de migrações para esquemas SQL.
+- **[Fly.io](https://fly.io)** — Hospedagem automatizada e deploy contínuo em servidores distribuídos globalmente.
 
 ### Frontend & UI Experience (Camada de Visão)
 - **[Next.js v16](https://nextjs.org) & [React v19](https://react.dev)** — Utilizando o *App Router* para isolamento estrito entre server/client components, assegurando performance no *First Contentful Paint*.
@@ -55,9 +59,9 @@ Dentro do modelo monorepo da aplicação, o fluxo de dados atua em dois blocos:
 Siga os passos abaixo para fazer o *bootstrap* do ambiente local de desenvolvimento.
 
 ### Pré-requisitos
-- Docker Desktop rodando
 - Node.js 18+
 - Python 3.11+
+- String de conexão ao Neon.tech configurada no ambiente
 
 ### 📂 Estrutura de Diretórios
 ```text
@@ -80,18 +84,18 @@ Crie o arquivo de variáveis de ambiente:
 cp .env.example .env
 ```
 > [!IMPORTANT]
-> Edite o arquivo `.env` inserindo sua `GEMINI_API_KEY` para habilitar a ingestão assistida por IA.
-
-Suba o container do banco de dados PostgreSQL via Docker Compose:
-```bash
-docker-compose up -d
-```
+> Edite o arquivo `.env` inserindo a string de conexão do Neon em `DATABASE_URL` e as chaves `GEMINI_API_KEY` e `GROQ_API_KEY`.
 
 Configure o ambiente virtual de Python e instale as dependências:
 ```bash
 python -m venv venv
 source venv/bin/activate  # No Windows use: venv\Scripts\activate
 pip install -r requirements.txt
+```
+
+Execute as migrações para inicializar a estrutura de tabelas do banco de dados:
+```bash
+alembic upgrade head
 ```
 
 Execute o servidor local de desenvolvimento da API:
@@ -121,7 +125,7 @@ npm run dev
 
 ### 3️⃣ Ingestão Automatizada de Currículos
 
-Com o banco de dados rodando e a venv ativa no diretório `talentflow-api`, execute a ingestão automatizada de arquivos PDF:
+Com a venv ativa no diretório `talentflow-api`, execute a ingestão automatizada de arquivos PDF:
 ```bash
 python ingest.py /caminho/para/diretorio/de/curriculos
 ```

@@ -41,7 +41,10 @@ Este projeto foi estruturado sob o conceito de **Design Engineering**, unindo pr
 ### Frontend & UI Experience (Camada de Visão)
 - **[Next.js v16](https://nextjs.org) & [React v19](https://react.dev)** — Utilizando o *App Router* para isolamento estrito entre server/client components, assegurando performance no *First Contentful Paint*.
 - **[Tailwind CSS v4](https://tailwindcss.com) (CSS-First)** — Todo o *Design System* foi refatorado para operar no espaço de cores perceptual **OKLCH**. Isso provê controle matemático sobre Luminância e Croma, blindando a UI contra *Gamut Clipping* no Dark Mode.
-- **[Framer Motion](https://www.framer.com/motion/)** — Motor de física de mola (spring) do projeto. Substituímos tabelas estáticas por *Interactive Expandable Lists* usando o atributo `layout`. As tags surgem em *staggered cascates* para facilitar o *scanning* ocular do recrutador.
+- **[21st.dev](https://21st.dev)** — Hub e referência principal para inspiração e injeção de componentes e micro-interações animadas em Tailwind CSS e Framer Motion.
+- **[Framer Motion](https://www.framer.com/motion/)** — Motor de física de mola (spring) do projeto, alimentando as transições de cards, modais e layouts elásticos.
+- **[Base UI](https://base-ui.com)** — Biblioteca de componentes headless e unstyled focada em acessibilidade (WAI-ARIA) para abas e formulários.
+- **[Shadcn/ui](https://shadcn.dev)** — Fundação de componentes primitivos do ecossistema.
 - **[Next-Themes](https://github.com/pacocoursey/next-themes)** — Gestão de *Dual-Theme* isolada no servidor/cliente sem disparar os temidos erros de *Hydration Mismatch*.
 
 ## 💻 Projeto

@@ -61,8 +61,8 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 focada em otimização
 
 > [!NOTE]
 > Para uma documentação detalhada das funcionalidades voltada ao negócio ou à arquitetura técnica, consulte:
-> * [Funcionalidades & Diferenciais (Visão Comercial)](file:///Users/laurielmesquita/Space%20Square/02-Customers/TalentFlow/01-Documentos/features_business.md)
-> * [Funcionalidades & Arquitetura (Visão Técnica)](file:///Users/laurielmesquita/Space%20Square/02-Customers/TalentFlow/01-Documentos/features_technical.md)
+> * [Funcionalidades & Diferenciais (Visão Comercial)](./docs/features_business.md)
+> * [Funcionalidades & Arquitetura (Visão Técnica)](./docs/features_technical.md)
 
 ### Estrutura do Monorepo
 Dentro do modelo monorepo da aplicação, o fluxo de dados atua em dois blocos:

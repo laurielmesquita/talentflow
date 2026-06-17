@@ -111,11 +111,11 @@ export default function Footer({ version = "0.1.0" }: FooterProps) {
             Precisa de suporte ou quer falar com a equipe?
           </p>
           <a
-            href="mailto:suporte@spacesquare.com.br"
+            href="mailto:adm.the@outlook.com"
             className="inline-flex items-center gap-2 px-4 py-2 mt-1 rounded-lg bg-muted/60 border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 w-fit"
           >
             <Mail className="w-4 h-4 text-primary/70" />
-            suporte@spacesquare.com.br
+            adm.the@outlook.com
           </a>
         </motion.div>
       </motion.div>

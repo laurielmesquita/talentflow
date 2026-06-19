@@ -9,7 +9,8 @@ interface FooterProps {
 }
 
 const navLinks = [
-  { href: "/", label: "Candidatos" },
+  { href: "/", label: "Dashboard" },
+  { href: "/candidates", label: "Candidatos" },
   { href: "/jobs", label: "Vagas (Smart Match)" },
   { href: "/categories", label: "Categorias" },
 ];

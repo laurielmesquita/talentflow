@@ -140,7 +140,10 @@ def match_candidates(job_id: str, db: Session = Depends(get_db)):
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
         
-    candidates = db.query(Candidate).options(selectinload(Candidate.skills)).all()
+    candidates = db.query(Candidate).options(
+        selectinload(Candidate.skills),
+        selectinload(Candidate.experiences)
+    ).all()
     req_skills = [s.strip().lower() for s in job.required_skills.split(",")] if job.required_skills else []
     
     results = []
@@ -152,9 +155,15 @@ def match_candidates(job_id: str, db: Session = Depends(get_db)):
         if req_skills:
             score = int((len(matched) / len(req_skills)) * 100)
             
+        current_job = "Não informado"
+        if c.experiences:
+            current_job = c.experiences[0].job_title
+
         results.append({
             "candidate_id": str(c.id),
             "full_name": c.full_name,
+            "current_job": current_job,
+            "photo_url": c.photo_url,
             "match_score": score,
             "matched_skills": list(matched),
             "total_skills_cand": len(cand_skills)

@@ -154,6 +154,9 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
           </div>
           <nav className="flex gap-6 text-sm font-medium">
             <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
+              Dashboard
+            </Link>
+            <Link href="/candidates" className="text-muted-foreground hover:text-foreground transition-colors">
               Candidatos
             </Link>
             <Link href="/jobs" className="text-primary">

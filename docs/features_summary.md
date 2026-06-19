@@ -8,3 +8,7 @@ O **TalentFlow** é uma plataforma inteligente de recrutamento e triagem de tale
 * **Score de Qualidade:** Avaliação automática (0 a 100) da integridade do currículo com alertas de campos cruciais ausentes.
 * **Smart Match:** Cadastro de vagas e ranking automático de compatibilidade baseado em competências exigidas.
 * **Filtros e Categorias:** Segmentação rápida do banco de candidatos por áreas de atuação.
+* **Segurança Invite-Only:** Acesso fechado apenas a convidados via links seguros por e-mail (SMTP Brevo).
+* **Estrutura RBAC:** Diferenciação de cargos (SuperAdmin, Manager, Recruiter) na API e no Frontend Next.js.
+* **Espaço do Usuário & Senha:** Consolidação do painel superior sob Navbar unificada e painel do usuário (User Menu) com modal integrado para alteração de senha.
+

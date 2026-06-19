@@ -11,7 +11,8 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import JobFormDrawer from "./JobFormDrawer";
 import JobMatchViewer from "./JobMatchViewer";
-import { ThemeToggle } from "./ThemeToggle";
+import Navbar from "@/components/Navbar";
+import { getSession, getAuthHeaders } from "@/lib/auth";
 
 interface Job {
   id: string;
@@ -52,6 +53,13 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
   const [deleteJobTitle, setDeleteJobTitle] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [confirmDeleteText, setConfirmDeleteText] = useState("");
+
+  const [userRole, setUserRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const session = getSession();
+    setUserRole(session.role);
+  }, []);
 
   // Sync props to state
   useEffect(() => {
@@ -94,6 +102,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const res = await fetch(`${API_URL}/api/jobs/${deleteJobId}`, {
         method: "DELETE",
+        headers: getAuthHeaders()
       });
 
       if (!res.ok) {
@@ -144,40 +153,15 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
-      <header className="border-b border-border bg-background/60 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
-        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/20">
-              TF
-            </div>
-            <h1 className="text-xl font-semibold tracking-tight">TalentFlow</h1>
-          </div>
-          <nav className="flex gap-6 text-sm font-medium">
-            <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
-              Dashboard
-            </Link>
-            <Link href="/candidates" className="text-muted-foreground hover:text-foreground transition-colors">
-              Candidatos
-            </Link>
-            <Link href="/jobs" className="text-primary">
-              Vagas (Smart Match)
-            </Link>
-            <Link href="/categories" className="text-muted-foreground hover:text-foreground transition-colors">
-              Categorias
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            <button
-              onClick={handleOpenCreateDrawer}
-              className="flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 rounded-md text-sm font-medium transition-all shadow-md shadow-primary/20 cursor-pointer"
-            >
-              <Plus className="w-4 h-4" />
-              Nova Vaga
-            </button>
-          </div>
-        </div>
-      </header>
+      <Navbar>
+        <button
+          onClick={handleOpenCreateDrawer}
+          className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer"
+        >
+          <Plus className="w-4 h-4" />
+          Nova Vaga
+        </button>
+      </Navbar>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">

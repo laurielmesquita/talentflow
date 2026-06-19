@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { X, Mail, Phone, ShieldCheck, ShieldAlert, ShieldX, AlertTriangle } from "lucide-react";
+import { getAuthHeaders } from "@/lib/auth";
 
 // ── CV Quality Section (interna ao modal) ──────────────────────────────
 function QualitySection({
@@ -84,7 +85,9 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
     async function fetchCandidate() {
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        const res = await fetch(`${API_URL}/api/candidates/${candidateId}`);
+        const res = await fetch(`${API_URL}/api/candidates/${candidateId}`, {
+          headers: getAuthHeaders()
+        });
         if (res.ok) {
           setCandidate(await res.json());
         }
@@ -106,6 +109,7 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...getAuthHeaders()
         },
         body: JSON.stringify({ reason: flagReason }),
       });
@@ -134,6 +138,7 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${API_URL}/api/candidates/${candidateId}/unflag`, {
         method: 'POST',
+        headers: getAuthHeaders()
       });
       if (res.ok) {
         const updatedCandidate = await res.json();

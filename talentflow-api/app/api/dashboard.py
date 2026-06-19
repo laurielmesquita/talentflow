@@ -6,7 +6,8 @@ from datetime import datetime, timezone, timedelta, date
 from app.core.database import SessionLocal
 from app.models.domain import Candidate, Category, JobPosition, candidate_category
 
-router = APIRouter()
+from app.api.deps import get_current_user
+router = APIRouter(dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()

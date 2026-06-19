@@ -3,7 +3,9 @@ import Link from 'next/link';
 import CandidateTable from '@/components/CandidateTable';
 import BatchUploadButton from '@/components/BatchUploadButton';
 import SearchAndFilters from '@/components/SearchAndFilters';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import Navbar from '@/components/Navbar';
+import { cookies } from 'next/headers';
+
 
 interface Candidate {
   id: string;
@@ -21,7 +23,7 @@ interface Category {
   name: string;
 }
 
-async function getCandidates(category?: string, q?: string): Promise<{ candidates: Candidate[]; total: number }> {
+async function getCandidates(category?: string, q?: string, token?: string): Promise<{ candidates: Candidate[]; total: number }> {
   try {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
     const params = new URLSearchParams();
@@ -29,8 +31,15 @@ async function getCandidates(category?: string, q?: string): Promise<{ candidate
     if (q) params.set('q', q);
     
     const url = `${API_URL}/api/candidates?${params.toString()}`;
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(url, { 
+      headers,
+      cache: 'no-store' 
+    });
     if (!res.ok) return { candidates: [], total: 0 };
     return res.json();
   } catch {
@@ -38,10 +47,17 @@ async function getCandidates(category?: string, q?: string): Promise<{ candidate
   }
 }
 
-async function getCategories(): Promise<Category[]> {
+async function getCategories(token?: string): Promise<Category[]> {
   try {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    const res = await fetch(`${API_URL}/api/categories`, { cache: 'no-store' });
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const res = await fetch(`${API_URL}/api/categories`, { 
+      headers,
+      cache: 'no-store' 
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {
@@ -54,11 +70,16 @@ export default async function CandidatesPage({
 }: {
   searchParams: Promise<{ category?: string; candidateId?: string; q?: string }>;
 }) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+  const userRole = cookieStore.get('user_role')?.value;
+
   const { category, candidateId, q } = await searchParams;
   const [data, categories] = await Promise.all([
-    getCandidates(category, q),
-    getCategories(),
+    getCandidates(category, q, token),
+    getCategories(token),
   ]);
+
   const candidates = data.candidates || [];
 
   return (
@@ -68,35 +89,10 @@ export default async function CandidatesPage({
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
-      <header className="border-b border-border bg-background/60 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
-        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/20">
-              TF
-            </div>
-            <h1 className="text-xl font-semibold tracking-tight">TalentFlow</h1>
-          </div>
-          <nav className="flex gap-6 text-sm font-medium">
-            <Link href="/" className="text-muted-foreground hover:text-foreground transition-colors">
-              Dashboard
-            </Link>
-            <Link href="/candidates" className="text-primary">
-              Candidatos
-            </Link>
-            <Link href="/jobs" className="text-muted-foreground hover:text-foreground transition-colors">
-              Vagas (Smart Match)
-            </Link>
-            <Link href="/categories" className="text-muted-foreground hover:text-foreground transition-colors">
-              Categorias
-            </Link>
-          </nav>
-          <div className="flex items-center gap-3">
-            <ThemeToggle />
-            {/* BatchUploadButton gerencia router.refresh() internamente após upload */}
-            <BatchUploadButton />
-          </div>
-        </div>
-      </header>
+      <Navbar>
+        {/* BatchUploadButton gerencia router.refresh() internamente após upload */}
+        <BatchUploadButton />
+      </Navbar>
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">

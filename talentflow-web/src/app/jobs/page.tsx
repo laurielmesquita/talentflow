@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import JobsDashboard from "@/components/JobsDashboard";
+import { cookies } from 'next/headers';
 
 interface Job {
   id: string;
@@ -19,10 +20,17 @@ interface Job {
   created_at: string;
 }
 
-async function getJobs(): Promise<Job[]> {
+async function getJobs(token?: string): Promise<Job[]> {
   try {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-    const res = await fetch(`${API_URL}/api/jobs`, { cache: "no-store" });
+    const headers: Record<string, string> = {};
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    const res = await fetch(`${API_URL}/api/jobs`, { 
+      headers,
+      cache: "no-store" 
+    });
     if (!res.ok) return [];
     return res.json();
   } catch {
@@ -31,7 +39,10 @@ async function getJobs(): Promise<Job[]> {
 }
 
 export default async function JobsPage() {
-  const jobs = await getJobs();
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+  const jobs = await getJobs(token);
+  
   return (
     <Suspense fallback={
       <div className="min-h-screen bg-background text-foreground flex items-center justify-center">

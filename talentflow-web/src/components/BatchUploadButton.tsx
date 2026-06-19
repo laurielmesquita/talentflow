@@ -4,6 +4,7 @@ import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { UploadCloud, CheckCircle, AlertCircle } from 'lucide-react';
 import ConflictModal from './ConflictModal';
+import { getAuthHeaders } from '@/lib/auth';
 
 interface BatchUploadButtonProps {
   onSuccess?: () => void;
@@ -35,6 +36,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
         const res = await fetch(`${API_URL}/api/upload`, {
           method: 'POST',
+          headers: getAuthHeaders(),
           body: form,
         });
         
@@ -91,6 +93,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...getAuthHeaders()
         },
         body: JSON.stringify({
           action,

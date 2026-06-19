@@ -12,7 +12,8 @@ from app.core.database import SessionLocal
 from app.models.domain import Candidate, Category, Skill, Experience
 from app.services.quality_score import score_tier
 
-router = APIRouter()
+from app.api.deps import get_current_user
+router = APIRouter(dependencies=[Depends(get_current_user)])
 
 
 def get_db():

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Briefcase, Plus, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { getAuthHeaders } from "@/lib/auth";
 
 interface Job {
   id?: string;
@@ -154,6 +155,7 @@ export default function JobFormDrawer({
         method,
         headers: {
           "Content-Type": "application/json",
+          ...getAuthHeaders()
         },
         body: JSON.stringify(payload),
       });

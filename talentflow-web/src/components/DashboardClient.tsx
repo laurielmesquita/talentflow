@@ -18,7 +18,8 @@ import {
   ChevronRight,
   ShieldAlert
 } from 'lucide-react';
-import { ThemeToggle } from '@/components/ThemeToggle';
+import Navbar from '@/components/Navbar';
+import { getSession, getAuthHeaders } from '@/lib/auth';
 
 interface CandidateStats {
   total: number;
@@ -85,9 +86,15 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
   const [matches, setMatches] = useState<Match[]>([]);
   const [loadingMatches, setLoadingMatches] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
+  
+  const [userRole, setUserRole] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
     setMounted(true);
+    const session = getSession();
+    setUserRole(session.role);
+    setUserName(session.name);
   }, []);
 
   // Filtra apenas as vagas ativas para exibição no dropdown
@@ -100,7 +107,9 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
       setLoadingMatches(true);
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        const res = await fetch(`${API_URL}/api/jobs/${selectedJobId}/match`);
+        const res = await fetch(`${API_URL}/api/jobs/${selectedJobId}/match`, {
+          headers: getAuthHeaders()
+        });
         if (res.ok) {
           const data = await res.json();
           setMatches(data.matches || []);
@@ -174,33 +183,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
 
       <div>
         {/* Navbar */}
-        <header className="border-b border-border bg-background/60 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
-          <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/20">
-                TF
-              </div>
-              <h1 className="text-xl font-semibold tracking-tight">TalentFlow</h1>
-            </div>
-            <nav className="flex gap-6 text-sm font-medium">
-              <Link href="/" className="text-primary">
-                Dashboard
-              </Link>
-              <Link href="/candidates" className="text-muted-foreground hover:text-foreground transition-colors">
-                Candidatos
-              </Link>
-              <Link href="/jobs" className="text-muted-foreground hover:text-foreground transition-colors">
-                Vagas (Smart Match)
-              </Link>
-              <Link href="/categories" className="text-muted-foreground hover:text-foreground transition-colors">
-                Categorias
-              </Link>
-            </nav>
-            <div className="flex items-center gap-3">
-              <ThemeToggle />
-            </div>
-          </div>
-        </header>
+        <Navbar />
 
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-6 py-8">
@@ -210,8 +193,8 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
               <Sparkles className="w-4 h-4" />
               Painel Tático Operacional
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-3">
-              Olá, Recrutador
+            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-3 animate-fade-in">
+              Olá, {userName || 'Recrutador'}
             </h2>
             <p className="text-muted-foreground max-w-3xl leading-relaxed text-sm">
               Esta é sua sala de boas-vindas. Decida suas prioridades operacionais a partir das métricas 

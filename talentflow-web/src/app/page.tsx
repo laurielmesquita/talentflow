@@ -1,4 +1,5 @@
 import DashboardClient from '@/components/DashboardClient';
+import { cookies } from 'next/headers';
 
 interface CandidateStats {
   total: number;
@@ -56,10 +57,17 @@ interface Job {
   created_at: string;
 }
 
-async function getStats(): Promise<DashboardStats> {
+async function getStats(token?: string): Promise<DashboardStats> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   try {
-    const res = await fetch(`${API_URL}/api/dashboard/stats`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/dashboard/stats`, { 
+      headers,
+      cache: 'no-store' 
+    });
     if (!res.ok) throw new Error("Failed to fetch stats");
     return res.json();
   } catch (error) {
@@ -73,10 +81,17 @@ async function getStats(): Promise<DashboardStats> {
   }
 }
 
-async function getJobs(): Promise<Job[]> {
+async function getJobs(token?: string): Promise<Job[]> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
   try {
-    const res = await fetch(`${API_URL}/api/jobs`, { cache: 'no-store' });
+    const res = await fetch(`${API_URL}/api/jobs`, { 
+      headers,
+      cache: 'no-store' 
+    });
     if (!res.ok) throw new Error("Failed to fetch jobs");
     return res.json();
   } catch (error) {
@@ -86,7 +101,13 @@ async function getJobs(): Promise<Job[]> {
 }
 
 export default async function DashboardPage() {
-  const [stats, jobs] = await Promise.all([getStats(), getJobs()]);
+  const cookieStore = await cookies();
+  const token = cookieStore.get('token')?.value;
+  
+  const [stats, jobs] = await Promise.all([
+    getStats(token), 
+    getJobs(token)
+  ]);
   
   return (
     <DashboardClient initialStats={stats} initialJobs={jobs} />

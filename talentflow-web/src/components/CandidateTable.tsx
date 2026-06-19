@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX, Trash2, ChevronDown, Mail, Phone, MapPin, Briefcase, GraduationCap, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeleteConfirmModal from "./DeleteConfirmModal";
+import { getAuthHeaders } from "@/lib/auth";
 
 // ── Score Ring Animado ────────────────────────────────────────────────────────
 function ScoreRing({ score, tier }: { score: number | null; tier: string | null }) {
@@ -65,7 +66,9 @@ export default function CandidateTable({
     setLoadingDetails(prev => ({ ...prev, [candId]: true }));
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${candId}`);
+      const res = await fetch(`${API_URL}/api/candidates/${candId}`, {
+        headers: getAuthHeaders()
+      });
       if (res.ok) {
         const detail = await res.json();
         setLoadedCandidates(prev => ({ ...prev, [candId]: detail }));
@@ -94,6 +97,7 @@ export default function CandidateTable({
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          ...getAuthHeaders()
         },
         body: JSON.stringify({ reason: flagReason }),
       });
@@ -125,6 +129,7 @@ export default function CandidateTable({
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
       const res = await fetch(`${API_URL}/api/candidates/${candId}/unflag`, {
         method: 'POST',
+        headers: getAuthHeaders()
       });
       if (res.ok) {
         setLoadedCandidates(prev => ({
@@ -153,7 +158,10 @@ export default function CandidateTable({
     if (!deleteCandidateId) return;
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${deleteCandidateId}`, { method: 'DELETE' });
+      const res = await fetch(`${API_URL}/api/candidates/${deleteCandidateId}`, { 
+        method: 'DELETE',
+        headers: getAuthHeaders()
+      });
       if (res.ok) router.refresh();
     } catch (e) {
       console.error('Erro ao deletar:', e);

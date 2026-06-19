@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 interface FooterProps {
   version?: string;
@@ -35,11 +36,32 @@ const itemVariants = {
 };
 
 export default function Footer({ version = "0.1.0" }: FooterProps) {
+  const pathname = usePathname();
+  const isAuthPage = ['/login', '/forgot-password', '/reset-password', '/invite/accept'].some(route => pathname?.startsWith(route));
+
+  if (isAuthPage) {
+    return (
+      <footer className="relative mt-auto border-t border-border bg-background/30 backdrop-blur-md py-4">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-muted-foreground">
+            © {new Date().getFullYear()} TalentFlow. Todos os direitos
+            reservados.
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Desenvolvido por{" "}
+            <span className="text-foreground font-semibold">Space Square</span>
+          </p>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <footer className="relative mt-auto border-t border-border bg-background overflow-hidden">
       {/* Subtle gradient glow at top edge */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[80px] bg-primary/[0.04] blur-[60px] pointer-events-none" />
+
 
       {/* Main grid */}
       <motion.div

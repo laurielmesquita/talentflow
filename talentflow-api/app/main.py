@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.candidates import router as candidates_router
 from app.api.jobs import router as jobs_router
 from app.api.categories import router as categories_router
+from app.api.dashboard import router as dashboard_router
 
 app = FastAPI(
     title="TalentFlow API",
@@ -30,3 +31,4 @@ def health_check():
 app.include_router(candidates_router, prefix="/api")
 app.include_router(jobs_router, prefix="/api")
 app.include_router(categories_router, prefix="/api")
+app.include_router(dashboard_router, prefix="/api")

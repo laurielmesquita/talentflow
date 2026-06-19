@@ -31,3 +31,12 @@ Uma interface intuitiva que centraliza e organiza todos os dados dos profissiona
 
 ## 4. Organização Estruturada
 * **Categorização Flexível:** Criação de pastas ou tags de atuação (ex: Tecnologia, Comercial, Saúde) para organizar o banco de talentos conforme a demanda de contratação da empresa.
+
+---
+
+## 5. Segurança Corporativa e Controle de Acessos
+A aplicação foi projetada sob uma infraestrutura robusta para mitigar riscos de vazamento de dados de candidatos e garantir total controle operacional para a gerência:
+* **Modelo Invite-Only (Cadastro Fechado):** Proteção integral contra registros não autorizados ou robôs na internet. Novos usuários só podem entrar na plataforma se receberem um convite direto e temporário enviado por e-mail.
+* **Controle Baseado em Cargos (RBAC):** Restrições estritas onde apenas administradores (*SuperAdmin*) e gerentes (*Manager*) podem convidar novas pessoas ou realizar ações de sistema. Recrutadores operacionais focam apenas na triagem e gestão básica.
+* **Gestão de Perfil & Senha Protegida:** Acesso fácil a um painel de alteração de senha autenticada em tempo real com validações imediatas e fluxo de redefinição por e-mail caso o usuário a esqueça.
+

@@ -37,6 +37,9 @@ Este projeto foi estruturado sob o conceito de **Design Engineering**, unindo pr
 - **[Neon.tech (PostgreSQL)](https://neon.tech)** — Banco de dados relacional serverless hospedado em nuvem para persistência ágil.
 - **[Alembic](https://alembic.sqlalchemy.org)** — Ferramenta de versionamento e controle de migrações para esquemas SQL.
 - **[Fly.io](https://fly.io)** — Hospedagem automatizada e deploy contínuo em servidores distribuídos globalmente.
+- **[Bcrypt & PyJWT](https://pyjwt.readthedocs.io)** — Cifragem segura de senhas via `bcrypt` e gerenciamento de sessões com JWT assinados via `pyjwt`.
+- **[Brevo SMTP](https://www.brevo.com)** — Servidor SMTP transacional integrado para disparos de e-mails automatizados TLS.
+
 
 ### Frontend & UI Experience (Camada de Visão)
 - **[Next.js v16](https://nextjs.org) & [React v19](https://react.dev)** — Utilizando o *App Router* para isolamento estrito entre server/client components, assegurando performance no *First Contentful Paint*.
@@ -58,6 +61,8 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 focada em otimização
 * **Score de Qualidade:** Avaliação automática (0 a 100) da integridade do currículo com alertas visuais de campos cruciais ausentes.
 * **Smart Match:** Cadastro de vagas e ranking automático de compatibilidade baseado em competências exigidas.
 * **Filtros e Categorias:** Segmentação rápida do banco de candidatos por áreas de atuação.
+* **Segurança Invite-Only (RBAC):** Proteção integral contra auto-registro e restrição de permissões por cargos (SuperAdmin, Manager, Recruiter).
+* **Espaço do Usuário & Senha:** Consolidação da Navbar e controle de ações no dropdown User Menu, com modal de alteração de senha e fluxo de logout.
 
 > [!NOTE]
 > Para uma documentação detalhada das funcionalidades voltada ao negócio ou à arquitetura técnica, consulte:
@@ -99,7 +104,7 @@ Crie o arquivo de variáveis de ambiente:
 cp .env.example .env
 ```
 > [!IMPORTANT]
-> Edite o arquivo `.env` inserindo a string de conexão do Neon em `DATABASE_URL` e as chaves `GEMINI_API_KEY` e `GROQ_API_KEY`.
+> Edite o arquivo `.env` inserindo a string de conexão do Neon em `DATABASE_URL`, as chaves `GEMINI_API_KEY` e `GROQ_API_KEY`, e as credenciais SMTP da Brevo (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`).
 
 Configure o ambiente virtual de Python e instale as dependências:
 ```bash
@@ -111,6 +116,11 @@ pip install -r requirements.txt
 Execute as migrações para inicializar a estrutura de tabelas do banco de dados:
 ```bash
 alembic upgrade head
+```
+
+(Opcional) Crie o primeiro usuário administrador rodando o script CLI de seed temporário (remova o arquivo após rodar para segurança):
+```bash
+python create_superadmin.py
 ```
 
 Execute o servidor local de desenvolvimento da API:

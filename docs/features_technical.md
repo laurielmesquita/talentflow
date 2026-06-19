@@ -31,3 +31,17 @@ Esta documentação detalha a implementação técnica das funcionalidades do **
 ## 4. Otimização de Performance
 * **Eager Loading (Anti-N+1):** Uso de `selectinload` do SQLAlchemy nas rotas de listagem e de triagem, reduzindo consultas e latência de rede com a nuvem (Neon.tech) em mais de 70%.
 * **measure_performance.py:** Utilitário de benchmark autônomo baseado em `TestClient` e escuta de eventos SQL (`before_cursor_execute`) para auditoria ativa de performance de endpoints.
+
+---
+
+## 5. Autenticação, RBAC e Segurança de Sessão
+A infraestrutura de segurança do TalentFlow foi projetada para atuar em múltiplos níveis de validação:
+* **Token de Autenticação Assinado (JWT):** A sessão do usuário é representada por um token assinado criptograficamente com o algoritmo HMAC-SHA256 (`pyjwt`).
+* **Validação na Borda (Edge Middleware):** Criamos um middleware Next.js na borda do servidor que intercepta todas as rotas privadas. Ele realiza a decodificação nativa do base64 do JWT no Edge runtime sem sobrecarregar a base de dados Neon.
+* **Controle de Acesso Baseado em Cargos (RBAC):**
+  - **Injeção de Dependência no FastAPI (`RoleChecker`):** O backend restringe endpoints críticos comparando os cargos definidos do usuário autenticado no token.
+  - **Bloqueio de Rota no Frontend:** Se o usuário logado for `Recruiter`, o middleware do Next.js bloqueia e redireciona tentativas de acessar a página `/invite`.
+* **Cifragem de Senhas (Bcrypt):** Armazenamento seguro de senhas com salting e hashing unidirecional através de `bcrypt` no banco de dados.
+* **E-mails Transacionais com SMTP Seguro (Brevo):** Integração com o servidor SMTP da Brevo usando TLS (`smtplib` + `starttls`) para envio confiável de links temporários de onboarding (expiração de 7 dias) e recuperação de senha (expiração de 2 horas).
+* **Painel de Perfil Unificado:** Consolidação do menu superior sob o componente `<Navbar />` e controle das configurações de segurança via `<UserMenu />` (dropdown dinâmico e modal de alteração de senha autenticada).
+

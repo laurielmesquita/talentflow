@@ -70,3 +70,53 @@ class RoleChecker:
                 detail="Você não possui permissão para executar esta ação."
             )
         return current_user
+
+from typing import Any
+
+class ScopedSession:
+    """
+    Wrapper para Session do SQLAlchemy que injeta automaticamente o filtro de tenant_id nas consultas
+    e preenche o tenant_id em novas instâncias.
+    """
+    def __init__(self, db: Session, tenant_id: Any):
+        self.db = db
+        self.tenant_id = tenant_id
+
+    def query(self, *entities):
+        q = self.db.query(*entities)
+        for entity in entities:
+            # Filtra automaticamente classes mapeadas que possuem tenant_id
+            if isinstance(entity, type) and hasattr(entity, "tenant_id"):
+                q = q.filter(entity.tenant_id == self.tenant_id)
+        return q
+
+    def add(self, instance):
+        # Auto-popula o tenant_id se estiver ausente no momento da inserção
+        if hasattr(instance, "tenant_id") and not getattr(instance, "tenant_id", None):
+            instance.tenant_id = self.tenant_id
+        return self.db.add(instance)
+
+    def commit(self):
+        return self.db.commit()
+
+    def rollback(self):
+        return self.db.rollback()
+
+    def refresh(self, instance):
+        return self.db.refresh(instance)
+
+    def delete(self, instance):
+        return self.db.delete(instance)
+
+    def execute(self, *args, **kwargs):
+        return self.db.execute(*args, **kwargs)
+
+
+def get_scoped_db(
+    current_user: User = Depends(get_current_user), 
+    db: Session = Depends(get_db)
+) -> ScopedSession:
+    """
+    Dependência de banco de dados que retorna um ScopedSession atrelado ao tenant_id do usuário atual.
+    """
+    return ScopedSession(db, current_user.tenant_id)

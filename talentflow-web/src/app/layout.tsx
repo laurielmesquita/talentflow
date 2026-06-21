@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import Footer from "@/components/Footer";
+import dynamic from "next/dynamic";
+
+const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
+
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { version } = require("../../package.json") as { version: string };
 

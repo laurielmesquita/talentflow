@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Date, Boolean, Text, ForeignKey, Float, DateTime, Table, Integer
+from sqlalchemy import Column, String, Date, Boolean, Text, ForeignKey, Float, DateTime, Table, Integer, UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
@@ -23,6 +23,14 @@ class Tenant(Base):
     __tablename__ = "tenants"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     name = Column(String, nullable=False)
+    
+    # Billing / Stripe
+    stripe_customer_id = Column(String, unique=True, index=True, nullable=True)
+    stripe_subscription_id = Column(String, unique=True, index=True, nullable=True)
+    plan_name = Column(String, nullable=False, default="free")
+    plan_status = Column(String, nullable=False, default="active")
+    candidate_count_limit = Column(Integer, nullable=False, default=50)
+    
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
@@ -33,21 +41,28 @@ class Tenant(Base):
     skills = relationship("Skill", back_populates="tenant")
     batch_jobs = relationship("BatchJob", back_populates="tenant")
     invites = relationship("Invite", back_populates="tenant")
+    audit_logs = relationship("AuditLog", back_populates="tenant")
 
 class Category(Base):
     __tablename__ = "categories"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "name", name="uq_category_tenant_name"),
+    )
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
-    name = Column(String, unique=True, index=True, nullable=False)
+    name = Column(String, index=True, nullable=False)
     
     tenant = relationship("Tenant", back_populates="categories")
     candidates = relationship("Candidate", secondary=candidate_category, back_populates="categories")
 
 class Skill(Base):
     __tablename__ = "skills"
+    __table_args__ = (
+        UniqueConstraint("tenant_id", "name", name="uq_skill_tenant_name"),
+    )
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
-    name = Column(String, unique=True, index=True, nullable=False)
+    name = Column(String, index=True, nullable=False)
     
     tenant = relationship("Tenant", back_populates="skills")
     candidates = relationship("Candidate", secondary=candidate_skill, back_populates="skills")
@@ -178,4 +193,19 @@ class BatchJob(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     tenant = relationship("Tenant", back_populates="batch_jobs")
+
+
+class AuditLog(Base):
+    __tablename__ = "audit_logs"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    action = Column(String, nullable=False)  # view, create, update, delete, flag, unflag
+    entity_name = Column(String, nullable=False)  # e.g., "Candidate"
+    entity_id = Column(UUID(as_uuid=True), nullable=False)
+    timestamp = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
+
+    # Relationships
+    tenant = relationship("Tenant", back_populates="audit_logs")
+    user = relationship("User")
 

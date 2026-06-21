@@ -31,6 +31,11 @@ class Settings(BaseSettings):
     # JWT Secret Key
     SECRET_KEY: str = "talentflow_super_secret_key_60fps_premium"
 
+    # Stripe Billing
+    STRIPE_SECRET_KEY: str = ""
+    STRIPE_WEBHOOK_SECRET: str = ""
+    STRIPE_PRO_PRICE_ID: str = ""
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 

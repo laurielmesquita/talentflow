@@ -38,6 +38,11 @@ const itemVariants = {
 export default function Footer({ version = "0.1.0" }: FooterProps) {
   const pathname = usePathname();
   const isAuthPage = ['/login', '/forgot-password', '/reset-password', '/invite/accept'].some(route => pathname?.startsWith(route));
+  const isLandingPage = pathname === '/';
+
+  if (isLandingPage) {
+    return null;
+  }
 
   if (isAuthPage) {
     return (

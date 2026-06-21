@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { UploadCloud, CheckCircle, AlertCircle } from 'lucide-react';
 import { getAuthHeaders } from '@/lib/auth';
@@ -18,6 +19,24 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [batchErrors, setBatchErrors] = useState<any[]>([]);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  // Bloqueia o scroll da página de fundo (Scroll Lock) quando o modal estiver aberto
+  useEffect(() => {
+    if (showSummaryModal && batchErrors.length > 0) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [showSummaryModal, batchErrors]);
 
   async function pollBatchStatus(batchId: string) {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -154,6 +173,53 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
     error: 'bg-red-600/80 text-white',
   };
 
+  const successCount = progress.total - batchErrors.length;
+
+  const modalContent = showSummaryModal && batchErrors.length > 0 ? (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="w-full max-w-lg bg-card border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative animate-in zoom-in duration-200">
+        <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
+          <AlertCircle className="w-5.5 h-5.5 text-amber-500" />
+          Resumo do Upload em Lote
+        </h3>
+        
+        <p className="text-sm text-muted-foreground mb-5 leading-relaxed">
+          O processamento em lote foi concluído.{' '}
+          {successCount === 0 ? (
+            <>Nenhum dos <strong className="font-bold text-foreground">{progress.total}</strong> currículos foi importado com sucesso.</>
+          ) : successCount === 1 ? (
+            <>Apenas <strong className="font-bold text-foreground">1 de {progress.total}</strong> currículo foi importado com sucesso.</>
+          ) : (
+            <>
+              <strong className="font-bold text-foreground">{successCount} de {progress.total}</strong> currículos foram importados com sucesso.
+            </>
+          )}
+          {' Os seguintes arquivos foram ignorados por duplicidade ou erro:'}
+        </p>
+
+        <div className="max-h-60 overflow-y-auto border border-border rounded-xl p-4 bg-background/50 flex flex-col gap-3 mb-6 select-text font-sans">
+          {batchErrors.map((err, idx) => (
+            <div key={idx} className="flex justify-between items-start gap-3 text-xs border-b border-border/40 pb-2.5 last:border-0 last:pb-0">
+              <span className="font-semibold text-foreground truncate max-w-[200px]" title={err.filename}>
+                {err.filename}
+              </span>
+              <span className="text-destructive-foreground bg-destructive/10 px-2 py-0.5 rounded text-right text-[10px] font-medium leading-normal border border-destructive/10">
+                {err.error}
+              </span>
+            </div>
+          ))}
+        </div>
+        
+        <button
+          onClick={() => setShowSummaryModal(false)}
+          className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl text-sm hover:bg-primary/95 transition-all active:scale-[0.98] shadow-lg shadow-primary/20"
+        >
+          Fechar Resumo
+        </button>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
       <input
@@ -175,38 +241,10 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         {label[status]}
       </button>
 
-      {/* Modal de resumo do processamento de lote (aberto se houver erros) */}
-      {showSummaryModal && batchErrors.length > 0 && (
-        <div className="fixed top-0 left-0 w-screen h-screen z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm">
-          <div className="w-full max-w-lg bg-card border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative animate-in fade-in zoom-in duration-200">
-            <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
-              <AlertCircle className="w-5.5 h-5.5 text-amber-500" />
-              Resumo do Upload em Lote
-            </h3>
-            <p className="text-sm text-muted-foreground mb-5">
-              O processamento em lote foi concluído. **{progress.total - batchErrors.length} de {progress.total}** currículos foram importados com sucesso. Os seguintes arquivos foram ignorados por duplicidade ou erro:
-            </p>
-            <div className="max-h-60 overflow-y-auto border border-border rounded-xl p-4 bg-background/50 flex flex-col gap-3 mb-6 select-text font-sans">
-              {batchErrors.map((err, idx) => (
-                <div key={idx} className="flex justify-between items-start gap-3 text-xs border-b border-border/40 pb-2.5 last:border-0 last:pb-0">
-                  <span className="font-semibold text-foreground truncate max-w-[200px]" title={err.filename}>
-                    {err.filename}
-                  </span>
-                  <span className="text-destructive-foreground bg-destructive/10 px-2 py-0.5 rounded text-right text-[10px] font-medium leading-normal border border-destructive/10">
-                    {err.error}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => setShowSummaryModal(false)}
-              className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl text-sm hover:bg-primary/95 transition-all active:scale-[0.98] shadow-lg shadow-primary/20"
-            >
-              Fechar Resumo
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Renderiza o modal fora do header através de um Portal React */}
+      {mounted && typeof document !== 'undefined' && modalContent
+        ? createPortal(modalContent, document.body)
+        : null}
     </>
   );
 }

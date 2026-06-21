@@ -177,7 +177,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
 
       {/* Modal de resumo do processamento de lote (aberto se houver erros) */}
       {showSummaryModal && batchErrors.length > 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm">
+        <div className="fixed top-0 left-0 w-screen h-screen z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm">
           <div className="w-full max-w-lg bg-card border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative animate-in fade-in zoom-in duration-200">
             <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
               <AlertCircle className="w-5.5 h-5.5 text-amber-500" />

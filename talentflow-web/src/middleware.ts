@@ -40,7 +40,8 @@ export function middleware(request: NextRequest) {
   const tokenCookie = request.cookies.get('token');
   const token = tokenCookie?.value;
 
-  const isPublicRoute = PUBLIC_ROUTES.some((route) => pathname.startsWith(route));
+  // A raiz '/' é pública, além das outras rotas públicas definidas
+  const isPublicRoute = pathname === '/' || PUBLIC_ROUTES.some((route) => pathname.startsWith(route));
 
   // Caso 1: Usuário NÃO está autenticado e tenta acessar uma rota protegida
   if (!token && !isPublicRoute) {
@@ -63,17 +64,17 @@ export function middleware(request: NextRequest) {
       return response;
     }
 
-    // Se o usuário já está logado e tenta acessar telas de login/recuperação, manda para a home
+    // Se o usuário já está logado e tenta acessar telas públicas ou landing page, manda para o dashboard
     if (isPublicRoute && pathname !== '/invite/accept') {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/dashboard', request.url));
     }
 
     // Controle de Acesso Baseado em Cargos (RBAC) para a tela de convites
     if (pathname.startsWith('/invite') && pathname !== '/invite/accept') {
       const userRole = decoded.role;
       if (userRole !== 'SuperAdmin' && userRole !== 'Manager') {
-        // Recrutador comum não pode convidar, redireciona para a home
-        return NextResponse.redirect(new URL('/', request.url));
+        // Recrutador comum não pode convidar, redireciona para o dashboard
+        return NextResponse.redirect(new URL('/dashboard', request.url));
       }
     }
   }

@@ -2,7 +2,7 @@
 
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { Target, ArrowRight } from 'lucide-react';
+import { Target, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { getAuthHeaders } from '@/lib/auth';
 
@@ -11,6 +11,7 @@ interface Match {
   full_name: string;
   match_score: number;
   matched_skills: string[];
+  match_justification?: string;
 }
 
 interface MatchResponse {
@@ -128,41 +129,53 @@ export default function JobMatchViewer() {
           data.matches.map((cand, idx) => (
             <div
               key={cand.candidate_id}
-              className="flex items-center justify-between p-4 rounded-lg border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 transition-colors"
+              className="flex flex-col p-4 rounded-lg border border-slate-200 dark:border-white/5 bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10 transition-colors gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200"
             >
-              <div className="flex items-center gap-4">
-                <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-muted-foreground flex items-center justify-center text-xs font-bold border border-slate-200 dark:border-white/5">
-                  #{idx + 1}
-                </div>
-                <div>
-                  <p className="font-semibold text-foreground">{cand.full_name}</p>
-                  <div className="flex gap-2 mt-1 flex-wrap">
-                    {cand.matched_skills.map((s, i) => (
-                      <span
-                        key={i}
-                        className="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"
-                      >
-                        {s}
-                      </span>
-                    ))}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-white/10 text-muted-foreground flex items-center justify-center text-xs font-bold border border-slate-200 dark:border-white/5">
+                    #{idx + 1}
                   </div>
+                  <div>
+                    <p className="font-semibold text-foreground">{cand.full_name}</p>
+                    <div className="flex gap-2 mt-1 flex-wrap">
+                      {cand.matched_skills.map((s, i) => (
+                        <span
+                          key={i}
+                          className="text-[10px] uppercase font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20"
+                        >
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-6">
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{cand.match_score}%</div>
+                    <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
+                      Match Score
+                    </div>
+                  </div>
+                  <Link
+                    href={`/?candidateId=${cand.candidate_id}`}
+                    className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all border border-primary/20"
+                  >
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
                 </div>
               </div>
 
-              <div className="flex items-center gap-6">
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{cand.match_score}%</div>
-                  <div className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold">
-                    Match Score
+              {cand.match_justification && (
+                <div className="p-3 rounded-lg bg-indigo-500/5 dark:bg-white/5 border border-indigo-500/10 dark:border-white/10 text-xs text-slate-600 dark:text-slate-300 leading-relaxed flex items-start gap-2 animate-in slide-in-from-top-1 duration-150">
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-500 dark:text-indigo-400 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-bold text-indigo-600 dark:text-indigo-400 mr-1">Análise da IA:</span>
+                    {cand.match_justification}
                   </div>
                 </div>
-                <Link
-                  href={`/?candidateId=${cand.candidate_id}`}
-                  className="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground transition-all border border-primary/20"
-                >
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+              )}
             </div>
           ))
         )}

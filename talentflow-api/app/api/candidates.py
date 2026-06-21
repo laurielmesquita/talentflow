@@ -11,19 +11,12 @@ from pydantic import BaseModel
 from uuid import UUID
 
 from app.core.database import SessionLocal
-from app.models.domain import Candidate, Category, Skill, Experience, BatchJob, User, JobMatch
+from app.models.domain import Candidate, Category, Skill, Experience, BatchJob, User, JobMatch, AuditLog
 from app.services.quality_score import score_tier
 
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession
 router = APIRouter(dependencies=[Depends(get_current_user)])
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 def extract_cloudinary_public_id(url: str, is_raw: bool = False) -> Optional[str]:
@@ -67,8 +60,7 @@ def list_candidates(
     category_id: Optional[UUID] = None,
     q: Optional[str] = None,
     include_archived: bool = False,
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: ScopedSession = Depends(get_scoped_db)
 ):
     """
     Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo, empresa).
@@ -78,7 +70,7 @@ def list_candidates(
         selectinload(Candidate.categories),
         selectinload(Candidate.experiences),
         selectinload(Candidate.skills)
-    ).filter(Candidate.tenant_id == current_user.tenant_id)
+    )
 
     if not include_archived:
         query = query.filter(Candidate.is_active == True, Candidate.deleted_at == None)
@@ -118,7 +110,6 @@ def list_candidates(
             "full_name": c.full_name,
             "current_job": current_job,
             "categories": cats,
-            "match_score": 88,  # Placeholder para o motor de match futuro
             "added_at": c.created_at.isoformat() if c.created_at else None,
             "skills": skills,
             "photo_url": c.photo_url,
@@ -138,15 +129,24 @@ def list_candidates(
 @router.get("/candidates/{candidate_id}")
 def get_candidate(
     candidate_id: str, 
-    db: Session = Depends(get_db),
+    db: ScopedSession = Depends(get_scoped_db),
     current_user: User = Depends(get_current_user)
 ):
     c = db.query(Candidate).filter(
-        Candidate.id == candidate_id,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.id == candidate_id
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
+
+    # Registrar log de auditoria
+    log = AuditLog(
+        user_id=current_user.id,
+        action="view",
+        entity_name="Candidate",
+        entity_id=c.id
+    )
+    db.add(log)
+    db.commit()
 
     return {
         "id": str(c.id),
@@ -178,9 +178,22 @@ def get_candidate(
 @router.post("/upload")
 async def upload_resume(
     file: UploadFile = File(...),
-    db: Session = Depends(get_db),
+    db: ScopedSession = Depends(get_scoped_db),
     current_user: User = Depends(get_current_user)
 ):
+    # Billing Quota Check
+    tenant = current_user.tenant
+    active_candidates_count = db.query(Candidate).filter(
+        Candidate.is_active == True, 
+        Candidate.deleted_at == None
+    ).count()
+    
+    if active_candidates_count >= tenant.candidate_count_limit:
+        raise HTTPException(
+            status_code=402, 
+            detail=f"Limite do plano excedido ({tenant.candidate_count_limit} candidatos). Faça o upgrade para continuar adicionando."
+        )
+
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Apenas arquivos PDF são aceitos.")
 
@@ -202,8 +215,7 @@ async def upload_resume(
             identical_candidate = db.query(Candidate).filter(
                 Candidate.pdf_hash == pdf_hash,
                 Candidate.is_active == True,
-                Candidate.deleted_at == None,
-                Candidate.tenant_id == current_user.tenant_id
+                Candidate.deleted_at == None
             ).first()
             if identical_candidate:
                 raise HTTPException(
@@ -222,8 +234,7 @@ async def upload_resume(
         existing = db.query(Candidate).filter(
             Candidate.full_name == data.full_name,
             Candidate.is_active == True,
-            Candidate.deleted_at == None,
-            Candidate.tenant_id == current_user.tenant_id
+            Candidate.deleted_at == None
         ).first()
 
         if existing:
@@ -281,7 +292,18 @@ async def upload_resume(
             )
 
         # 3. Salva e persiste normalmente
-        candidate = save_candidate_to_db(db, extraction, tenant_id=current_user.tenant_id)
+        candidate = save_candidate_to_db(db.db, extraction, tenant_id=db.tenant_id)
+        
+        # Registrar log de auditoria
+        log = AuditLog(
+            user_id=current_user.id,
+            action="create",
+            entity_name="Candidate",
+            entity_id=candidate.id
+        )
+        db.add(log)
+        db.commit()
+
         return {
             "status": "success",
             "id": str(candidate.id),
@@ -296,15 +318,14 @@ async def upload_resume(
 def replace_candidate(
     candidate_id: str,
     req: ReplaceRequest,
-    db: Session = Depends(get_db),
+    db: ScopedSession = Depends(get_scoped_db),
     current_user: User = Depends(get_current_user)
 ):
     # Encontra candidato existente
     existing = db.query(Candidate).filter(
         Candidate.id == candidate_id,
         Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.deleted_at == None
     ).first()
 
     if not existing:
@@ -353,17 +374,34 @@ def replace_candidate(
         existing.is_active = False
 
         # Persiste o novo candidato com versão=1, parent_id=None
-        new_candidate = save_candidate_to_db(db, extraction, parent_id=None, version=1, tenant_id=current_user.tenant_id)
+        new_candidate = save_candidate_to_db(db.db, extraction, parent_id=None, version=1, tenant_id=db.tenant_id)
 
     elif req.action == "keep_both":
         # Manter ambos: arquiva o existente
         existing.is_active = False
 
         # Persiste o novo com version=anterior+1, parent_id=anterior.id
-        new_candidate = save_candidate_to_db(db, extraction, parent_id=existing.id, version=existing.version + 1, tenant_id=current_user.tenant_id)
+        new_candidate = save_candidate_to_db(db.db, extraction, parent_id=existing.id, version=existing.version + 1, tenant_id=db.tenant_id)
 
     else:
         raise HTTPException(status_code=400, detail="Ação inválida. Use 'replace' ou 'keep_both'.")
+
+    # Registrar logs de auditoria
+    log_existing = AuditLog(
+        user_id=current_user.id,
+        action="update",
+        entity_name="Candidate",
+        entity_id=existing.id
+    )
+    log_new = AuditLog(
+        user_id=current_user.id,
+        action="create",
+        entity_name="Candidate",
+        entity_id=new_candidate.id
+    )
+    db.add(log_existing)
+    db.add(log_new)
+    db.commit()
 
     return {
         "status": "success",
@@ -375,12 +413,10 @@ def replace_candidate(
 @router.get("/candidates/{candidate_id}/versions")
 def get_candidate_versions(
     candidate_id: str, 
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: ScopedSession = Depends(get_scoped_db)
 ):
     c = db.query(Candidate).filter(
-        Candidate.id == candidate_id,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.id == candidate_id
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
@@ -426,12 +462,11 @@ def get_candidate_versions(
 @router.delete("/candidates/{candidate_id}", status_code=204)
 def delete_candidate(
     candidate_id: str, 
-    db: Session = Depends(get_db),
+    db: ScopedSession = Depends(get_scoped_db),
     current_user: User = Depends(get_current_user)
 ):
     c = db.query(Candidate).filter(
-        Candidate.id == candidate_id,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.id == candidate_id
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
@@ -458,6 +493,15 @@ def delete_candidate(
             except Exception as e:
                 print(f"[delete] Erro ao deletar PDF no Cloudinary: {e}")
 
+    # Registrar log de auditoria
+    log = AuditLog(
+        user_id=current_user.id,
+        action="delete",
+        entity_name="Candidate",
+        entity_id=c.id
+    )
+    db.add(log)
+
     # Remove o candidato do banco
     db.delete(c)
     db.commit()
@@ -468,13 +512,12 @@ def delete_candidate(
 def flag_candidate(
     candidate_id: str,
     req: FlagRequest,
-    db: Session = Depends(get_db),
+    db: ScopedSession = Depends(get_scoped_db),
     current_user: User = Depends(get_current_user)
 ):
     c = db.query(Candidate).filter(
         Candidate.id == candidate_id,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.deleted_at == None
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
@@ -482,6 +525,14 @@ def flag_candidate(
     c.is_flagged = True
     c.flagged_reason = req.reason.strip()
     c.flagged_at = func.now()
+
+    log = AuditLog(
+        user_id=current_user.id,
+        action="flag",
+        entity_name="Candidate",
+        entity_id=c.id
+    )
+    db.add(log)
 
     db.commit()
     db.refresh(c)
@@ -498,13 +549,12 @@ def flag_candidate(
 @router.post("/candidates/{candidate_id}/unflag")
 def unflag_candidate(
     candidate_id: str,
-    db: Session = Depends(get_db),
+    db: ScopedSession = Depends(get_scoped_db),
     current_user: User = Depends(get_current_user)
 ):
     c = db.query(Candidate).filter(
         Candidate.id == candidate_id,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.deleted_at == None
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
@@ -512,6 +562,14 @@ def unflag_candidate(
     c.is_flagged = False
     c.flagged_reason = None
     c.flagged_at = None
+
+    log = AuditLog(
+        user_id=current_user.id,
+        action="unflag",
+        entity_name="Candidate",
+        entity_id=c.id
+    )
+    db.add(log)
 
     db.commit()
     db.refresh(c)
@@ -673,8 +731,7 @@ async def process_batch_uploads_task(batch_id: str, file_info: List[dict], tenan
 async def upload_batch_resumes(
     background_tasks: BackgroundTasks,
     files: List[UploadFile] = File(...),
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: ScopedSession = Depends(get_scoped_db)
 ):
     """
     Inicia o upload de múltiplos currículos em lote.
@@ -694,8 +751,8 @@ async def upload_batch_resumes(
         status="pending", 
         total=len(files), 
         processed=0, 
-        errors=None,
-        tenant_id=current_user.tenant_id
+        errors=None
+        # tenant_id injetado auto via ScopedSession.add
     )
     db.add(batch_job)
     db.commit()
@@ -711,7 +768,7 @@ async def upload_batch_resumes(
         file_info.append({"temp_path": tmp_path, "filename": file.filename})
 
     # 4. Inicia processador em background
-    background_tasks.add_task(process_batch_uploads_task, str(batch_job.id), file_info, str(current_user.tenant_id))
+    background_tasks.add_task(process_batch_uploads_task, str(batch_job.id), file_info, str(db.tenant_id))
 
     return {
         "batch_id": str(batch_job.id),
@@ -723,16 +780,14 @@ async def upload_batch_resumes(
 @router.get("/batches/{batch_id}")
 def get_batch_job_status(
     batch_id: str, 
-    db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    db: ScopedSession = Depends(get_scoped_db)
 ):
     """
     Consulta o estado de processamento de um lote de upload.
     Retorna percentual de progresso e detalhamento de erros de parsing/duplicidade.
     """
     batch_job = db.query(BatchJob).filter(
-        BatchJob.id == batch_id,
-        BatchJob.tenant_id == current_user.tenant_id
+        BatchJob.id == batch_id
     ).first()
     if not batch_job:
         raise HTTPException(status_code=404, detail="Lote de processamento não encontrado")

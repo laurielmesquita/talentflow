@@ -5,15 +5,9 @@ from typing import List, Optional
 from app.core.database import SessionLocal
 from app.models.domain import JobPosition, Candidate, JobMatch, User
 
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession
 router = APIRouter(dependencies=[Depends(get_current_user)])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 from datetime import date
 
@@ -47,8 +41,8 @@ class JobUpdate(BaseModel):
     is_active: Optional[bool] = None
 
 @router.get("/jobs")
-def list_jobs(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    jobs = db.query(JobPosition).filter(JobPosition.tenant_id == current_user.tenant_id).order_by(JobPosition.created_at.desc()).all()
+def list_jobs(db: ScopedSession = Depends(get_scoped_db)):
+    jobs = db.query(JobPosition).order_by(JobPosition.created_at.desc()).all()
     return [{
         "id": str(j.id),
         "title": j.title,
@@ -68,8 +62,8 @@ def list_jobs(db: Session = Depends(get_db), current_user: User = Depends(get_cu
     } for j in jobs]
 
 @router.get("/jobs/{job_id}")
-def get_job(job_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
+def get_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
+    job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     return {
@@ -91,7 +85,7 @@ def get_job(job_id: str, db: Session = Depends(get_db), current_user: User = Dep
     }
 
 @router.post("/jobs")
-def create_job(job: JobCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def create_job(job: JobCreate, db: ScopedSession = Depends(get_scoped_db)):
     db_job = JobPosition(
         title=job.title,
         description=job.description,
@@ -104,8 +98,7 @@ def create_job(job: JobCreate, db: Session = Depends(get_db), current_user: User
         application_email=job.application_email,
         application_subject=job.application_subject,
         deadline=job.deadline,
-        required_skills=job.required_skills,
-        tenant_id=current_user.tenant_id
+        required_skills=job.required_skills
     )
     db.add(db_job)
     db.commit()
@@ -113,8 +106,8 @@ def create_job(job: JobCreate, db: Session = Depends(get_db), current_user: User
     return {"id": str(db_job.id), "message": "Vaga criada com sucesso"}
 
 @router.put("/jobs/{job_id}")
-def update_job(job_id: str, job_update: JobUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    db_job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
+def update_job(job_id: str, job_update: JobUpdate, db: ScopedSession = Depends(get_scoped_db)):
+    db_job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
     if not db_job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     
@@ -130,8 +123,8 @@ def update_job(job_id: str, job_update: JobUpdate, db: Session = Depends(get_db)
     return {"id": str(db_job.id), "message": "Vaga atualizada com sucesso"}
 
 @router.delete("/jobs/{job_id}")
-def delete_job(job_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    db_job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
+def delete_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
+    db_job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
     if not db_job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     
@@ -140,11 +133,11 @@ def delete_job(job_id: str, db: Session = Depends(get_db), current_user: User = 
     return {"message": "Vaga excluída com sucesso"}
 
 @router.get("/jobs/{job_id}/match")
-async def match_candidates(job_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+async def match_candidates(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
     import asyncio
     from app.services.match_engine import generate_match_justification
 
-    job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
+    job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
         
@@ -152,7 +145,6 @@ async def match_candidates(job_id: str, db: Session = Depends(get_db), current_u
         selectinload(Candidate.skills),
         selectinload(Candidate.experiences)
     ).filter(
-        Candidate.tenant_id == current_user.tenant_id,
         Candidate.is_active == True,
         Candidate.deleted_at == None
     ).all()
@@ -242,19 +234,22 @@ async def match_candidates(job_id: str, db: Session = Depends(get_db), current_u
                 
     # Executar chamadas de IA concorrentemente se houver requisições pendentes
     if llm_requests:
+        sem = asyncio.Semaphore(3)
+
         async def run_llm(req):
-            just = await asyncio.to_thread(
-                generate_match_justification,
-                job_title=job.title,
-                job_description=job.description,
-                required_skills=job.required_skills or "",
-                candidate_name=req["candidate"].full_name,
-                candidate_skills=req["cand_skills"],
-                candidate_experiences=req["cand_exps"],
-                matched_skills=req["matched_skills"],
-                score=req["score"]
-            )
-            return req, just
+            async with sem:
+                just = await asyncio.to_thread(
+                    generate_match_justification,
+                    job_title=job.title,
+                    job_description=job.description,
+                    required_skills=job.required_skills or "",
+                    candidate_name=req["candidate"].full_name,
+                    candidate_skills=req["cand_skills"],
+                    candidate_experiences=req["cand_exps"],
+                    matched_skills=req["matched_skills"],
+                    score=req["score"]
+                )
+                return req, just
 
         tasks = [run_llm(req) for req in llm_requests]
         llm_results = await asyncio.gather(*tasks)

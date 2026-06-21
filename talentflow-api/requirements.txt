@@ -14,3 +14,4 @@ cloudinary>=1.40.0
 google-genai>=0.1.1
 bcrypt>=4.1.0
 pyjwt>=2.8.0
+stripe>=10.11.0

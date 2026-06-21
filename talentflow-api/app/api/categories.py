@@ -4,15 +4,9 @@ from pydantic import BaseModel
 from app.core.database import SessionLocal
 from app.models.domain import Category, candidate_category, User
 
-from app.api.deps import get_current_user
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession
 router = APIRouter(dependencies=[Depends(get_current_user)])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 class CategoryCreate(BaseModel):
     name: str
@@ -21,29 +15,29 @@ class CategoryUpdate(BaseModel):
     name: str
 
 @router.get("/categories")
-def list_categories(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    cats = db.query(Category).filter(Category.tenant_id == current_user.tenant_id).order_by(Category.name.asc()).all()
+def list_categories(db: ScopedSession = Depends(get_scoped_db)):
+    cats = db.query(Category).order_by(Category.name.asc()).all()
     return [{"id": str(c.id), "name": c.name} for c in cats]
 
 @router.post("/categories")
-def create_category(cat: CategoryCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+def create_category(cat: CategoryCreate, db: ScopedSession = Depends(get_scoped_db)):
     name_clean = cat.name.strip()
     if not name_clean:
         raise HTTPException(status_code=400, detail="O nome da categoria não pode ser vazio")
         
-    existing = db.query(Category).filter(Category.name.ilike(name_clean), Category.tenant_id == current_user.tenant_id).first()
+    existing = db.query(Category).filter(Category.name.ilike(name_clean)).first()
     if existing:
         raise HTTPException(status_code=400, detail="Esta categoria já existe")
         
-    db_cat = Category(name=name_clean, tenant_id=current_user.tenant_id)
+    db_cat = Category(name=name_clean)
     db.add(db_cat)
     db.commit()
     db.refresh(db_cat)
     return {"id": str(db_cat.id), "name": db_cat.name}
 
 @router.put("/categories/{category_id}")
-def update_category(category_id: str, cat: CategoryUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    db_cat = db.query(Category).filter(Category.id == category_id, Category.tenant_id == current_user.tenant_id).first()
+def update_category(category_id: str, cat: CategoryUpdate, db: ScopedSession = Depends(get_scoped_db)):
+    db_cat = db.query(Category).filter(Category.id == category_id).first()
     if not db_cat:
         raise HTTPException(status_code=404, detail="Categoria não encontrada")
         
@@ -51,7 +45,7 @@ def update_category(category_id: str, cat: CategoryUpdate, db: Session = Depends
     if not name_clean:
         raise HTTPException(status_code=400, detail="O nome da categoria não pode ser vazio")
         
-    existing = db.query(Category).filter(Category.name.ilike(name_clean), Category.id != category_id, Category.tenant_id == current_user.tenant_id).first()
+    existing = db.query(Category).filter(Category.name.ilike(name_clean), Category.id != category_id).first()
     if existing:
         raise HTTPException(status_code=400, detail="Já existe outra categoria com este nome")
         
@@ -61,8 +55,8 @@ def update_category(category_id: str, cat: CategoryUpdate, db: Session = Depends
     return {"id": str(db_cat.id), "name": db_cat.name}
 
 @router.delete("/categories/{category_id}", status_code=204)
-def delete_category(category_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    db_cat = db.query(Category).filter(Category.id == category_id, Category.tenant_id == current_user.tenant_id).first()
+def delete_category(category_id: str, db: ScopedSession = Depends(get_scoped_db)):
+    db_cat = db.query(Category).filter(Category.id == category_id).first()
     if not db_cat:
         raise HTTPException(status_code=404, detail="Categoria não encontrada")
         

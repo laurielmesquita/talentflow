@@ -12,7 +12,6 @@ interface Candidate {
   full_name: string;
   current_job: string;
   categories: string[];
-  match_score: number;
   added_at: string | null;
   skills: string[];
   photo_url: string | null;

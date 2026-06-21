@@ -287,9 +287,9 @@ export default function LandingPage() {
             <span>© {new Date().getFullYear()} TalentFlow. Todos os direitos reservados.</span>
           </div>
           <div className="flex gap-6">
-            <a href="#" className="hover:text-foreground transition-colors">Termos de Uso</a>
-            <a href="#" className="hover:text-foreground transition-colors">Privacidade</a>
-            <a href="#" className="hover:text-foreground transition-colors">Suporte</a>
+            <Link href="/terms" className="hover:text-foreground transition-colors">Termos de Uso</Link>
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacidade</Link>
+            <a href="mailto:adm.the@outlook.com" className="hover:text-foreground transition-colors">Suporte</a>
           </div>
         </div>
       </footer>

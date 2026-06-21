@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timezone, timedelta, date
 
 from app.core.database import SessionLocal
-from app.models.domain import Candidate, Category, JobPosition, candidate_category
+from app.models.domain import Candidate, Category, JobPosition, candidate_category, User
 
 from app.api.deps import get_current_user
 router = APIRouter(dependencies=[Depends(get_current_user)])
@@ -17,11 +17,12 @@ def get_db():
         db.close()
 
 @router.get("/dashboard/stats")
-def get_dashboard_stats(db: Session = Depends(get_db)):
+def get_dashboard_stats(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     # 1. Candidatos
     total_candidates = db.query(Candidate).filter(
         Candidate.is_active == True, 
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).count()
     
     # Ingestão nas últimas 24h
@@ -29,13 +30,15 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     added_today = db.query(Candidate).filter(
         Candidate.is_active == True,
         Candidate.deleted_at == None,
-        Candidate.created_at >= time_24h_ago
+        Candidate.created_at >= time_24h_ago,
+        Candidate.tenant_id == current_user.tenant_id
     ).count()
     
     # Média de score de qualidade (0-100)
     avg_quality = db.query(func.avg(Candidate.quality_score)).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).scalar()
     avg_quality = round(float(avg_quality), 1) if avg_quality is not None else 0.0
     
@@ -43,12 +46,13 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     flagged_count = db.query(Candidate).filter(
         Candidate.is_active == True,
         Candidate.deleted_at == None,
-        Candidate.is_flagged == True
+        Candidate.is_flagged == True,
+        Candidate.tenant_id == current_user.tenant_id
     ).count()
     
     # 2. Vagas (Jobs)
-    total_jobs = db.query(JobPosition).count()
-    active_jobs = db.query(JobPosition).filter(JobPosition.is_active == True).count()
+    total_jobs = db.query(JobPosition).filter(JobPosition.tenant_id == current_user.tenant_id).count()
+    active_jobs = db.query(JobPosition).filter(JobPosition.is_active == True, JobPosition.tenant_id == current_user.tenant_id).count()
     
     # Vagas vencendo nos próximos 7 dias
     today = date.today()
@@ -56,16 +60,18 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     upcoming_deadlines = db.query(JobPosition).filter(
         JobPosition.is_active == True,
         JobPosition.deadline >= today,
-        JobPosition.deadline <= seven_days_later
+        JobPosition.deadline <= seven_days_later,
+        JobPosition.tenant_id == current_user.tenant_id
     ).count()
     
     # 3. Categorias
-    total_categories = db.query(Category).count()
+    total_categories = db.query(Category).filter(Category.tenant_id == current_user.tenant_id).count()
     
     # Candidatos sem nenhuma categoria (ponto cego/não organizados)
     uncategorized_count = db.query(Candidate).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).filter(~Candidate.categories.any()).count()
     
     # Categoria mais populosa
@@ -78,7 +84,8 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
         Candidate, Candidate.id == candidate_category.c.candidate_id
     ).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).group_by(
         Category.name
     ).order_by(
@@ -91,7 +98,8 @@ def get_dashboard_stats(db: Session = Depends(get_db)):
     # 4. Ingestão Recente (Últimos 5 candidatos)
     recent_candidates_list = db.query(Candidate).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).order_by(
         Candidate.created_at.desc()
     ).limit(5).all()

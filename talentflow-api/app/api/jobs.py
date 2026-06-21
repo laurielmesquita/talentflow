@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session, selectinload
 from pydantic import BaseModel
 from typing import List, Optional
 from app.core.database import SessionLocal
-from app.models.domain import JobPosition, Candidate, JobMatch
+from app.models.domain import JobPosition, Candidate, JobMatch, User
 
 from app.api.deps import get_current_user
 router = APIRouter(dependencies=[Depends(get_current_user)])
@@ -47,8 +47,8 @@ class JobUpdate(BaseModel):
     is_active: Optional[bool] = None
 
 @router.get("/jobs")
-def list_jobs(db: Session = Depends(get_db)):
-    jobs = db.query(JobPosition).order_by(JobPosition.created_at.desc()).all()
+def list_jobs(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    jobs = db.query(JobPosition).filter(JobPosition.tenant_id == current_user.tenant_id).order_by(JobPosition.created_at.desc()).all()
     return [{
         "id": str(j.id),
         "title": j.title,
@@ -68,8 +68,8 @@ def list_jobs(db: Session = Depends(get_db)):
     } for j in jobs]
 
 @router.get("/jobs/{job_id}")
-def get_job(job_id: str, db: Session = Depends(get_db)):
-    job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
+def get_job(job_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     return {
@@ -91,7 +91,7 @@ def get_job(job_id: str, db: Session = Depends(get_db)):
     }
 
 @router.post("/jobs")
-def create_job(job: JobCreate, db: Session = Depends(get_db)):
+def create_job(job: JobCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_job = JobPosition(
         title=job.title,
         description=job.description,
@@ -104,7 +104,8 @@ def create_job(job: JobCreate, db: Session = Depends(get_db)):
         application_email=job.application_email,
         application_subject=job.application_subject,
         deadline=job.deadline,
-        required_skills=job.required_skills
+        required_skills=job.required_skills,
+        tenant_id=current_user.tenant_id
     )
     db.add(db_job)
     db.commit()
@@ -112,8 +113,8 @@ def create_job(job: JobCreate, db: Session = Depends(get_db)):
     return {"id": str(db_job.id), "message": "Vaga criada com sucesso"}
 
 @router.put("/jobs/{job_id}")
-def update_job(job_id: str, job_update: JobUpdate, db: Session = Depends(get_db)):
-    db_job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
+def update_job(job_id: str, job_update: JobUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
     if not db_job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     
@@ -121,13 +122,16 @@ def update_job(job_id: str, job_update: JobUpdate, db: Session = Depends(get_db)
     for key, value in update_data.items():
         setattr(db_job, key, value)
         
+    # Invalida o cache de matches para esta vaga
+    db.query(JobMatch).filter(JobMatch.job_id == job_id).delete()
+    
     db.commit()
     db.refresh(db_job)
     return {"id": str(db_job.id), "message": "Vaga atualizada com sucesso"}
 
 @router.delete("/jobs/{job_id}")
-def delete_job(job_id: str, db: Session = Depends(get_db)):
-    db_job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
+def delete_job(job_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    db_job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
     if not db_job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     
@@ -136,18 +140,27 @@ def delete_job(job_id: str, db: Session = Depends(get_db)):
     return {"message": "Vaga excluída com sucesso"}
 
 @router.get("/jobs/{job_id}/match")
-def match_candidates(job_id: str, db: Session = Depends(get_db)):
-    job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
+async def match_candidates(job_id: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
+    import asyncio
+    from app.services.match_engine import generate_match_justification
+
+    job = db.query(JobPosition).filter(JobPosition.id == job_id, JobPosition.tenant_id == current_user.tenant_id).first()
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
         
     candidates = db.query(Candidate).options(
         selectinload(Candidate.skills),
         selectinload(Candidate.experiences)
+    ).filter(
+        Candidate.tenant_id == current_user.tenant_id,
+        Candidate.is_active == True,
+        Candidate.deleted_at == None
     ).all()
+    
     req_skills = [s.strip().lower() for s in job.required_skills.split(",")] if job.required_skills else []
     
-    results = []
+    # Calcular scores on-the-fly
+    candidate_scores = []
     for c in candidates:
         cand_skills = [s.name.lower() for s in c.skills]
         matched = set(req_skills).intersection(set(cand_skills))
@@ -156,20 +169,128 @@ def match_candidates(job_id: str, db: Session = Depends(get_db)):
         if req_skills:
             score = int((len(matched) / len(req_skills)) * 100)
             
+        candidate_scores.append((c, score, matched, cand_skills))
+        
+    # Ordenar por score e pegar os top 20
+    candidate_scores.sort(key=lambda x: x[1], reverse=True)
+    top_candidates = candidate_scores[:20]
+    
+    # Buscar cache existente de matches para a vaga
+    existing_matches = db.query(JobMatch).filter(JobMatch.job_id == job.id).all()
+    match_by_candidate = {str(m.candidate_id): m for m in existing_matches}
+    
+    results = []
+    new_db_matches = []
+    llm_requests = []
+    
+    for c, score, matched, cand_skills in top_candidates:
+        cand_id_str = str(c.id)
         current_job = "Não informado"
         if c.experiences:
             current_job = c.experiences[0].job_title
+            
+        db_match = match_by_candidate.get(cand_id_str)
+        if db_match:
+            # Match já está em cache
+            results.append({
+                "candidate_id": cand_id_str,
+                "full_name": c.full_name,
+                "current_job": current_job,
+                "photo_url": c.photo_url,
+                "match_score": int(db_match.match_score),
+                "matched_skills": list(matched),
+                "total_skills_cand": len(cand_skills),
+                "match_justification": db_match.match_justification
+            })
+        else:
+            # Match não está em cache
+            if score == 0:
+                justification = "O candidato não possui as competências técnicas obrigatórias especificadas para esta vaga."
+                new_db_match = JobMatch(
+                    job_id=job.id,
+                    candidate_id=c.id,
+                    match_score=0.0,
+                    match_justification=justification
+                )
+                db.add(new_db_match)
+                new_db_matches.append(new_db_match)
+                
+                results.append({
+                    "candidate_id": cand_id_str,
+                    "full_name": c.full_name,
+                    "current_job": current_job,
+                    "photo_url": c.photo_url,
+                    "match_score": 0,
+                    "matched_skills": list(matched),
+                    "total_skills_cand": len(cand_skills),
+                    "match_justification": justification
+                })
+            else:
+                # Necessita chamada à IA
+                cand_exps = [
+                    {"company_name": e.company_name, "job_title": e.job_title, "description": e.description}
+                    for e in c.experiences
+                ]
+                llm_requests.append({
+                    "candidate": c,
+                    "score": score,
+                    "matched_skills": list(matched),
+                    "cand_skills": cand_skills,
+                    "cand_exps": cand_exps,
+                    "current_job": current_job
+                })
+                
+    # Executar chamadas de IA concorrentemente se houver requisições pendentes
+    if llm_requests:
+        async def run_llm(req):
+            just = await asyncio.to_thread(
+                generate_match_justification,
+                job_title=job.title,
+                job_description=job.description,
+                required_skills=job.required_skills or "",
+                candidate_name=req["candidate"].full_name,
+                candidate_skills=req["cand_skills"],
+                candidate_experiences=req["cand_exps"],
+                matched_skills=req["matched_skills"],
+                score=req["score"]
+            )
+            return req, just
 
-        results.append({
-            "candidate_id": str(c.id),
-            "full_name": c.full_name,
-            "current_job": current_job,
-            "photo_url": c.photo_url,
-            "match_score": score,
-            "matched_skills": list(matched),
-            "total_skills_cand": len(cand_skills)
-        })
+        tasks = [run_llm(req) for req in llm_requests]
+        llm_results = await asyncio.gather(*tasks)
         
-    # Sort by highest score
+        for req, justification in llm_results:
+            c = req["candidate"]
+            score = req["score"]
+            
+            new_db_match = JobMatch(
+                job_id=job.id,
+                candidate_id=c.id,
+                match_score=float(score),
+                match_justification=justification
+            )
+            db.add(new_db_match)
+            new_db_matches.append(new_db_match)
+            
+            results.append({
+                "candidate_id": str(c.id),
+                "full_name": c.full_name,
+                "current_job": req["current_job"],
+                "photo_url": c.photo_url,
+                "match_score": score,
+                "matched_skills": req["matched_skills"],
+                "total_skills_cand": len(req["cand_skills"]),
+                "match_justification": justification
+            })
+            
+    if new_db_matches:
+        try:
+            db.commit()
+        except Exception as e:
+            print(f"[MatchAPI] Erro ao salvar matches no banco: {e}")
+            db.rollback()
+            
+    # Garantir ordenação decrescente pelo score
     results.sort(key=lambda x: x["match_score"], reverse=True)
-    return {"job_title": job.title, "matches": results[:20]} # Top 20
+    return {"job_title": job.title, "matches": results}
+

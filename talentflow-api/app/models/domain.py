@@ -19,21 +19,43 @@ candidate_skill = Table(
     Column("skill_id", UUID(as_uuid=True), ForeignKey("skills.id"), primary_key=True)
 )
 
+class Tenant(Base):
+    __tablename__ = "tenants"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    name = Column(String, nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    # Relationships
+    users = relationship("User", back_populates="tenant")
+    candidates = relationship("Candidate", back_populates="tenant")
+    job_positions = relationship("JobPosition", back_populates="tenant")
+    categories = relationship("Category", back_populates="tenant")
+    skills = relationship("Skill", back_populates="tenant")
+    batch_jobs = relationship("BatchJob", back_populates="tenant")
+    invites = relationship("Invite", back_populates="tenant")
+
 class Category(Base):
     __tablename__ = "categories"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     name = Column(String, unique=True, index=True, nullable=False)
+    
+    tenant = relationship("Tenant", back_populates="categories")
     candidates = relationship("Candidate", secondary=candidate_category, back_populates="categories")
 
 class Skill(Base):
     __tablename__ = "skills"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     name = Column(String, unique=True, index=True, nullable=False)
+    
+    tenant = relationship("Tenant", back_populates="skills")
     candidates = relationship("Candidate", secondary=candidate_skill, back_populates="skills")
 
 class Candidate(Base):
     __tablename__ = "candidates"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     full_name = Column(String, nullable=False, index=True)
     birth_date = Column(Date, nullable=True)
     email = Column(String, index=True, nullable=True)
@@ -53,6 +75,7 @@ class Candidate(Base):
     flagged_at = Column(DateTime(timezone=True), nullable=True) # data/hora da sinalização
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
+    tenant = relationship("Tenant", back_populates="candidates")
     categories = relationship("Category", secondary=candidate_category, back_populates="candidates")
     skills = relationship("Skill", secondary=candidate_skill, back_populates="candidates")
     experiences = relationship("Experience", back_populates="candidate", cascade="all, delete-orphan")
@@ -74,6 +97,7 @@ class Experience(Base):
 class JobPosition(Base):
     __tablename__ = "job_positions"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     title = Column(String, nullable=False, index=True)
     description = Column(Text, nullable=False)
     location = Column(String, nullable=True)
@@ -89,6 +113,7 @@ class JobPosition(Base):
     is_active = Column(Boolean, default=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     
+    tenant = relationship("Tenant", back_populates="job_positions")
     matches = relationship("JobMatch", back_populates="job_position", cascade="all, delete-orphan")
 
 class JobMatch(Base):
@@ -105,6 +130,7 @@ class JobMatch(Base):
 class User(Base):
     __tablename__ = "users"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
@@ -112,10 +138,13 @@ class User(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    tenant = relationship("Tenant", back_populates="users")
+
 
 class Invite(Base):
     __tablename__ = "invites"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     email = Column(String, nullable=False, index=True)
     role = Column(String, nullable=False, default="Recruiter")  # Manager, Recruiter
     token = Column(String, unique=True, index=True, nullable=False)
@@ -124,6 +153,7 @@ class Invite(Base):
     created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
+    tenant = relationship("Tenant", back_populates="invites")
     inviter = relationship("User", foreign_keys=[created_by])
 
 
@@ -135,3 +165,17 @@ class PasswordReset(Base):
     expires_at = Column(DateTime(timezone=True), nullable=False)
     is_used = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class BatchJob(Base):
+    __tablename__ = "batch_jobs"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
+    status = Column(String, nullable=False, default="pending")  # pending, processing, completed, failed
+    total = Column(Integer, nullable=False, default=0)
+    processed = Column(Integer, nullable=False, default=0)
+    errors = Column(Text, nullable=True)  # JSON-serialized list of error/conflict details
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+    tenant = relationship("Tenant", back_populates="batch_jobs")
+

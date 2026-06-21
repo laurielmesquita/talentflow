@@ -329,7 +329,7 @@ def extract_candidate_from_pdf(path: Path) -> dict:
     }
 
 
-def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, version: int = 1):
+def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, version: int = 1, tenant_id: str = None):
     """
     Persiste as informações extraídas no banco de dados, configurando a versão e o parent_id se necessário.
     """
@@ -354,7 +354,8 @@ def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, versio
         quality_alerts=json.dumps(quality_alerts, ensure_ascii=False) if quality_alerts else None,
         version=version,
         parent_id=parent_id,
-        is_active=True
+        is_active=True,
+        tenant_id=tenant_id
     )
 
     if data.birth_date:
@@ -371,21 +372,20 @@ def save_candidate_to_db(db: Session, extraction: dict, parent_id = None, versio
         normalized = cat_name.strip().title()
         if not normalized:
             continue
-        cat = db.query(Category).filter(Category.name == normalized).first()
+        cat = db.query(Category).filter(Category.name == normalized, Category.tenant_id == tenant_id).first()
         if not cat:
-            cat = Category(name=normalized)
+            cat = Category(name=normalized, tenant_id=tenant_id)
             db.add(cat)
         if cat not in candidate.categories:
             candidate.categories.append(cat)
 
-    # Upsert de skills
     for skill_name in data.skills:
         normalized = skill_name.strip().title()
         if not normalized:
             continue
-        sk = db.query(Skill).filter(Skill.name == normalized).first()
+        sk = db.query(Skill).filter(Skill.name == normalized, Skill.tenant_id == tenant_id).first()
         if not sk:
-            sk = Skill(name=normalized)
+            sk = Skill(name=normalized, tenant_id=tenant_id)
             db.add(sk)
         if sk not in candidate.skills:
             candidate.skills.append(sk)
@@ -427,7 +427,14 @@ def process_single_pdf(path: Path, db: Session) -> Optional["Candidate"]:
             print(f"[ingest] SKIP: '{data.full_name}' ja existe no banco.")
             return None
 
-        candidate = save_candidate_to_db(db, extraction)
+        # Here we don't have a specific tenant_id as it is CLI.
+        # It's better to fetch the default tenant_id if available.
+        # But for CLI, we might need a default tenant.
+        from app.models.domain import Tenant
+        default_tenant = db.query(Tenant).first()
+        tenant_id = str(default_tenant.id) if default_tenant else None
+
+        candidate = save_candidate_to_db(db, extraction, tenant_id=tenant_id)
         print(f"[ingest] ✅ '{data.full_name}' salvo — {len(data.skills)} skill(s), {len(data.experiences)} experiência(s), quality_score={extraction['quality_score']}/100.")
         return candidate
 

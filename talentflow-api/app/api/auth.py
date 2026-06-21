@@ -81,7 +81,8 @@ def invite_user(
         role=request.role,
         token=token,
         expires_at=expires_at,
-        created_by=current_user.id
+        created_by=current_user.id,
+        tenant_id=current_user.tenant_id
     )
     
     db.add(invite)
@@ -182,7 +183,8 @@ def accept_invite(request: InviteAcceptRequest, db: Session = Depends(get_db)):
         full_name=request.full_name,
         hashed_password=hash_password(request.password),
         role=invite.role,
-        is_active=True
+        is_active=True,
+        tenant_id=invite.tenant_id
     )
     
     db.add(user)

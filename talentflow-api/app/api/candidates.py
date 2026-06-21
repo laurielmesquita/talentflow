@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks
 from sqlalchemy import or_, func
 from sqlalchemy.orm import Session, selectinload
 from pathlib import Path
@@ -6,10 +6,12 @@ from typing import Optional, List
 import tempfile
 import json
 import os
+import asyncio
 from pydantic import BaseModel
+from uuid import UUID
 
 from app.core.database import SessionLocal
-from app.models.domain import Candidate, Category, Skill, Experience
+from app.models.domain import Candidate, Category, Skill, Experience, BatchJob, User, JobMatch
 from app.services.quality_score import score_tier
 
 from app.api.deps import get_current_user
@@ -62,9 +64,11 @@ class FlagRequest(BaseModel):
 @router.get("/candidates")
 def list_candidates(
     category: Optional[str] = None,
+    category_id: Optional[UUID] = None,
     q: Optional[str] = None,
     include_archived: bool = False,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     """
     Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo, empresa).
@@ -74,12 +78,14 @@ def list_candidates(
         selectinload(Candidate.categories),
         selectinload(Candidate.experiences),
         selectinload(Candidate.skills)
-    )
+    ).filter(Candidate.tenant_id == current_user.tenant_id)
 
     if not include_archived:
         query = query.filter(Candidate.is_active == True, Candidate.deleted_at == None)
 
-    if category:
+    if category_id:
+        query = query.join(Candidate.categories).filter(Category.id == category_id)
+    elif category:
         query = query.join(Candidate.categories).filter(Category.name == category)
 
     if q:
@@ -130,8 +136,15 @@ def list_candidates(
 
 
 @router.get("/candidates/{candidate_id}")
-def get_candidate(candidate_id: str, db: Session = Depends(get_db)):
-    c = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+def get_candidate(
+    candidate_id: str, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    c = db.query(Candidate).filter(
+        Candidate.id == candidate_id,
+        Candidate.tenant_id == current_user.tenant_id
+    ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
 
@@ -166,6 +179,7 @@ def get_candidate(candidate_id: str, db: Session = Depends(get_db)):
 async def upload_resume(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     if not (file.filename or "").lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Apenas arquivos PDF são aceitos.")
@@ -188,7 +202,8 @@ async def upload_resume(
             identical_candidate = db.query(Candidate).filter(
                 Candidate.pdf_hash == pdf_hash,
                 Candidate.is_active == True,
-                Candidate.deleted_at == None
+                Candidate.deleted_at == None,
+                Candidate.tenant_id == current_user.tenant_id
             ).first()
             if identical_candidate:
                 raise HTTPException(
@@ -207,7 +222,8 @@ async def upload_resume(
         existing = db.query(Candidate).filter(
             Candidate.full_name == data.full_name,
             Candidate.is_active == True,
-            Candidate.deleted_at == None
+            Candidate.deleted_at == None,
+            Candidate.tenant_id == current_user.tenant_id
         ).first()
 
         if existing:
@@ -265,7 +281,7 @@ async def upload_resume(
             )
 
         # 3. Salva e persiste normalmente
-        candidate = save_candidate_to_db(db, extraction)
+        candidate = save_candidate_to_db(db, extraction, tenant_id=current_user.tenant_id)
         return {
             "status": "success",
             "id": str(candidate.id),
@@ -280,13 +296,15 @@ async def upload_resume(
 def replace_candidate(
     candidate_id: str,
     req: ReplaceRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     # Encontra candidato existente
     existing = db.query(Candidate).filter(
         Candidate.id == candidate_id,
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).first()
 
     if not existing:
@@ -326,20 +344,23 @@ def replace_candidate(
         "quality_alerts": req.quality_alerts
     }
 
+    # Invalida cache de matches do candidato que está sendo desativado/arquivado
+    db.query(JobMatch).filter(JobMatch.candidate_id == existing.id).delete()
+
     if req.action == "replace":
         # Substituir: soft-deleta o existente
         existing.deleted_at = func.now()
         existing.is_active = False
 
         # Persiste o novo candidato com versão=1, parent_id=None
-        new_candidate = save_candidate_to_db(db, extraction, parent_id=None, version=1)
+        new_candidate = save_candidate_to_db(db, extraction, parent_id=None, version=1, tenant_id=current_user.tenant_id)
 
     elif req.action == "keep_both":
         # Manter ambos: arquiva o existente
         existing.is_active = False
 
         # Persiste o novo com version=anterior+1, parent_id=anterior.id
-        new_candidate = save_candidate_to_db(db, extraction, parent_id=existing.id, version=existing.version + 1)
+        new_candidate = save_candidate_to_db(db, extraction, parent_id=existing.id, version=existing.version + 1, tenant_id=current_user.tenant_id)
 
     else:
         raise HTTPException(status_code=400, detail="Ação inválida. Use 'replace' ou 'keep_both'.")
@@ -352,8 +373,15 @@ def replace_candidate(
 
 
 @router.get("/candidates/{candidate_id}/versions")
-def get_candidate_versions(candidate_id: str, db: Session = Depends(get_db)):
-    c = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+def get_candidate_versions(
+    candidate_id: str, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    c = db.query(Candidate).filter(
+        Candidate.id == candidate_id,
+        Candidate.tenant_id == current_user.tenant_id
+    ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
 
@@ -396,8 +424,15 @@ def get_candidate_versions(candidate_id: str, db: Session = Depends(get_db)):
 
 
 @router.delete("/candidates/{candidate_id}", status_code=204)
-def delete_candidate(candidate_id: str, db: Session = Depends(get_db)):
-    c = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+def delete_candidate(
+    candidate_id: str, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    c = db.query(Candidate).filter(
+        Candidate.id == candidate_id,
+        Candidate.tenant_id == current_user.tenant_id
+    ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
 
@@ -433,11 +468,13 @@ def delete_candidate(candidate_id: str, db: Session = Depends(get_db)):
 def flag_candidate(
     candidate_id: str,
     req: FlagRequest,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     c = db.query(Candidate).filter(
         Candidate.id == candidate_id,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
@@ -461,11 +498,13 @@ def flag_candidate(
 @router.post("/candidates/{candidate_id}/unflag")
 def unflag_candidate(
     candidate_id: str,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
 ):
     c = db.query(Candidate).filter(
         Candidate.id == candidate_id,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == current_user.tenant_id
     ).first()
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
@@ -482,3 +521,235 @@ def unflag_candidate(
         "id": str(c.id),
         "is_flagged": c.is_flagged
     }
+
+
+# ===========================================================================
+# Ingestão em Lote e Background Tasks (Fase 1B)
+# ===========================================================================
+
+BATCH_SEMAPHORE = asyncio.Semaphore(2)
+
+
+def update_batch_job_progress(batch_id: str, filename: str, error_msg: Optional[str] = None):
+    """
+    Atualiza com segurança o progresso de um BatchJob.
+    Trabalha com uma nova sessão do banco para evitar conflitos no escopo do request.
+    """
+    db = SessionLocal()
+    try:
+        batch_job = db.query(BatchJob).filter(BatchJob.id == batch_id).first()
+        if not batch_job:
+            return
+        
+        batch_job.processed += 1
+        
+        if error_msg:
+            current_errors = []
+            if batch_job.errors:
+                try:
+                    current_errors = json.loads(batch_job.errors)
+                except Exception:
+                    current_errors = [batch_job.errors]
+            current_errors.append({"filename": filename, "error": error_msg})
+            batch_job.errors = json.dumps(current_errors)
+            
+        if batch_job.processed >= batch_job.total:
+            batch_job.status = "completed"
+            
+        db.commit()
+    except Exception as e:
+        print(f"[BatchJob] Erro ao atualizar progresso do lote {batch_id}: {e}")
+    finally:
+        db.close()
+
+
+def run_extraction_and_save(file_path: Path, filename: str, batch_id: str, tenant_id: str) -> bool:
+    """
+    Executa a extração síncrona de um PDF e persiste no banco de dados.
+    Verifica duplicatas por hash de arquivo e conflitos de nome.
+    """
+    from ingest import extract_candidate_from_pdf, save_candidate_to_db
+    
+    db = SessionLocal()
+    try:
+        # 1. Garante que o lote ainda existe
+        batch_job = db.query(BatchJob).filter(BatchJob.id == batch_id).first()
+        if not batch_job:
+            return False
+
+        error_msg = None
+        
+        try:
+            # 2. Extrai dados estruturados
+            extraction = extract_candidate_from_pdf(file_path)
+            data = extraction["data"]
+            pdf_hash = extraction.get("pdf_hash")
+
+            # 3. Verifica duplicata exata de arquivo (hash SHA-256)
+            if pdf_hash:
+                identical = db.query(Candidate).filter(
+                    Candidate.pdf_hash == pdf_hash,
+                    Candidate.is_active == True,
+                    Candidate.deleted_at == None,
+                    Candidate.tenant_id == tenant_id
+                ).first()
+                if identical:
+                    error_msg = "Arquivo duplicado (currículo idêntico já cadastrado)"
+
+            # 4. Verifica conflito de nome do candidato
+            if not error_msg:
+                existing = db.query(Candidate).filter(
+                    Candidate.full_name == data.full_name,
+                    Candidate.is_active == True,
+                    Candidate.deleted_at == None,
+                    Candidate.tenant_id == tenant_id
+                ).first()
+                if existing:
+                    error_msg = f"Candidato '{data.full_name}' já cadastrado (conflito de nome)"
+
+            # 5. Salva no banco de dados se não houver conflitos
+            if not error_msg:
+                save_candidate_to_db(db, extraction, tenant_id=tenant_id)
+                update_batch_job_progress(batch_id, filename)
+                return True
+            else:
+                update_batch_job_progress(batch_id, filename, error_msg=error_msg)
+                return False
+
+        except Exception as e:
+            update_batch_job_progress(batch_id, filename, error_msg=f"Erro de processamento: {str(e)}")
+            return False
+
+    finally:
+        db.close()
+
+
+async def process_single_file(file_path: Path, filename: str, batch_id: str, tenant_id: str):
+    """
+    Envolve a execução da extração síncrona dentro do semáforo global
+    e executa em thread pool para evitar o bloqueio do event loop.
+    """
+    async with BATCH_SEMAPHORE:
+        loop = asyncio.get_running_loop()
+        # Executa em pool de threads padrão (executor None)
+        return await loop.run_in_executor(None, run_extraction_and_save, file_path, filename, batch_id, tenant_id)
+
+
+async def process_batch_uploads_task(batch_id: str, file_info: List[dict], tenant_id: str):
+    """
+    Task de Background que consome arquivos do lote de forma sequencial,
+    garantindo que não haja race conditions de gravação para o mesmo lote,
+    enquanto respeita o semáforo de concorrência global.
+    """
+    db = SessionLocal()
+    try:
+        batch_job = db.query(BatchJob).filter(BatchJob.id == batch_id).first()
+        if not batch_job:
+            return
+        batch_job.status = "processing"
+        db.commit()
+    except Exception as e:
+        print(f"[BatchJob] Erro ao iniciar processamento do lote {batch_id}: {e}")
+    finally:
+        db.close()
+
+    for info in file_info:
+        temp_path = Path(info["temp_path"])
+        filename = info["filename"]
+        try:
+            await process_single_file(temp_path, filename, batch_id, tenant_id)
+        except Exception as e:
+            update_batch_job_progress(batch_id, filename, error_msg=f"Erro inesperado: {str(e)}")
+        finally:
+            # Garante limpeza do arquivo temporário
+            if temp_path.exists():
+                try:
+                    temp_path.unlink()
+                except Exception as ex:
+                    print(f"[BatchJob] Erro ao remover arquivo temporário {temp_path}: {ex}")
+
+
+@router.post("/batches/upload", status_code=202)
+async def upload_batch_resumes(
+    background_tasks: BackgroundTasks,
+    files: List[UploadFile] = File(...),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Inicia o upload de múltiplos currículos em lote.
+    Valida formatos, salva arquivos temporariamente, cria um BatchJob
+    e agenda o processamento assíncrono em background.
+    """
+    # 1. Validação prévia de formato
+    for file in files:
+        if not (file.filename or "").lower().endswith(".pdf"):
+            raise HTTPException(
+                status_code=400,
+                detail=f"Apenas arquivos PDF são aceitos. O arquivo '{file.filename}' é inválido."
+            )
+
+    # 2. Cria registro do lote no banco
+    batch_job = BatchJob(
+        status="pending", 
+        total=len(files), 
+        processed=0, 
+        errors=None,
+        tenant_id=current_user.tenant_id
+    )
+    db.add(batch_job)
+    db.commit()
+    db.refresh(batch_job)
+
+    # 3. Copia arquivos para diretório temporário para processamento diferido
+    file_info = []
+    for file in files:
+        contents = await file.read()
+        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+            tmp.write(contents)
+            tmp_path = tmp.name
+        file_info.append({"temp_path": tmp_path, "filename": file.filename})
+
+    # 4. Inicia processador em background
+    background_tasks.add_task(process_batch_uploads_task, str(batch_job.id), file_info, str(current_user.tenant_id))
+
+    return {
+        "batch_id": str(batch_job.id),
+        "total": len(files),
+        "status": batch_job.status
+    }
+
+
+@router.get("/batches/{batch_id}")
+def get_batch_job_status(
+    batch_id: str, 
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Consulta o estado de processamento de um lote de upload.
+    Retorna percentual de progresso e detalhamento de erros de parsing/duplicidade.
+    """
+    batch_job = db.query(BatchJob).filter(
+        BatchJob.id == batch_id,
+        BatchJob.tenant_id == current_user.tenant_id
+    ).first()
+    if not batch_job:
+        raise HTTPException(status_code=404, detail="Lote de processamento não encontrado")
+
+    errors_list = []
+    if batch_job.errors:
+        try:
+            errors_list = json.loads(batch_job.errors)
+        except Exception:
+            errors_list = [{"error": batch_job.errors}]
+
+    return {
+        "id": str(batch_job.id),
+        "status": batch_job.status,
+        "total": batch_job.total,
+        "processed": batch_job.processed,
+        "errors": errors_list,
+        "created_at": batch_job.created_at.isoformat() if batch_job.created_at else None
+    }
+

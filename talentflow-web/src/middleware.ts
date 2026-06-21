@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Rotas públicas que não exigem autenticação
-const PUBLIC_ROUTES = ['/login', '/forgot-password', '/reset-password', '/invite/accept'];
+const PUBLIC_ROUTES = ['/login', '/forgot-password', '/reset-password', '/invite/accept', '/terms', '/privacy'];
 
 // Helper para decodificar o payload do JWT no Edge Runtime de forma nativa (sem bibliotecas)
 function decodeJwt(token: string): any {

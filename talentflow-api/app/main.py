@@ -30,6 +30,10 @@ app.add_middleware(
 def health_check():
     return {"status": "ok", "message": "TalentFlow API is running"}
 
+@app.get("/api/health")
+def api_health_check():
+    return {"status": "ok", "message": "TalentFlow API is running"}
+
 app.include_router(candidates_router, prefix="/api")
 app.include_router(jobs_router, prefix="/api")
 app.include_router(categories_router, prefix="/api")

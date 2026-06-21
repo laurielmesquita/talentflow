@@ -134,6 +134,8 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             tenant.candidate_count_limit = PLAN_LIMITS["pro"]
             db.commit()
             logger.info(f"Tenant {tenant_id} atualizado para plano PRO.")
+        else:
+            logger.warning(f"Webhook checkout.session.completed: Tenant {tenant_id} não encontrado no banco.")
             
     elif event_type == "customer.subscription.updated":
         subscription = event["data"]["object"]
@@ -151,6 +153,8 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
                 tenant.plan_name = "pro"
                 tenant.candidate_count_limit = PLAN_LIMITS["pro"]
             db.commit()
+        else:
+            logger.warning(f"Webhook customer.subscription.updated: Tenant com assinatura {sub_id} não encontrado no banco.")
             
     elif event_type == "customer.subscription.deleted":
         subscription = event["data"]["object"]
@@ -164,5 +168,7 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             tenant.stripe_subscription_id = None
             db.commit()
             logger.info(f"Assinatura cancelada. Tenant {tenant.id} rebaixado para plano FREE.")
+        else:
+            logger.warning(f"Webhook customer.subscription.deleted: Tenant com assinatura {sub_id} não encontrado no banco.")
 
     return {"status": "success"}

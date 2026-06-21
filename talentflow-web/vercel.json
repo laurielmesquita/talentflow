@@ -1,0 +1,13 @@
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Alt-Svc",
+          "value": "clear"
+        }
+      ]
+    }
+  ]
+}

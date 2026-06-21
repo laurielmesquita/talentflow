@@ -63,7 +63,7 @@ class ExperienceItem(BaseModel):
     job_title: Optional[str] = None
     start_date: Optional[str] = None
     end_date: Optional[str] = None
-    is_current: bool = False
+    is_current: Optional[bool] = False
     description: Optional[str] = None
 
 

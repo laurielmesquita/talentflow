@@ -9,7 +9,7 @@ interface BatchUploadButtonProps {
   onSuccess?: () => void;
 }
 
-type UploadStatus = 'idle' | 'uploading' | 'processing' | 'success' | 'error';
+type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 
 export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps) {
   const router = useRouter();
@@ -17,6 +17,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [batchErrors, setBatchErrors] = useState<any[]>([]);
+  const [showSummaryModal, setShowSummaryModal] = useState(false);
 
   async function pollBatchStatus(batchId: string) {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -29,38 +30,43 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         
         if (!res.ok) {
           clearInterval(interval);
-          setStatus('error');
-          setTimeout(() => setStatus('idle'), 4000);
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
+          }
           return;
         }
         
         const data = await res.json();
         setProgress({ done: data.processed, total: data.total });
         
+        // Dispara evento de progresso para a tela principal
+        if (typeof window !== 'undefined') {
+          window.dispatchEvent(
+            new CustomEvent('candidates-processing-progress', {
+              detail: { done: data.processed, total: data.total },
+            })
+          );
+        }
+        
         if (data.status === 'completed') {
           clearInterval(interval);
           setBatchErrors(data.errors || []);
-          setStatus('success');
           
-          // Dispara evento para sinalizar recarga de lista/vagas
           if (typeof window !== 'undefined') {
-            window.dispatchEvent(
-              new CustomEvent('candidates-processing-started', {
-                detail: { count: data.total - (data.errors ? data.errors.length : 0) },
-              })
-            );
+            window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
           }
+          
           router.refresh();
           onSuccess?.();
           
-          // Se não houver erros, reseta para idle
-          if (!data.errors || data.errors.length === 0) {
-            setTimeout(() => setStatus('idle'), 3000);
+          if (data.errors && data.errors.length > 0) {
+            setShowSummaryModal(true);
           }
         } else if (data.status === 'failed') {
           clearInterval(interval);
-          setStatus('error');
-          setTimeout(() => setStatus('idle'), 4000);
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
+          }
         }
       } catch (err) {
         console.error('Erro ao consultar status do lote:', err);
@@ -74,7 +80,17 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
 
     setStatus('uploading');
     setBatchErrors([]);
+    setShowSummaryModal(false);
     setProgress({ done: 0, total: files.length });
+
+    // Dispara progresso inicial
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('candidates-processing-progress', {
+          detail: { done: 0, total: files.length },
+        })
+      );
+    }
 
     try {
       const form = new FormData();
@@ -94,36 +110,34 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
       }
 
       const data = await res.json();
-      setStatus('processing');
+      
+      // Imediatamente reseta o botão para IDLE e inicia o polling do progresso
+      setStatus('idle');
       pollBatchStatus(data.batch_id);
 
     } catch (err) {
       console.error('Erro ao fazer upload de lote:', err);
       setStatus('error');
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
+      }
       setTimeout(() => setStatus('idle'), 4000);
     }
 
-    // Reset o input
+    // Reseta o input
     if (inputRef.current) inputRef.current.value = '';
   }
 
   const label: Record<UploadStatus, string> = {
     idle: 'Upload em Lote',
-    uploading: `Enviando ${progress.done}/${progress.total}...`,
-    processing: `Processando ${progress.done}/${progress.total}...`,
-    success: batchErrors.length > 0 ? 'Concluído com avisos' : 'Enviado com sucesso!',
+    uploading: `Enviando ${progress.total} PDFs...`,
+    success: 'Enviado com sucesso!',
     error: 'Erro no upload. Tente novamente.',
   };
 
   const icon: Record<UploadStatus, React.ReactNode> = {
     idle: <UploadCloud className="w-4 h-4" />,
     uploading: (
-      <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-      </svg>
-    ),
-    processing: (
       <svg className="animate-spin w-4 h-4 text-indigo-300" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
@@ -136,8 +150,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const btnClass: Record<UploadStatus, string> = {
     idle: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-900/20',
     uploading: 'bg-indigo-700 text-indigo-300 cursor-not-allowed',
-    processing: 'bg-indigo-800 text-indigo-200 cursor-wait',
-    success: batchErrors.length > 0 ? 'bg-amber-600 text-white' : 'bg-emerald-600 text-white',
+    success: 'bg-emerald-600 text-white',
     error: 'bg-red-600/80 text-white',
   };
 
@@ -154,7 +167,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
       />
       <button
         onClick={() => inputRef.current?.click()}
-        disabled={status === 'uploading' || status === 'processing'}
+        disabled={status === 'uploading'}
         aria-label="Fazer upload de currículos em lote"
         className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-all ${btnClass[status]}`}
       >
@@ -162,8 +175,8 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         {label[status]}
       </button>
 
-      {/* Batch Upload Summary Modal */}
-      {status === 'success' && batchErrors.length > 0 && (
+      {/* Modal de resumo do processamento de lote (aberto se houver erros) */}
+      {showSummaryModal && batchErrors.length > 0 && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/55 backdrop-blur-sm">
           <div className="w-full max-w-lg bg-card border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative animate-in fade-in zoom-in duration-200">
             <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
@@ -186,7 +199,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
               ))}
             </div>
             <button
-              onClick={() => setStatus('idle')}
+              onClick={() => setShowSummaryModal(false)}
               className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl text-sm hover:bg-primary/95 transition-all active:scale-[0.98] shadow-lg shadow-primary/20"
             >
               Fechar Resumo

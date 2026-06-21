@@ -14,8 +14,8 @@ export default function Navbar({ children }: NavbarProps) {
   const pathname = usePathname();
 
   const isLinkActive = (path: string) => {
-    if (path === '/') {
-      return pathname === '/';
+    if (path === '/dashboard') {
+      return pathname === '/dashboard';
     }
     return pathname.startsWith(path);
   };
@@ -42,7 +42,7 @@ export default function Navbar({ children }: NavbarProps) {
 
         {/* Links Principais */}
         <nav className="hidden md:flex gap-2">
-          <Link href="/" className={getLinkClass('/')}>
+          <Link href="/dashboard" className={getLinkClass('/dashboard')}>
             Dashboard
           </Link>
           <Link href="/candidates" className={getLinkClass('/candidates')}>

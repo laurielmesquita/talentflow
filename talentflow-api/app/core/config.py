@@ -36,6 +36,10 @@ class Settings(BaseSettings):
     STRIPE_WEBHOOK_SECRET: str = ""
     STRIPE_PRO_PRICE_ID: str = ""
 
+    # Sandbox
+    SANDBOX_RATE_LIMIT_PER_MINUTE: int = 3
+    SANDBOX_DAILY_BUDGET: int = 100
+
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
 

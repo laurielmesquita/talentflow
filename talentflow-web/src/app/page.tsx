@@ -11,6 +11,9 @@ import {
   Search,
   Users
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const SandboxDemo = dynamic(() => import('@/components/SandboxDemo'), { ssr: false });
 
 export default function LandingPage() {
   return (
@@ -80,97 +83,11 @@ export default function LandingPage() {
           </a>
         </div>
 
-        {/* Premium UI Mockup */}
-        <div className="relative mx-auto max-w-5xl rounded-2xl border border-border/80 bg-card/60 p-4 md:p-6 shadow-2xl backdrop-blur-md">
-          {/* Mockup Header Elements */}
-          <div className="flex items-center justify-between border-b border-border/40 pb-4 mb-6">
-            <div className="flex items-center gap-2">
-              <span className="w-3 h-3 rounded-full bg-destructive/80" />
-              <span className="w-3 h-3 rounded-full bg-yellow-500/80" />
-              <span className="w-3 h-3 rounded-full bg-green-500/80" />
-              <span className="text-xs text-muted-foreground ml-3 font-mono">talentflow.app/dashboard</span>
-            </div>
-            <div className="px-3 py-1 rounded-md bg-secondary/50 text-xs text-muted-foreground">
-              Modo Escuro Ativo
-            </div>
-          </div>
-
-          {/* Mockup Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-            {/* Column 1: Candidates list */}
-            <div className="md:col-span-1 border-r border-border/40 pr-0 md:pr-6 space-y-4">
-              <div className="text-xs font-bold text-muted-foreground tracking-wider uppercase mb-2">Candidatos</div>
-              {[
-                { name: "Ana Beatriz Silva", role: "Engenheira de Software", score: 94, active: true },
-                { name: "Carlos Eduardo Souza", role: "Product Manager", score: 81, active: false },
-                { name: "Mariana Costa", role: "Designer UX/UI", score: 78, active: false }
-              ].map((cand, i) => (
-                <div 
-                  key={i} 
-                  className={`p-3 rounded-xl border flex items-center justify-between transition-all ${
-                    cand.active 
-                      ? 'bg-primary/10 border-primary/30 shadow-sm' 
-                      : 'bg-background/40 border-border/60'
-                  }`}
-                >
-                  <div>
-                    <div className="text-sm font-semibold">{cand.name}</div>
-                    <div className="text-xs text-muted-foreground">{cand.role}</div>
-                  </div>
-                  <div className={`text-xs font-bold px-2 py-1 rounded-lg ${
-                    cand.active ? 'bg-primary/20 text-primary' : 'bg-secondary text-muted-foreground'
-                  }`}>
-                    {cand.score}%
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Column 2 & 3: Match Details */}
-            <div className="md:col-span-2 space-y-6">
-              <div className="flex items-start justify-between flex-wrap gap-4">
-                <div>
-                  <h3 className="text-lg font-bold">Ana Beatriz Silva</h3>
-                  <p className="text-sm text-muted-foreground">Candidata a Engenheira de Software Senior</p>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="px-3 py-1.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-xs font-semibold">
-                    Quality Score: 9.4/10
-                  </div>
-                  <div className="px-3 py-1.5 rounded-xl bg-primary/15 border border-primary/30 text-primary text-xs font-bold">
-                    Match de Habilidades: 94%
-                  </div>
-                </div>
-              </div>
-
-              {/* Justification Box */}
-              <div className="p-4.5 rounded-xl bg-primary/5 border border-primary/20 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-2 text-primary opacity-20">
-                  <Sparkles className="w-12 h-12" />
-                </div>
-                <div className="flex items-center gap-2 text-primary font-bold text-sm mb-2.5">
-                  <Sparkles className="w-4 h-4" />
-                  Análise de Compatibilidade da IA
-                </div>
-                <p className="text-sm leading-relaxed text-foreground/90">
-                  A candidata possui sólida experiência de 5+ anos com as tecnologias obrigatórias (React, TypeScript e Node.js). Ela demonstrou liderança técnica no redesenho de microsserviços de alto volume, alinhando-se perfeitamente com os desafios de escalabilidade da vaga.
-                </p>
-              </div>
-
-              {/* Skills Tags */}
-              <div className="space-y-2">
-                <div className="text-xs font-bold text-muted-foreground">Habilidades Correspondentes</div>
-                <div className="flex flex-wrap gap-2">
-                  {['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Docker', 'AWS'].map((skill, i) => (
-                    <span key={i} className="px-2.5 py-1 rounded-lg bg-secondary text-xs font-medium border border-border/60">
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Sandbox Live Demo */}
+        <div className="mb-6 flex flex-col items-center animate-fade-in-up delay-100">
+          <div className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-3">Teste agora — sem criar conta</div>
         </div>
+        <SandboxDemo />
       </section>
 
       {/* Features Grid */}

@@ -84,10 +84,24 @@ class ScopedSession:
 
     def query(self, *entities):
         q = self.db.query(*entities)
-        for entity in entities:
-            # Filtra automaticamente classes mapeadas que possuem tenant_id
-            if isinstance(entity, type) and hasattr(entity, "tenant_id"):
-                q = q.filter(entity.tenant_id == self.tenant_id)
+        classes_to_filter = set()
+        
+        # Inspeciona as colunas da query para identificar classes mapeadas sob multi-tenant
+        for desc in q.column_descriptions:
+            entity = desc.get("entity")
+            if entity and isinstance(entity, type) and hasattr(entity, "tenant_id"):
+                classes_to_filter.add(entity)
+                
+        # Fallback de segurança para atributos de colunas diretas
+        if not classes_to_filter:
+            for entity in entities:
+                if isinstance(entity, type) and hasattr(entity, "tenant_id"):
+                    classes_to_filter.add(entity)
+                elif hasattr(entity, "class_") and hasattr(entity.class_, "tenant_id"):
+                    classes_to_filter.add(entity.class_)
+                    
+        for cls in classes_to_filter:
+            q = q.filter(cls.tenant_id == self.tenant_id)
         return q
 
     def add(self, instance):

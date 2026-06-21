@@ -11,9 +11,7 @@ import {
   Search,
   Users
 } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-const SandboxDemo = dynamic(() => import('@/components/SandboxDemo'), { ssr: false });
+import SandboxDemoWrapper from '@/components/SandboxDemoWrapper';
 
 export default function LandingPage() {
   return (
@@ -87,7 +85,7 @@ export default function LandingPage() {
         <div className="mb-6 flex flex-col items-center animate-fade-in-up delay-100">
           <div className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-3">Teste agora — sem criar conta</div>
         </div>
-        <SandboxDemo />
+        <SandboxDemoWrapper />
       </section>
 
       {/* Features Grid */}

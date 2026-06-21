@@ -50,9 +50,9 @@ export default function CandidateTable({
 }) {
   const router = useRouter();
   const [expandedId, setExpandedId] = useState<string | null>(initialCandidateId ?? null);
-  const [processingCount, setProcessingCount] = useState<number>(0);
   const [deleteCandidateId, setDeleteCandidateId] = useState<string | null>(null);
   const [deleteCandidateName, setDeleteCandidateName] = useState<string>("");
+  const [processingStatus, setProcessingStatus] = useState<{ done: number; total: number } | null>(null);
 
   // Detalhes dinâmicos de candidatos carregados sob demanda
   const [loadedCandidates, setLoadedCandidates] = useState<Record<string, any>>({});
@@ -168,21 +168,32 @@ export default function CandidateTable({
     }
   }
 
-  // Polling simulation setup
+  // Configuração de escuta de eventos de progresso de upload em lote
   useEffect(() => {
-    const handleProcessing = (e: Event) => {
-      const customEvent = e as CustomEvent<{ count: number }>;
-      setProcessingCount(prev => prev + (customEvent.detail?.count || 1));
+    const handleProgress = (e: Event) => {
+      const customEvent = e as CustomEvent<{ done: number; total: number }>;
+      setProcessingStatus({
+        done: customEvent.detail.done,
+        total: customEvent.detail.total
+      });
     };
-    window.addEventListener("candidates-processing-started", handleProcessing);
-    return () => window.removeEventListener("candidates-processing-started", handleProcessing);
+    const handleFinished = () => {
+      setProcessingStatus(null);
+    };
+
+    window.addEventListener("candidates-processing-progress", handleProgress);
+    window.addEventListener("candidates-processing-finished", handleFinished);
+    return () => {
+      window.removeEventListener("candidates-processing-progress", handleProgress);
+      window.removeEventListener("candidates-processing-finished", handleFinished);
+    };
   }, []);
 
   useEffect(() => {
-    if (processingCount <= 0) return;
+    if (!processingStatus) return;
     const interval = setInterval(() => router.refresh(), 2500);
     return () => clearInterval(interval);
-  }, [processingCount, router]);
+  }, [processingStatus, router]);
 
   // Framer Motion Variants
   const containerVariants = {
@@ -207,7 +218,7 @@ export default function CandidateTable({
     <div className="w-full max-w-6xl mx-auto space-y-4">
       {/* Indicador de Processamento */}
       <AnimatePresence>
-        {processingCount > 0 && (
+        {processingStatus && (
           <motion.div 
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
@@ -216,7 +227,9 @@ export default function CandidateTable({
           >
             <div className="flex items-center gap-3">
               <Loader2 className="w-5 h-5 animate-spin text-indigo-400" />
-              <span className="font-semibold tracking-wide">Processando {processingCount} currículos com IA...</span>
+              <span className="font-semibold tracking-wide">
+                Processando currículos com IA: {processingStatus.done} de {processingStatus.total} concluídos...
+              </span>
             </div>
             <Sparkles className="w-5 h-5 animate-pulse" />
           </motion.div>

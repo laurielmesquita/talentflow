@@ -42,7 +42,7 @@ export default function UserMenu() {
 
   const handleLogout = () => {
     clearSession();
-    window.location.href = '/login';
+    window.location.href = '/';
   };
 
   // Iniciais do Usuário

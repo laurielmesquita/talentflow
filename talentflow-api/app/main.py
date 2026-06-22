@@ -1,7 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy.orm import Session
+from sqlalchemy import text
+from app.api.deps import get_db
 from app.api.candidates import router as candidates_router
 from app.api.jobs import router as jobs_router
 from app.api.categories import router as categories_router
@@ -38,8 +41,12 @@ def health_check():
     return {"status": "ok", "message": "TalentFlow API is running"}
 
 @app.get("/api/health")
-def api_health_check():
-    return {"status": "ok", "message": "TalentFlow API is running"}
+def api_health_check(db: Session = Depends(get_db)):
+    try:
+        db.execute(text("SELECT 1"))
+        return {"status": "ok", "message": "TalentFlow API is running", "database": "connected"}
+    except Exception as e:
+        return {"status": "error", "message": "Database connection failed", "detail": str(e)}
 
 app.include_router(candidates_router, prefix="/api")
 app.include_router(jobs_router, prefix="/api")

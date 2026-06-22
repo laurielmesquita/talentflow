@@ -112,7 +112,7 @@ export default function InvitePage() {
 
         {/* Form Card Box */}
         <div className="max-w-2xl mt-10">
-          <div className="bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl relative">
+          <div className="bg-card/40 backdrop-blur-md border border-border/80 rounded-2xl p-8 shadow-sm relative">
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl pointer-events-none -z-10" />
             
             {success ? (

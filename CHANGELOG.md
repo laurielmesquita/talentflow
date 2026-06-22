@@ -19,6 +19,7 @@ Esta versão foca em **estabilidade, segurança, robustez de sessão e refinamen
 - **Versionamento Dinâmico no Backend:** O FastAPI e os endpoints `/health` e `/api/health` agora informam dinamicamente a versão estruturada lendo `settings.VERSION`.
 
 ### Corrigido
+- **Loop Infinito de Redirecionamento no Safari (ITP):** O middleware foi aprimorado para não realizar redirecionamentos 307 para `/login` se a requisição com cookies expirados já tiver como destino uma rota pública, quebrando o ciclo de recarregamento e excluindo os cookies corrompidos na resposta via `NextResponse.next()`.
 - **Arredondamento Seguro (`average_quality`):** Inserida guarda com conversão explícita para float antes do `round()` para estatísticas do tenant de candidatos vazios.
 - **Vazamento de Multi-Tenancy e N Queries no Dashboard:** O endpoint `/api/dashboard/stats` migrou para `get_scoped_db`, removendo cláusulas manuais de `tenant_id` e reduzindo o número de consultas de 11 para 5 via agregação SQL condicional.
 - **Cap de Paginação (OOM Guard):** Parâmetro `limit` agora possui cap estrito de 100 itens via `Query(..., le=100)` para mitigar riscos de falta de memória (Out Of Memory) na máquina local/produção.

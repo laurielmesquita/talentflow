@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks, Query
 from sqlalchemy import or_, func, case
 from sqlalchemy.orm import Session, selectinload
 from pathlib import Path
@@ -60,8 +60,8 @@ def list_candidates(
     category_id: Optional[UUID] = None,
     q: Optional[str] = None,
     include_archived: bool = False,
-    page: int = 1,
-    limit: int = 10,
+    page: int = Query(default=1, ge=1),
+    limit: int = Query(default=10, ge=1, le=100),
     db: ScopedSession = Depends(get_scoped_db)
 ):
     """
@@ -165,7 +165,7 @@ def list_candidates(
             "total": stats_row.total,
             "active": stats_row.active,
             "flagged": stats_row.flagged,
-            "average_quality": round(stats_row.avg_quality, 1) if stats_row.avg_quality else None,
+            "average_quality": round(float(stats_row.avg_quality), 1) if stats_row.avg_quality is not None else None,
         }
     }
 

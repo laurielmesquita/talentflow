@@ -1,78 +1,49 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy import func
-from sqlalchemy.orm import Session
+from sqlalchemy import func, case
 from datetime import datetime, timezone, timedelta, date
 
-from app.core.database import SessionLocal
-from app.models.domain import Candidate, Category, JobPosition, candidate_category, User
+from app.models.domain import Candidate, Category, JobPosition, candidate_category
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession
 
-from app.api.deps import get_current_user
 router = APIRouter(dependencies=[Depends(get_current_user)])
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 @router.get("/dashboard/stats")
-def get_dashboard_stats(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
-    # 1. Candidatos
-    total_candidates = db.query(Candidate).filter(
-        Candidate.is_active == True, 
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
-    ).count()
-    
-    # Ingestão nas últimas 24h
+def get_dashboard_stats(
+    db: ScopedSession = Depends(get_scoped_db)
+):
+    # 1. Candidatos consolidados
     time_24h_ago = datetime.now(timezone.utc) - timedelta(days=1)
-    added_today = db.query(Candidate).filter(
+    
+    candidate_stats = db.query(
+        func.count(Candidate.id).label("total"),
+        func.count(case((Candidate.created_at >= time_24h_ago, Candidate.id))).label("added_today"),
+        func.avg(Candidate.quality_score).label("avg_quality"),
+        func.count(case((Candidate.is_flagged == True, Candidate.id))).label("flagged_count"),
+        func.count(case((~Candidate.categories.any(), Candidate.id))).label("uncategorized")
+    ).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.created_at >= time_24h_ago,
-        Candidate.tenant_id == current_user.tenant_id
-    ).count()
-    
-    # Média de score de qualidade (0-100)
-    avg_quality = db.query(func.avg(Candidate.quality_score)).filter(
-        Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
-    ).scalar()
-    avg_quality = round(float(avg_quality), 1) if avg_quality is not None else 0.0
-    
-    # Candidatos em Blacklist
-    flagged_count = db.query(Candidate).filter(
-        Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.is_flagged == True,
-        Candidate.tenant_id == current_user.tenant_id
-    ).count()
-    
-    # 2. Vagas (Jobs)
-    total_jobs = db.query(JobPosition).filter(JobPosition.tenant_id == current_user.tenant_id).count()
-    active_jobs = db.query(JobPosition).filter(JobPosition.is_active == True, JobPosition.tenant_id == current_user.tenant_id).count()
-    
-    # Vagas vencendo nos próximos 7 dias
+        Candidate.deleted_at == None
+    ).first()
+
+    avg_quality = round(float(candidate_stats.avg_quality), 1) if candidate_stats.avg_quality is not None else 0.0
+
+    # 2. Vagas (Jobs) consolidadas
     today = date.today()
     seven_days_later = today + timedelta(days=7)
-    upcoming_deadlines = db.query(JobPosition).filter(
-        JobPosition.is_active == True,
-        JobPosition.deadline >= today,
-        JobPosition.deadline <= seven_days_later,
-        JobPosition.tenant_id == current_user.tenant_id
-    ).count()
     
+    job_stats = db.query(
+        func.count(JobPosition.id).label("total"),
+        func.count(case((JobPosition.is_active == True, JobPosition.id))).label("active"),
+        func.count(case((
+            (JobPosition.is_active == True) & 
+            (JobPosition.deadline >= today) & 
+            (JobPosition.deadline <= seven_days_later), 
+            JobPosition.id
+        ))).label("upcoming")
+    ).first()
+
     # 3. Categorias
-    total_categories = db.query(Category).filter(Category.tenant_id == current_user.tenant_id).count()
-    
-    # Candidatos sem nenhuma categoria (ponto cego/não organizados)
-    uncategorized_count = db.query(Candidate).filter(
-        Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
-    ).filter(~Candidate.categories.any()).count()
+    total_categories = db.query(Category).count()
     
     # Categoria mais populosa
     top_cat_query = db.query(
@@ -84,8 +55,7 @@ def get_dashboard_stats(db: Session = Depends(get_db), current_user: User = Depe
         Candidate, Candidate.id == candidate_category.c.candidate_id
     ).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.deleted_at == None
     ).group_by(
         Category.name
     ).order_by(
@@ -98,8 +68,7 @@ def get_dashboard_stats(db: Session = Depends(get_db), current_user: User = Depe
     # 4. Ingestão Recente (Últimos 5 candidatos)
     recent_candidates_list = db.query(Candidate).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None,
-        Candidate.tenant_id == current_user.tenant_id
+        Candidate.deleted_at == None
     ).order_by(
         Candidate.created_at.desc()
     ).limit(5).all()
@@ -122,19 +91,19 @@ def get_dashboard_stats(db: Session = Depends(get_db), current_user: User = Depe
         
     return {
         "candidates": {
-            "total": total_candidates,
-            "added_today": added_today,
+            "total": candidate_stats.total,
+            "added_today": candidate_stats.added_today,
             "average_quality": avg_quality,
-            "flagged_count": flagged_count
+            "flagged_count": candidate_stats.flagged_count
         },
         "jobs": {
-            "total": total_jobs,
-            "active": active_jobs,
-            "upcoming_deadlines": upcoming_deadlines
+            "total": job_stats.total,
+            "active": job_stats.active,
+            "upcoming_deadlines": job_stats.upcoming
         },
         "categories": {
             "total": total_categories,
-            "uncategorized": uncategorized_count,
+            "uncategorized": candidate_stats.uncategorized,
             "top_category": {
                 "name": top_category_name,
                 "count": top_category_count

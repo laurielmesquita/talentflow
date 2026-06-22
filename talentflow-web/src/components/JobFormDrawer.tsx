@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { X, Briefcase, Plus, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { getAuthHeaders } from "@/lib/auth";
+import Portal from "@/components/Portal";
 
 interface Job {
   id?: string;
@@ -176,7 +177,8 @@ export default function JobFormDrawer({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex justify-end">
+    <Portal>
+      <div className="fixed inset-0 z-[100] flex justify-end">
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0 }}
@@ -455,5 +457,6 @@ export default function JobFormDrawer({
         </div>
       </motion.div>
     </div>
+    </Portal>
   );
 }

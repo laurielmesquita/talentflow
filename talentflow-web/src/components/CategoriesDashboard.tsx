@@ -7,6 +7,7 @@ import { Tag, Plus, Trash2, Edit, X, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import { getSession, getAuthHeaders } from "@/lib/auth";
+import Portal from "@/components/Portal";
 
 interface Category {
   id: string;
@@ -233,7 +234,8 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
       {/* Modal Criar/Editar */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <Portal>
+            <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -310,13 +312,15 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
               </form>
             </motion.div>
           </div>
+          </Portal>
         )}
       </AnimatePresence>
 
       {/* Modal Confirmação de Exclusão */}
       <AnimatePresence>
         {deleteCatId && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <Portal>
+            <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -377,6 +381,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
               </div>
             </motion.div>
           </div>
+          </Portal>
         )}
       </AnimatePresence>
     </div>

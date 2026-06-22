@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import Portal from '@/components/Portal';
 import { useRouter } from 'next/navigation';
 import { UploadCloud, CheckCircle, AlertCircle } from 'lucide-react';
 import { getAuthHeaders } from '@/lib/auth';
@@ -19,12 +19,6 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [batchErrors, setBatchErrors] = useState<any[]>([]);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
 
   // Bloqueia o scroll da página de fundo (Scroll Lock) quando o modal estiver aberto
   useEffect(() => {
@@ -242,9 +236,11 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
       </button>
 
       {/* Renderiza o modal fora do header através de um Portal React */}
-      {mounted && typeof document !== 'undefined' && modalContent
-        ? createPortal(modalContent, document.body)
-        : null}
+      {modalContent && (
+        <Portal>
+          {modalContent}
+        </Portal>
+      )}
     </>
   );
 }

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { 
   Users, 
   Briefcase, 
+  Target,
   Layers, 
   AlertTriangle, 
   CheckCircle, 
@@ -268,7 +269,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
                 <div className="flex justify-between items-start mb-4">
                   <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Metas e Demandas</span>
                   <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-500">
-                    <Briefcase className="w-5 h-5" />
+                    <Target className="w-5 h-5" />
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold mb-1">Vagas & Processos</h3>

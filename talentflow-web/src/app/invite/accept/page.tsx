@@ -273,7 +273,7 @@ function InviteAcceptContent() {
 export default function InviteAcceptPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+      <div className="flex-1 bg-background text-foreground flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
       </div>
     }>

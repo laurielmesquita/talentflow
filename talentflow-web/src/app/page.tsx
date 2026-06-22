@@ -15,7 +15,7 @@ import SandboxDemoWrapper from '@/components/SandboxDemoWrapper';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30">
+    <div className="flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30">
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 dark:bg-primary/5 rounded-full blur-[140px] pointer-events-none -z-10" />
       <div className="absolute top-[40%] right-[-10%] w-[700px] h-[700px] bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-[160px] pointer-events-none -z-10" />

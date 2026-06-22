@@ -51,20 +51,34 @@ function LoginContent() {
   };
 
   return (
-    <div className="flex-1 w-full bg-background text-foreground flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
-      {/* Voltar para Home */}
-      <Link 
-        href="/" 
-        className="absolute top-6 left-6 text-sm font-semibold hover:text-primary transition-colors py-2 px-3 rounded-lg border border-border bg-background/50 flex items-center gap-2"
-      >
-        <ArrowLeft className="w-4 h-4" /> Voltar para Home
-      </Link>
-
+    <div className="flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30 select-none">
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse duration-[6000ms]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />
 
-      <div className="w-full max-w-md bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
+      {/* Header */}
+      <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div className="w-8.5 h-8.5 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/25 group-hover:scale-105 transition-all">
+              TF
+            </div>
+            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+              TalentFlow
+            </span>
+          </Link>
+
+          <Link 
+            href="/" 
+            className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors py-2 px-3 rounded-lg border border-border bg-background/50"
+          >
+            <ArrowLeft className="w-4 h-4" /> Voltar para Home
+          </Link>
+        </div>
+      </header>
+
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="w-full max-w-md bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
         {/* Header */}
         <div className="flex flex-col items-center mb-8">
           <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/20 mb-3 text-lg">
@@ -160,6 +174,7 @@ function LoginContent() {
         </form>
       </div>
     </div>
+  </div>
   );
 }
 

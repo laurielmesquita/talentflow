@@ -8,7 +8,7 @@ export default function LogoutButton() {
   const handleLogout = () => {
     clearSession();
     // Redireciona com recarga para limpar caches locais
-    window.location.href = '/login';
+    window.location.href = '/';
   };
 
   return (

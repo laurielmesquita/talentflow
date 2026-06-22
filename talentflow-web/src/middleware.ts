@@ -55,8 +55,9 @@ export function middleware(request: NextRequest) {
   if (token) {
     const decoded = decodeJwt(token);
     
-    // Se o token for inválido ou estiver corrompido, limpa o cookie e manda para login
-    if (!decoded) {
+    // Se o token for inválido, corrompido ou estiver expirado, limpa o cookie e manda para login
+    const isExpired = decoded && decoded.exp && decoded.exp * 1000 < Date.now();
+    if (!decoded || isExpired) {
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('token');
       response.cookies.delete('user_role');

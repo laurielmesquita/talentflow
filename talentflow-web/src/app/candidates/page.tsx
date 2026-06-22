@@ -5,6 +5,7 @@ import BatchUploadButton from '@/components/BatchUploadButton';
 import SearchAndFilters from '@/components/SearchAndFilters';
 import Navbar from '@/components/Navbar';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 interface Candidate {
   id: string;
@@ -59,6 +60,9 @@ async function getCandidates(
       headers,
       cache: 'no-store' 
     });
+    if (res.status === 401) {
+      redirect('/login');
+    }
     if (!res.ok) {
       return { 
         candidates: [], 
@@ -69,7 +73,10 @@ async function getCandidates(
       };
     }
     return res.json();
-  } catch {
+  } catch (error: any) {
+    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+      throw error;
+    }
     return { 
       candidates: [], 
       total: 0, 
@@ -91,9 +98,15 @@ async function getCategories(token?: string): Promise<Category[]> {
       headers,
       cache: 'no-store' 
     });
+    if (res.status === 401) {
+      redirect('/login');
+    }
     if (!res.ok) return [];
     return res.json();
-  } catch {
+  } catch (error: any) {
+    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+      throw error;
+    }
     return [];
   }
 }

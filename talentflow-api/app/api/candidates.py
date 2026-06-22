@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks
-from sqlalchemy import or_, func
+from sqlalchemy import or_, func, case
 from sqlalchemy.orm import Session, selectinload
 from pathlib import Path
 from typing import Optional, List
@@ -60,12 +60,35 @@ def list_candidates(
     category_id: Optional[UUID] = None,
     q: Optional[str] = None,
     include_archived: bool = False,
+    page: int = 1,
+    limit: int = 10,
     db: ScopedSession = Depends(get_scoped_db)
 ):
     """
     Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo, empresa).
     Filtra por padrão apenas os ativos (is_active=True) e não excluídos (deleted_at=None).
     """
+    # --- Query de contagem (sem selectinload, sem distinct desnecessário) ---
+    count_query = db.query(Candidate).filter(Candidate.deleted_at == None)
+    if not include_archived:
+        count_query = count_query.filter(Candidate.is_active == True)
+    if category_id:
+        count_query = count_query.join(Candidate.categories).filter(Category.id == category_id)
+    elif category:
+        count_query = count_query.join(Candidate.categories).filter(Category.name == category)
+    if q:
+        search_filter = f"%{q}%"
+        count_query = count_query.outerjoin(Candidate.skills).outerjoin(Candidate.experiences).filter(
+            or_(
+                Candidate.full_name.ilike(search_filter),
+                Skill.name.ilike(search_filter),
+                Experience.job_title.ilike(search_filter),
+                Experience.company_name.ilike(search_filter),
+            )
+        ).distinct()
+    total = count_query.count()
+
+    # --- Query de dados (com selectinload, paginação aplicada no final) ---
     query = db.query(Candidate).options(
         selectinload(Candidate.categories),
         selectinload(Candidate.experiences),
@@ -91,7 +114,7 @@ def list_candidates(
             )
         ).distinct()
 
-    candidates = query.order_by(Candidate.created_at.desc()).limit(50).all()
+    candidates = query.order_by(Candidate.created_at.desc()).offset((page - 1) * limit).limit(limit).all()
     results = []
 
     for c in candidates:
@@ -123,7 +146,28 @@ def list_candidates(
             "flagged_at": c.flagged_at.isoformat() if c.flagged_at else None
         })
 
-    return {"candidates": results, "total": len(results)}
+    # --- Query única de estatísticas (globais do tenant) ---
+    stats_row = db.query(
+        func.count().label("total"),
+        func.count(case((Candidate.is_active == True, 1))).label("active"),
+        func.count(case((Candidate.is_flagged == True, 1))).label("flagged"),
+        func.avg(
+            case((Candidate.is_active == True, Candidate.quality_score))
+        ).label("avg_quality"),
+    ).filter(Candidate.deleted_at == None).one()
+
+    return {
+        "candidates": results,
+        "total": total,
+        "page": page,
+        "limit": limit,
+        "stats": {
+            "total": stats_row.total,
+            "active": stats_row.active,
+            "flagged": stats_row.flagged,
+            "average_quality": round(stats_row.avg_quality, 1) if stats_row.avg_quality else None,
+        }
+    }
 
 
 @router.get("/candidates/{candidate_id}")

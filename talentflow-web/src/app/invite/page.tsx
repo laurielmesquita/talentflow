@@ -78,19 +78,13 @@ export default function InvitePage() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Link 
-              href="/dashboard" 
-              className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors py-2 px-3 rounded-lg border border-border bg-background/50"
-            >
-              <ArrowLeft className="w-4 h-4" /> Voltar para o Painel
-            </Link>
             <UserMenu />
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-6 py-16 md:py-24 w-full">
+      <main className="max-w-4xl mx-auto px-6 py-8 md:py-12 w-full">
         {/* Section Tag */}
         <div className="flex items-center gap-3 mb-6 text-primary">
           <UserPlus className="w-6 h-6" />

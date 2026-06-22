@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { Lock, Mail, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { setSession } from '@/lib/auth';
 
 function LoginContent() {
@@ -52,6 +52,14 @@ function LoginContent() {
 
   return (
     <div className="flex-1 w-full bg-background text-foreground flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
+      {/* Voltar para Home */}
+      <Link 
+        href="/" 
+        className="absolute top-6 left-6 text-sm font-semibold hover:text-primary transition-colors py-2 px-3 rounded-lg border border-border bg-background/50 flex items-center gap-2"
+      >
+        <ArrowLeft className="w-4 h-4" /> Voltar para Home
+      </Link>
+
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse duration-[6000ms]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />

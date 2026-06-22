@@ -1,5 +1,6 @@
 import DashboardClient from '@/components/DashboardClient';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 interface CandidateStats {
   total: number;
@@ -68,9 +69,15 @@ async function getStats(token?: string): Promise<DashboardStats> {
       headers,
       cache: 'no-store' 
     });
+    if (res.status === 401) {
+      redirect('/login');
+    }
     if (!res.ok) throw new Error("Failed to fetch stats");
     return res.json();
-  } catch (error) {
+  } catch (error: any) {
+    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+      throw error;
+    }
     console.error("Error fetching dashboard stats:", error);
     return {
       candidates: { total: 0, added_today: 0, average_quality: 0, flagged_count: 0 },
@@ -92,9 +99,15 @@ async function getJobs(token?: string): Promise<Job[]> {
       headers,
       cache: 'no-store' 
     });
+    if (res.status === 401) {
+      redirect('/login');
+    }
     if (!res.ok) throw new Error("Failed to fetch jobs");
     return res.json();
-  } catch (error) {
+  } catch (error: any) {
+    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+      throw error;
+    }
     console.error("Error fetching jobs for matching:", error);
     return [];
   }

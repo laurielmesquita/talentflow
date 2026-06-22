@@ -10,31 +10,17 @@ import {
   LogOut, 
   ChevronDown, 
   KeyRound, 
-  Send, 
-  X, 
-  CheckCircle2, 
-  AlertCircle, 
-  Loader2 
+  Send 
 } from 'lucide-react';
-import { getSession, clearSession, getAuthHeaders } from '@/lib/auth';
-import Portal from '@/components/Portal';
+import { getSession, clearSession } from '@/lib/auth';
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   
   const [userName, setUserName] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
-
-  // Form State para alteração de senha
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
     const session = getSession();
@@ -57,63 +43,6 @@ export default function UserMenu() {
   const handleLogout = () => {
     clearSession();
     window.location.href = '/login';
-  };
-
-  const handleChangePasswordSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError(null);
-    setSuccess(false);
-
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      setError('Por favor, preencha todos os campos.');
-      return;
-    }
-
-    if (newPassword !== confirmPassword) {
-      setError('A nova senha e a confirmação não coincidem.');
-      return;
-    }
-
-    if (newPassword.length < 6) {
-      setError('A nova senha deve conter pelo menos 6 caracteres.');
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/auth/change-password`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeaders()
-        },
-        body: JSON.stringify({
-          current_password: currentPassword,
-          new_password: newPassword
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.detail || 'Erro ao alterar a senha.');
-      }
-
-      setSuccess(true);
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmPassword('');
-      
-      // Fecha o modal após 2 segundos
-      setTimeout(() => {
-        setIsModalOpen(false);
-        setSuccess(false);
-      }, 2000);
-    } catch (err: any) {
-      setError(err.message || 'Ocorreu um erro inesperado.');
-    } finally {
-      setLoading(false);
-    }
   };
 
   // Iniciais do Usuário
@@ -206,16 +135,14 @@ export default function UserMenu() {
                 </Link>
               )}
 
-              <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setIsModalOpen(true);
-                }}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all text-left cursor-pointer"
+              <Link
+                href="/change-password"
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all"
               >
                 <KeyRound className="w-4 h-4 text-amber-500" />
                 Segurança & Senha
-              </button>
+              </Link>
 
               <div className="border-t border-border/40 my-1.5" />
 
@@ -228,139 +155,6 @@ export default function UserMenu() {
               </button>
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Modal de Alteração de Senha */}
-      <AnimatePresence>
-        {isModalOpen && (
-          <Portal lockScroll>
-            <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => !loading && setIsModalOpen(false)}
-                className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-              />
-
-              {/* Modal Content */}
-              <motion.div
-                initial={{ scale: 0.95, opacity: 0, y: 15 }}
-                animate={{ scale: 1, opacity: 1, y: 0 }}
-                exit={{ scale: 0.95, opacity: 0, y: 15 }}
-                className="bg-card border border-border/80 rounded-2xl w-full max-w-md shadow-2xl p-6 relative overflow-hidden z-10"
-              >
-                {/* Glow decorativo */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
-
-                <div className="flex items-center justify-between mb-5">
-                  <div className="flex items-center gap-2.5">
-                    <div className="p-2 rounded-xl bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                      <KeyRound className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h3 className="font-bold text-lg text-foreground">Alterar Senha</h3>
-                      <p className="text-xs text-muted-foreground">Mantenha sua conta TalentFlow protegida</p>
-                    </div>
-                  </div>
-                  <button
-                    disabled={loading}
-                    onClick={() => setIsModalOpen(false)}
-                    className="p-1.5 rounded-xl hover:bg-secondary/20 transition-all text-muted-foreground hover:text-foreground cursor-pointer disabled:opacity-50"
-                  >
-                    <X className="w-4 h-4" />
-                  </button>
-                </div>
-
-                {/* Feedbacks */}
-                {error && (
-                  <div className="mb-4 p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500 text-xs font-medium flex items-start gap-2 animate-shake">
-                    <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-                    <span>{error}</span>
-                  </div>
-                )}
-
-                {success && (
-                  <div className="mb-4 p-3.5 rounded-xl bg-green-500/10 border border-green-500/20 text-green-500 text-xs font-medium flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 shrink-0" />
-                    <span>Senha alterada com sucesso!</span>
-                  </div>
-                )}
-
-                {/* Formulário */}
-                <form onSubmit={handleChangePasswordSubmit} className="space-y-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">
-                      Senha Atual
-                    </label>
-                    <input
-                      type="password"
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
-                      disabled={loading || success}
-                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/15 border border-border/80 focus:border-primary/50 text-sm outline-none transition-all disabled:opacity-50"
-                      placeholder="Digite sua senha atual"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">
-                      Nova Senha
-                    </label>
-                    <input
-                      type="password"
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                      disabled={loading || success}
-                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/15 border border-border/80 focus:border-primary/50 text-sm outline-none transition-all disabled:opacity-50"
-                      placeholder="Mínimo 6 caracteres"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-semibold text-muted-foreground mb-1.5 uppercase tracking-wider">
-                      Confirmar Nova Senha
-                    </label>
-                    <input
-                      type="password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      disabled={loading || success}
-                      className="w-full px-4 py-2.5 rounded-xl bg-secondary/15 border border-border/80 focus:border-primary/50 text-sm outline-none transition-all disabled:opacity-50"
-                      placeholder="Repita a nova senha"
-                    />
-                  </div>
-
-                  <div className="pt-2 flex justify-end gap-3">
-                    <button
-                      type="button"
-                      disabled={loading || success}
-                      onClick={() => setIsModalOpen(false)}
-                      className="px-4 py-2.5 rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground hover:bg-secondary/10 transition-all cursor-pointer disabled:opacity-50"
-                    >
-                      Cancelar
-                    </button>
-                    <button
-                      type="submit"
-                      disabled={loading || success}
-                      className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-5 py-2.5 rounded-xl text-xs font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer disabled:opacity-50"
-                    >
-                      {loading ? (
-                        <>
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                          Salvando...
-                        </>
-                      ) : (
-                        'Atualizar Senha'
-                      )}
-                    </button>
-                  </div>
-                </form>
-              </motion.div>
-            </div>
-          </Portal>
         )}
       </AnimatePresence>
     </div>

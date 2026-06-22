@@ -83,7 +83,7 @@ export default function InvitePage() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {/* Main Content (max-w-4xl) */}
       <main className="max-w-4xl mx-auto px-6 py-8 md:py-12 w-full">
         {/* Section Tag */}
         <div className="flex items-center gap-3 mb-6 text-primary">

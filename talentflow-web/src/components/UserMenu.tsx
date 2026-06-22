@@ -17,6 +17,7 @@ import {
   Loader2 
 } from 'lucide-react';
 import { getSession, clearSession, getAuthHeaders } from '@/lib/auth';
+import { createPortal } from 'react-dom';
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,6 +27,7 @@ export default function UserMenu() {
   const [userName, setUserName] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
   // Form State para alteração de senha
   const [currentPassword, setCurrentPassword] = useState('');
@@ -40,6 +42,7 @@ export default function UserMenu() {
     setUserName(session.name);
     setUserEmail(session.email);
     setUserRole(session.role);
+    setMounted(true);
   }, []);
 
   // Fechar dropdown ao clicar fora
@@ -232,7 +235,7 @@ export default function UserMenu() {
 
       {/* Modal de Alteração de Senha */}
       <AnimatePresence>
-        {isModalOpen && (
+        {isModalOpen && mounted && createPortal(
           <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
             {/* Backdrop */}
             <motion.div
@@ -248,7 +251,7 @@ export default function UserMenu() {
               initial={{ scale: 0.95, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 15 }}
-              className="bg-card/75 backdrop-blur-xl border border-border/80 rounded-2xl w-full max-w-md shadow-2xl p-6 relative overflow-hidden z-10"
+              className="bg-card border border-border/80 rounded-2xl w-full max-w-md shadow-2xl p-6 relative overflow-hidden z-10"
             >
               {/* Glow decorativo */}
               <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl pointer-events-none -z-10" />
@@ -357,7 +360,8 @@ export default function UserMenu() {
                 </div>
               </form>
             </motion.div>
-          </div>
+          </div>,
+          document.body
         )}
       </AnimatePresence>
     </div>

@@ -58,6 +58,16 @@ export function middleware(request: NextRequest) {
     // Se o token for inválido, corrompido ou estiver expirado, limpa o cookie e manda para login
     const isExpired = decoded && decoded.exp && decoded.exp * 1000 < Date.now();
     if (!decoded || isExpired) {
+      // Se a rota de destino já for pública (ex: /login, /terms, /privacy), evita redirecionamentos sucessivos.
+      // Apenas limpa os cookies na resposta e deixa a renderização seguir normalmente (evita loop infinito no Safari).
+      if (isPublicRoute) {
+        const response = NextResponse.next();
+        response.cookies.delete('token');
+        response.cookies.delete('user_role');
+        response.cookies.delete('user_name');
+        return response;
+      }
+
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('token');
       response.cookies.delete('user_role');

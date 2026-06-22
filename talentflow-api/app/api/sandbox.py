@@ -3,6 +3,7 @@ import asyncio
 from pathlib import Path
 from datetime import date
 from collections import defaultdict
+import logging
 from fastapi import APIRouter, UploadFile, File, HTTPException, Request
 from pydantic import BaseModel
 from typing import List, Optional
@@ -14,6 +15,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 
 limiter = Limiter(key_func=get_remote_address)
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -56,6 +58,7 @@ async def extract_resume_sandbox(request: Request, file: UploadFile = File(...))
         )
 
     budget_state["count"] += 1
+    logger.info(f"[sandbox] budget hoje: {budget_state['count']}/{daily_budget}")
 
     tmp_path = ""
     try:

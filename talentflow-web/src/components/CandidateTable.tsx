@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX, Trash2, ChevronDown, Mail, Phone, MapPin, Briefcase, GraduationCap, AlertTriangle } from "lucide-react";
+import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX, Trash2, ChevronDown, ChevronLeft, ChevronRight, Mail, Phone, MapPin, Briefcase, GraduationCap, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import { getAuthHeaders } from "@/lib/auth";
@@ -44,9 +44,15 @@ function ScoreRing({ score, tier }: { score: number | null; tier: string | null 
 export default function CandidateTable({
   candidates,
   initialCandidateId,
+  currentPage,
+  totalItems,
+  pageSize,
 }: {
   candidates: any[];
   initialCandidateId?: string;
+  currentPage: number;
+  totalItems: number;
+  pageSize: number;
 }) {
   const router = useRouter();
   const [expandedId, setExpandedId] = useState<string | null>(initialCandidateId ?? null);
@@ -60,6 +66,43 @@ export default function CandidateTable({
   const [flaggingId, setFlaggingId] = useState<string | null>(null);
   const [flagReason, setFlagReason] = useState("");
   const [submittingFlag, setSubmittingFlag] = useState(false);
+
+  // Lógica de Paginação
+  const totalPages = Math.ceil(totalItems / pageSize);
+  const startItem = totalItems > 0 ? (currentPage - 1) * pageSize + 1 : 0;
+  const endItem = Math.min(currentPage * pageSize, totalItems);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    const params = new URLSearchParams(window.location.search);
+    params.set("page", String(page));
+    router.push(`${window.location.pathname}?${params.toString()}`);
+  };
+
+  const handlePageSizeChange = (size: number) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("limit", String(size));
+    params.set("page", "1");
+    router.push(`${window.location.pathname}?${params.toString()}`);
+  };
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 5) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+      }
+    }
+    return pages;
+  };
 
   const fetchDetails = async (candId: string) => {
     if (loadedCandidates[candId] || loadingDetails[candId]) return;
@@ -506,6 +549,82 @@ export default function CandidateTable({
           })
         )}
       </motion.div>
+
+      {/* Controles de Paginação */}
+      {totalItems > 0 && (
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-5 bg-white dark:bg-white/5 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-sm mt-4 select-none">
+          
+          {/* Seletor de Page Size & Texto Informativo */}
+          <div className="flex items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+            <span>
+              Mostrando <strong className="font-semibold text-slate-800 dark:text-slate-200">{startItem}</strong> a{" "}
+              <strong className="font-semibold text-slate-800 dark:text-slate-200">{endItem}</strong> de{" "}
+              <strong className="font-semibold text-slate-800 dark:text-slate-200">{totalItems}</strong> candidatos
+            </span>
+            <div className="flex items-center gap-2 border-l border-slate-200 dark:border-white/10 pl-4">
+              <span className="text-xs">Exibir:</span>
+              <select
+                value={pageSize}
+                onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                className="bg-slate-50 dark:bg-black/25 border border-slate-200 dark:border-white/10 rounded-xl px-2.5 py-1 text-xs font-bold text-slate-700 dark:text-slate-300 outline-none focus:border-primary/50 transition-colors"
+              >
+                {[10, 25, 50, 100].map((size) => (
+                  <option key={size} value={size}>
+                    {size}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Navegação Numerada */}
+          {totalPages > 1 && (
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => handlePageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+                className="p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-40 disabled:hover:bg-transparent text-slate-600 dark:text-slate-400 transition-all cursor-pointer disabled:cursor-not-allowed"
+                aria-label="Página anterior"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+
+              {getPageNumbers().map((pageNum, idx) => {
+                if (pageNum === "...") {
+                  return (
+                    <span key={idx} className="px-1 text-slate-400 dark:text-slate-500">
+                      ...
+                    </span>
+                  );
+                }
+                const isActive = pageNum === currentPage;
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handlePageChange(Number(pageNum))}
+                    className={`min-w-9 h-9 rounded-xl border text-sm font-semibold transition-all cursor-pointer ${
+                      isActive
+                        ? "bg-primary border-primary text-white shadow-md shadow-primary/20"
+                        : "border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5"
+                    }`}
+                  >
+                    {pageNum}
+                  </button>
+                );
+              })}
+
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                disabled={currentPage === totalPages}
+                className="p-2 rounded-xl border border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5 disabled:opacity-40 disabled:hover:bg-transparent text-slate-600 dark:text-slate-400 transition-all cursor-pointer disabled:cursor-not-allowed"
+                aria-label="Próxima página"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
       <DeleteConfirmModal
         isOpen={deleteCandidateId !== null}

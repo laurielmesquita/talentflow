@@ -157,7 +157,7 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
   }
 
   return (
-    <Portal>
+    <Portal lockScroll>
       <div className="fixed inset-0 z-[100] flex justify-end">
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm" onClick={onClose}></div>
       <div className="relative w-full max-w-md h-full bg-slate-900 border-l border-slate-800 shadow-2xl overflow-y-auto animate-in slide-in-from-right duration-300">

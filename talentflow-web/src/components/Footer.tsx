@@ -34,7 +34,7 @@ const itemVariants = {
   },
 };
 
-export default function Footer({ version = "0.1.0" }: FooterProps) {
+export default function Footer({ version = "1.1.0" }: FooterProps) {
   const pathname = usePathname();
   
   // Agrupamento para Variante Simple: páginas públicas, jurídicas e fluxos de autenticação/convites.

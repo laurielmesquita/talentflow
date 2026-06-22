@@ -13,6 +13,7 @@ import JobFormDrawer from "./JobFormDrawer";
 import JobMatchViewer from "./JobMatchViewer";
 import Navbar from "@/components/Navbar";
 import { getSession, getAuthHeaders } from "@/lib/auth";
+import Portal from "@/components/Portal";
 
 interface Job {
   id: string;
@@ -432,7 +433,8 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
       {/* Modal de Exclusão */}
       <AnimatePresence>
         {deleteJobId && (
-          <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
+          <Portal>
+            <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -507,6 +509,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
               </div>
             </motion.div>
           </div>
+          </Portal>
         )}
       </AnimatePresence>
     </div>

@@ -20,17 +20,6 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const [batchErrors, setBatchErrors] = useState<any[]>([]);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
 
-  // Bloqueia o scroll da página de fundo (Scroll Lock) quando o modal estiver aberto
-  useEffect(() => {
-    if (showSummaryModal && batchErrors.length > 0) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [showSummaryModal, batchErrors]);
 
   async function pollBatchStatus(batchId: string) {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -237,7 +226,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
 
       {/* Renderiza o modal fora do header através de um Portal React */}
       {modalContent && (
-        <Portal>
+        <Portal lockScroll>
           {modalContent}
         </Portal>
       )}

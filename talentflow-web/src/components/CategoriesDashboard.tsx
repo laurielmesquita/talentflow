@@ -234,7 +234,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
       {/* Modal Criar/Editar */}
       <AnimatePresence>
         {isModalOpen && (
-          <Portal>
+          <Portal lockScroll>
             <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}
@@ -319,7 +319,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
       {/* Modal Confirmação de Exclusão */}
       <AnimatePresence>
         {deleteCatId && (
-          <Portal>
+          <Portal lockScroll>
             <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}

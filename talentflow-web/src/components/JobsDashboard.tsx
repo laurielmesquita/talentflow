@@ -433,7 +433,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
       {/* Modal de Exclusão */}
       <AnimatePresence>
         {deleteJobId && (
-          <Portal>
+          <Portal lockScroll>
             <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
             <motion.div
               initial={{ opacity: 0 }}

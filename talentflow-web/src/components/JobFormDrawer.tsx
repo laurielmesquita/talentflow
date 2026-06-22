@@ -177,7 +177,7 @@ export default function JobFormDrawer({
   if (!isOpen) return null;
 
   return (
-    <Portal>
+    <Portal lockScroll>
       <div className="fixed inset-0 z-[100] flex justify-end">
       {/* Backdrop */}
       <motion.div

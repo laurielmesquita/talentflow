@@ -4,6 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "TalentFlow API"
+    VERSION: str = "1.1.0"
 
     # Banco de dados — Neon.tech em producao, PostgreSQL local em dev
     DATABASE_URL: str = "postgresql://postgres:password@localhost:5432/talentflow"

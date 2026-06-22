@@ -1,3 +1,4 @@
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from slowapi import _rate_limit_exceeded_handler
@@ -10,11 +11,14 @@ from app.api.auth import router as auth_router
 from app.api.billing import router as billing_router
 from app.api.sandbox import router as sandbox_router
 from app.api.sandbox import limiter
+from app.core.config import settings
+
+logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="TalentFlow API",
     description="Motor de Ingestão e Triagem Inteligente",
-    version="0.1.0",
+    version=settings.VERSION,
 )
 
 app.state.limiter = limiter
@@ -33,13 +37,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.on_event("startup")
+def startup_event():
+    logger.info(f"Iniciando TalentFlow API v{settings.VERSION}")
+    print(f"Iniciando TalentFlow API v{settings.VERSION}")
+
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "message": "TalentFlow API is running"}
+    return {"status": "ok", "message": "TalentFlow API is running", "version": settings.VERSION}
 
 @app.get("/api/health")
 def api_health_check():
-    return {"status": "ok", "message": "TalentFlow API is running"}
+    return {"status": "ok", "message": "TalentFlow API is running", "version": settings.VERSION}
 
 app.include_router(candidates_router, prefix="/api")
 app.include_router(jobs_router, prefix="/api")

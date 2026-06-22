@@ -192,22 +192,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-border/40 py-12 bg-background/50">
-        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
-          <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-primary/20 flex items-center justify-center font-bold text-primary text-xs">
-              TF
-            </div>
-            <span>© {new Date().getFullYear()} TalentFlow. Todos os direitos reservados.</span>
-          </div>
-          <div className="flex gap-6">
-            <Link href="/terms" className="hover:text-foreground transition-colors">Termos de Uso</Link>
-            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacidade</Link>
-            <a href="mailto:adm.the@outlook.com" className="hover:text-foreground transition-colors">Suporte</a>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }

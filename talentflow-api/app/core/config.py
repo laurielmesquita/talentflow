@@ -29,7 +29,7 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:3000"
 
     # JWT Secret Key
-    SECRET_KEY: str = "talentflow_super_secret_key_60fps_premium"
+    SECRET_KEY: str
 
     # Stripe Billing
     STRIPE_SECRET_KEY: str = ""

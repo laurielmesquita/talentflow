@@ -27,16 +27,22 @@ export default function SearchAndFilters({
   const [query, setQuery] = useState(activeQuery || '');
   const [showAdvanced, setShowAdvanced] = useState(false);
 
-  // Debounce para a busca textual
+  // Debounce para a busca textual com reset de página
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
-      if (query.trim()) {
-        params.set('q', query.trim());
-      } else {
-        params.delete('q');
+      const currentQ = searchParams.get('q') || '';
+      const normalizedQuery = query.trim();
+
+      if (normalizedQuery !== currentQ) {
+        if (normalizedQuery) {
+          params.set('q', normalizedQuery);
+        } else {
+          params.delete('q');
+        }
+        params.set('page', '1');
+        router.push(`${pathname}?${params.toString()}`);
       }
-      router.push(`${pathname}?${params.toString()}`);
     }, 400);
 
     return () => clearTimeout(delayDebounceFn);
@@ -54,6 +60,7 @@ export default function SearchAndFilters({
     } else {
       params.set('category', categoryName);
     }
+    params.set('page', '1');
     router.push(`${pathname}?${params.toString()}`);
   };
 

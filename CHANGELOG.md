@@ -4,6 +4,24 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 ---
 
+## [1.2.0] — 2026-06-23
+
+Esta versão traz **melhorias de navegação, usabilidade e refinamento estético na landing page** do TalentFlow, com suporte a chaveamento de temas e correção de legibilidade no motor visual do hero.
+
+### Adicionado
+- **Botão de Escolha de Tema:** Integrador do componente de alternância de tema (`ThemeToggle`) diretamente no cabeçalho da landing page.
+- **Cabeçalho Dinâmico (`LandingHeader`):** Barra de navegação inteligente com `IntersectionObserver` que rastreia e destaca ativamente a seção atual na tela.
+- **Retorno Suave ao Topo (`ScrollToTop`):** Botão flutuante premium e animado para voltar ao início da página de forma suave.
+- **Exibição da Versão na Landing:** Versão do sistema agora é exibida de forma sutil no rodapé simples das páginas públicas.
+
+### Corrigido
+- **Contraste de Legibilidade no HeroVisual:** Aumentada a opacidade de passos futuros no terminal de simulação da IA para $45\%$ (anteriormente $25\%$), garantindo leitura ideal.
+- **Badges Ocultando Limites (Fronteiras):** Solidificação dos fundos dos emblemas flutuantes (`✓ em segundos` e `🧠 Groq + Gemini`) para evitar que a cor escura do terminal vazasse sob fundos semitransparentes.
+- **Eliminação de Loaders Redundantes:** Substituição do spinner de `"Processando com IA..."` por um cérebro inteligente em pulso (`Brain` animate-pulse) para evitar múltiplos spinners simultâneos.
+- **Suporte Geral a Temas (Light/Dark):** Adicionadas classes de cores e fundos específicos `dark:` a todos os cards bento e ícones estáticos da landing page.
+
+---
+
 ## [1.1.0] — 2026-06-22
 
 Esta versão foca em **estabilidade, segurança, robustez de sessão e refinamentos visuais de UX/UI** após a varredura técnica pós-lançamento.

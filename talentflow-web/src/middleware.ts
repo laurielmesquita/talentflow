@@ -48,19 +48,21 @@ export function middleware(request: NextRequest) {
     const loginUrl = new URL('/login', request.url);
     // Salva a rota de destino para redirecionar após o login
     loginUrl.searchParams.set('redirect', pathname);
-    return NextResponse.redirect(loginUrl);
+    const response = NextResponse.redirect(loginUrl);
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+    response.headers.set('Pragma', 'no-cache');
+    return response;
   }
 
   // Caso 2: Usuário ESTÁ autenticado
   if (token) {
     const decoded = decodeJwt(token);
     
-    // Se o token for inválido, corrompido ou estiver expirado, limpa o cookie e manda para login
+    // Se o token for inválido, corrompido ou estiver expirado, limpa o cookie e manda para login (se não estiver em rota pública)
     const isExpired = decoded && decoded.exp && decoded.exp * 1000 < Date.now();
     if (!decoded || isExpired) {
-      // Se a rota de destino já for pública (ex: /login, /terms, /privacy), evita redirecionamentos sucessivos.
-      // Apenas limpa os cookies na resposta e deixa a renderização seguir normalmente (evita loop infinito no Safari).
       if (isPublicRoute) {
+        // Se já está em rota pública, remove os cookies e apenas deixa prosseguir
         const response = NextResponse.next();
         response.cookies.delete('token');
         response.cookies.delete('user_role');
@@ -72,12 +74,17 @@ export function middleware(request: NextRequest) {
       response.cookies.delete('token');
       response.cookies.delete('user_role');
       response.cookies.delete('user_name');
+      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+      response.headers.set('Pragma', 'no-cache');
       return response;
     }
 
     // Se o usuário já está logado e tenta acessar telas públicas ou landing page, manda para o dashboard
     if (isPublicRoute && pathname !== '/invite/accept') {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+      const response = NextResponse.redirect(new URL('/dashboard', request.url));
+      response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+      response.headers.set('Pragma', 'no-cache');
+      return response;
     }
 
     // Controle de Acesso Baseado em Cargos (RBAC) para a tela de convites
@@ -85,7 +92,10 @@ export function middleware(request: NextRequest) {
       const userRole = decoded.role;
       if (userRole !== 'SuperAdmin' && userRole !== 'Manager') {
         // Recrutador comum não pode convidar, redireciona para o dashboard
-        return NextResponse.redirect(new URL('/dashboard', request.url));
+        const response = NextResponse.redirect(new URL('/dashboard', request.url));
+        response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+        response.headers.set('Pragma', 'no-cache');
+        return response;
       }
     }
   }

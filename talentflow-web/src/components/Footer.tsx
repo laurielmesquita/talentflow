@@ -52,9 +52,14 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
             <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center font-bold text-primary-foreground text-xs shadow-sm shadow-primary/10">
               TF
             </div>
-            <span className="text-xs text-muted-foreground">
-              © {new Date().getFullYear()} TalentFlow. Todos os direitos reservados. Desenvolvido por{" "}
-              <span className="text-foreground font-semibold">Space Square</span>.
+            <span className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+              <span>
+                © {new Date().getFullYear()} TalentFlow. Todos os direitos reservados. Desenvolvido por{" "}
+                <span className="text-foreground font-semibold">Space Square</span>.
+              </span>
+              <span className="text-[10px] text-muted-foreground/70 font-mono bg-secondary/80 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-border/80">
+                v{version}
+              </span>
             </span>
           </div>
           <div className="flex gap-6 text-xs text-muted-foreground">

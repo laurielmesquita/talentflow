@@ -11,6 +11,7 @@ from app.api.auth import router as auth_router
 from app.api.billing import router as billing_router
 from app.api.sandbox import router as sandbox_router
 from app.api.public_jobs import router as public_jobs_router
+from app.api.public_apply import router as public_apply_router
 from app.api.sandbox import limiter
 from app.core.config import settings
 
@@ -59,3 +60,5 @@ app.include_router(auth_router, prefix="/api")
 app.include_router(billing_router, prefix="/api/billing")
 app.include_router(sandbox_router, prefix="/api/sandbox")
 app.include_router(public_jobs_router, prefix="/api")
+app.include_router(public_apply_router, prefix="/api")
+

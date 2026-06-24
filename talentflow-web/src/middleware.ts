@@ -79,8 +79,9 @@ export function middleware(request: NextRequest) {
       return response;
     }
 
-    // Se o usuário já está logado e tenta acessar telas públicas ou landing page, manda para o dashboard
-    if (isPublicRoute && pathname !== '/invite/accept') {
+    // Se o usuário já está logado e tenta acessar páginas de autenticação (como login), manda para o dashboard
+    const isAuthPage = ['/login', '/forgot-password', '/reset-password'].some((route) => pathname.startsWith(route));
+    if (isAuthPage) {
       const response = NextResponse.redirect(new URL('/dashboard', request.url));
       response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
       response.headers.set('Pragma', 'no-cache');

@@ -25,6 +25,7 @@ Esta versão traz **otimizações críticas de performance de rede, políticas d
 - **Segregação de Cache em Múltiplas Camadas (`vercel.json` & `next.config.ts`):** Aplicação de cabeçalhos de cache `public, max-age=31536000, immutable` para chunks estáticos e `public, max-age=86400, stale-while-revalidate=3600` para assets de marca, limitando o `no-store` estrito apenas a documentos HTML.
 - **Consolidação de Listeners de Scroll:** Redução de dois listeners redundantes de scroll para um único handler passivo (`{ passive: true }`) em `LandingHeader.tsx`, mitigando layout thrashing em WebKit/Safari.
 - **Compressão Extrema de Assets:** Redução do arquivo `logo-dark.png` de $657$ KB para $15$ KB (PNG) e $3.5$ KB (WebP). Compressão de `og-image.png` de $1.04$ MB para $327$ KB através de quantização de paleta e compressão forte.
+- **Resolução do Preview de Imagem OpenGraph (WhatsApp):** Correção do `metadataBase` e `url` do OpenGraph em `layout.tsx` de `spacesquare.com.br` (domínio inativo) para `tlntflow.vercel.app` (domínio ativo), permitindo que scrapers de mídias sociais e WhatsApp resolvam e exibam corretamente a imagem de visualização de link (`og-image.png`).
 
 
 ## [1.2.0] — 2026-06-23

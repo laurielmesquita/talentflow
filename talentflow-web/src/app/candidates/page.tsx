@@ -4,6 +4,7 @@ import CandidateTable from '@/components/CandidateTable';
 import BatchUploadButton from '@/components/BatchUploadButton';
 import SearchAndFilters from '@/components/SearchAndFilters';
 import Navbar from '@/components/Navbar';
+import PageHeader from '@/components/PageHeader';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
@@ -138,34 +139,35 @@ export default async function CandidatesPage({
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
-      <Navbar>
-        {/* BatchUploadButton gerencia router.refresh() internamente após upload */}
-        <BatchUploadButton />
-      </Navbar>
+      <Navbar />
+
+      {/* Page Header */}
+      <PageHeader
+        title="Banco de Talentos"
+        subtitle="Triagem inteligente e Ingestão otimista de currículos."
+        actions={
+          <>
+            {category && (
+              <div className="hidden sm:flex items-center gap-3 mr-2">
+                <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
+                  <Users className="w-3.5 h-3.5" />
+                  {category}
+                  <Link href="/candidates" className="ml-1 text-primary hover:text-foreground transition-colors" aria-label="Remover filtro">
+                    ×
+                  </Link>
+                </div>
+                <span className="text-sm text-muted-foreground whitespace-nowrap">
+                  {candidates.length} candidato{candidates.length !== 1 ? 's' : ''} encontrado{candidates.length !== 1 ? 's' : ''}
+                </span>
+              </div>
+            )}
+            <BatchUploadButton />
+          </>
+        }
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex justify-between items-end mb-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">Banco de Talentos</h2>
-            <p className="text-muted-foreground">Triagem inteligente e Ingestão otimista de currículos.</p>
-          </div>
-          {/* Filtro ativo: badge de categoria com botão de limpar */}
-          {category && (
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium">
-                <Users className="w-3.5 h-3.5" />
-                {category}
-                <Link href="/candidates" className="ml-1 text-primary hover:text-foreground transition-colors" aria-label="Remover filtro">
-                  ×
-                </Link>
-              </div>
-              <span className="text-sm text-muted-foreground">
-                {candidates.length} candidato{candidates.length !== 1 ? 's' : ''} encontrado{candidates.length !== 1 ? 's' : ''}
-              </span>
-            </div>
-          )}
-        </div>
 
         {/* KPI Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">

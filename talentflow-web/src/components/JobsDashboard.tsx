@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import JobFormDrawer from "./JobFormDrawer";
 import JobMatchViewer from "./JobMatchViewer";
 import Navbar from "@/components/Navbar";
+import PageHeader from "@/components/PageHeader";
 import { getSession, getAuthHeaders } from "@/lib/auth";
 import Portal from "@/components/Portal";
 
@@ -154,26 +155,25 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
-      <Navbar>
-        <button
-          onClick={handleOpenCreateDrawer}
-          className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          Nova Vaga
-        </button>
-      </Navbar>
+      <Navbar />
+
+      {/* Page Header */}
+      <PageHeader
+        title="Smart Match de Vagas"
+        subtitle="Cruze automaticamente os requisitos das vagas estruturadas com as habilidades dos candidatos."
+        actions={
+          <button
+            onClick={handleOpenCreateDrawer}
+            className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            Nova Vaga
+          </button>
+        }
+      />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex justify-between items-end mb-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">Smart Match de Vagas</h2>
-            <p className="text-muted-foreground">
-              Cruze automaticamente os requisitos das vagas estruturadas com as habilidades dos candidatos.
-            </p>
-          </div>
-        </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Coluna esquerda: lista de vagas */}

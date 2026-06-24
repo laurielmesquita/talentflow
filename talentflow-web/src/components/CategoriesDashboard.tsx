@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Tag, Plus, Trash2, Edit, X, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
+import PageHeader from "@/components/PageHeader";
 import { getSession, getAuthHeaders } from "@/lib/auth";
 import Portal from "@/components/Portal";
 
@@ -155,24 +156,25 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
-      <Navbar>
-        <button
-          onClick={handleOpenCreateModal}
-          className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer"
-        >
-          <Plus className="w-4 h-4" />
-          Nova Categoria
-        </button>
-      </Navbar>
+      <Navbar />
+
+      {/* Page Header */}
+      <PageHeader 
+        title="Gestão de Categorias"
+        subtitle="Estruture o seu banco de talentos por áreas de atuação."
+        actions={
+          <button
+            onClick={handleOpenCreateModal}
+            className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer"
+          >
+            <Plus className="w-4 h-4" />
+            Nova Categoria
+          </button>
+        }
+      />
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="flex justify-between items-end mb-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-2">Gestão de Categorias</h2>
-            <p className="text-muted-foreground">Estruture o seu banco de talentos por áreas de atuação.</p>
-          </div>
-        </div>
+      <main className="max-w-7xl mx-auto px-6 py-8 w-full">
 
         {categories.length === 0 ? (
           <div className="p-12 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-center max-w-md mx-auto mt-12">

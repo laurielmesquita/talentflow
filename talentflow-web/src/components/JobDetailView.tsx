@@ -338,7 +338,18 @@ export default function JobDetailView({ initialJob }: { initialJob: Job }) {
                       Copiar
                     </span>
                   </button>
+
+                  <a
+                    href={`/vagas/${job.slug || job.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full flex items-center justify-center gap-1.5 bg-primary/10 hover:bg-primary/20 text-primary px-4 py-2.5 rounded-xl text-xs font-semibold border border-primary/10 transition-all cursor-pointer text-center"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    Visualizar Página Pública
+                  </a>
                 </div>
+
 
                 {/* Skills Exigidas */}
                 {job.required_skills && (

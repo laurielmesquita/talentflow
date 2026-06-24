@@ -2,7 +2,25 @@
 
 Todas as atualizações notáveis deste projeto são documentadas neste arquivo, seguindo o padrão [Semantic Versioning (SemVer)](https://semver.org/spec/v2.0.0.html) e o formato [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/).
 
+
 ---
+
+## [1.3.0] — 2026-06-24
+
+Esta versão traz **otimizações críticas de performance de rede, políticas de cache em múltiplas camadas e compressão severa de imagens de marca**, reduzindo drasticamente o tempo de carregamento no Safari e outros navegadores.
+
+### Adicionado
+- **Otimização de Imagens de Marca (WebP):** Geração de versões `/brand/logo-dark.webp` e `/brand/logo-light.webp` de alta performance redimensionadas para $256 \times 256$ pixels (otimizado para telas de altíssima densidade).
+- **Scripts de Otimização Automatizada:** Script `scripts/optimize-images.js` utilizando a biblioteca `sharp` para automatizar o redimensionamento e compressão de assets de marca.
+
+### Modificado
+- **Substituição de Logos em Componentes:** Atualização dos componentes `LandingHeader`, `Navbar` e `Footer` para utilizarem as versões WebP.
+- **Redirecionamento Pós-Login:** Mudança da lógica de redirecionamento em `login/page.tsx` para usar navegação soft via router (`router.push()`) e destino padrão `/dashboard`, evitando recargas completas desnecessárias de página.
+
+### Corrigido
+- **Segregação de Cache em Múltiplas Camadas (`vercel.json` & `next.config.ts`):** Aplicação de cabeçalhos de cache `public, max-age=31536000, immutable` para chunks estáticos e `public, max-age=86400, stale-while-revalidate=3600` para assets de marca, limitando o `no-store` estrito apenas a documentos HTML.
+- **Consolidação de Listeners de Scroll:** Redução de dois listeners redundantes de scroll para um único handler passivo (`{ passive: true }`) em `LandingHeader.tsx`, mitigando layout thrashing em WebKit/Safari.
+- **Compressão Extrema de Assets:** Redução do arquivo `logo-dark.png` de $657$ KB para $15$ KB (PNG) e $3.5$ KB (WebP). Compressão de `og-image.png` de $1.04$ MB para $327$ KB através de quantização de paleta e compressão forte.
 
 ## [1.2.0] — 2026-06-23
 

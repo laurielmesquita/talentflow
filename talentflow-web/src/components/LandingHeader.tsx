@@ -73,7 +73,7 @@ export default function LandingHeader() {
         <Link href="/" className="flex items-center gap-3 group" aria-label="TalentFlow — Página inicial">
           <div className="relative w-9 h-9 rounded-xl overflow-hidden group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
             <Image
-              src="/brand/logo-dark.png"
+              src="/brand/logo-dark.webp"
               alt="TalentFlow Logo"
               fill
               sizes="36px"
@@ -81,7 +81,7 @@ export default function LandingHeader() {
               priority
             />
             <Image
-              src="/brand/logo-light.png"
+              src="/brand/logo-light.webp"
               alt="TalentFlow Logo"
               fill
               sizes="36px"

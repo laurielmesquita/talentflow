@@ -4,7 +4,7 @@
 #
 
 app = 'talentflow-api-frosty-seastar-3318'
-primary_region = 'dfw'
+primary_region = 'gru'
 
 [build]
   dockerfile = 'Dockerfile'

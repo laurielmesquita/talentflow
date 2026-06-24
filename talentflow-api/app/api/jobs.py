@@ -64,9 +64,22 @@ def list_jobs(db: ScopedSession = Depends(get_scoped_db)):
 
 @router.get("/jobs/{job_id}")
 def get_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
-    job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
+    import uuid
+    is_uuid = False
+    try:
+        uuid.UUID(job_id)
+        is_uuid = True
+    except ValueError:
+        pass
+
+    if is_uuid:
+        job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
+    else:
+        job = db.query(JobPosition).filter(JobPosition.slug == job_id).first()
+
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
+
     return {
         "id": str(job.id),
         "slug": job.slug,

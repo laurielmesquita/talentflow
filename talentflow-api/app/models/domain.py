@@ -113,6 +113,7 @@ class JobPosition(Base):
     __tablename__ = "job_positions"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
+    slug = Column(String, unique=True, index=True, nullable=True)
     title = Column(String, nullable=False, index=True)
     description = Column(Text, nullable=False)
     location = Column(String, nullable=True)

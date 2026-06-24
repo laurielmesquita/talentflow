@@ -45,6 +45,7 @@ def list_jobs(db: ScopedSession = Depends(get_scoped_db)):
     jobs = db.query(JobPosition).order_by(JobPosition.created_at.desc()).all()
     return [{
         "id": str(j.id),
+        "slug": j.slug,
         "title": j.title,
         "description": j.description,
         "location": j.location,
@@ -68,6 +69,7 @@ def get_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
     return {
         "id": str(job.id),
+        "slug": job.slug,
         "title": job.title,
         "description": job.description,
         "location": job.location,
@@ -86,8 +88,11 @@ def get_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
 
 @router.post("/jobs")
 def create_job(job: JobCreate, db: ScopedSession = Depends(get_scoped_db)):
+    from app.services.slug import generate_slug
+    
     db_job = JobPosition(
         title=job.title,
+        slug=generate_slug(job.title, db),
         description=job.description,
         location=job.location,
         employment_type=job.employment_type,
@@ -103,7 +108,7 @@ def create_job(job: JobCreate, db: ScopedSession = Depends(get_scoped_db)):
     db.add(db_job)
     db.commit()
     db.refresh(db_job)
-    return {"id": str(db_job.id), "message": "Vaga criada com sucesso"}
+    return {"id": str(db_job.id), "slug": db_job.slug, "message": "Vaga criada com sucesso"}
 
 @router.put("/jobs/{job_id}")
 def update_job(job_id: str, job_update: JobUpdate, db: ScopedSession = Depends(get_scoped_db)):

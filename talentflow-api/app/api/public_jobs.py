@@ -39,15 +39,30 @@ def list_public_jobs(db: Session = Depends(get_db)):
 @router.get("/public/vagas/{slug}")
 def get_public_job(slug: str, db: Session = Depends(get_db)):
     """
-    Retorna os detalhes de uma vaga pública específica identificada pelo slug semântico.
+    Retorna os detalhes de uma vaga pública específica identificada pelo slug semântico ou ID.
     Não exige autenticação.
     """
-    job = db.query(JobPosition).filter(
-        JobPosition.slug == slug,
-        JobPosition.is_active == True
-    ).first()
-    
+    import uuid
+    is_uuid = False
+    try:
+        uuid.UUID(slug)
+        is_uuid = True
+    except ValueError:
+        pass
+
+    if is_uuid:
+        job = db.query(JobPosition).filter(
+            JobPosition.id == slug,
+            JobPosition.is_active == True
+        ).first()
+    else:
+        job = db.query(JobPosition).filter(
+            JobPosition.slug == slug,
+            JobPosition.is_active == True
+        ).first()
+
     if not job:
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail="Vaga não encontrada ou não está mais ativa."

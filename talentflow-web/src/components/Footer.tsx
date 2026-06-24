@@ -52,14 +52,14 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
           <div className="flex items-center gap-3">
             <div className="relative w-7 h-7 rounded-lg overflow-hidden flex-shrink-0">
               <Image
-                src="/brand/logo-dark.png"
+                src="/brand/logo-dark.webp"
                 alt="TalentFlow Logo"
                 fill
                 sizes="28px"
                 className="object-contain dark:hidden"
               />
               <Image
-                src="/brand/logo-light.png"
+                src="/brand/logo-light.webp"
                 alt="TalentFlow Logo"
                 fill
                 sizes="28px"
@@ -107,14 +107,14 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
           <div className="flex items-center gap-3">
             <div className="relative w-9 h-9 rounded-xl overflow-hidden flex-shrink-0">
               <Image
-                src="/brand/logo-dark.png"
+                src="/brand/logo-dark.webp"
                 alt="TalentFlow Logo"
                 fill
                 sizes="36px"
                 className="object-contain dark:hidden"
               />
               <Image
-                src="/brand/logo-light.png"
+                src="/brand/logo-light.webp"
                 alt="TalentFlow Logo"
                 fill
                 sizes="36px"

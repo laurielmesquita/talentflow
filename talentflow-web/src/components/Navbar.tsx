@@ -35,7 +35,7 @@ export default function Navbar({ children }: NavbarProps) {
         <Link href="/" className="flex items-center gap-3 group">
           <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
             <Image
-              src="/brand/logo-dark.png"
+              src="/brand/logo-dark.webp"
               alt="TalentFlow Logo"
               fill
               sizes="34px"
@@ -43,7 +43,7 @@ export default function Navbar({ children }: NavbarProps) {
               priority
             />
             <Image
-              src="/brand/logo-light.png"
+              src="/brand/logo-light.webp"
               alt="TalentFlow Logo"
               fill
               sizes="34px"

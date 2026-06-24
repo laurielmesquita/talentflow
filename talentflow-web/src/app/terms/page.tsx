@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowLeft, Shield } from 'lucide-react';
 
 export default function TermsPage() {
@@ -12,8 +13,23 @@ export default function TermsPage() {
       <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/25 group-hover:scale-105 transition-all">
-              TF
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
+              <Image
+                src="/brand/logo-dark.webp"
+                alt="TalentFlow Logo"
+                fill
+                sizes="36px"
+                className="object-contain dark:hidden"
+                priority
+              />
+              <Image
+                src="/brand/logo-light.webp"
+                alt="TalentFlow Logo"
+                fill
+                sizes="36px"
+                className="object-contain hidden dark:block"
+                priority
+              />
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
               TalentFlow

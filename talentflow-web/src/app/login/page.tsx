@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft } from 'lucide-react';
 import { setSession } from '@/lib/auth';
 
@@ -61,8 +62,23 @@ function LoginContent() {
       <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-8.5 h-8.5 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/25 group-hover:scale-105 transition-all">
-              TF
+            <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
+              <Image
+                src="/brand/logo-dark.webp"
+                alt="TalentFlow Logo"
+                fill
+                sizes="34px"
+                className="object-contain dark:hidden"
+                priority
+              />
+              <Image
+                src="/brand/logo-light.webp"
+                alt="TalentFlow Logo"
+                fill
+                sizes="34px"
+                className="object-contain hidden dark:block"
+                priority
+              />
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
               TalentFlow
@@ -82,8 +98,23 @@ function LoginContent() {
         <div className="w-full max-w-md bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
         {/* Header */}
         <div className="flex flex-col items-center mb-8">
-          <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/20 mb-3 text-lg">
-            TF
+          <div className="relative w-10 h-10 rounded-xl overflow-hidden mb-3 flex-shrink-0">
+            <Image
+              src="/brand/logo-dark.webp"
+              alt="TalentFlow Logo"
+              fill
+              sizes="40px"
+              className="object-contain dark:hidden"
+              priority
+            />
+            <Image
+              src="/brand/logo-light.webp"
+              alt="TalentFlow Logo"
+              fill
+              sizes="40px"
+              className="object-contain hidden dark:block"
+              priority
+            />
           </div>
           <h1 className="text-2xl font-bold tracking-tight mb-1.5">Bem-vindo ao TalentFlow</h1>
           <p className="text-sm text-muted-foreground text-center">

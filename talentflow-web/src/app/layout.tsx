@@ -20,8 +20,33 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TalentFlow",
-  description: "Banco de Talentos e Triagem Inteligente de Currículos",
+  metadataBase: new URL("https://talentflow.spacesquare.com.br"),
+  title: "TalentFlow — Banco de Talentos Inteligente",
+  description: "Triagem automatizada de currículos baseada em Inteligência Artificial Generativa para processos seletivos de alta performance.",
+  keywords: ["recrutamento", "triagem de currículos", "IA", "inteligência artificial", "analytics", "RH", "ATS"],
+  authors: [{ name: "Space Square" }],
+  openGraph: {
+    title: "TalentFlow — Banco de Talentos Inteligente",
+    description: "Triagem automatizada de currículos baseada em Inteligência Artificial Generativa para processos seletivos de alta performance.",
+    url: "https://talentflow.spacesquare.com.br",
+    siteName: "TalentFlow",
+    images: [
+      {
+        url: "/brand/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "TalentFlow — Banco de Talentos Inteligente"
+      }
+    ],
+    locale: "pt_BR",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TalentFlow — Banco de Talentos Inteligente",
+    description: "Triagem automatizada de currículos baseada em Inteligência Artificial Generativa.",
+    images: ["/brand/og-image.png"],
+  }
 };
 
 export default function RootLayout({

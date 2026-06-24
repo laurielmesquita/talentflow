@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import JobsListDashboard from "@/components/JobsListDashboard";
+import SmartMatchDashboard from "@/components/SmartMatchDashboard";
 import { cookies } from 'next/headers';
 
 interface Job {
@@ -38,7 +38,7 @@ async function getJobs(token?: string): Promise<Job[]> {
   }
 }
 
-export default async function JobsPage() {
+export default async function SmartMatchPage() {
   const cookieStore = await cookies();
   const token = cookieStore.get('token')?.value;
   const jobs = await getJobs(token);
@@ -49,7 +49,7 @@ export default async function JobsPage() {
         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
       </div>
     }>
-      <JobsListDashboard initialJobs={jobs} />
+      <SmartMatchDashboard initialJobs={jobs} />
     </Suspense>
   );
 }

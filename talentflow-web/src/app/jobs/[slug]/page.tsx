@@ -23,17 +23,17 @@ interface Job {
 }
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ slug: string }>;
 }
 
-async function getJobDetail(id: string, token?: string): Promise<Job | null> {
+async function getJobDetail(slug: string, token?: string): Promise<Job | null> {
   try {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     const headers: Record<string, string> = {};
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
-    const res = await fetch(`${API_URL}/api/jobs/${id}`, {
+    const res = await fetch(`${API_URL}/api/jobs/${slug}`, {
       headers,
       cache: "no-store",
     });
@@ -46,10 +46,11 @@ async function getJobDetail(id: string, token?: string): Promise<Job | null> {
 }
 
 export default async function JobDetailPage({ params }: PageProps) {
-  const { id } = await params;
+  const { slug } = await params;
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
-  const job = await getJobDetail(id, token);
+  const job = await getJobDetail(slug, token);
+
 
   if (!job) {
     notFound();

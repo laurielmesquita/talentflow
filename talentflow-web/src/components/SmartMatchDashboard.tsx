@@ -12,6 +12,7 @@ import PageHeader from "@/components/PageHeader";
 
 interface Job {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   location: string;
@@ -27,6 +28,7 @@ interface Job {
   is_active: boolean;
   created_at: string;
 }
+
 
 export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();
@@ -207,7 +209,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
                   {/* Ações da Vaga (Redirecionamento para Gestão) */}
                   <div className="flex items-center gap-2 self-end md:self-start">
                     <Link
-                      href={`/jobs/${selectedJob.id}`}
+                      href={`/jobs/${selectedJob.slug || selectedJob.id}`}
                       className="flex items-center gap-1.5 bg-primary/10 border border-primary/20 hover:bg-primary/20 text-primary px-3.5 py-1.5 rounded-lg text-xs font-semibold shadow-sm transition-all cursor-pointer"
                     >
                       <Settings className="w-3.5 h-3.5" />

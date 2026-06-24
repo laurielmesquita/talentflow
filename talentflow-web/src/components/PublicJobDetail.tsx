@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence } from "framer-motion";
 import { ArrowLeft, MapPin, Briefcase, Clock, Building, Share2, Sparkles, Send } from "lucide-react";
 import { motion } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import JobApplicationForm from "@/components/JobApplicationForm";
 
 interface PublicJobDetailProps {
   job: {
@@ -27,6 +29,7 @@ interface PublicJobDetailProps {
 
 export default function PublicJobDetail({ job }: PublicJobDetailProps) {
   const [copied, setCopied] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -110,7 +113,7 @@ export default function PublicJobDetail({ job }: PublicJobDetailProps) {
             {/* Left Content Column */}
             <div className="lg:col-span-2 space-y-12">
               <section>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">
                   Sobre a Vaga
                 </h2>
                 <div className="prose prose-slate dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 whitespace-pre-wrap">
@@ -168,7 +171,10 @@ export default function PublicJobDetail({ job }: PublicJobDetailProps) {
                     <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">
                       Não perca tempo e envie seu currículo. Nosso time analisará seu perfil!
                     </p>
-                    <button className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/25 cursor-pointer">
+                    <button
+                      onClick={() => setIsFormOpen(true)}
+                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90 text-white px-6 py-4 rounded-xl font-bold transition-all shadow-lg shadow-primary/25 cursor-pointer"
+                    >
                       <Send className="w-5 h-5" />
                       Candidatar-se Agora
                     </button>
@@ -202,6 +208,17 @@ export default function PublicJobDetail({ job }: PublicJobDetailProps) {
           </div>
         </motion.div>
       </main>
+
+      {/* Application Form Modal */}
+      <AnimatePresence>
+        {isFormOpen && (
+          <JobApplicationForm
+            jobSlug={job.slug}
+            jobTitle={job.title}
+            onClose={() => setIsFormOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

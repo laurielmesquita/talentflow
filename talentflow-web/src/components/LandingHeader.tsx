@@ -14,10 +14,13 @@ export default function LandingHeader() {
     // Check initial scroll
     setScrolled(window.scrollY > 20);
 
+    // Listener único e passivo — evita layout thrashing no WebKit/Safari
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const y = window.scrollY;
+      setScrolled(y > 20);
+      if (y < 120) setActiveSection("");
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     const sections = ["sandbox", "features", "how-it-works"];
     const observers = sections.map((id) => {
@@ -38,16 +41,8 @@ export default function LandingHeader() {
       return { observer, el };
     });
 
-    const handleScrollTop = () => {
-      if (window.scrollY < 120) {
-        setActiveSection("");
-      }
-    };
-    window.addEventListener("scroll", handleScrollTop);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("scroll", handleScrollTop);
       observers.forEach((obs) => {
         if (obs) {
           obs.observer.unobserve(obs.el);

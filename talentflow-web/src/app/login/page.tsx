@@ -9,7 +9,8 @@ import { setSession } from '@/lib/auth';
 function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/';
+  const redirect = searchParams.get('redirect') || '/dashboard';
+
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -42,8 +43,8 @@ function LoginContent() {
       // Salva sessão nos cookies
       setSession(data.access_token, data.role, data.full_name, data.email);
 
-      // Redireciona com recarga de página para limpar caches do Next.js
-      window.location.href = redirect;
+      // Navegação soft via router para evitar full-page reload e re-download de assets
+      router.push(redirect);
     } catch (err: any) {
       setError(err.message || 'Erro de conexão com o servidor.');
       setLoading(false);

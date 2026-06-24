@@ -7,11 +7,7 @@ import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
 
-interface NavbarProps {
-  children?: React.ReactNode;
-}
-
-export default function Navbar({ children }: NavbarProps) {
+export default function Navbar() {
   const pathname = usePathname();
 
   const isLinkActive = (path: string) => {
@@ -65,7 +61,10 @@ export default function Navbar({ children }: NavbarProps) {
             Candidatos
           </Link>
           <Link href="/jobs" className={getLinkClass('/jobs')}>
-            Vagas (Smart Match)
+            Vagas
+          </Link>
+          <Link href="/smart-match" className={getLinkClass('/smart-match')}>
+            Smart Match
           </Link>
           <Link href="/categories" className={getLinkClass('/categories')}>
             Categorias
@@ -75,13 +74,6 @@ export default function Navbar({ children }: NavbarProps) {
         {/* Grupo de Ações */}
         <div className="flex items-center gap-3">
           <ThemeToggle />
-          
-          {/* Botões Dinâmicos da Página */}
-          {children && (
-            <div className="flex items-center">
-              {children}
-            </div>
-          )}
           
           {/* Menu do Usuário Dropdown */}
           <UserMenu />

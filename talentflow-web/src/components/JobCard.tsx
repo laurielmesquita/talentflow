@@ -8,6 +8,7 @@ import {
 
 interface Job {
   id: string;
+  slug?: string;
   title: string;
   description: string;
   location: string;
@@ -23,6 +24,7 @@ interface Job {
   is_active: boolean;
   created_at: string;
 }
+
 
 interface JobCardProps {
   job: Job;
@@ -137,7 +139,7 @@ export default function JobCard({ job, onEdit, onDelete, onCopyLink }: JobCardPr
 
         {/* Link para página de detalhes */}
         <Link
-          href={`/jobs/${job.id}`}
+          href={`/jobs/${job.slug || job.id}`}
           className="flex items-center gap-1 text-xs font-bold text-primary hover:text-primary/80 transition-colors"
         >
           Detalhes & Candidatos

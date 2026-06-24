@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Mail, UserPlus, Loader2, CheckCircle2, ArrowLeft, AlertTriangle } from 'lucide-react';
 import { getAuthHeaders, getSession, clearSession } from '@/lib/auth';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -68,8 +69,23 @@ export default function InvitePage() {
       <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
           <Link href="/dashboard" className="flex items-center gap-3 group">
-            <div className="w-8.5 h-8.5 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/25 group-hover:scale-105 transition-all">
-              TF
+            <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
+              <Image
+                src="/brand/logo-dark.webp"
+                alt="TalentFlow Logo"
+                fill
+                sizes="34px"
+                className="object-contain dark:hidden"
+                priority
+              />
+              <Image
+                src="/brand/logo-light.webp"
+                alt="TalentFlow Logo"
+                fill
+                sizes="34px"
+                className="object-contain hidden dark:block"
+                priority
+              />
             </div>
             <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
               TalentFlow

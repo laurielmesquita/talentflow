@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Mail } from "lucide-react";
 import { usePathname } from "next/navigation";
@@ -49,8 +50,21 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-primary flex items-center justify-center font-bold text-primary-foreground text-xs shadow-sm shadow-primary/10">
-              TF
+            <div className="relative w-7 h-7 rounded-lg overflow-hidden flex-shrink-0">
+              <Image
+                src="/brand/logo-dark.png"
+                alt="TalentFlow Logo"
+                fill
+                sizes="28px"
+                className="object-contain dark:hidden"
+              />
+              <Image
+                src="/brand/logo-light.png"
+                alt="TalentFlow Logo"
+                fill
+                sizes="28px"
+                className="object-contain hidden dark:block"
+              />
             </div>
             <span className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
               <span>
@@ -91,8 +105,21 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
         {/* ── Col 1: Brand ── */}
         <motion.div variants={itemVariants} className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground text-sm shadow-lg shadow-primary/25 flex-shrink-0">
-              TF
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden flex-shrink-0">
+              <Image
+                src="/brand/logo-dark.png"
+                alt="TalentFlow Logo"
+                fill
+                sizes="36px"
+                className="object-contain dark:hidden"
+              />
+              <Image
+                src="/brand/logo-light.png"
+                alt="TalentFlow Logo"
+                fill
+                sizes="36px"
+                className="object-contain hidden dark:block"
+              />
             </div>
             <span className="text-lg font-semibold tracking-tight text-foreground">
               TalentFlow

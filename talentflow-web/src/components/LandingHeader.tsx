@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -75,8 +76,23 @@ export default function LandingHeader() {
       <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group" aria-label="TalentFlow — Página inicial">
-          <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center font-black text-sm text-primary-foreground shadow-lg shadow-primary/25 group-hover:scale-105 transition-transform duration-200">
-            TF
+          <div className="relative w-9 h-9 rounded-xl overflow-hidden group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
+            <Image
+              src="/brand/logo-dark.png"
+              alt="TalentFlow Logo"
+              fill
+              sizes="36px"
+              className="object-contain dark:hidden"
+              priority
+            />
+            <Image
+              src="/brand/logo-light.png"
+              alt="TalentFlow Logo"
+              fill
+              sizes="36px"
+              className="object-contain hidden dark:block"
+              priority
+            />
           </div>
           <span className="text-lg font-bold tracking-tight text-foreground">
             TalentFlow

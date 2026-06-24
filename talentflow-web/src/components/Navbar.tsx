@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
@@ -32,8 +33,23 @@ export default function Navbar({ children }: NavbarProps) {
       <div className="flex items-center justify-between px-6 py-4.5 max-w-7xl mx-auto">
         {/* Logo / Brand */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-8.5 h-8.5 rounded-xl bg-primary flex items-center justify-center font-bold text-primary-foreground shadow-lg shadow-primary/25 group-hover:scale-105 transition-all">
-            TF
+          <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
+            <Image
+              src="/brand/logo-dark.png"
+              alt="TalentFlow Logo"
+              fill
+              sizes="34px"
+              className="object-contain dark:hidden"
+              priority
+            />
+            <Image
+              src="/brand/logo-light.png"
+              alt="TalentFlow Logo"
+              fill
+              sizes="34px"
+              className="object-contain hidden dark:block"
+              priority
+            />
           </div>
           <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
             TalentFlow

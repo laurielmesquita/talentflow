@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://talentflow.spacesquare.com.br"),
+  metadataBase: new URL("https://tlntflow.vercel.app"),
   title: "TalentFlow — Banco de Talentos Inteligente",
   description: "Triagem automatizada de currículos baseada em Inteligência Artificial Generativa para processos seletivos de alta performance.",
   keywords: ["recrutamento", "triagem de currículos", "IA", "inteligência artificial", "analytics", "RH", "ATS"],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "TalentFlow — Banco de Talentos Inteligente",
     description: "Triagem automatizada de currículos baseada em Inteligência Artificial Generativa para processos seletivos de alta performance.",
-    url: "https://talentflow.spacesquare.com.br",
+    url: "https://tlntflow.vercel.app",
     siteName: "TalentFlow",
     images: [
       {

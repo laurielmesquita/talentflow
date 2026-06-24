@@ -16,7 +16,7 @@ Esta versão traz **otimizações críticas de performance de rede, políticas d
 - **Script de Migração de Banco:** Criado o script `talentflow-api/migrate_db_data.py` para sincronização inteligente de esquemas e dados entre projetos do Postgres no Neon, contornando a ausência de privilégios de superusuário e resolvendo dependências de FK auto-referenciais.
 
 ### Modificado
-- **Substituição de Logos em Componentes:** Atualização dos componentes `LandingHeader`, `Navbar` e `Footer` para utilizarem as versões WebP.
+- **Identidade Visual Unificada (Logos WebP):** Substituição definitiva do antigo box azul genérico "TF" pelos logos oficiais da marca em formato WebP nos cabeçalhos e formulários de todas as páginas públicas, fluxos de autenticação e termos (LandingHeader, Navbar, Footer, Login, Privacidade, Termos de Uso, Convite e Alteração de Senha).
 - **Redirecionamento Pós-Login:** Mudança da lógica de redirecionamento em `login/page.tsx` para usar navegação soft via router (`router.push()`) e destino padrão `/dashboard`, evitando recargas completas desnecessárias de página.
 - **Geolocalização da API (Fly.io):** Alteração da região primária do Fly.io de Dallas (`dfw`) para São Paulo (`gru`) no arquivo `fly.toml` para colocalizar a execução do backend com os usuários no Brasil.
 - **Banco de Dados (Neon DB):** Substituição do banco de dados hospedado em N. Virginia (`us-east-1`) pelo novo banco de dados em São Paulo (`sa-east-1`), migrando com segurança 100% dos dados (candidatos, vagas, usuários e logs).

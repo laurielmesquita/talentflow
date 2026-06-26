@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -11,16 +11,31 @@ export default function LandingHeader() {
   const pathname = usePathname();
   const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
+  const [visible, setVisible] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     // Check initial scroll
-    setScrolled(window.scrollY > 20);
+    const initialY = window.scrollY;
+    setScrolled(initialY > 20);
+    lastScrollY.current = initialY;
 
     // Listener único e passivo — evita layout thrashing no WebKit/Safari
     const handleScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 20);
       if (y < 120) setActiveSection("");
+
+      // Lógica de Smart Header (Reveal on Scroll Up)
+      if (y < 50) {
+        setVisible(true);
+      } else if (y > lastScrollY.current) {
+        setVisible(false); // Rola para baixo -> oculta
+      } else {
+        setVisible(true);  // Rola para cima -> revela
+      }
+
+      lastScrollY.current = y;
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
 
@@ -64,7 +79,9 @@ export default function LandingHeader() {
 
   return (
     <header
-      className={`border-b sticky top-0 z-50 transition-all duration-350 ${
+      className={`border-b sticky top-0 z-50 transition-all transform duration-300 ${
+        visible ? "translate-y-0" : "-translate-y-full"
+      } ${
         scrolled
           ? "border-border/60 bg-background/80 backdrop-blur-xl shadow-sm shadow-black/5"
           : "border-transparent bg-background/30 backdrop-blur-md"

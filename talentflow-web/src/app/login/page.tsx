@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft, User, Building } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { setSession } from '@/lib/auth';
 
 function LoginContent() {
@@ -119,7 +120,11 @@ function LoginContent() {
       </header>
 
       <div className="flex-1 flex items-center justify-center p-4">
-        <div className="w-full max-w-md bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
+        <motion.div 
+          layout
+          transition={{ type: "spring", stiffness: 350, damping: 32 }}
+          className="w-full max-w-md bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative transition-all duration-300 animate-fade-in"
+        >
           {/* Header */}
           <div className="flex flex-col items-center mb-6">
             <div className="relative w-10 h-10 rounded-xl overflow-hidden mb-3 flex-shrink-0">
@@ -151,7 +156,7 @@ function LoginContent() {
           </div>
 
           {/* Tabs */}
-          <div className="grid grid-cols-2 p-1 mb-6 bg-secondary/30 dark:bg-zinc-800/40 rounded-xl border border-border/40">
+          <div className="relative grid grid-cols-2 p-1 mb-6 bg-secondary/30 dark:bg-zinc-800/40 rounded-xl border border-border/40">
             <button
               type="button"
               disabled={loading}
@@ -159,12 +164,19 @@ function LoginContent() {
                 setIsSignUp(false);
                 setError(null);
               }}
-              className={`py-2 text-sm font-semibold rounded-lg transition-all duration-250 ${
+              className={`relative z-10 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 cursor-pointer ${
                 !isSignUp
-                  ? "bg-background text-foreground shadow-sm font-bold"
+                  ? "text-foreground font-bold"
                   : "text-muted-foreground hover:text-foreground disabled:opacity-50"
               }`}
             >
+              {!isSignUp && (
+                <motion.div
+                  layoutId="activeTabPill"
+                  className="absolute inset-0 bg-background rounded-lg shadow-sm border border-border/30 -z-10"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
               Entrar
             </button>
             <button
@@ -174,12 +186,19 @@ function LoginContent() {
                 setIsSignUp(true);
                 setError(null);
               }}
-              className={`py-2 text-sm font-semibold rounded-lg transition-all duration-250 ${
+              className={`relative z-10 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 cursor-pointer ${
                 isSignUp
-                  ? "bg-background text-foreground shadow-sm font-bold"
+                  ? "text-foreground font-bold"
                   : "text-muted-foreground hover:text-foreground disabled:opacity-50"
               }`}
             >
+              {isSignUp && (
+                <motion.div
+                  layoutId="activeTabPill"
+                  className="absolute inset-0 bg-background rounded-lg shadow-sm border border-border/30 -z-10"
+                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                />
+              )}
               Criar Conta
             </button>
           </div>
@@ -193,53 +212,77 @@ function LoginContent() {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-            {isSignUp && (
-              <>
-                {/* Nome Completo */}
-                <div className="flex flex-col gap-1.5 animate-fade-in-up duration-200">
-                  <label className="text-sm font-medium text-foreground/80" htmlFor="fullName">
-                    Nome completo
-                  </label>
-                  <div className="relative flex items-center">
-                    <span className="absolute left-3.5 text-muted-foreground">
-                      <User className="w-4.5 h-4.5" />
-                    </span>
-                    <input
-                      id="fullName"
-                      type="text"
-                      required
-                      disabled={loading}
-                      value={fullName}
-                      onChange={(e) => setFullName(e.target.value)}
-                      placeholder="Seu nome completo"
-                      className="w-full pl-11 pr-4 py-3 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 disabled:opacity-50"
-                    />
+            <AnimatePresence initial={false}>
+              {isSignUp && (
+                <motion.div
+                  key="signup-fields"
+                  initial={{ opacity: 0, height: 0, marginTop: 0 }}
+                  animate={{ 
+                    opacity: 1, 
+                    height: "auto", 
+                    marginTop: 0,
+                    transition: {
+                      height: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.2, delay: 0.05 }
+                    }
+                  }}
+                  exit={{ 
+                    opacity: 0, 
+                    height: 0, 
+                    marginTop: 0,
+                    transition: {
+                      height: { type: "spring", stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.15 }
+                    }
+                  }}
+                  className="overflow-hidden flex flex-col gap-5"
+                >
+                  {/* Nome Completo */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium text-foreground/80" htmlFor="fullName">
+                      Nome completo
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="absolute left-3.5 text-muted-foreground">
+                        <User className="w-4.5 h-4.5" />
+                      </span>
+                      <input
+                        id="fullName"
+                        type="text"
+                        required={isSignUp}
+                        disabled={loading}
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Seu nome completo"
+                        className="w-full pl-11 pr-4 py-3 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 disabled:opacity-50"
+                      />
+                    </div>
                   </div>
-                </div>
 
-                {/* Nome da Empresa */}
-                <div className="flex flex-col gap-1.5 animate-fade-in-up duration-300">
-                  <label className="text-sm font-medium text-foreground/80" htmlFor="companyName">
-                    Nome da empresa
-                  </label>
-                  <div className="relative flex items-center">
-                    <span className="absolute left-3.5 text-muted-foreground">
-                      <Building className="w-4.5 h-4.5" />
-                    </span>
-                    <input
-                      id="companyName"
-                      type="text"
-                      required
-                      disabled={loading}
-                      value={companyName}
-                      onChange={(e) => setCompanyName(e.target.value)}
-                      placeholder="Nome da sua empresa ou time"
-                      className="w-full pl-11 pr-4 py-3 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 disabled:opacity-50"
-                    />
+                  {/* Nome da Empresa */}
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-sm font-medium text-foreground/80" htmlFor="companyName">
+                      Nome da empresa
+                    </label>
+                    <div className="relative flex items-center">
+                      <span className="absolute left-3.5 text-muted-foreground">
+                        <Building className="w-4.5 h-4.5" />
+                      </span>
+                      <input
+                        id="companyName"
+                        type="text"
+                        required={isSignUp}
+                        disabled={loading}
+                        value={companyName}
+                        onChange={(e) => setCompanyName(e.target.value)}
+                        placeholder="Nome da sua empresa ou time"
+                        className="w-full pl-11 pr-4 py-3 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 disabled:opacity-50"
+                      />
+                    </div>
                   </div>
-                </div>
-              </>
-            )}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* E-mail corporativo */}
             <div className="flex flex-col gap-1.5">
@@ -318,7 +361,7 @@ function LoginContent() {
               )}
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </div>
   );

@@ -12,20 +12,6 @@ class TokenResponse(BaseModel):
     full_name: str
     email: str
 
-class InviteRequest(BaseModel):
-    email: EmailStr
-    role: str # SuperAdmin, Manager, Recruiter
-
-class InviteVerifyResponse(BaseModel):
-    email: EmailStr
-    role: str
-    token: str
-
-class InviteAcceptRequest(BaseModel):
-    token: str
-    full_name: str
-    password: str
-
 class ForgotPasswordRequest(BaseModel):
     email: EmailStr
 

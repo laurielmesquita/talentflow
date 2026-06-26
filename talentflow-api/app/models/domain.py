@@ -41,7 +41,6 @@ class Tenant(Base):
     categories = relationship("Category", back_populates="tenant")
     skills = relationship("Skill", back_populates="tenant")
     batch_jobs = relationship("BatchJob", back_populates="tenant")
-    invites = relationship("Invite", back_populates="tenant")
     audit_logs = relationship("AuditLog", back_populates="tenant")
 
 class Category(Base):
@@ -159,21 +158,6 @@ class User(Base):
 
     tenant = relationship("Tenant", back_populates="users")
 
-
-class Invite(Base):
-    __tablename__ = "invites"
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
-    email = Column(String, nullable=False, index=True)
-    role = Column(String, nullable=False, default="Recruiter")  # Manager, Recruiter
-    token = Column(String, unique=True, index=True, nullable=False)
-    expires_at = Column(DateTime(timezone=True), nullable=False)
-    is_used = Column(Boolean, default=False, nullable=False)
-    created_by = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-
-    tenant = relationship("Tenant", back_populates="invites")
-    inviter = relationship("User", foreign_keys=[created_by])
 
 
 class PasswordReset(Base):

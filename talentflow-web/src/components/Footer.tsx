@@ -80,7 +80,7 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
             <Link href="/" className="hover:text-primary transition-colors">Home</Link>
             <Link href="/terms" className="hover:text-primary transition-colors">Termos de Uso</Link>
             <Link href="/privacy" className="hover:text-primary transition-colors">Privacidade</Link>
-            <a href="mailto:adm.the@outlook.com" className="hover:text-primary transition-colors">Suporte</a>
+            <a href="mailto:plataforma.talentflow@outlook.com" className="hover:text-primary transition-colors">Suporte</a>
           </div>
         </div>
       </footer>
@@ -170,11 +170,11 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
             Precisa de suporte ou quer falar com a equipe?
           </p>
           <a
-            href="mailto:adm.the@outlook.com"
+            href="mailto:plataforma.talentflow@outlook.com"
             className="inline-flex items-center gap-2 px-4 py-2 mt-1 rounded-lg bg-muted/60 border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 w-fit"
           >
             <Mail className="w-4 h-4 text-primary/70" />
-            adm.the@outlook.com
+            plataforma.talentflow@outlook.com
           </a>
         </motion.div>
       </motion.div>

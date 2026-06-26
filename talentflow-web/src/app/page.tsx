@@ -82,7 +82,7 @@ export default function LandingPage() {
                 id="cta-hero-primary"
                 className="group flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-[1.02] transition-all font-semibold py-3.5 px-7 rounded-xl shadow-lg shadow-primary/20 text-base"
               >
-                Solicitar Acesso Antecipado
+                Começar Grátis
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a

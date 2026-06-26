@@ -3,12 +3,12 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user, RoleChecker
-from app.models.domain import User, Invite, PasswordReset
+from app.models.domain import User, Invite, PasswordReset, Tenant
 from app.schemas.auth import (
     LoginRequest, TokenResponse, InviteRequest, 
     InviteVerifyResponse, InviteAcceptRequest, 
     ForgotPasswordRequest, ResetPasswordRequest,
-    ChangePasswordRequest
+    ChangePasswordRequest, RegisterRequest
 )
 from app.services.auth import hash_password, verify_password, create_access_token
 from app.services.email import send_invite_email, send_reset_password_email
@@ -300,4 +300,58 @@ def change_password(
     db.commit()
     
     return {"message": "Senha alterada com sucesso!"}
+
+
+@router.post("/register", response_model=TokenResponse)
+def register(request: RegisterRequest, db: Session = Depends(get_db)):
+    """
+    Registra uma nova empresa (Tenant) e o usuário administrador principal dela.
+    """
+    # Verifica se o e-mail já existe
+    existing_user = db.query(User).filter(User.email == request.email).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Este e-mail já está cadastrado no sistema."
+        )
+
+    try:
+        # Criação do novo Tenant
+        tenant = Tenant(
+            name=request.company_name,
+            plan_name="free",
+            plan_status="active",
+            candidate_count_limit=50
+        )
+        db.add(tenant)
+        db.commit()
+        db.refresh(tenant)
+
+        # Criação do usuário administrador do Tenant
+        user = User(
+            email=request.email,
+            full_name=request.full_name,
+            hashed_password=hash_password(request.password),
+            role="Manager",
+            is_active=True,
+            tenant_id=tenant.id
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+
+        # Login automático
+        access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
+        return TokenResponse(
+            access_token=access_token,
+            role=user.role,
+            full_name=user.full_name,
+            email=user.email
+        )
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Erro interno ao criar conta: {str(e)}"
+        )
 

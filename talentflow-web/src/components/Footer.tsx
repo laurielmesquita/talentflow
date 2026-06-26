@@ -40,7 +40,7 @@ export default function Footer({ version = "1.1.0" }: FooterProps) {
   
   // Agrupamento para Variante Simple: páginas públicas, jurídicas e fluxos de autenticação/convites.
   const isSimplePage = pathname === "/" || 
-    ["/privacy", "/terms", "/login", "/forgot-password", "/reset-password", "/invite/accept"].some(
+    ["/privacy", "/terms", "/login", "/forgot-password", "/reset-password", "/invite/accept", "/vagas"].some(
       (route) => pathname?.startsWith(route)
     );
 

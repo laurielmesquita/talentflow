@@ -79,7 +79,7 @@ export default function LandingHeader() {
 
   return (
     <header
-      className={`border-b sticky top-0 z-50 transition-all transform duration-300 ${
+      className={`border-b sticky top-0 z-50 transition-transform duration-300 ${
         visible ? "translate-y-0" : "-translate-y-full"
       } ${
         scrolled

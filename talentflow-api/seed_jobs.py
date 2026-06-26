@@ -48,7 +48,7 @@ def seed_jobs():
                 "• Vale-Alimentação.\n"
                 "• Day Off no dia do aniversário."
             ),
-            application_email="adm.the@outlook.com",
+            application_email="plataforma.talentflow@outlook.com",
             application_subject="Vaga Técnico de Manutenção - Teresina",
             deadline=date(2026, 6, 30),
             required_skills="eletrônica, solda, microeletrônica, smartphones, hardware, eletrotécnica"

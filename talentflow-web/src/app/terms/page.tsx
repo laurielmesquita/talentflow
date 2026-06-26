@@ -123,7 +123,7 @@ export default function TermsPage() {
           <section className="space-y-3 pb-8">
             <h2 className="text-xl font-bold text-foreground">8. Contato e Canal de Suporte</h2>
             <p>
-              Para esclarecer dúvidas sobre estes Termos de Uso, entre em contato através de nosso e-mail de atendimento: <a href="mailto:adm.the@outlook.com" className="text-primary hover:underline">adm.the@outlook.com</a>.
+              Para esclarecer dúvidas sobre estes Termos de Uso, entre em contato através de nosso e-mail de atendimento: <a href="mailto:plataforma.talentflow@outlook.com" className="text-primary hover:underline">plataforma.talentflow@outlook.com</a>.
             </p>
           </section>
         </div>

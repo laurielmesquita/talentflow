@@ -47,7 +47,7 @@ export default function JobFormDrawer({
   const [responsibilities, setResponsibilities] = useState("");
   const [requirements, setRequirements] = useState("");
   const [benefits, setBenefits] = useState("");
-  const [appEmail, setAppEmail] = useState("adm.the@outlook.com");
+  const [appEmail, setAppEmail] = useState("plataforma.talentflow@outlook.com");
   const [appSubject, setAppSubject] = useState("");
   const [deadline, setDeadline] = useState("");
   
@@ -84,7 +84,7 @@ export default function JobFormDrawer({
       setResponsibilities("");
       setRequirements("");
       setBenefits("");
-      setAppEmail("adm.the@outlook.com");
+      setAppEmail("plataforma.talentflow@outlook.com");
       setAppSubject("");
       setDeadline("");
       setSkills([]);
@@ -398,7 +398,7 @@ export default function JobFormDrawer({
                   type="email"
                   value={appEmail}
                   onChange={(e) => setAppEmail(e.target.value)}
-                  placeholder="Ex: adm.the@outlook.com"
+                  placeholder="Ex: plataforma.talentflow@outlook.com"
                   className="w-full bg-slate-50 dark:bg-slate-950 border border-border dark:border-white/10 rounded-lg px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
                 />
               </div>

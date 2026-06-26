@@ -75,7 +75,7 @@ export default function PrivacyPage() {
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Controlador:</strong> A empresa cliente ("Tenant") que contrata o TalentFlow e realiza o upload dos currículos e informações de vagas. O Tenant decide quais currículos processar, de quais fontes obtê-los, os prazos de retenção e as decisões finais de recrutamento.</li>
               <li><strong>Operador:</strong> A Space Square (TalentFlow), que atua estritamente seguindo as diretrizes e instruções técnicas do Tenant para fornecer as funcionalidades de OCR, extração de dados e pontuação de compatibilidade baseada em Inteligência Artificial.</li>
-              <li><strong>Encarregado de Dados (DPO):</strong> O canal oficial para comunicação sobre privacidade com o Operador é o e-mail: <a href="mailto:adm.the@outlook.com" className="text-primary hover:underline">adm.the@outlook.com</a>.</li>
+              <li><strong>Encarregado de Dados (DPO):</strong> O canal oficial para comunicação sobre privacidade com o Operador é o e-mail: <a href="mailto:plataforma.talentflow@outlook.com" className="text-primary hover:underline">plataforma.talentflow@outlook.com</a>.</li>
             </ul>
           </section>
 
@@ -152,7 +152,7 @@ export default function PrivacyPage() {
               <li>Revogação do consentimento (quando aplicável) e exclusão definitiva do currículo da base do sistema.</li>
             </ul>
             <p>
-              Para requisições e dúvidas sobre privacidade, envie um e-mail com sua solicitação para <a href="mailto:adm.the@outlook.com" className="text-primary hover:underline">adm.the@outlook.com</a>.
+              Para requisições e dúvidas sobre privacidade, envie um e-mail com sua solicitação para <a href="mailto:plataforma.talentflow@outlook.com" className="text-primary hover:underline">plataforma.talentflow@outlook.com</a>.
             </p>
           </section>
         </div>

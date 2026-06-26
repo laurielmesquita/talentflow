@@ -105,6 +105,9 @@ export default function LandingHeader() {
           <a href="#how-it-works" className={getLinkClass("how-it-works")}>
             Como funciona
           </a>
+          <Link href="/vagas" className="px-3 py-2 rounded-lg font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-all duration-300">
+            Vagas
+          </Link>
         </nav>
 
         {/* CTAs */}

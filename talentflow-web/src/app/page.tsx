@@ -32,19 +32,16 @@ export const metadata = {
 ───────────────────────────────────────────────────────────────────── */
 export default function LandingPage() {
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans overflow-x-hidden selection:bg-primary/20">
-
-      {/* ── Ambient Glows (fixos, atrás de tudo) ───────────────────── */}
-      <div className="fixed inset-0 pointer-events-none -z-10" aria-hidden="true">
-        <div className="absolute -top-[20%] -left-[10%] w-[700px] h-[700px] bg-primary/8 rounded-full blur-[220px]" />
-        <div className="absolute top-[35%] -right-[15%] w-[600px] h-[600px] bg-indigo-500/6 rounded-full blur-[200px]" />
-        <div className="absolute bottom-[10%] left-[15%] w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[160px]" />
-      </div>
-
-      {/* ═══════════════════════════════════════════════════════════════
-          HEADER
-      ═══════════════════════════════════════════════════════════════ */}
+    <>
       <LandingHeader />
+      <div className="flex-1 flex flex-col bg-background text-foreground font-sans overflow-x-hidden selection:bg-primary/20">
+
+        {/* ── Ambient Glows (fixos, atrás de tudo) ───────────────────── */}
+        <div className="fixed inset-0 pointer-events-none -z-10" aria-hidden="true">
+          <div className="absolute -top-[20%] -left-[10%] w-[700px] h-[700px] bg-primary/8 rounded-full blur-[220px]" />
+          <div className="absolute top-[35%] -right-[15%] w-[600px] h-[600px] bg-indigo-500/6 rounded-full blur-[200px]" />
+          <div className="absolute bottom-[10%] left-[15%] w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[160px]" />
+        </div>
 
       {/* ═══════════════════════════════════════════════════════════════
           HERO
@@ -482,6 +479,7 @@ export default function LandingPage() {
 
       {/* Footer é injetado pelo layout.tsx (variante simple automática em pathname="/") */}
       <ScrollToTop />
-    </div>
+      </div>
+    </>
   );
 }

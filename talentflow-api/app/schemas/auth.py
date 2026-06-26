@@ -37,3 +37,10 @@ class ChangePasswordRequest(BaseModel):
     current_password: str
     new_password: str
 
+
+class RegisterRequest(BaseModel):
+    company_name: str
+    full_name: str
+    email: EmailStr
+    password: str
+

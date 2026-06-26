@@ -134,7 +134,7 @@ export default function LandingHeader() {
             id="cta-header-signup"
             className="text-sm font-semibold bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-[1.02] transition-all shadow-md shadow-primary/20 py-2 px-4 rounded-xl flex items-center gap-1.5"
           >
-            Solicitar Acesso <ArrowRight className="w-3.5 h-3.5" />
+            Criar Conta <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </div>

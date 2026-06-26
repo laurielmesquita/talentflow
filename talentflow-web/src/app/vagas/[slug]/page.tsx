@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import PublicJobDetail from "@/components/PublicJobDetail";
 import { Metadata } from "next";
+import LandingHeader from "@/components/LandingHeader";
 
 // Revalidar a página a cada 60 segundos (ISR)
 export const revalidate = 60;
@@ -60,16 +61,19 @@ export default async function PublicJobPage({ params }: PageProps) {
   }
 
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-          <div className="absolute inset-0 bg-primary/10 blur-xl rounded-full"></div>
+    <>
+      <LandingHeader />
+      <Suspense fallback={
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-0 bg-primary/10 blur-xl rounded-full"></div>
+          </div>
+          <p className="mt-4 text-slate-500 font-medium animate-pulse">Carregando detalhes da vaga...</p>
         </div>
-        <p className="mt-4 text-slate-500 font-medium animate-pulse">Carregando detalhes da vaga...</p>
-      </div>
-    }>
-      <PublicJobDetail job={job} />
-    </Suspense>
+      }>
+        <PublicJobDetail job={job} />
+      </Suspense>
+    </>
   );
 }

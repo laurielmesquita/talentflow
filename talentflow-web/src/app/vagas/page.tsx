@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import PublicJobsList from "@/components/PublicJobsList";
+import LandingHeader from "@/components/LandingHeader";
 
 // Revalidar a página a cada 60 segundos (Incremental Static Regeneration)
 export const revalidate = 60;
@@ -33,16 +34,19 @@ export default async function PublicJobsPage() {
   const jobs = await getPublicJobs();
 
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center">
-        <div className="relative">
-          <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-          <div className="absolute inset-0 bg-primary/10 blur-xl rounded-full"></div>
+    <>
+      <LandingHeader />
+      <Suspense fallback={
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+            <div className="absolute inset-0 bg-primary/10 blur-xl rounded-full"></div>
+          </div>
+          <p className="mt-4 text-slate-500 font-medium animate-pulse">Carregando oportunidades...</p>
         </div>
-        <p className="mt-4 text-slate-500 font-medium animate-pulse">Carregando oportunidades...</p>
-      </div>
-    }>
-      <PublicJobsList initialJobs={jobs} />
-    </Suspense>
+      }>
+        <PublicJobsList initialJobs={jobs} />
+      </Suspense>
+    </>
   );
 }

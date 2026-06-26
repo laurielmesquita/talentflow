@@ -46,36 +46,34 @@ export default function PublicJobDetail({ job }: PublicJobDetailProps) {
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none -z-10 translate-x-1/3 -translate-y-1/3" />
       
-      {/* Header/Nav */}
-      <header className="sticky top-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-5xl mx-auto px-6 h-20 flex items-center justify-between">
-          <Link 
-            href="/vagas" 
-            className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors font-medium group"
-          >
-            <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-900 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-            </div>
-            Todas as vagas
-          </Link>
-
-          <button 
-            onClick={handleShare}
-            className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary transition-colors"
-          >
-            <Share2 className="w-4 h-4" />
-            {copied ? "Link Copiado!" : "Compartilhar"}
-          </button>
-        </div>
-      </header>
-
       {/* Main Content */}
-      <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-12">
+      <main className="flex-1 w-full max-w-4xl mx-auto px-6 py-12 pt-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          {/* Breadcrumb / Local Actions */}
+          <div className="flex items-center justify-between mb-8 pb-6 border-b border-slate-200 dark:border-slate-800/80">
+            <Link 
+              href="/vagas" 
+              className="flex items-center gap-2 text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors font-medium group text-sm"
+            >
+              <div className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800/60 flex items-center justify-center group-hover:bg-slate-200 dark:group-hover:bg-slate-800 transition-colors">
+                <ArrowLeft className="w-4 h-4" />
+              </div>
+              Todas as vagas
+            </Link>
+
+            <button 
+              onClick={handleShare}
+              className="flex items-center gap-2 text-sm font-medium text-slate-600 dark:text-slate-400 hover:text-primary transition-all duration-200 bg-slate-100/80 dark:bg-slate-800/80 hover:bg-slate-200/85 dark:hover:bg-slate-700/85 px-3.5 py-1.5 rounded-xl border border-slate-200/50 dark:border-slate-800/60"
+            >
+              <Share2 className="w-4 h-4" />
+              {copied ? "Link Copiado!" : "Compartilhar"}
+            </button>
+          </div>
+
           {/* Hero Job Info */}
           <div className="mb-12">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-4">

@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function LandingHeader() {
+  const pathname = usePathname();
   const [activeSection, setActiveSection] = useState("");
   const [scrolled, setScrolled] = useState(false);
 
@@ -96,16 +98,23 @@ export default function LandingHeader() {
 
         {/* Nav */}
         <nav className="hidden md:flex items-center gap-1.5 text-sm" aria-label="Navegação principal">
-          <a href="#sandbox" className={getLinkClass("sandbox")}>
+          <Link href="/#sandbox" className={getLinkClass("sandbox")}>
             Demonstração
-          </a>
-          <a href="#features" className={getLinkClass("features")}>
+          </Link>
+          <Link href="/#features" className={getLinkClass("features")}>
             Funcionalidades
-          </a>
-          <a href="#how-it-works" className={getLinkClass("how-it-works")}>
+          </Link>
+          <Link href="/#how-it-works" className={getLinkClass("how-it-works")}>
             Como funciona
-          </a>
-          <Link href="/vagas" className="px-3 py-2 rounded-lg font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 transition-all duration-300">
+          </Link>
+          <Link
+            href="/vagas"
+            className={`px-3 py-2 rounded-lg font-medium transition-all duration-300 ${
+              pathname === "/vagas" || pathname?.startsWith("/vagas/")
+                ? "text-primary bg-primary/10 shadow-sm font-semibold"
+                : "text-muted-foreground hover:text-foreground hover:bg-secondary/60"
+            }`}
+          >
             Vagas
           </Link>
         </nav>

@@ -3,15 +3,14 @@ from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user, RoleChecker
-from app.models.domain import User, Invite, PasswordReset, Tenant
+from app.models.domain import User, PasswordReset, Tenant
 from app.schemas.auth import (
-    LoginRequest, TokenResponse, InviteRequest, 
-    InviteVerifyResponse, InviteAcceptRequest, 
+    LoginRequest, TokenResponse, 
     ForgotPasswordRequest, ResetPasswordRequest,
     ChangePasswordRequest, RegisterRequest
 )
 from app.services.auth import hash_password, verify_password, create_access_token
-from app.services.email import send_invite_email, send_reset_password_email
+from app.services.email import send_reset_password_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -41,165 +40,6 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         email=user.email
     )
 
-
-@router.post("/invite")
-def invite_user(
-    request: InviteRequest, 
-    db: Session = Depends(get_db),
-    current_user: User = Depends(RoleChecker(["SuperAdmin", "Manager"]))
-):
-    """
-    Gera um token de convite e envia por e-mail para o novo usuário.
-    """
-    # Restrição de criação de papéis
-    if current_user.role == "Manager" and request.role != "Recruiter":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="Gerentes só podem convidar recrutadores (Recruiter)."
-        )
-
-    # Verifica se já existe um usuário cadastrado com esse e-mail
-    existing_user = db.query(User).filter(User.email == request.email).first()
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Este e-mail já está cadastrado no sistema."
-        )
-
-    # Inativa convites antigos não utilizados para este e-mail
-    db.query(Invite).filter(
-        Invite.email == request.email, 
-        Invite.is_used == False
-    ).update({"is_used": True})
-
-    # Criação do token seguro
-    token = secrets.token_urlsafe(32)
-    expires_at = datetime.now(timezone.utc) + timedelta(days=7) # 7 dias de validade
-
-    invite = Invite(
-        email=request.email,
-        role=request.role,
-        token=token,
-        expires_at=expires_at,
-        created_by=current_user.id,
-        tenant_id=current_user.tenant_id
-    )
-    
-    db.add(invite)
-    db.commit()
-
-    # Disparo de e-mail físico via SMTP (Brevo)
-    email_sent = send_invite_email(
-        to_email=request.email,
-        token=token,
-        inviter_name=current_user.full_name,
-        role=request.role
-    )
-
-    if not email_sent:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Erro ao enviar o e-mail de convite. Configurações SMTP inválidas."
-        )
-
-    return {"message": "Convite enviado com sucesso!"}
-
-
-@router.get("/invite/verify", response_model=InviteVerifyResponse)
-def verify_invite(token: str, db: Session = Depends(get_db)):
-    """
-    Verifica se um token de convite é válido e não expirou.
-    """
-    invite = db.query(Invite).filter(Invite.token == token, Invite.is_used == False).first()
-    if not invite:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Convite inválido ou já utilizado."
-        )
-
-    # Verifica expiração
-    # Garante que a comparação seja feita com timezone aware
-    now = datetime.now(timezone.utc)
-    if invite.expires_at.tzinfo is None:
-        expires_at = invite.expires_at.replace(tzinfo=timezone.utc)
-    else:
-        expires_at = invite.expires_at
-
-    if now > expires_at:
-        invite.is_used = True
-        db.commit()
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Este convite expirou."
-        )
-
-    return InviteVerifyResponse(
-        email=invite.email,
-        role=invite.role,
-        token=invite.token
-    )
-
-
-@router.post("/invite/accept", response_model=TokenResponse)
-def accept_invite(request: InviteAcceptRequest, db: Session = Depends(get_db)):
-    """
-    Cadastra o usuário convidado e ativa sua conta.
-    """
-    invite = db.query(Invite).filter(
-        Invite.token == request.token, 
-        Invite.is_used == False
-    ).first()
-    
-    if not invite:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Convite inválido ou já utilizado."
-        )
-
-    # Verifica expiração
-    now = datetime.now(timezone.utc)
-    expires_at = invite.expires_at.replace(tzinfo=timezone.utc) if invite.expires_at.tzinfo is None else invite.expires_at
-    if now > expires_at:
-        invite.is_used = True
-        db.commit()
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Este convite expirou."
-        )
-
-    # Verifica se já cadastrou nesse meio tempo
-    existing_user = db.query(User).filter(User.email == invite.email).first()
-    if existing_user:
-        invite.is_used = True
-        db.commit()
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Este e-mail já foi registrado."
-        )
-
-    # Criação do usuário
-    user = User(
-        email=invite.email,
-        full_name=request.full_name,
-        hashed_password=hash_password(request.password),
-        role=invite.role,
-        is_active=True,
-        tenant_id=invite.tenant_id
-    )
-    
-    db.add(user)
-    invite.is_used = True
-    db.commit()
-    db.refresh(user)
-
-    # Login automático pós cadastro
-    access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
-    return TokenResponse(
-        access_token=access_token,
-        role=user.role,
-        full_name=user.full_name,
-        email=user.email
-    )
 
 
 @router.post("/forgot-password")

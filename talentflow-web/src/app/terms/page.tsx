@@ -80,7 +80,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">3. Cadastro de Contas e Segurança</h2>
             <p>
-              Para acessar as funcionalidades de triagem, é necessária a criação de uma conta associada a um Tenant. Você concorda em fornecer informações verídicas, completas e atualizadas. Você é integralmente responsável por manter a confidencialidade de suas credenciais de acesso (e-mail, senha ou convites) e por todas as atividades realizadas sob sua conta.
+              Para acessar as funcionalidades de triagem, é necessária a criação de uma conta associada a um Tenant. Você concorda em fornecer informações verídicas, completas e atualizadas. Você é integralmente responsável por manter a confidencialidade de suas credenciais de acesso (e-mail ou senha) e por todas as atividades realizadas sob sua conta.
             </p>
           </section>
 

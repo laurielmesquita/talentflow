@@ -9,8 +9,7 @@ import {
   Shield, 
   LogOut, 
   ChevronDown, 
-  KeyRound, 
-  Send 
+  KeyRound 
 } from 'lucide-react';
 import { getSession, clearSession } from '@/lib/auth';
 
@@ -124,16 +123,6 @@ export default function UserMenu() {
 
             {/* Ações */}
             <div className="flex flex-col gap-1">
-              {(userRole === 'SuperAdmin' || userRole === 'Manager') && (
-                <Link
-                  href="/invite"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all"
-                >
-                  <Send className="w-4 h-4 text-primary" />
-                  Convidar Colega
-                </Link>
-              )}
 
               <Link
                 href="/change-password"

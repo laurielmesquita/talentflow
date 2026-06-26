@@ -38,9 +38,9 @@ const itemVariants = {
 export default function Footer({ version = "1.1.0" }: FooterProps) {
   const pathname = usePathname();
   
-  // Agrupamento para Variante Simple: páginas públicas, jurídicas e fluxos de autenticação/convites.
+  // Agrupamento para Variante Simple: páginas públicas, jurídicas e fluxos de autenticação.
   const isSimplePage = pathname === "/" || 
-    ["/privacy", "/terms", "/login", "/forgot-password", "/reset-password", "/invite/accept", "/vagas"].some(
+    ["/privacy", "/terms", "/login", "/forgot-password", "/reset-password", "/vagas"].some(
       (route) => pathname?.startsWith(route)
     );
 

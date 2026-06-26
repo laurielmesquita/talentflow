@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 // Rotas públicas que não exigem autenticação
-const PUBLIC_ROUTES = ['/login', '/forgot-password', '/reset-password', '/invite/accept', '/terms', '/privacy', '/vagas'];
+const PUBLIC_ROUTES = ['/login', '/forgot-password', '/reset-password', '/terms', '/privacy', '/vagas'];
 
 // Helper para decodificar o payload do JWT no Edge Runtime de forma nativa (sem bibliotecas)
 function decodeJwt(token: string): any {
@@ -88,17 +88,7 @@ export function middleware(request: NextRequest) {
       return response;
     }
 
-    // Controle de Acesso Baseado em Cargos (RBAC) para a tela de convites
-    if (pathname.startsWith('/invite') && pathname !== '/invite/accept') {
-      const userRole = decoded.role;
-      if (userRole !== 'SuperAdmin' && userRole !== 'Manager') {
-        // Recrutador comum não pode convidar, redireciona para o dashboard
-        const response = NextResponse.redirect(new URL('/dashboard', request.url));
-        response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
-        response.headers.set('Pragma', 'no-cache');
-        return response;
-      }
-    }
+
   }
 
   return NextResponse.next();

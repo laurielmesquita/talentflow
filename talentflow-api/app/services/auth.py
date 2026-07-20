@@ -33,9 +33,9 @@ def create_access_token(data: dict, expires_delta: timedelta = None) -> str:
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(days=7) # Padrão: 7 dias
-        
-    to_encode.update({"exp": expire})
+        expire = datetime.now(timezone.utc) + timedelta(hours=4)
+
+    to_encode.update({"exp": expire, "iss": "talentflow-api"})
     encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm="HS256")
     return encoded_jwt
 

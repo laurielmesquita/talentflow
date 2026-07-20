@@ -1,4 +1,10 @@
+import type { Metadata } from 'next';
 import DashboardClient from '@/components/DashboardClient';
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+};
+
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 

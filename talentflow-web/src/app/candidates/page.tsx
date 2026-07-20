@@ -1,6 +1,11 @@
+import type { Metadata } from 'next';
 import { Users, UserCheck, Sparkles, ShieldAlert } from 'lucide-react';
 import Link from 'next/link';
 import CandidateTable from '@/components/CandidateTable';
+
+export const metadata: Metadata = {
+  title: 'Candidatos',
+};
 import BatchUploadButton from '@/components/BatchUploadButton';
 import SearchAndFilters from '@/components/SearchAndFilters';
 import Navbar from '@/components/Navbar';

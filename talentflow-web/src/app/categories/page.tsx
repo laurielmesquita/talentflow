@@ -1,5 +1,10 @@
+import type { Metadata } from 'next';
 import CategoriesDashboard from "@/components/CategoriesDashboard";
 import { cookies } from 'next/headers';
+
+export const metadata: Metadata = {
+  title: 'Categorias',
+};
 
 interface Category {
   id: string;

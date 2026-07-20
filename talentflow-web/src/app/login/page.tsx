@@ -1,12 +1,13 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, useRef, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft, User, Building } from 'lucide-react';
+import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft, User, Building, CheckCircle2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { setSession } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 
 function LoginContent() {
   const router = useRouter();
@@ -21,11 +22,16 @@ function LoginContent() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (searchParams.get('signup') === 'true') {
       setIsSignUp(true);
     }
+    return () => {
+      if (successTimer.current) clearTimeout(successTimer.current);
+    };
   }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -33,32 +39,22 @@ function LoginContent() {
     setLoading(true);
     setError(null);
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-
     try {
-      let res;
+      let endpoint: string;
+      let body: Record<string, string>;
+
       if (isSignUp) {
-        res = await fetch(`${API_URL}/api/auth/register`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ 
-            email, 
-            password, 
-            company_name: companyName, 
-            full_name: fullName 
-          }),
-        });
+        endpoint = '/api/auth/register';
+        body = { email, password, company_name: companyName, full_name: fullName };
       } else {
-        res = await fetch(`${API_URL}/api/auth/login`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email, password }),
-        });
+        endpoint = '/api/auth/login';
+        body = { email, password };
       }
+
+      const res = await apiFetch(endpoint, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      });
 
       const data = await res.json();
 
@@ -69,8 +65,11 @@ function LoginContent() {
       // Salva sessão nos cookies
       setSession(data.access_token, data.role, data.full_name, data.email);
 
-      // Redireciona para a página interna
-      router.push(redirect);
+      // Feedback visual antes do redirect
+      setSuccess(true);
+      successTimer.current = setTimeout(() => {
+        router.push(redirect);
+      }, 1500);
     } catch (err: any) {
       setError(err.message || 'Erro de conexão com o servidor.');
       setLoading(false);
@@ -210,7 +209,38 @@ function LoginContent() {
             </div>
           )}
 
-          {/* Form */}
+          {/* Success Feedback */}
+          {success ? (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="flex flex-col items-center justify-center py-12 gap-4"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
+              >
+                <CheckCircle2 className="w-16 h-16 text-emerald-500" />
+              </motion.div>
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="text-lg font-semibold text-foreground"
+              >
+                {isSignUp ? 'Conta criada com sucesso!' : 'Login realizado com sucesso!'}
+              </motion.p>
+              <motion.p
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="text-sm text-muted-foreground"
+              >
+                Redirecionando...
+              </motion.p>
+            </motion.div>
+          ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <AnimatePresence initial={false}>
               {isSignUp && (
@@ -361,6 +391,7 @@ function LoginContent() {
               )}
             </button>
           </form>
+          )}
         </motion.div>
       </div>
     </div>

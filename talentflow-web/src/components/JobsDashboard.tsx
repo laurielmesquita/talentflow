@@ -14,6 +14,7 @@ import JobMatchViewer from "./JobMatchViewer";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
 import { getSession } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 import Portal from "@/components/Portal";
 
 interface Job {

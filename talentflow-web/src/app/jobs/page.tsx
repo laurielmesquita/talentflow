@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import JobsListDashboard from "@/components/JobsListDashboard";
+
+export const metadata: Metadata = {
+  title: 'Vagas',
+};
 import { cookies } from 'next/headers';
 
 interface Job {
@@ -45,8 +50,26 @@ export default async function JobsPage() {
   
   return (
     <Suspense fallback={
-      <div className="flex-1 bg-background text-foreground flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+      <div className="flex-1 bg-background text-foreground font-sans">
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[1, 2, 3, 4, 5, 6].map((i) => (
+              <div key={i} className="rounded-2xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 p-6 space-y-4 animate-pulse">
+                <div className="h-5 bg-slate-200 dark:bg-slate-800 rounded w-3/4" />
+                <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-1/2" />
+                <div className="space-y-2">
+                  <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-full" />
+                  <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-5/6" />
+                </div>
+                <div className="flex gap-2">
+                  <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-16" />
+                  <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-20" />
+                  <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-14" />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     }>
       <JobsListDashboard initialJobs={jobs} />

@@ -21,7 +21,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://tlntflow.vercel.app"),
-  title: "TalentFlow — Banco de Talentos Inteligente",
+  title: {
+    default: "TalentFlow — Banco de Talentos Inteligente",
+    template: "%s | TalentFlow",
+  },
   description: "Triagem automatizada de currículos baseada em Inteligência Artificial Generativa para processos seletivos de alta performance.",
   keywords: ["recrutamento", "triagem de currículos", "IA", "inteligência artificial", "analytics", "RH", "ATS"],
   authors: [{ name: "Space Square" }],

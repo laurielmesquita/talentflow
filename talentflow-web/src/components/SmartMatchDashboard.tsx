@@ -171,11 +171,23 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
           <div className="lg:col-span-2">
             {!selectedJob ? (
               <div className="bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl p-12 min-h-[500px] flex flex-col items-center justify-center text-slate-500">
-                <Target className="w-12 h-12 mb-4 opacity-20 text-primary animate-pulse" />
-                <p className="text-lg font-medium text-slate-400">Selecione uma vaga ao lado</p>
-                <p className="text-sm mt-1 text-center max-w-sm">
-                  Selecione uma vaga para analisar os candidatos compatíveis do banco e ver a descrição estruturada.
-                </p>
+                {jobs.length === 0 ? (
+                  <>
+                    <Briefcase className="w-12 h-12 mb-4 opacity-20 text-slate-400" />
+                    <p className="text-lg font-medium text-slate-400">Nenhuma vaga cadastrada</p>
+                    <p className="text-sm mt-1 text-center max-w-sm">
+                      Crie uma vaga na página de <Link href="/jobs" className="text-primary hover:underline font-semibold">Gestão de Vagas</Link> para começar a usar o Smart Match.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Target className="w-12 h-12 mb-4 opacity-20 text-primary animate-pulse" />
+                    <p className="text-lg font-medium text-slate-400">Selecione uma vaga ao lado</p>
+                    <p className="text-sm mt-1 text-center max-w-sm">
+                      Selecione uma vaga para analisar os candidatos compatíveis do banco e ver a descrição estruturada.
+                    </p>
+                  </>
+                )}
               </div>
             ) : (
               <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl p-6 min-h-[500px] flex flex-col">

@@ -204,7 +204,7 @@ def get_candidate(
         "categories": [cat.name for cat in c.categories],
         "skills": [s.name for s in c.skills],
         "experiences": [
-            {"company": e.company_name, "title": e.job_title, "desc": e.description}
+            {"company_name": e.company_name, "job_title": e.job_title, "description": e.description}
             for e in c.experiences
         ],
         "added_at": c.created_at.isoformat() if c.created_at else None,

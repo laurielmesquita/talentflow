@@ -534,12 +534,12 @@ export default function CandidateTable({
                                 <div className="space-y-3">
                                   {fullCand.experiences.map((exp: any, idx: number) => (
                                     <div key={idx} className="p-4 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 shadow-sm">
-                                      <div className="font-bold text-sm text-slate-900 dark:text-slate-100">{exp.title}</div>
-                                      <div className="text-xs text-primary dark:text-indigo-400 font-semibold mt-0.5">{exp.company}</div>
-                                      {exp.desc && (
-                                        <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed mt-2 p-2.5 rounded-lg bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-white/5">
-                                          {exp.desc}
-                                        </p>
+                                      <div className="font-bold text-sm text-slate-900 dark:text-slate-100">{exp.job_title}</div>
+                                      <div className="text-xs text-primary dark:text-indigo-400 font-semibold mt-0.5">{exp.company_name}</div>
+                                      {exp.description && (
+                                        <div className="text-xs text-muted-foreground/80 leading-relaxed border-t border-slate-200 dark:border-white/10 pt-2 whitespace-pre-line">
+                                          {exp.description}
+                                        </div>
                                       )}
                                     </div>
                                   ))}

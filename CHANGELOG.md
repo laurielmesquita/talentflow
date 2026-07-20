@@ -6,7 +6,7 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ---
 
 
-## [2.0.0] — 2026-07-20
+## [2.1.0] — 2026-07-20
 
 Esta versão traz **otimizações críticas de performance de rede, políticas de cache em múltiplas camadas, compressão severa de imagens de marca e migração de infraestrutura de Dallas para São Paulo**, reduzindo drasticamente o tempo de carregamento no Safari e eliminando latência transatlântica. Inclui também **21 correções de auditoria full-stack** abrangendo segurança, performance e UX.
 

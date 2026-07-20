@@ -8,12 +8,9 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 ## [2.1.0] — 2026-07-20
 
-Esta versão traz **otimizações críticas de performance de rede, políticas de cache em múltiplas camadas, compressão severa de imagens de marca e migração de infraestrutura de Dallas para São Paulo**, reduzindo drasticamente o tempo de carregamento no Safari e eliminando latência transatlântica. Inclui também **21 correções de auditoria full-stack** abrangendo segurança, performance e UX.
+Esta versão adiciona **21 correções de auditoria full-stack** abrangendo segurança, performance e UX, além de refatorar o sistema de autenticação para cookies HttpOnly.
 
 ### Adicionado
-- **Otimização de Imagens de Marca (WebP):** Geração de versões `/brand/logo-dark.webp` e `/brand/logo-light.webp` de alta performance redimensionadas para $256 \times 256$ pixels (otimizado para telas de altíssima densidade).
-- **Scripts de Otimização Automatizada:** Script `scripts/optimize-images.js` utilizando a biblioteca `sharp` para automatizar o redimensionamento e compressão de assets de marca.
-- **Script de Migração de Banco:** Criado o script `talentflow-api/migrate_db_data.py` para sincronização inteligente de esquemas e dados entre projetos do Postgres no Neon, contornando a ausência de privilégios de superusuário e resolvendo dependências de FK auto-referenciais.
 - **Cache de Match Results (F06):** `DashboardClient` agora cacheia resultados de match por job em `useRef<Map>`, eliminando requisições redundantes ao alternar entre jobs.
 - **Skeleton Cards em Páginas (F07):** Grades de skeleton animados nos fallbacks de `Suspense` para as páginas de Vagas e Smart Match, substituindo spinners genéricos.
 - **Empty State Inteligente (F08):** `SmartMatchDashboard` exibe estado vazio com link direto para "Gestão de Vagas" quando não há vagas cadastradas.
@@ -21,28 +18,40 @@ Esta versão traz **otimizações críticas de performance de rede, políticas d
 - **Feedback Visual Pós-Login (F10):** Tela de login exibe animação `CheckCircle2` com atraso de 1.5s antes do redirect, melhorando a percepção de sucesso.
 
 ### Modificado
-- **Identidade Visual Unificada (Logos WebP):** Substituição definitiva do antigo box azul genérico "TF" pelos logos oficiais da marca em formato WebP nos cabeçalhos e formulários de todas as páginas públicas, fluxos de autenticação e termos (LandingHeader, Navbar, Footer, Login, Privacidade, Termos de Uso, Convite e Alteração de Senha).
-- **Redirecionamento Pós-Login:** Mudança da lógica de redirecionamento em `login/page.tsx` para usar navegação soft via router (`router.push()`) e destino padrão `/dashboard`, evitando recargas completas desnecessárias de página.
-- **Geolocalização da API (Fly.io):** Alteração da região primária do Fly.io de Dallas (`dfw`) para São Paulo (`gru`) no arquivo `fly.toml` para colocalizar a execução do backend com os usuários no Brasil.
-- **Banco de Dados (Neon DB):** Substituição do banco de dados hospedado em N. Virginia (`us-east-1`) pelo novo banco de dados em São Paulo (`sa-east-1`), migrando com segurança 100% dos dados (candidatos, vagas, usuários e logs).
 - **Autenticação via HttpOnly Cookie (F04):** Substituição do `Authorization` header por cookie `HttpOnly; Secure; SameSite=Lax` em toda a aplicação. Tokens JWT não transitam mais pelo JavaScript do cliente. Envolveu 17 arquivos entre API (cookie helper + logout endpoint + cookie fallback em `deps.py`) e frontend (novo `api.ts` wrapper com `credentials: 'include'`, `auth.ts` simplificado, 14 componentes cliente).
 - **DTO de Experiência Unificado (I03):** Padronização dos campos `company` → `company_name`, `title` → `job_title`, `desc` → `description` no backend (`candidates.py`) e frontend (`CandidateTable.tsx`, `CandidateModal.tsx`).
-- **Auth Cookie também no Login (F04):** Substituição de `fetch()` bruto por `apiFetch()` no formulário de login, garantindo consistência com o novo esquema de cookies.
 
 ### Corrigido
-- **Segregação de Cache em Múltiplas Camadas (`vercel.json` & `next.config.ts`):** Aplicação de cabeçalhos de cache `public, max-age=31536000, immutable` para chunks estáticos e `public, max-age=86400, stale-while-revalidate=3600` para assets de marca, limitando o `no-store` estrito apenas a documentos HTML.
-- **Consolidação de Listeners de Scroll:** Redução de dois listeners redundantes de scroll para um único handler passivo (`{ passive: true }`) em `LandingHeader.tsx`, mitigando layout thrashing em WebKit/Safari.
-- **Compressão Extrema de Assets:** Redução do arquivo `logo-dark.png` de $657$ KB para $15$ KB (PNG) e $3.5$ KB (WebP). Redesing e compressão profunda do `og-image.png` de $1.04$ MB para apenas **$46$ KB** (redução de 95%) através de composição híbrida SVG, quantização de cores e posicionamento geométrico centralizado.
-- **Resolução do Preview de Imagem OpenGraph (WhatsApp):** Correção do `metadataBase` e `url` do OpenGraph em `layout.tsx` de `spacesquare.com.br` (domínio inativo) para `tlntflow.vercel.app` (domínio ativo), permitindo que scrapers de mídias sociais e WhatsApp resolvam e exibam corretamente a imagem de visualização de link (`og-image.png`).
 - **Isolamento Multi-Tenant em Queries Agregadas (B01):** Substituição de `db.db.query` por `get_scoped_db` no dashboard e candidatos, e remoção de filtros manuais de `tenant_id` que falhavam silenciosamente com `FunctionElement`.
 - **Segurança OTP (B03, B07, B10):** Rate-limit de 5 tentativas por minuto por email, armazenamento de OTPs com hash SHA-256 (não mais plaintext), e correção de variável `fallback_db` que sombreava parâmetro da função.
 - **Security Headers + Secure Flag (F02, F03):** Adição de CSP, `X-Frame-Options`, `X-Content-Type-Options`, `Strict-Transport-Security` e `Referrer-Policy` em `next.config.ts`. Cookie `Secure` agora é condicional ao ambiente de produção.
 - **Lock Assíncrono no Sandbox (B04):** Adição de `threading.Lock` ao redor do acesso ao dicionário de budget do sandbox público para evitar condição de corrida.
 - **Eliminação de N+1 Query (B05):** Versões de candidatos agora são obtidas em uma única consulta SQL com montagem da árvore em memória, ao invés de uma query por candidato.
 - **JWT Tighter (B06):** Expiração reduzida de 24h para 4h, e adição do claim `iss` (issuer) = `"talentflow"`.
-- **Versionamento e Limpeza (B08, B09):** Sincronização da versão `1.3.0` em `config.py` e remoção de `Session` não utilizada em `jobs.py`.
+- **Versionamento e Limpeza (B08, B09):** Sincronização da versão em `config.py` e remoção de `Session` não utilizada em `jobs.py`.
 - **Validação de Senha (F05):** `min_length=8` aplicado via `Field()` nos schemas Pydantic de registro, login e change-password.
+- **Redundant `res.json()` no Login:** `login/page.tsx` chamava `res.json()` após `apiFetch` que já retorna o dado desserializado, causando `TypeError` em runtime.
 
+## [1.3.0] — 2026-06-24
+
+Esta versão traz **otimizações críticas de performance de rede, políticas de cache em múltiplas camadas, compressão severa de imagens de marca e migração de infraestrutura de Dallas para São Paulo**, reduzindo drasticamente o tempo de carregamento no Safari e eliminando latência transatlântica.
+
+### Adicionado
+- **Otimização de Imagens de Marca (WebP):** Geração de versões `/brand/logo-dark.webp` e `/brand/logo-light.webp` de alta performance redimensionadas para $256 \times 256$ pixels (otimizado para telas de altíssima densidade).
+- **Scripts de Otimização Automatizada:** Script `scripts/optimize-images.js` utilizando a biblioteca `sharp` para automatizar o redimensionamento e compressão de assets de marca.
+- **Script de Migração de Banco:** Criado o script `talentflow-api/migrate_db_data.py` para sincronização inteligente de esquemas e dados entre projetos do Postgres no Neon, contornando a ausência de privilégios de superusuário e resolvendo dependências de FK auto-referenciais.
+
+### Modificado
+- **Identidade Visual Unificada (Logos WebP):** Substituição definitiva do antigo box azul genérico "TF" pelos logos oficiais da marca em formato WebP nos cabeçalhos e formulários de todas as páginas públicas, fluxos de autenticação e termos (LandingHeader, Navbar, Footer, Login, Privacidade, Termos de Uso, Convite e Alteração de Senha).
+- **Redirecionamento Pós-Login:** Mudança da lógica de redirecionamento em `login/page.tsx` para usar navegação soft via router (`router.push()`) e destino padrão `/dashboard`, evitando recargas completas desnecessárias de página.
+- **Geolocalização da API (Fly.io):** Alteração da região primária do Fly.io de Dallas (`dfw`) para São Paulo (`gru`) no arquivo `fly.toml` para colocalizar a execução do backend com os usuários no Brasil.
+- **Banco de Dados (Neon DB):** Substituição do banco de dados hospedado em N. Virginia (`us-east-1`) pelo novo banco de dados em São Paulo (`sa-east-1`), migrando com segurança 100% dos dados (candidatos, vagas, usuários e logs).
+
+### Corrigido
+- **Segregação de Cache em Múltiplas Camadas (`vercel.json` & `next.config.ts`):** Aplicação de cabeçalhos de cache `public, max-age=31536000, immutable` para chunks estáticos e `public, max-age=86400, stale-while-revalidate=3600` para assets de marca, limitando o `no-store` estrito apenas a documentos HTML.
+- **Consolidação de Listeners de Scroll:** Redução de dois listeners redundantes de scroll para um único handler passivo (`{ passive: true }`) em `LandingHeader.tsx`, mitigando layout thrashing em WebKit/Safari.
+- **Compressão Extrema de Assets:** Redução do arquivo `logo-dark.png` de $657$ KB para $15$ KB (PNG) e $3.5$ KB (WebP). Redesing e compressão profunda do `og-image.png` de $1.04$ MB para apenas **$46$ KB** (redução de 95%) através de composição híbrida SVG, quantização de cores e posicionamento geométrico centralizado.
+- **Resolução do Preview de Imagem OpenGraph (WhatsApp):** Correção do `metadataBase` e `url` do OpenGraph em `layout.tsx` de `spacesquare.com.br` (domínio inativo) para `tlntflow.vercel.app` (domínio ativo), permitindo que scrapers de mídias sociais e WhatsApp resolvam e exibam corretamente a imagem de visualização de link (`og-image.png`).
 
 ## [1.2.0] — 2026-06-23
 

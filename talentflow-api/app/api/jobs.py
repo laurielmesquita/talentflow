@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import Session, selectinload
+from sqlalchemy.orm import selectinload
 from pydantic import BaseModel
 from typing import List, Optional
 from app.core.database import SessionLocal

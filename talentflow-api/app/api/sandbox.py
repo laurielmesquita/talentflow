@@ -4,6 +4,7 @@ from pathlib import Path
 from datetime import date
 from collections import defaultdict
 import logging
+from threading import Lock
 from fastapi import APIRouter, UploadFile, File, HTTPException, Request
 from pydantic import BaseModel
 from typing import List, Optional
@@ -20,6 +21,7 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 daily_budget = settings.SANDBOX_DAILY_BUDGET
+budget_lock = Lock()
 budget_state = {
     "date": date.today(),
     "count": 0
@@ -46,18 +48,19 @@ async def extract_resume_sandbox(request: Request, file: UploadFile = File(...))
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Apenas arquivos PDF são permitidos na Sandbox.")
 
-    today = date.today()
-    if budget_state["date"] != today:
-        budget_state["date"] = today
-        budget_state["count"] = 0
+    global budget_state
+    with budget_lock:
+        today = date.today()
+        if budget_state["date"] != today:
+            budget_state = {"date": today, "count": 0}
 
-    if budget_state["count"] >= daily_budget:
-        raise HTTPException(
-            status_code=503, 
-            detail="O orçamento diário de processamento da Sandbox foi esgotado. Tente novamente amanhã."
-        )
+        if budget_state["count"] >= daily_budget:
+            raise HTTPException(
+                status_code=429,
+                detail="Cota diária da Sandbox esgotada. Tente novamente amanhã."
+            )
 
-    budget_state["count"] += 1
+        budget_state["count"] += 1
     logger.info(f"[sandbox] budget hoje: {budget_state['count']}/{daily_budget}")
 
     tmp_path = ""

@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, status, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from app.core.database import SessionLocal
@@ -20,11 +20,13 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def get_current_user(
+    request: Request,
     token: str = Depends(oauth2_scheme), 
     db: Session = Depends(get_db)
 ) -> User:
     """
     Dependency to validate the JWT access token and return the authenticated user.
+    Accepts token from Authorization header OR from the HttpOnly 'token' cookie.
     """
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -32,10 +34,15 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     
-    if not token:
+    # Try Authorization header first, then cookie fallback
+    actual_token = token
+    if not actual_token:
+        actual_token = request.cookies.get("token")
+    
+    if not actual_token:
         raise credentials_exception
         
-    payload = decode_access_token(token)
+    payload = decode_access_token(actual_token)
     if payload is None:
         raise credentials_exception
         

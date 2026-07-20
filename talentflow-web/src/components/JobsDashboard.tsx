@@ -13,7 +13,7 @@ import JobFormDrawer from "./JobFormDrawer";
 import JobMatchViewer from "./JobMatchViewer";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
-import { getSession, getAuthHeaders } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import Portal from "@/components/Portal";
 
 interface Job {
@@ -101,15 +101,9 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
 
     setIsDeleting(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${API_URL}/api/jobs/${deleteJobId}`, {
+      await apiFetch(`/api/jobs/${deleteJobId}`, {
         method: "DELETE",
-        headers: getAuthHeaders()
       });
-
-      if (!res.ok) {
-        throw new Error(`Erro na API: HTTP ${res.status}`);
-      }
 
       // Se deletou a vaga selecionada, limpa o query param
       if (jobId === deleteJobId) {

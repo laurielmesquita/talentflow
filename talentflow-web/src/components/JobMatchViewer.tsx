@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { Target, ArrowRight, Sparkles } from 'lucide-react';
 import Link from 'next/link';
-import { getAuthHeaders } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 
 interface Match {
   candidate_id: string;
@@ -53,12 +53,7 @@ export default function JobMatchViewer() {
     setLoading(true);
     setError(null);
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    fetch(`${API_URL}/api/jobs/${jobId}/match`, { headers: getAuthHeaders() })
-      .then((r) => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        return r.json();
-      })
+    apiFetch(`/api/jobs/${jobId}/match`)
       .then((json) => {
         if (!cancelled) {
           setData(json);

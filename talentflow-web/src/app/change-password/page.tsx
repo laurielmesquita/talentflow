@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowLeft, KeyRound, Lock, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
-import { getAuthHeaders, clearSession } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
 
@@ -38,28 +38,13 @@ export default function ChangePasswordPage() {
 
     setLoading(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/auth/change-password`, {
+      await apiFetch('/api/auth/change-password', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeaders(),
-        },
         body: JSON.stringify({
           current_password: currentPassword,
           new_password: newPassword,
         }),
       });
-
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 401) {
-          clearSession();
-          window.location.href = '/login';
-          return;
-        }
-        throw new Error(data.detail || 'Erro ao alterar a senha.');
-      }
 
       setSuccess(true);
       setCurrentPassword('');

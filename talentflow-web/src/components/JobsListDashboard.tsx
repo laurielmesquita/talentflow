@@ -9,7 +9,7 @@ import JobFormDrawer from "./JobFormDrawer";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
 import Portal from "@/components/Portal";
-import { getAuthHeaders } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 
 interface Job {
   id: string;
@@ -82,15 +82,9 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
 
     setIsDeleting(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${API_URL}/api/jobs/${deleteJobId}`, {
+      await apiFetch(`/api/jobs/${deleteJobId}`, {
         method: "DELETE",
-        headers: getAuthHeaders()
       });
-
-      if (!res.ok) {
-        throw new Error(`Erro na API: HTTP ${res.status}`);
-      }
 
       showToast("Vaga excluída com sucesso.");
       handleCloseDeleteModal();

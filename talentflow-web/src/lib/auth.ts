@@ -1,5 +1,3 @@
-// Funções auxiliares para gerenciar a sessão de autenticação no lado do cliente
-
 export function getCookie(name: string): string | undefined {
   if (typeof window === 'undefined') return undefined;
   const value = `; ${document.cookie}`;
@@ -29,7 +27,7 @@ export function deleteCookie(name: string) {
 }
 
 export interface AuthSession {
-  token: string | null;
+  token: null;
   role: string | null;
   name: string | null;
   email: string | null;
@@ -37,7 +35,7 @@ export interface AuthSession {
 
 export function getSession(): AuthSession {
   return {
-    token: getCookie('token') || null,
+    token: null,
     role: getCookie('user_role') || null,
     name: getCookie('user_name') || null,
     email: getCookie('user_email') || null,
@@ -45,20 +43,17 @@ export function getSession(): AuthSession {
 }
 
 export function setSession(token: string, role: string, name: string, email: string) {
-  setCookie('token', token, 7);
   setCookie('user_role', role, 7);
   setCookie('user_name', name, 7);
   setCookie('user_email', email, 7);
 }
 
 export function clearSession() {
-  deleteCookie('token');
   deleteCookie('user_role');
   deleteCookie('user_name');
   deleteCookie('user_email');
 }
 
 export function getAuthHeaders(): Record<string, string> {
-  const token = getCookie('token');
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  return {};
 }

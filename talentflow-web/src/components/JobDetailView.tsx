@@ -11,7 +11,7 @@ import JobFormDrawer from "@/components/JobFormDrawer";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
 import Portal from "@/components/Portal";
-import { getAuthHeaders } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 
 interface Job {
   id: string;
@@ -67,15 +67,9 @@ export default function JobDetailView({ initialJob }: { initialJob: Job }) {
 
     setIsDeleting(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${API_URL}/api/jobs/${job.id}`, {
+      await apiFetch(`/api/jobs/${job.id}`, {
         method: "DELETE",
-        headers: getAuthHeaders()
       });
-
-      if (!res.ok) {
-        throw new Error(`Erro na API: HTTP ${res.status}`);
-      }
 
       showToast("Vaga excluída com sucesso!");
       router.push("/jobs");
@@ -105,16 +99,9 @@ export default function JobDetailView({ initialJob }: { initialJob: Job }) {
   };
 
   const handleEditSuccess = async () => {
-    // Recarrega os dados da vaga da API para atualizar o estado local
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${API_URL}/api/jobs/${job.id}`, {
-        headers: getAuthHeaders()
-      });
-      if (res.ok) {
-        const updatedJob = await res.json();
-        setJob(updatedJob);
-      }
+      const updatedJob = await apiFetch(`/api/jobs/${job.id}`);
+      setJob(updatedJob);
     } catch (error) {
       console.error("Erro ao recarregar dados da vaga:", error);
     }

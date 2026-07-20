@@ -7,7 +7,8 @@ import { Tag, Plus, Trash2, Edit, X, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
-import { getSession, getAuthHeaders } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 import Portal from "@/components/Portal";
 
 interface Category {
@@ -95,26 +96,16 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
     setErrorMsg("");
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const endpoint = modalMode === "create" 
-        ? `${API_URL}/api/categories` 
-        : `${API_URL}/api/categories/${categoryToEdit?.id}`;
+        ? `/api/categories` 
+        : `/api/categories/${categoryToEdit?.id}`;
       
       const method = modalMode === "create" ? "POST" : "PUT";
 
-      const res = await fetch(endpoint, {
+      await apiFetch(endpoint, {
         method,
-        headers: { 
-          "Content-Type": "application/json",
-          ...getAuthHeaders()
-        },
-        body: JSON.stringify({ name: cleanName })
+        body: JSON.stringify({ name: cleanName }),
       });
-
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.detail || "Erro ao salvar categoria");
-      }
 
       handleCloseModal();
       router.refresh(); // refresh Server Component props
@@ -130,15 +121,9 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
 
     setIsDeleting(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-      const res = await fetch(`${API_URL}/api/categories/${deleteCatId}`, {
+      await apiFetch(`/api/categories/${deleteCatId}`, {
         method: "DELETE",
-        headers: getAuthHeaders()
       });
-
-      if (!res.ok) {
-        throw new Error(`Erro na API: HTTP ${res.status}`);
-      }
 
       handleCloseDeleteModal();
       router.refresh();

@@ -312,9 +312,9 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
                   ) : (
                     candidate.experiences.map((exp: any, i: number) => (
                       <div key={i} className="p-4 rounded-xl border border-slate-800 bg-slate-900/50">
-                        <div className="font-semibold text-slate-200 mb-1">{exp.title}</div>
-                        <div className="text-sm text-indigo-400 font-medium mb-2">{exp.company}</div>
-                        {exp.desc && <p className="text-sm text-slate-400 leading-relaxed">{exp.desc}</p>}
+                        <div className="font-semibold text-slate-200 mb-1">{exp.job_title}</div>
+                        <div className="text-sm text-indigo-400 font-medium mb-2">{exp.company_name}</div>
+                        {exp.description && <p className="text-sm text-slate-400 leading-relaxed">{exp.description}</p>}
                       </div>
                     ))
                   )}

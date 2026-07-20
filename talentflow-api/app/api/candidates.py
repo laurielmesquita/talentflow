@@ -468,23 +468,30 @@ def get_candidate_versions(
     if not c:
         raise HTTPException(status_code=404, detail="Candidato não encontrado")
 
-    # Encontra a raiz do histórico
+    # Carrega todos os candidatos do tenant em uma única query para montar a árvore em memória
+    all_tenant_candidates = db.query(Candidate).all()
+    candidate_map = {str(cand.id): cand for cand in all_tenant_candidates}
+
+    # Sobe até a raiz
     root = c
     visited = set()
-    while root.parent_id is not None and root.parent_id not in visited:
-        visited.add(root.id)
-        parent = db.query(Candidate).filter(Candidate.id == root.parent_id).first()
+    while root.parent_id is not None and str(root.parent_id) not in visited:
+        visited.add(str(root.id))
+        parent = candidate_map.get(str(root.parent_id))
         if not parent:
             break
         root = parent
 
-    # Coleta todas as versões descendentes a partir da raiz
+    # Desce da raiz coletando versões
     versions = [root]
     current = root
     visited_desc = set()
-    while current.id not in visited_desc:
-        visited_desc.add(current.id)
-        child = db.query(Candidate).filter(Candidate.parent_id == current.id).first()
+    while str(current.id) not in visited_desc:
+        visited_desc.add(str(current.id))
+        child = next(
+            (cand for cand in all_tenant_candidates if cand.parent_id == current.id),
+            None
+        )
         if not child:
             break
         versions.append(child)

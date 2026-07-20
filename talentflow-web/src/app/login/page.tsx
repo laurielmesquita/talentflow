@@ -51,16 +51,10 @@ function LoginContent() {
         body = { email, password };
       }
 
-      const res = await apiFetch(endpoint, {
+      const data = await apiFetch(endpoint, {
         method: 'POST',
         body: JSON.stringify(body),
       });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.detail || (isSignUp ? 'Falha ao registrar conta.' : 'Falha ao autenticar. Verifique suas credenciais.'));
-      }
 
       // Salva sessão nos cookies
       setSession(data.access_token, data.role, data.full_name, data.email);

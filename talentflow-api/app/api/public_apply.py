@@ -21,7 +21,7 @@ Fluxo:
      - Retorna confirmação final ao candidato
 """
 
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks, Request
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from pathlib import Path
@@ -31,12 +31,14 @@ import tempfile
 import random
 import string
 import json
+import hashlib
 
 from app.core.database import SessionLocal
 from app.models.domain import JobPosition, Candidate, JobApplication
 from app.api.deps import get_db
 from app.services.email import send_email
 from app.core.config import settings
+from app.api.sandbox import limiter
 
 router = APIRouter()
 
@@ -153,12 +155,12 @@ def _run_ai_pipeline_background(application_id: str, tmp_path: Path, tenant_id: 
 
     except Exception as e:
         print(f"[ERROR] AI pipeline falhou para application {application_id}: {e}")
-        db: Session = SessionLocal()
+        fallback_db: Session = SessionLocal()
         try:
-            app_row = db.query(JobApplication).filter(JobApplication.id == application_id).first()
+            app_row = fallback_db.query(JobApplication).filter(JobApplication.id == application_id).first()
             if app_row:
                 app_row.status = "error"
-                db.commit()
+                fallback_db.commit()
         except Exception:
             pass
     finally:
@@ -245,7 +247,7 @@ async def apply_to_job(
         candidate_id=placeholder_candidate.id,
         source="public_portal",
         status="pending",
-        otp_code=otp,
+        otp_code=hashlib.sha256(otp.encode()).hexdigest(),
         otp_expires_at=otp_expires_at,
         form_full_name=full_name,
         form_email=email.lower(),
@@ -309,7 +311,8 @@ class OTPVerifyRequest(BaseModel):
 
 
 @router.post("/public/apply/verify-otp")
-def verify_otp(payload: OTPVerifyRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def verify_otp(request: Request, payload: OTPVerifyRequest, db: Session = Depends(get_db)):
     """
     Valida o OTP enviado por e-mail ao candidato.
     Ao confirmar, a candidatura transita para status='reviewing'.
@@ -324,7 +327,7 @@ def verify_otp(payload: OTPVerifyRequest, db: Session = Depends(get_db)):
     if application.email_verified:
         return {"status": "already_verified", "message": "E-mail já confirmado anteriormente."}
 
-    if application.otp_code != payload.otp_code:
+    if application.otp_code != hashlib.sha256(payload.otp_code.encode()).hexdigest():
         raise HTTPException(status_code=422, detail="Código OTP inválido.")
 
     if application.otp_expires_at and datetime.now(timezone.utc) > application.otp_expires_at:

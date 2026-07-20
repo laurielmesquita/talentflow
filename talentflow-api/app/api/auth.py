@@ -1,6 +1,6 @@
 import secrets
 from datetime import datetime, timedelta, timezone
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Response
 from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user, RoleChecker
 from app.models.domain import User, PasswordReset, Tenant
@@ -10,12 +10,26 @@ from app.schemas.auth import (
     ChangePasswordRequest, RegisterRequest
 )
 from app.services.auth import hash_password, verify_password, create_access_token
+from app.core.config import settings
 from app.services.email import send_reset_password_email
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+
+def _set_token_cookie(response: Response, token: str):
+    response.set_cookie(
+        key="token",
+        value=token,
+        httponly=True,
+        samesite="lax",
+        secure=settings.SECRET_KEY is not None,  # Secure em produção (quando SECRET_KEY está definida)
+        max_age=3600 * 4,  # 4 horas (mesmo do JWT)
+        path="/",
+    )
+
+
 @router.post("/login", response_model=TokenResponse)
-def login(request: LoginRequest, db: Session = Depends(get_db)):
+def login(request: LoginRequest, response: Response, db: Session = Depends(get_db)):
     """
     Autentica o usuário e retorna o token JWT de acesso.
     """
@@ -33,6 +47,7 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
         )
 
     access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
+    _set_token_cookie(response, access_token)
     return TokenResponse(
         access_token=access_token,
         role=user.role,
@@ -143,7 +158,7 @@ def change_password(
 
 
 @router.post("/register", response_model=TokenResponse)
-def register(request: RegisterRequest, db: Session = Depends(get_db)):
+def register(request: RegisterRequest, response: Response, db: Session = Depends(get_db)):
     """
     Registra uma nova empresa (Tenant) e o usuário administrador principal dela.
     """
@@ -182,6 +197,7 @@ def register(request: RegisterRequest, db: Session = Depends(get_db)):
 
         # Login automático
         access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
+        _set_token_cookie(response, access_token)
         return TokenResponse(
             access_token=access_token,
             role=user.role,
@@ -194,4 +210,14 @@ def register(request: RegisterRequest, db: Session = Depends(get_db)):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"Erro interno ao criar conta: {str(e)}"
         )
+
+
+@router.post("/logout")
+def logout(response: Response):
+    """
+    Limpa o cookie HttpOnly de autenticação.
+    Necessário porque o cookie HttpOnly não pode ser removido via JavaScript.
+    """
+    response.delete_cookie(key="token", path="/")
+    return {"message": "Sessão encerrada."}
 

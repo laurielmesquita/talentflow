@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from 'react';
 import Portal from '@/components/Portal';
 import { useRouter } from 'next/navigation';
 import { UploadCloud, CheckCircle, AlertCircle } from 'lucide-react';
-import { getAuthHeaders } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 
 interface BatchUploadButtonProps {
   onSuccess?: () => void;
@@ -22,23 +22,16 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
 
 
   async function pollBatchStatus(batchId: string) {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-    
     const interval = setInterval(async () => {
       try {
-        const res = await fetch(`${API_URL}/api/batches/${batchId}`, {
-          headers: getAuthHeaders(),
-        });
-        
-        if (!res.ok) {
+        const data = await apiFetch(`/api/batches/${batchId}`).catch(() => {
           clearInterval(interval);
           if (typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
           }
-          return;
-        }
-        
-        const data = await res.json();
+          return null;
+        });
+        if (!data) return;
         setProgress({ done: data.processed, total: data.total });
         
         // Dispara evento de progresso para a tela principal
@@ -100,18 +93,10 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         form.append('files', file);
       });
 
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/batches/upload`, {
+      const data = await apiFetch('/api/batches/upload', {
         method: 'POST',
-        headers: getAuthHeaders(),
         body: form,
       });
-      
-      if (!res.ok) {
-        throw new Error('Falha no upload');
-      }
-
-      const data = await res.json();
       
       // Imediatamente reseta o botão para IDLE e inicia o polling do progresso
       setStatus('idle');

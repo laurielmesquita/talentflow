@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Loader2, Sparkles, ShieldCheck, ShieldAlert, ShieldX, Trash2, ChevronDown, ChevronLeft, ChevronRight, Mail, Phone, MapPin, Briefcase, GraduationCap, AlertTriangle } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeleteConfirmModal from "./DeleteConfirmModal";
-import { getAuthHeaders } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 
 // ── Score Ring Animado ────────────────────────────────────────────────────────
 function ScoreRing({ score, tier }: { score: number | null; tier: string | null }) {
@@ -132,14 +132,8 @@ export default function CandidateTable({
     if (loadedCandidates[candId] || loadingDetails[candId]) return;
     setLoadingDetails(prev => ({ ...prev, [candId]: true }));
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${candId}`, {
-        headers: getAuthHeaders()
-      });
-      if (res.ok) {
-        const detail = await res.json();
-        setLoadedCandidates(prev => ({ ...prev, [candId]: detail }));
-      }
+      const detail = await apiFetch(`/api/candidates/${candId}`);
+      setLoadedCandidates(prev => ({ ...prev, [candId]: detail }));
     } catch (e) {
       console.error("Erro ao carregar detalhes do candidato:", e);
     } finally {
@@ -159,30 +153,22 @@ export default function CandidateTable({
     if (!flagReason.trim()) return;
     setSubmittingFlag(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${candId}/flag`, {
+      const updatedCandidate = await apiFetch(`/api/candidates/${candId}/flag`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeaders()
-        },
         body: JSON.stringify({ reason: flagReason }),
       });
-      if (res.ok) {
-        const updatedCandidate = await res.json();
-        setLoadedCandidates(prev => ({
-          ...prev,
-          [candId]: {
-            ...prev[candId],
-            is_flagged: updatedCandidate.is_flagged,
-            flagged_reason: updatedCandidate.flagged_reason,
-            flagged_at: updatedCandidate.flagged_at
-          }
-        }));
-        setFlaggingId(null);
-        setFlagReason("");
-        router.refresh();
-      }
+      setLoadedCandidates(prev => ({
+        ...prev,
+        [candId]: {
+          ...prev[candId],
+          is_flagged: updatedCandidate.is_flagged,
+          flagged_reason: updatedCandidate.flagged_reason,
+          flagged_at: updatedCandidate.flagged_at
+        }
+      }));
+      setFlaggingId(null);
+      setFlagReason("");
+      router.refresh();
     } catch (e) {
       console.error("Erro ao sinalizar candidato:", e);
     } finally {
@@ -193,23 +179,17 @@ export default function CandidateTable({
   async function handleUnflag(candId: string) {
     if (!window.confirm("Deseja realmente remover a sinalização deste candidato?")) return;
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${candId}/unflag`, {
-        method: 'POST',
-        headers: getAuthHeaders()
-      });
-      if (res.ok) {
-        setLoadedCandidates(prev => ({
-          ...prev,
-          [candId]: {
-            ...prev[candId],
-            is_flagged: false,
-            flagged_reason: null,
-            flagged_at: null
-          }
-        }));
-        router.refresh();
-      }
+      await apiFetch(`/api/candidates/${candId}/unflag`, { method: 'POST' });
+      setLoadedCandidates(prev => ({
+        ...prev,
+        [candId]: {
+          ...prev[candId],
+          is_flagged: false,
+          flagged_reason: null,
+          flagged_at: null
+        }
+      }));
+      router.refresh();
     } catch (e) {
       console.error("Erro ao remover sinalização do candidato:", e);
     }
@@ -224,12 +204,8 @@ export default function CandidateTable({
   async function handleDeleteConfirm() {
     if (!deleteCandidateId) return;
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${deleteCandidateId}`, { 
-        method: 'DELETE',
-        headers: getAuthHeaders()
-      });
-      if (res.ok) router.refresh();
+      await apiFetch(`/api/candidates/${deleteCandidateId}`, { method: 'DELETE' });
+      router.refresh();
     } catch (e) {
       console.error('Erro ao deletar:', e);
     }

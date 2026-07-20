@@ -20,7 +20,8 @@ import {
   ShieldAlert
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
-import { getSession, getAuthHeaders } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 
 interface CandidateStats {
   total: number;
@@ -116,16 +117,10 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
 
       setLoadingMatches(true);
       try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        const res = await fetch(`${API_URL}/api/jobs/${selectedJobId}/match`, {
-          headers: getAuthHeaders()
-        });
-        if (res.ok) {
-          const data = await res.json();
-          const matchList = data.matches || [];
-          matchesCache.current.set(selectedJobId, matchList);
-          setMatches(matchList);
-        }
+        const data = await apiFetch(`/api/jobs/${selectedJobId}/match`);
+        const matchList = data.matches || [];
+        matchesCache.current.set(selectedJobId, matchList);
+        setMatches(matchList);
       } catch (err) {
         console.error("Erro ao buscar matches no Dashboard:", err);
       } finally {

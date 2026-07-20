@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { X, Briefcase, Plus, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { getAuthHeaders } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 import Portal from "@/components/Portal";
 
 interface Job {
@@ -145,25 +145,16 @@ export default function JobFormDrawer({
     };
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
       const url = jobToEdit
-        ? `${API_URL}/api/jobs/${jobToEdit.id}`
-        : `${API_URL}/api/jobs`;
+        ? `/api/jobs/${jobToEdit.id}`
+        : `/api/jobs`;
       
       const method = jobToEdit ? "PUT" : "POST";
 
-      const res = await fetch(url, {
+      await apiFetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          ...getAuthHeaders()
-        },
         body: JSON.stringify(payload),
       });
-
-      if (!res.ok) {
-        throw new Error(`Erro na API: HTTP ${res.status}`);
-      }
 
       onSubmitSuccess();
       onClose();

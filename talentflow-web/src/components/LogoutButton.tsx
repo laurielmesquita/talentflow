@@ -3,9 +3,11 @@
 import React from 'react';
 import { LogOut } from 'lucide-react';
 import { clearSession } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 
 export default function LogoutButton() {
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await apiFetch('/api/auth/logout', { method: 'POST', skipAuth: true }).catch(() => {});
     clearSession();
     // Redireciona com recarga para limpar caches locais
     window.location.href = '/';

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { X, Mail, Phone, ShieldCheck, ShieldAlert, ShieldX, AlertTriangle } from "lucide-react";
-import { getAuthHeaders } from "@/lib/auth";
+import { apiFetch } from "@/lib/api";
 import Portal from "@/components/Portal";
 
 // ── CV Quality Section (interna ao modal) ──────────────────────────────
@@ -85,13 +85,8 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
   useEffect(() => {
     async function fetchCandidate() {
       try {
-        const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-        const res = await fetch(`${API_URL}/api/candidates/${candidateId}`, {
-          headers: getAuthHeaders()
-        });
-        if (res.ok) {
-          setCandidate(await res.json());
-        }
+        const data = await apiFetch(`/api/candidates/${candidateId}`);
+        setCandidate(data);
       } catch (e) {
         console.error(e);
       } finally {
@@ -105,27 +100,19 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
     if (!flagReason.trim()) return;
     setSubmittingFlag(true);
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${candidateId}/flag`, {
+      const updatedCandidate = await apiFetch(`/api/candidates/${candidateId}/flag`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeaders()
-        },
         body: JSON.stringify({ reason: flagReason }),
       });
-      if (res.ok) {
-        const updatedCandidate = await res.json();
-        setCandidate((prev: any) => ({
-          ...prev,
-          is_flagged: updatedCandidate.is_flagged,
-          flagged_reason: updatedCandidate.flagged_reason,
-          flagged_at: updatedCandidate.flagged_at
-        }));
-        setFlagging(false);
-        setFlagReason("");
-        router.refresh();
-      }
+      setCandidate((prev: any) => ({
+        ...prev,
+        is_flagged: updatedCandidate.is_flagged,
+        flagged_reason: updatedCandidate.flagged_reason,
+        flagged_at: updatedCandidate.flagged_at
+      }));
+      setFlagging(false);
+      setFlagReason("");
+      router.refresh();
     } catch (e) {
       console.error("Erro ao sinalizar candidato:", e);
     } finally {
@@ -136,21 +123,16 @@ export default function CandidateModal({ candidateId, onClose }: { candidateId: 
   async function handleUnflag() {
     if (!window.confirm("Deseja realmente remover a sinalização deste candidato?")) return;
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const res = await fetch(`${API_URL}/api/candidates/${candidateId}/unflag`, {
+      const updatedCandidate = await apiFetch(`/api/candidates/${candidateId}/unflag`, {
         method: 'POST',
-        headers: getAuthHeaders()
       });
-      if (res.ok) {
-        const updatedCandidate = await res.json();
-        setCandidate((prev: any) => ({
-          ...prev,
-          is_flagged: updatedCandidate.is_flagged,
-          flagged_reason: null,
-          flagged_at: null
-        }));
-        router.refresh();
-      }
+      setCandidate((prev: any) => ({
+        ...prev,
+        is_flagged: updatedCandidate.is_flagged,
+        flagged_reason: null,
+        flagged_at: null
+      }));
+      router.refresh();
     } catch (e) {
       console.error("Erro ao remover sinalização do candidato:", e);
     }

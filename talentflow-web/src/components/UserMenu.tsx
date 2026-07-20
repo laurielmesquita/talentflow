@@ -12,6 +12,7 @@ import {
   KeyRound 
 } from 'lucide-react';
 import { getSession, clearSession } from '@/lib/auth';
+import { apiFetch } from '@/lib/api';
 
 export default function UserMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,7 +40,8 @@ export default function UserMenu() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await apiFetch('/api/auth/logout', { method: 'POST', skipAuth: true }).catch(() => {});
     clearSession();
     window.location.href = '/';
   };

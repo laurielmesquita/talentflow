@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
@@ -98,6 +98,9 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
     setUserName(session.name);
   }, []);
 
+  // Cache de resultados de match por jobId para evitar re-busca ao alternar abas
+  const matchesCache = useRef<Map<string, any[]>>(new Map());
+
   // Filtra apenas as vagas ativas para exibição no dropdown
   const activeJobs = initialJobs.filter(j => j.is_active);
 
@@ -105,6 +108,12 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
     if (!selectedJobId) return;
 
     async function fetchMatches() {
+      const cached = matchesCache.current.get(selectedJobId);
+      if (cached) {
+        setMatches(cached);
+        return;
+      }
+
       setLoadingMatches(true);
       try {
         const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
@@ -113,7 +122,9 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
         });
         if (res.ok) {
           const data = await res.json();
-          setMatches(data.matches || []);
+          const matchList = data.matches || [];
+          matchesCache.current.set(selectedJobId, matchList);
+          setMatches(matchList);
         }
       } catch (err) {
         console.error("Erro ao buscar matches no Dashboard:", err);

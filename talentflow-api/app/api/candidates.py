@@ -146,15 +146,18 @@ def list_candidates(
             "flagged_at": c.flagged_at.isoformat() if c.flagged_at else None
         })
 
-    # --- Query única de estatísticas (globais do tenant) ---
-    stats_row = db.query(
+    # --- Query única de estatísticas (do tenant) ---
+    stats_row = db.db.query(
         func.count().label("total"),
         func.count(case((Candidate.is_active == True, 1))).label("active"),
         func.count(case((Candidate.is_flagged == True, 1))).label("flagged"),
         func.avg(
             case((Candidate.is_active == True, Candidate.quality_score))
         ).label("avg_quality"),
-    ).filter(Candidate.deleted_at == None).one()
+    ).filter(
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == db.tenant_id
+    ).one()
 
     return {
         "candidates": results,

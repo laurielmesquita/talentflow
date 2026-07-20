@@ -94,11 +94,16 @@ class ScopedSession:
                 
         # Fallback de segurança para atributos de colunas diretas
         if not classes_to_filter:
+            from sqlalchemy.sql.expression import FunctionElement
             for entity in entities:
                 if isinstance(entity, type) and hasattr(entity, "tenant_id"):
                     classes_to_filter.add(entity)
                 elif hasattr(entity, "class_") and hasattr(entity.class_, "tenant_id"):
                     classes_to_filter.add(entity.class_)
+                elif isinstance(entity, FunctionElement):
+                    for child in entity._get_children():
+                        if hasattr(child, 'class_') and hasattr(child.class_, 'tenant_id'):
+                            classes_to_filter.add(child.class_)
                     
         for cls in classes_to_filter:
             q = q.filter(cls.tenant_id == self.tenant_id)

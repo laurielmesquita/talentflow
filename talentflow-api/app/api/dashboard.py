@@ -11,10 +11,10 @@ router = APIRouter(dependencies=[Depends(get_current_user)])
 def get_dashboard_stats(
     db: ScopedSession = Depends(get_scoped_db)
 ):
-    # 1. Candidatos consolidados
+    # 1. Candidatos consolidados (filtro explícito de tenant)
     time_24h_ago = datetime.now(timezone.utc) - timedelta(days=1)
     
-    candidate_stats = db.query(
+    candidate_stats = db.db.query(
         func.count(Candidate.id).label("total"),
         func.count(case((Candidate.created_at >= time_24h_ago, Candidate.id))).label("added_today"),
         func.avg(Candidate.quality_score).label("avg_quality"),
@@ -22,7 +22,8 @@ def get_dashboard_stats(
         func.count(case((~Candidate.categories.any(), Candidate.id))).label("uncategorized")
     ).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == db.tenant_id
     ).first()
 
     avg_quality = round(float(candidate_stats.avg_quality), 1) if candidate_stats.avg_quality is not None else 0.0
@@ -31,7 +32,7 @@ def get_dashboard_stats(
     today = date.today()
     seven_days_later = today + timedelta(days=7)
     
-    job_stats = db.query(
+    job_stats = db.db.query(
         func.count(JobPosition.id).label("total"),
         func.count(case((JobPosition.is_active == True, JobPosition.id))).label("active"),
         func.count(case((
@@ -40,13 +41,15 @@ def get_dashboard_stats(
             (JobPosition.deadline <= seven_days_later), 
             JobPosition.id
         ))).label("upcoming")
+    ).filter(
+        JobPosition.tenant_id == db.tenant_id
     ).first()
 
     # 3. Categorias
-    total_categories = db.query(Category).count()
+    total_categories = db.db.query(Category).filter(Category.tenant_id == db.tenant_id).count()
     
     # Categoria mais populosa
-    top_cat_query = db.query(
+    top_cat_query = db.db.query(
         Category.name,
         func.count(candidate_category.c.candidate_id).label("count")
     ).join(
@@ -55,7 +58,8 @@ def get_dashboard_stats(
         Candidate, Candidate.id == candidate_category.c.candidate_id
     ).filter(
         Candidate.is_active == True,
-        Candidate.deleted_at == None
+        Candidate.deleted_at == None,
+        Candidate.tenant_id == db.tenant_id
     ).group_by(
         Category.name
     ).order_by(

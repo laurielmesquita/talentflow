@@ -16,12 +16,16 @@ export function setCookie(name: string, value: string, days = 7) {
     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
     expires = `; expires=${date.toUTCString()}`;
   }
-  document.cookie = `${name}=${value || ""}${expires}; path=/; SameSite=Lax`;
+  const isSecure = window.location.protocol === 'https:';
+  const secureFlag = isSecure ? '; Secure' : '';
+  document.cookie = `${name}=${value || ""}${expires}; path=/; SameSite=Lax${secureFlag}`;
 }
 
 export function deleteCookie(name: string) {
   if (typeof window === 'undefined') return;
-  document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax`;
+  const isSecure = window.location.protocol === 'https:';
+  const secureFlag = isSecure ? '; Secure' : '';
+  document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT; SameSite=Lax${secureFlag}`;
 }
 
 export interface AuthSession {

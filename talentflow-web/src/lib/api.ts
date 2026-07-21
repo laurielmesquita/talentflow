@@ -1,3 +1,5 @@
+import { getSession } from './auth';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface ApiOptions extends RequestInit {
@@ -22,6 +24,13 @@ export async function apiFetch<T = any>(path: string, options: ApiOptions = {}):
   const headers: Record<string, string> = {
     ...(fetchOptions.headers as Record<string, string>),
   };
+
+  if (!skipAuth && !headers['Authorization']) {
+    const session = getSession();
+    if (session?.token) {
+      headers['Authorization'] = `Bearer ${session.token}`;
+    }
+  }
 
   if (!(fetchOptions.body instanceof FormData)) {
     headers['Content-Type'] = headers['Content-Type'] || 'application/json';

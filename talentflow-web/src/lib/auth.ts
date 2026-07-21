@@ -27,7 +27,7 @@ export function deleteCookie(name: string) {
 }
 
 export interface AuthSession {
-  token: null;
+  token: string | null;
   role: string | null;
   name: string | null;
   email: string | null;
@@ -35,7 +35,7 @@ export interface AuthSession {
 
 export function getSession(): AuthSession {
   return {
-    token: null,
+    token: getCookie('token') || null,
     role: getCookie('user_role') || null,
     name: getCookie('user_name') || null,
     email: getCookie('user_email') || null,
@@ -43,12 +43,14 @@ export function getSession(): AuthSession {
 }
 
 export function setSession(token: string, role: string, name: string, email: string) {
+  setCookie('token', token, 7);
   setCookie('user_role', role, 7);
   setCookie('user_name', name, 7);
   setCookie('user_email', email, 7);
 }
 
 export function clearSession() {
+  deleteCookie('token');
   deleteCookie('user_role');
   deleteCookie('user_name');
   deleteCookie('user_email');

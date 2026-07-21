@@ -62,7 +62,7 @@ function LoginContent() {
       // Feedback visual antes do redirect
       setSuccess(true);
       successTimer.current = setTimeout(() => {
-        router.push(redirect);
+        window.location.href = redirect;
       }, 1500);
     } catch (err: any) {
       setError(err.message || 'Erro de conexão com o servidor.');

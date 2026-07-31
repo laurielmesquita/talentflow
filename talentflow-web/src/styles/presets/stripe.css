@@ -1,83 +1,92 @@
 /* ── Preset: Stripe ──────────────────────────────────────────────────────────
    Inspirado em: stripe.com
-   Paleta: gradientes indigo/violeta, bordas arredondadas premium, B2B Tier-1
-   Theme: Light-first (next-themes → "light")
+   Paleta: gradientes indigo/violeta, bordas arredondadas 14px, elevação com sombra suave
+   Theme: Light-first / B2B Tier-1 Premium
    ─────────────────────────────────────────────────────────────────────────── */
 
-/* ── Light ── */
-[data-preset="stripe"] {
-  /* Surface — Branco quase puro, levemente frio */
-  --background:         oklch(0.990 0.005 265);
-  --foreground:         oklch(0.10  0.030 265);
+html[data-preset="stripe"] {
+  /* Surface — Light elegante */
+  --background:         oklch(0.992 0.004 270);
+  --foreground:         oklch(0.10  0.035 270);
   --card:               oklch(1     0     0);
-  --card-foreground:    oklch(0.10  0.030 265);
+  --card-foreground:    oklch(0.10  0.035 270);
   --popover:            oklch(1     0     0);
-  --popover-foreground: oklch(0.10  0.030 265);
+  --popover-foreground: oklch(0.10  0.035 270);
 
-  /* Brand — Violeta Stripe signature, weight-300 elegance */
-  --primary:            oklch(0.50  0.26  270);
+  /* Brand — Stripe Indigo signature */
+  --primary:            oklch(0.50  0.27  270);
   --primary-foreground: oklch(1     0     0);
 
   /* Neutrals */
-  --secondary:          oklch(0.955 0.014 265);
-  --secondary-foreground: oklch(0.22 0.04  265);
-  --muted:              oklch(0.955 0.014 265);
-  --muted-foreground:   oklch(0.50  0.04  265);
-  --accent:             oklch(0.93  0.018 270);
-  --accent-foreground:  oklch(0.50  0.26  270);
+  --secondary:          oklch(0.960 0.016 270);
+  --secondary-foreground: oklch(0.22 0.05  270);
+  --muted:              oklch(0.960 0.016 270);
+  --muted-foreground:   oklch(0.48  0.04  270);
+  --accent:             oklch(0.935 0.022 270);
+  --accent-foreground:  oklch(0.50  0.27  270);
 
   /* State */
   --destructive:        oklch(0.58  0.24  27);
-  --border:             oklch(0.875 0.018 265);
-  --input:              oklch(0.875 0.018 265);
-  --ring:               oklch(0.50  0.26  270);
+  --border:             oklch(0.880 0.020 270);
+  --input:              oklch(0.880 0.020 270);
+  --ring:               oklch(0.50  0.27  270);
 
-  /* Shape — 12px arredondado premium */
-  --radius:             0.75rem;
+  /* Shape — 14px arredondado Stripe */
+  --radius:             0.875rem;
 
   /* Sidebar */
-  --sidebar:                    oklch(0.975 0.007 265);
-  --sidebar-foreground:         oklch(0.10  0.030 265);
-  --sidebar-primary:            oklch(0.50  0.26  270);
+  --sidebar:                    oklch(0.978 0.007 270);
+  --sidebar-foreground:         oklch(0.10  0.035 270);
+  --sidebar-primary:            oklch(0.50  0.27  270);
   --sidebar-primary-foreground: oklch(1     0     0);
-  --sidebar-accent:             oklch(0.93  0.018 270);
-  --sidebar-accent-foreground:  oklch(0.50  0.26  270);
-  --sidebar-border:             oklch(0.875 0.018 265);
-  --sidebar-ring:               oklch(0.50  0.26  270);
+  --sidebar-accent:             oklch(0.935 0.022 270);
+  --sidebar-accent-foreground:  oklch(0.50  0.27  270);
+  --sidebar-border:             oklch(0.880 0.020 270);
+  --sidebar-ring:               oklch(0.50  0.27  270);
 }
 
-/* ── Dark ── */
-[data-preset="stripe"].dark,
-[data-preset="stripe"] .dark {
-  --background:         oklch(0.12  0.030 265);
-  --foreground:         oklch(0.975 0.005 265);
-  --card:               oklch(0.155 0.035 265);
-  --card-foreground:    oklch(0.975 0.005 265);
-  --popover:            oklch(0.155 0.035 265);
-  --popover-foreground: oklch(0.975 0.005 265);
+html[data-preset="stripe"].dark,
+html[data-preset="stripe"] .dark {
+  --background:         oklch(0.125 0.035 270);
+  --foreground:         oklch(0.975 0.005 270);
+  --card:               oklch(0.160 0.040 270);
+  --card-foreground:    oklch(0.975 0.005 270);
+  --popover:            oklch(0.160 0.040 270);
+  --popover-foreground: oklch(0.975 0.005 270);
 
-  /* Brand — Violeta mais luminoso em dark */
-  --primary:            oklch(0.67  0.26  270);
-  --primary-foreground: oklch(0.12  0.030 265);
+  --primary:            oklch(0.68  0.27  270);
+  --primary-foreground: oklch(0.125 0.035 270);
 
-  --secondary:          oklch(0.20  0.040 265);
+  --secondary:          oklch(0.20  0.045 270);
   --secondary-foreground: oklch(0.975 0    0);
-  --muted:              oklch(0.20  0.040 265);
-  --muted-foreground:   oklch(0.68  0.040 265);
-  --accent:             oklch(0.22  0.050 270);
-  --accent-foreground:  oklch(0.67  0.26  270);
+  --muted:              oklch(0.20  0.045 270);
+  --muted-foreground:   oklch(0.68  0.045 270);
+  --accent:             oklch(0.24  0.055 270);
+  --accent-foreground:  oklch(0.68  0.27  270);
 
   --destructive:        oklch(0.70  0.19  22);
-  --border:             oklch(1     0     0 / 9%);
-  --input:              oklch(1     0     0 / 13%);
-  --ring:               oklch(0.67  0.26  270);
+  --border:             oklch(1     0     0 / 10%);
+  --input:              oklch(1     0     0 / 14%);
+  --ring:               oklch(0.68  0.27  270);
 
-  --sidebar:                    oklch(0.155 0.035 265);
-  --sidebar-foreground:         oklch(0.975 0.005 265);
-  --sidebar-primary:            oklch(0.67  0.26  270);
-  --sidebar-primary-foreground: oklch(0.12  0.030 265);
-  --sidebar-accent:             oklch(0.22  0.050 270);
-  --sidebar-accent-foreground:  oklch(0.67  0.26  270);
-  --sidebar-border:             oklch(1     0     0 / 9%);
-  --sidebar-ring:               oklch(0.67  0.26  270);
+  --sidebar:                    oklch(0.160 0.040 270);
+  --sidebar-foreground:         oklch(0.975 0.005 270);
+  --sidebar-primary:            oklch(0.68  0.27  270);
+  --sidebar-primary-foreground: oklch(0.125 0.035 270);
+  --sidebar-accent:             oklch(0.24  0.055 270);
+  --sidebar-accent-foreground:  oklch(0.68  0.27  270);
+  --sidebar-border:             oklch(1     0     0 / 10%);
+  --sidebar-ring:               oklch(0.68  0.27  270);
+}
+
+/* Stripe UI overrides — Smooth multi-layer elevation shadows */
+html[data-preset="stripe"] body {
+  letter-spacing: -0.012em;
+}
+html[data-preset="stripe"] .bg-card {
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04) !important;
+}
+html[data-preset="stripe"] .bg-primary {
+  background: linear-gradient(135deg, oklch(0.50 0.27 270), oklch(0.55 0.28 290)) !important;
+  box-shadow: 0 4px 14px 0 oklch(0.50 0.27 270 / 35%) !important;
 }

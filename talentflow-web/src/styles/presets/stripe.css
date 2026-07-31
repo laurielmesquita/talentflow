@@ -1,0 +1,83 @@
+/* ── Preset: Stripe ──────────────────────────────────────────────────────────
+   Inspirado em: stripe.com
+   Paleta: gradientes indigo/violeta, bordas arredondadas premium, B2B Tier-1
+   Theme: Light-first (next-themes → "light")
+   ─────────────────────────────────────────────────────────────────────────── */
+
+/* ── Light ── */
+[data-preset="stripe"] {
+  /* Surface — Branco quase puro, levemente frio */
+  --background:         oklch(0.990 0.005 265);
+  --foreground:         oklch(0.10  0.030 265);
+  --card:               oklch(1     0     0);
+  --card-foreground:    oklch(0.10  0.030 265);
+  --popover:            oklch(1     0     0);
+  --popover-foreground: oklch(0.10  0.030 265);
+
+  /* Brand — Violeta Stripe signature, weight-300 elegance */
+  --primary:            oklch(0.50  0.26  270);
+  --primary-foreground: oklch(1     0     0);
+
+  /* Neutrals */
+  --secondary:          oklch(0.955 0.014 265);
+  --secondary-foreground: oklch(0.22 0.04  265);
+  --muted:              oklch(0.955 0.014 265);
+  --muted-foreground:   oklch(0.50  0.04  265);
+  --accent:             oklch(0.93  0.018 270);
+  --accent-foreground:  oklch(0.50  0.26  270);
+
+  /* State */
+  --destructive:        oklch(0.58  0.24  27);
+  --border:             oklch(0.875 0.018 265);
+  --input:              oklch(0.875 0.018 265);
+  --ring:               oklch(0.50  0.26  270);
+
+  /* Shape — 12px arredondado premium */
+  --radius:             0.75rem;
+
+  /* Sidebar */
+  --sidebar:                    oklch(0.975 0.007 265);
+  --sidebar-foreground:         oklch(0.10  0.030 265);
+  --sidebar-primary:            oklch(0.50  0.26  270);
+  --sidebar-primary-foreground: oklch(1     0     0);
+  --sidebar-accent:             oklch(0.93  0.018 270);
+  --sidebar-accent-foreground:  oklch(0.50  0.26  270);
+  --sidebar-border:             oklch(0.875 0.018 265);
+  --sidebar-ring:               oklch(0.50  0.26  270);
+}
+
+/* ── Dark ── */
+[data-preset="stripe"].dark,
+[data-preset="stripe"] .dark {
+  --background:         oklch(0.12  0.030 265);
+  --foreground:         oklch(0.975 0.005 265);
+  --card:               oklch(0.155 0.035 265);
+  --card-foreground:    oklch(0.975 0.005 265);
+  --popover:            oklch(0.155 0.035 265);
+  --popover-foreground: oklch(0.975 0.005 265);
+
+  /* Brand — Violeta mais luminoso em dark */
+  --primary:            oklch(0.67  0.26  270);
+  --primary-foreground: oklch(0.12  0.030 265);
+
+  --secondary:          oklch(0.20  0.040 265);
+  --secondary-foreground: oklch(0.975 0    0);
+  --muted:              oklch(0.20  0.040 265);
+  --muted-foreground:   oklch(0.68  0.040 265);
+  --accent:             oklch(0.22  0.050 270);
+  --accent-foreground:  oklch(0.67  0.26  270);
+
+  --destructive:        oklch(0.70  0.19  22);
+  --border:             oklch(1     0     0 / 9%);
+  --input:              oklch(1     0     0 / 13%);
+  --ring:               oklch(0.67  0.26  270);
+
+  --sidebar:                    oklch(0.155 0.035 265);
+  --sidebar-foreground:         oklch(0.975 0.005 265);
+  --sidebar-primary:            oklch(0.67  0.26  270);
+  --sidebar-primary-foreground: oklch(0.12  0.030 265);
+  --sidebar-accent:             oklch(0.22  0.050 270);
+  --sidebar-accent-foreground:  oklch(0.67  0.26  270);
+  --sidebar-border:             oklch(1     0     0 / 9%);
+  --sidebar-ring:               oklch(0.67  0.26  270);
+}

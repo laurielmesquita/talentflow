@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ── Design Preset Tokens ───────────────────────────────────────────────── */
+@import "../styles/presets/linear.css";
+@import "../styles/presets/superhuman.css";
+@import "../styles/presets/supabase.css";
+@import "../styles/presets/resend.css";
+@import "../styles/presets/stripe.css";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -221,4 +228,17 @@
 /* Fill mode helper — elements start invisible before animation */
 .opacity-0-initial {
   opacity: 0;
+}
+
+/* ── Design Preset Switcher — Smooth Transition ─────────────────────────────
+   Classe aplicada momentaneamente pelo PresetProvider durante a troca.
+   Remove-se após 300ms para não impactar micro-interações da UI.
+   ─────────────────────────────────────────────────────────────────────────── */
+html.preset-switching,
+html.preset-switching * {
+  transition:
+    background-color 250ms ease,
+    border-color     200ms ease,
+    color            200ms ease,
+    box-shadow       200ms ease !important;
 }

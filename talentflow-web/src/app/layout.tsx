@@ -85,12 +85,8 @@ export default function RootLayout({
           <PresetProvider>
             {children}
             <Footer version={version} />
-            {/* Melhoria #3 — DesignSwitcher visível em dev local e em Preview deploys da Vercel.
-                Em produção (tlntflow.vercel.app), VERCEL_ENV === "production" bloqueia a renderização. */}
-            {(process.env.NEXT_PUBLIC_ENABLE_DESIGN_SWITCHER === "true" ||
-              process.env.VERCEL_ENV === "preview" ||
-              process.env.NODE_ENV === "development") &&
-              process.env.VERCEL_ENV !== "production" && <DesignSwitcher />}
+            {/* DesignSwitcher ativo para avaliação de presets em ambiente real */}
+            <DesignSwitcher />
           </PresetProvider>
         </ThemeProvider>
       </body>

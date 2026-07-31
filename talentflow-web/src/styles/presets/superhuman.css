@@ -4,64 +4,54 @@
    Theme: Dark-first (next-themes → "dark")
    ─────────────────────────────────────────────────────────────────────────── */
 
-[data-preset="superhuman"] {
-  /* Surface — Dark as default para este preset */
-  --background:         oklch(0.10  0.028 295);
+html[data-preset="superhuman"] {
+  /* Surface — Dark por padrão */
+  --background:         oklch(0.10  0.038 295);
   --foreground:         oklch(0.97  0.005 295);
-  --card:               oklch(0.14  0.032 295);
+  --card:               oklch(0.14  0.045 295);
   --card-foreground:    oklch(0.97  0.005 295);
-  --popover:            oklch(0.14  0.032 295);
+  --popover:            oklch(0.14  0.045 295);
   --popover-foreground: oklch(0.97  0.005 295);
 
-  /* Brand — Violeta profundo com brilho */
-  --primary:            oklch(0.65  0.27  295);
-  --primary-foreground: oklch(0.10  0.028 295);
+  /* Brand — Purple glow signature */
+  --primary:            oklch(0.65  0.28  295);
+  --primary-foreground: oklch(0.10  0.038 295);
 
   /* Neutrals */
-  --secondary:          oklch(0.18  0.04  295);
+  --secondary:          oklch(0.18  0.05  295);
   --secondary-foreground: oklch(0.97 0     0);
-  --muted:              oklch(0.18  0.04  295);
-  --muted-foreground:   oklch(0.65  0.04  295);
-  --accent:             oklch(0.22  0.05  295);
+  --muted:              oklch(0.18  0.05  295);
+  --muted-foreground:   oklch(0.68  0.05  295);
+  --accent:             oklch(0.24  0.07  295);
   --accent-foreground:  oklch(0.97  0     0);
 
   /* State */
   --destructive:        oklch(0.70  0.19  22);
-  --border:             oklch(1     0     0 / 10%);
-  --input:              oklch(1     0     0 / 14%);
-  --ring:               oklch(0.65  0.27  295);
+  --border:             oklch(0.65  0.28  295 / 22%);
+  --input:              oklch(0.65  0.28  295 / 25%);
+  --ring:               oklch(0.65  0.28  295);
 
-  /* Shape — 8px */
+  /* Shape — 8px Superhuman */
   --radius:             0.5rem;
 
   /* Sidebar */
-  --sidebar:                    oklch(0.12  0.030 295);
+  --sidebar:                    oklch(0.12  0.040 295);
   --sidebar-foreground:         oklch(0.97  0.005 295);
-  --sidebar-primary:            oklch(0.65  0.27  295);
-  --sidebar-primary-foreground: oklch(0.10  0.028 295);
-  --sidebar-accent:             oklch(0.18  0.04  295);
+  --sidebar-primary:            oklch(0.65  0.28  295);
+  --sidebar-primary-foreground: oklch(0.10  0.038 295);
+  --sidebar-accent:             oklch(0.18  0.05  295);
   --sidebar-accent-foreground:  oklch(0.97  0     0);
-  --sidebar-border:             oklch(1     0     0 / 10%);
-  --sidebar-ring:               oklch(0.65  0.27  295);
+  --sidebar-border:             oklch(0.65  0.28  295 / 22%);
+  --sidebar-ring:               oklch(0.65  0.28  295);
 }
 
-/* Light mode override (para quem forçar light neste preset) */
-[data-preset="superhuman"]:not(.dark) [data-force-light] {
-  --background:         oklch(0.975 0.006 295);
-  --foreground:         oklch(0.12  0.030 295);
-  --card:               oklch(1     0     0);
-  --card-foreground:    oklch(0.12  0.030 295);
-  --popover:            oklch(1     0     0);
-  --popover-foreground: oklch(0.12  0.030 295);
-  --primary:            oklch(0.55  0.27  295);
-  --primary-foreground: oklch(1     0     0);
-  --secondary:          oklch(0.95  0.015 295);
-  --secondary-foreground: oklch(0.20 0.04  295);
-  --muted:              oklch(0.95  0.015 295);
-  --muted-foreground:   oklch(0.52  0.04  295);
-  --accent:             oklch(0.95  0.015 295);
-  --accent-foreground:  oklch(0.20  0.04  295);
-  --border:             oklch(0.87  0.018 295);
-  --input:              oklch(0.87  0.018 295);
-  --ring:               oklch(0.55  0.27  295);
+/* Superhuman UI overrides — Glowing purple aura */
+html[data-preset="superhuman"] body {
+  letter-spacing: -0.01em;
+}
+html[data-preset="superhuman"] .bg-card {
+  box-shadow: 0 0 30px -5px oklch(0.65 0.28 295 / 15%), inset 0 1px 0 0 oklch(1 0 0 / 10%) !important;
+}
+html[data-preset="superhuman"] .bg-primary {
+  box-shadow: 0 0 20px 0 oklch(0.65 0.28 295 / 40%) !important;
 }

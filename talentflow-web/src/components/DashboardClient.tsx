@@ -5,11 +5,9 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { 
   Users, 
-  Briefcase, 
   Target,
   Layers, 
   AlertTriangle, 
-  CheckCircle, 
   TrendingUp, 
   UserCheck, 
   FileText, 
@@ -83,13 +81,48 @@ interface DashboardClientProps {
   initialJobs: Job[];
 }
 
+// ── Componente de Animação Numérica de KPIs (NumberTicker) ────────────────────
+function NumberTicker({ value, suffix = "" }: { value: number; suffix?: string }) {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const end = value;
+    if (start === end) {
+      setDisplayValue(end);
+      return;
+    }
+    const duration = 1000;
+    const startTime = performance.now();
+
+    const animateNumber = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = Math.round(eased * end);
+      setDisplayValue(current);
+      if (progress < 1) {
+        requestAnimationFrame(animateNumber);
+      }
+    };
+
+    requestAnimationFrame(animateNumber);
+  }, [value]);
+
+  return (
+    <span className="tabular-nums font-mono font-extrabold tracking-tight">
+      {displayValue}{suffix}
+    </span>
+  );
+}
+
 export default function DashboardClient({ initialStats, initialJobs }: DashboardClientProps) {
   const [selectedJobId, setSelectedJobId] = useState<string>(initialJobs[0]?.id || '');
   const [matches, setMatches] = useState<Match[]>([]);
   const [loadingMatches, setLoadingMatches] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
   
-  const [userRole, setUserRole] = useState<string | null>(null);
+  const [, setUserRole] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
 
   useEffect(() => {
@@ -99,10 +132,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
     setUserName(session.name);
   }, []);
 
-  // Cache de resultados de match por jobId para evitar re-busca ao alternar abas
   const matchesCache = useRef<Map<string, any[]>>(new Map());
-
-  // Filtra apenas as vagas ativas para exibição no dropdown
   const activeJobs = initialJobs.filter(j => j.is_active);
 
   useEffect(() => {
@@ -161,7 +191,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
   };
 
   const getQualityTier = (score: number | null) => {
-    if (score === null) return { name: "N/A", color: "text-muted-foreground bg-muted/10 border-muted/20" };
+    if (score === null) return { name: "N/A", color: "text-muted-foreground bg-muted border-border/40" };
     if (score >= 80) return { name: "Excelente", color: "text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
     if (score >= 60) return { name: "Bom", color: "text-blue-500 dark:text-blue-400 bg-blue-500/10 border-blue-500/20" };
     return { name: "Regular", color: "text-amber-500 dark:text-amber-400 bg-amber-500/10 border-amber-500/20" };
@@ -171,22 +201,20 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
+      transition: { staggerChildren: 0.08 }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 100, damping: 15 } }
+    hidden: { opacity: 0, y: 12 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
   };
 
   return (
     <div className="flex-1 flex flex-col justify-between bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[25%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="absolute top-[25%] right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       <div>
         {/* Navbar */}
@@ -195,107 +223,106 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
         {/* Main Content */}
         <main className="max-w-7xl mx-auto px-6 py-8">
           {/* Welcome Room Header */}
-          <div className="mb-10">
-            <div className="flex items-center gap-2 mb-2 text-xs font-semibold uppercase tracking-wider text-primary">
+          <div className="mb-8">
+            <div className="flex items-center gap-2 mb-1.5 text-xs font-medium uppercase tracking-wider text-primary">
               <Sparkles className="w-4 h-4" />
               Painel Tático Operacional
             </div>
-            <h2 className="text-3xl font-bold tracking-tight text-foreground mb-3 animate-fade-in">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
               Olá, {userName || 'Recrutador'}
             </h2>
-            <p className="text-muted-foreground max-w-3xl leading-relaxed text-sm">
-              Esta é sua sala de boas-vindas. Decida suas prioridades operacionais a partir das métricas 
-              atualizadas do banco de talentos, das urgências de vagas e dos índices organizacionais.
+            <p className="text-muted-foreground max-w-2xl text-xs sm:text-sm leading-relaxed">
+              Sua sala de controle tático. Acompanhe prioridades operacionais, inteligência de banco de talentos e o status dos processos seletivos ativos.
             </p>
           </div>
 
-          {/* Bento Grid Layout */}
+          {/* Bento Grid Layout Minimalista */}
           <motion.div 
             variants={containerVariants}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
           >
             {/* Bloco 1: Ativos - Candidatos */}
             <motion.div
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="bg-card/40 backdrop-blur-md border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-primary/40 hover:shadow-[0_0_30px_-10px_rgba(var(--color-primary),0.1)] transition-all"
+              whileHover={{ y: -2 }}
+              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-border hover:bg-accent/30 transition-all duration-200"
             >
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Ativo Principal</span>
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary">
-                    <Users className="w-5 h-5" />
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ativo Principal</span>
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
+                    <Users className="w-4 h-4" />
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold mb-1">Banco de Talentos</h3>
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-4xl font-extrabold tracking-tight">{initialStats.candidates.total}</span>
-                  <span className="text-xs text-muted-foreground">candidatos ativos</span>
+                <h3 className="text-base font-semibold text-foreground mb-1">Banco de Talentos</h3>
+                <div className="flex items-baseline gap-2 mb-4 text-3xl font-bold text-foreground">
+                  <NumberTicker value={initialStats.candidates.total} />
+                  <span className="text-xs font-normal text-muted-foreground">candidatos</span>
                 </div>
                 
-                <div className="space-y-2 border-t border-border/50 pt-4 text-sm">
+                <div className="space-y-2 border-t border-border/40 pt-3 text-xs">
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-indigo-500" /> Ingeridos nas últimas 24h:
+                      <Clock className="w-3.5 h-3.5 text-primary" /> Ingeridos nas últimas 24h:
                     </span>
-                    <span className="font-semibold text-foreground">{initialStats.candidates.added_today}</span>
+                    <span className="font-semibold text-foreground font-mono tabular-nums">{initialStats.candidates.added_today}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground flex items-center gap-1.5">
-                      <TrendingUp className="w-3.5 h-3.5 text-emerald-500" /> Qualidade média de currículo:
+                      <TrendingUp className="w-3.5 h-3.5 text-emerald-500" /> Qualidade média:
                     </span>
-                    <span className="font-semibold text-foreground">{initialStats.candidates.average_quality}%</span>
+                    <span className="font-semibold text-foreground font-mono tabular-nums">{initialStats.candidates.average_quality}%</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground flex items-center gap-1.5">
-                      <ShieldAlert className="w-3.5 h-3.5 text-rose-500" /> Candidatos em restrição:
+                      <ShieldAlert className="w-3.5 h-3.5 text-destructive" /> Em restrição:
                     </span>
-                    <span className={`font-semibold ${initialStats.candidates.flagged_count > 0 ? 'text-rose-500 font-bold' : 'text-foreground'}`}>
+                    <span className={`font-semibold font-mono tabular-nums ${initialStats.candidates.flagged_count > 0 ? 'text-destructive font-bold' : 'text-foreground'}`}>
                       {initialStats.candidates.flagged_count}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <Link href="/candidates" className="mt-6 flex items-center justify-between text-xs font-semibold text-primary hover:text-primary-foreground group bg-primary/5 hover:bg-primary px-4 py-2.5 rounded-xl border border-primary/10 hover:border-primary transition-all">
+              <Link href="/candidates" className="mt-5 flex items-center justify-between text-xs font-medium text-primary hover:text-primary-foreground group bg-primary/10 hover:bg-primary px-3.5 py-2 rounded-lg border border-primary/20 transition-all duration-200">
                 Acessar Banco de Talentos
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
 
             {/* Bloco 2: Pipelines - Vagas */}
             <motion.div
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="bg-card/40 backdrop-blur-md border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-cyan-500/40 hover:shadow-[0_0_30px_-10px_rgba(6,182,212,0.1)] transition-all"
+              whileHover={{ y: -2 }}
+              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-border hover:bg-accent/30 transition-all duration-200"
             >
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Metas e Demandas</span>
-                  <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-500">
-                    <Target className="w-5 h-5" />
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Demandas</span>
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
+                    <Target className="w-4 h-4" />
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold mb-1">Vagas & Processos</h3>
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-4xl font-extrabold tracking-tight text-cyan-600 dark:text-cyan-400">{initialStats.jobs.active}</span>
-                  <span className="text-xs text-muted-foreground">vagas ativas</span>
+                <h3 className="text-base font-semibold text-foreground mb-1">Vagas & Processos</h3>
+                <div className="flex items-baseline gap-2 mb-4 text-3xl font-bold text-primary">
+                  <NumberTicker value={initialStats.jobs.active} />
+                  <span className="text-xs font-normal text-muted-foreground">vagas ativas</span>
                 </div>
 
-                <div className="space-y-2 border-t border-border/50 pt-4 text-sm">
+                <div className="space-y-2 border-t border-border/40 pt-3 text-xs">
                   <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Vagas Registradas Totais:</span>
-                    <span className="font-semibold text-foreground">{initialStats.jobs.total}</span>
+                    <span className="text-muted-foreground">Registradas Totais:</span>
+                    <span className="font-semibold text-foreground font-mono tabular-nums">{initialStats.jobs.total}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground flex items-center gap-1.5">
                       <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Prazos críticos (7 dias):
                     </span>
-                    <span className={`font-semibold px-2 py-0.5 rounded text-xs ${
+                    <span className={`font-semibold px-2 py-0.5 rounded-md text-[11px] font-mono tabular-nums ${
                       initialStats.jobs.upcoming_deadlines > 0 
-                        ? 'bg-rose-500/10 text-rose-500 font-bold border border-rose-500/20' 
+                        ? 'bg-destructive/10 text-destructive font-bold border border-destructive/20' 
                         : 'text-foreground'
                     }`}>
                       {initialStats.jobs.upcoming_deadlines} vaga{initialStats.jobs.upcoming_deadlines !== 1 ? 's' : ''}
@@ -304,39 +331,39 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
                 </div>
               </div>
 
-              <Link href="/jobs" className="mt-6 flex items-center justify-between text-xs font-semibold text-cyan-600 dark:text-cyan-400 hover:text-white group bg-cyan-500/5 hover:bg-cyan-500 px-4 py-2.5 rounded-xl border border-cyan-500/10 hover:border-cyan-500 transition-all">
-                Gerenciar Vagas Comerciais
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <Link href="/jobs" className="mt-5 flex items-center justify-between text-xs font-medium text-primary hover:text-primary-foreground group bg-primary/10 hover:bg-primary px-3.5 py-2 rounded-lg border border-primary/20 transition-all duration-200">
+                Gerenciar Vagas
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
 
             {/* Bloco 3: Organização - Categorias */}
             <motion.div
               variants={itemVariants}
-              whileHover={{ y: -4, transition: { duration: 0.2 } }}
-              className="bg-card/40 backdrop-blur-md border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between hover:border-indigo-500/40 hover:shadow-[0_0_30px_-10px_rgba(99,102,241,0.1)] transition-all"
+              whileHover={{ y: -2 }}
+              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-border hover:bg-accent/30 transition-all duration-200"
             >
               <div>
-                <div className="flex justify-between items-start mb-4">
-                  <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Estruturação</span>
-                  <div className="p-2 rounded-lg bg-indigo-500/10 text-indigo-500">
-                    <Layers className="w-5 h-5" />
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Taxonomia</span>
+                  <div className="p-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
+                    <Layers className="w-4 h-4" />
                   </div>
                 </div>
-                <h3 className="text-lg font-semibold mb-1">Tags & Categorias</h3>
-                <div className="flex items-baseline gap-2 mb-4">
-                  <span className="text-4xl font-extrabold tracking-tight text-indigo-600 dark:text-indigo-400">{initialStats.categories.total}</span>
-                  <span className="text-xs text-muted-foreground">categorias</span>
+                <h3 className="text-base font-semibold text-foreground mb-1">Tags & Categorias</h3>
+                <div className="flex items-baseline gap-2 mb-4 text-3xl font-bold text-foreground">
+                  <NumberTicker value={initialStats.categories.total} />
+                  <span className="text-xs font-normal text-muted-foreground">categorias</span>
                 </div>
 
-                <div className="space-y-2 border-t border-border/50 pt-4 text-sm">
+                <div className="space-y-2 border-t border-border/40 pt-3 text-xs">
                   <div className="flex justify-between items-center">
                     <span className="text-muted-foreground flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Candidatos sem tag (ponto cego):
+                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Sem tag (ponto cego):
                     </span>
-                    <span className={`font-semibold px-2 py-0.5 rounded text-xs ${
+                    <span className={`font-semibold px-2 py-0.5 rounded-md text-[11px] font-mono tabular-nums ${
                       initialStats.categories.uncategorized > 0 
-                        ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 font-bold border border-amber-500/20' 
+                        ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' 
                         : 'text-foreground'
                     }`}>
                       {initialStats.categories.uncategorized} talentos
@@ -351,26 +378,26 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
                 </div>
               </div>
 
-              <Link href="/categories" className="mt-6 flex items-center justify-between text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-white group bg-indigo-500/5 hover:bg-indigo-500 px-4 py-2.5 rounded-xl border border-indigo-500/10 hover:border-indigo-500 transition-all">
+              <Link href="/categories" className="mt-5 flex items-center justify-between text-xs font-medium text-primary hover:text-primary-foreground group bg-primary/10 hover:bg-primary px-3.5 py-2 rounded-lg border border-primary/20 transition-all duration-200">
                 Configurar Categorias
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
 
             {/* Bloco 4 (Spans 2 columns on lg): Candidate Matching Scores */}
             <motion.div
               variants={itemVariants}
-              className="lg:col-span-2 bg-card/40 backdrop-blur-md border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between min-h-[380px]"
+              className="lg:col-span-2 bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between min-h-[360px]"
             >
               <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
                   <div>
-                    <h3 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2">
-                      <UserCheck className="w-5 h-5 text-primary" />
+                    <h3 className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
+                      <UserCheck className="w-4 h-4 text-primary" />
                       Candidate Matching Scores
                     </h3>
-                    <p className="text-muted-foreground text-xs">
-                      Selecione uma vaga para listar em tempo real os candidatos mais compatíveis.
+                    <p className="text-muted-foreground text-xs mt-0.5">
+                      Selecione uma vaga para consultar a pontuação de compatibilidade em tempo real.
                     </p>
                   </div>
                   
@@ -380,7 +407,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
                       <select
                         value={selectedJobId}
                         onChange={(e) => setSelectedJobId(e.target.value)}
-                        className="w-full sm:w-[220px] bg-background/80 dark:bg-card border border-border text-foreground px-3 py-2 rounded-xl text-xs font-semibold focus:outline-none focus:ring-1 focus:ring-primary shadow-sm appearance-none cursor-pointer pr-8"
+                        className="w-full sm:w-[200px] bg-background border border-border text-foreground px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:ring-1 focus:ring-ring shadow-xs cursor-pointer"
                       >
                         {activeJobs.map((job) => (
                           <option key={job.id} value={job.id}>
@@ -389,13 +416,8 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
                         ))}
                       </select>
                     ) : (
-                      <div className="text-xs text-rose-500 bg-rose-500/10 border border-rose-500/20 px-3 py-2 rounded-xl font-medium">
-                        Nenhuma vaga ativa cadastrada
-                      </div>
-                    )}
-                    {activeJobs.length > 0 && (
-                      <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground text-[10px]">
-                        ▼
+                      <div className="text-xs text-destructive bg-destructive/10 border border-destructive/20 px-3 py-1.5 rounded-lg font-medium">
+                        Nenhuma vaga ativa
                       </div>
                     )}
                   </div>
@@ -403,46 +425,43 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
 
                 {/* Loading State */}
                 {loadingMatches ? (
-                  <div className="h-48 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+                  <div className="h-44 flex items-center justify-center">
+                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
                   </div>
                 ) : matches.length > 0 ? (
-                  <div className="space-y-3">
+                  <div className="space-y-2.5">
                     {matches.slice(0, 3).map((match, idx) => (
                       <div 
                         key={match.candidate_id} 
-                        className="flex items-center justify-between p-3.5 rounded-xl bg-background/50 hover:bg-primary/5 border border-border/40 hover:border-primary/20 transition-all group"
+                        className="flex items-center justify-between p-3 rounded-lg bg-muted/20 hover:bg-accent/40 border border-border/40 transition-all group"
                       >
                         <div className="flex items-center gap-3 min-w-0">
-                          {/* Rank number */}
-                          <span className="text-xs font-bold text-muted-foreground w-4">
-                            {idx + 1}
+                          <span className="text-xs font-mono font-bold text-muted-foreground w-4">
+                            #{idx + 1}
                           </span>
                           
-                          {/* Photo / Avatar fallback */}
                           {match.photo_url ? (
                             <img 
                               src={match.photo_url} 
                               alt={match.full_name} 
-                              className="w-10 h-10 rounded-full object-cover border border-border/50"
+                              className="w-9 h-9 rounded-full object-cover border border-border/50"
                             />
                           ) : (
-                            <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-xs border border-primary/20">
+                            <div className="w-9 h-9 rounded-full bg-muted text-muted-foreground flex items-center justify-center font-bold text-xs border border-border/50">
                               {getInitials(match.full_name)}
                             </div>
                           )}
                           
                           <div className="min-w-0">
-                            <h4 className="text-sm font-semibold text-foreground truncate">{match.full_name}</h4>
-                            <p className="text-muted-foreground text-xs truncate max-w-[180px] sm:max-w-[300px]">
+                            <h4 className="text-xs font-semibold text-foreground truncate">{match.full_name}</h4>
+                            <p className="text-muted-foreground text-[11px] truncate max-w-[180px] sm:max-w-[280px]">
                               {match.current_job || "Não informado"}
                             </p>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-3">
-                          {/* Match Score pill */}
-                          <span className={`px-2.5 py-1 rounded-full text-xs font-bold border ${
+                          <span className={`px-2 py-0.5 rounded-md text-xs font-bold font-mono tabular-nums border ${
                             match.match_score >= 80 
                               ? 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20' 
                               : match.match_score >= 50 
@@ -454,32 +473,32 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
 
                           <Link 
                             href={`/candidates?candidateId=${match.candidate_id}`}
-                            className="p-1 rounded-lg hover:bg-primary/10 text-muted-foreground hover:text-primary transition-colors"
+                            className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
                             title="Ver Perfil Completo"
                           >
-                            <ChevronRight className="w-5 h-5" />
+                            <ChevronRight className="w-4 h-4" />
                           </Link>
                         </div>
                       </div>
                     ))}
                     {matches.length > 3 && (
-                      <div className="text-right">
+                      <div className="text-right pt-1">
                         <Link 
-                          href="/jobs" 
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                          href="/smart-match" 
+                          className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
                         >
-                          Ver todos os {matches.length} matches no painel de vagas
+                          Ver todos os {matches.length} matches no Smart Match
                           <ChevronRight className="w-3.5 h-3.5" />
                         </Link>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="h-48 border border-dashed border-border/60 rounded-xl flex flex-col items-center justify-center text-center p-6 bg-background/25">
-                    <AlertTriangle className="w-8 h-8 text-muted-foreground mb-2" />
-                    <h5 className="text-sm font-semibold text-foreground mb-1">Nenhum match calculado</h5>
-                    <p className="text-muted-foreground text-xs max-w-sm">
-                      Não há candidatos com correspondências de competências para esta vaga. Certifique-se de que a vaga possua requisitos de habilidades válidos.
+                  <div className="h-44 border border-dashed border-border/60 rounded-lg flex flex-col items-center justify-center text-center p-6 bg-muted/10">
+                    <AlertTriangle className="w-6 h-6 text-muted-foreground mb-1.5 opacity-60" />
+                    <h5 className="text-xs font-semibold text-foreground mb-0.5">Nenhum match calculado</h5>
+                    <p className="text-muted-foreground text-[11px] max-w-sm">
+                      Não há candidatos com habilidades compatíveis com esta vaga.
                     </p>
                   </div>
                 )}
@@ -489,38 +508,38 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
             {/* Bloco 5: Últimas Ingestões IA */}
             <motion.div
               variants={itemVariants}
-              className="bg-card/40 backdrop-blur-md border border-border/80 rounded-2xl p-6 shadow-sm flex flex-col justify-between"
+              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between"
             >
               <div>
-                <h3 className="text-lg font-bold tracking-tight text-foreground flex items-center gap-2 mb-2">
-                  <FileText className="w-5 h-5 text-indigo-500" />
+                <h3 className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2 mb-1">
+                  <FileText className="w-4 h-4 text-primary" />
                   Últimas Ingestões IA
                 </h3>
-                <p className="text-muted-foreground text-xs mb-5">
-                  Resumos de currículos recentemente indexados pelo motor cognitivo do TalentFlow.
+                <p className="text-muted-foreground text-xs mb-4">
+                  Currículos indexados recentemente pelo motor cognitivo.
                 </p>
 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {initialStats.recent_candidates.length > 0 ? (
                     initialStats.recent_candidates.map((cand) => {
                       const tier = getQualityTier(cand.quality_score);
                       return (
-                        <div key={cand.id} className="flex justify-between items-start border-b border-border/30 pb-3 last:border-b-0 last:pb-0">
+                        <div key={cand.id} className="flex justify-between items-start border-b border-border/40 pb-2.5 last:border-b-0 last:pb-0">
                           <div className="min-w-0">
-                            <h4 className="text-xs font-semibold text-foreground truncate max-w-[160px]">{cand.full_name}</h4>
-                            <p className="text-[10px] text-muted-foreground truncate max-w-[160px]">{cand.current_job || "Não informado"}</p>
-                            <span className="text-[10px] text-muted-foreground inline-flex items-center gap-1 mt-1">
+                            <h4 className="text-xs font-semibold text-foreground truncate max-w-[150px]">{cand.full_name}</h4>
+                            <p className="text-[11px] text-muted-foreground truncate max-w-[150px]">{cand.current_job || "Não informado"}</p>
+                            <span className="text-[10px] text-muted-foreground inline-flex items-center gap-1 mt-0.5 font-mono">
                               <Clock className="w-2.5 h-2.5" /> {mounted ? formatTimeAgo(cand.created_at) : "Aguardando..."}
                             </span>
                           </div>
                           
                           <div className="flex flex-col items-end gap-1">
-                            <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${tier.color}`}>
+                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono tabular-nums border ${tier.color}`}>
                               {tier.name} ({cand.quality_score ?? 0}%)
                             </span>
                             <Link 
                               href={`/candidates?candidateId=${cand.id}`} 
-                              className="text-[10px] font-bold text-primary hover:underline flex items-center"
+                              className="text-[10px] font-medium text-primary hover:underline flex items-center"
                             >
                               Ver perfil
                               <ChevronRight className="w-3 h-3" />
@@ -530,8 +549,8 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
                       );
                     })
                   ) : (
-                    <div className="h-40 flex flex-col items-center justify-center text-center p-4">
-                      <FileText className="w-7 h-7 text-muted-foreground mb-1" />
+                    <div className="h-36 flex flex-col items-center justify-center text-center p-4">
+                      <FileText className="w-6 h-6 text-muted-foreground mb-1 opacity-50" />
                       <span className="text-xs font-medium text-muted-foreground">Nenhum currículo importado</span>
                     </div>
                   )}
@@ -541,8 +560,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
           </motion.div>
         </main>
       </div>
-
-      {/* Footer is already rendered globally by layout.tsx */}
     </div>
   );
 }
+

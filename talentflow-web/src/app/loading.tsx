@@ -1,21 +1,20 @@
 export default function Loading() {
   return (
-    <div className="flex-1 bg-background text-foreground flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
-      
-      <div className="flex flex-col items-center gap-4 text-center px-6">
-        {/* Modern animated ring spinner */}
-        <div className="relative w-12 h-12">
-          <div className="w-12 h-12 rounded-full border-4 border-primary/20"></div>
-          <div className="absolute top-0 left-0 w-12 h-12 rounded-full border-4 border-t-primary animate-spin"></div>
+    <div className="flex-1 bg-background text-foreground flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center gap-5 text-center px-6">
+        {/* Wordmark */}
+        <p className="text-[15px] font-semibold tracking-tight text-foreground">
+          TalentFlow
+        </p>
+
+        {/* Progress bar */}
+        <div className="w-40 h-[2px] bg-border/60 rounded-full overflow-hidden">
+          <div className="h-full w-1/2 bg-primary rounded-full animate-[shimmer-slide_1.5s_cubic-bezier(0.4,0,0.6,1)_infinite]" />
         </div>
-        
-        <div className="space-y-1">
-          <p className="text-sm font-semibold tracking-tight text-foreground animate-pulse">Carregando dados...</p>
-          <p className="text-xs text-muted-foreground">Sincronizando banco de talentos e pipelines</p>
-        </div>
+
+        <p className="text-[12px] text-muted-foreground tracking-wide">
+          Carregando dados...
+        </p>
       </div>
     </div>
   );

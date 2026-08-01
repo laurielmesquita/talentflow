@@ -7,34 +7,35 @@ import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
 
+const NAV_LINKS = [
+  { href: '/dashboard', label: 'Dashboard' },
+  { href: '/candidates', label: 'Candidatos' },
+  { href: '/jobs', label: 'Vagas' },
+  { href: '/smart-match', label: 'Smart Match' },
+  { href: '/categories', label: 'Categorias' },
+] as const;
+
 export default function Navbar() {
   const pathname = usePathname();
 
-  const isLinkActive = (path: string) => {
-    if (path === '/dashboard') {
-      return pathname === '/dashboard';
-    }
-    return pathname.startsWith(path);
-  };
-
-  const getLinkClass = (path: string) => {
-    const baseClass = "text-sm font-semibold transition-all duration-200 px-3 py-1.5 rounded-xl";
-    return isLinkActive(path)
-      ? `${baseClass} text-primary bg-primary/10 border border-primary/20 shadow-sm shadow-primary/5`
-      : `${baseClass} text-muted-foreground hover:text-foreground hover:bg-secondary/10 border border-transparent`;
-  };
+  const isActive = (path: string) =>
+    path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(path);
 
   return (
-    <header className="border-b border-border/80 bg-background/60 backdrop-blur-md sticky top-0 z-50 transition-colors duration-300">
-      <div className="flex items-center justify-between px-6 py-4.5 max-w-7xl mx-auto">
-        {/* Logo / Brand */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
+    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl transition-colors duration-300">
+      {/* Linha de acento superior */}
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+
+      <div className="flex items-center justify-between px-6 h-14 max-w-7xl mx-auto">
+
+        {/* ── Logo / Brand ── */}
+        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+          <div className="relative w-7 h-7 rounded-[6px] overflow-hidden group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
             <Image
               src="/brand/logo-dark.webp"
               alt="TalentFlow Logo"
               fill
-              sizes="34px"
+              sizes="28px"
               className="object-contain dark:hidden"
               priority
             />
@@ -42,40 +43,44 @@ export default function Navbar() {
               src="/brand/logo-light.webp"
               alt="TalentFlow Logo"
               fill
-              sizes="34px"
+              sizes="28px"
               className="object-contain hidden dark:block"
               priority
             />
           </div>
-          <h1 className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+          <span className="text-[15px] font-semibold tracking-tight text-foreground leading-none">
             TalentFlow
-          </h1>
+          </span>
         </Link>
 
-        {/* Links Principais */}
-        <nav className="hidden md:flex gap-2">
-          <Link href="/dashboard" className={getLinkClass('/dashboard')}>
-            Dashboard
-          </Link>
-          <Link href="/candidates" className={getLinkClass('/candidates')}>
-            Candidatos
-          </Link>
-          <Link href="/jobs" className={getLinkClass('/jobs')}>
-            Vagas
-          </Link>
-          <Link href="/smart-match" className={getLinkClass('/smart-match')}>
-            Smart Match
-          </Link>
-          <Link href="/categories" className={getLinkClass('/categories')}>
-            Categorias
-          </Link>
+        {/* ── Navegação Principal ── */}
+        <nav className="hidden md:flex items-center gap-1">
+          {NAV_LINKS.map(({ href, label }) => {
+            const active = isActive(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={[
+                  'relative px-3 py-1.5 text-[13px] font-medium rounded-md transition-all duration-150',
+                  active
+                    ? 'text-primary bg-primary/8'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/60',
+                ].join(' ')}
+              >
+                {label}
+                {/* Indicador ativo — barra inferior */}
+                {active && (
+                  <span className="absolute bottom-0 inset-x-3 h-[2px] rounded-full bg-primary" />
+                )}
+              </Link>
+            );
+          })}
         </nav>
 
-        {/* Grupo de Ações */}
-        <div className="flex items-center gap-3">
+        {/* ── Ações ── */}
+        <div className="flex items-center gap-2">
           <ThemeToggle />
-          
-          {/* Menu do Usuário Dropdown */}
           <UserMenu />
         </div>
       </div>

@@ -2,194 +2,70 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { motion } from "framer-motion";
-import { Mail } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 interface FooterProps {
   version?: string;
 }
 
-const navLinks = [
-  { href: "/", label: "Dashboard" },
-  { href: "/candidates", label: "Candidatos" },
-  { href: "/jobs", label: "Vagas (Smart Match)" },
-  { href: "/categories", label: "Categorias" },
-];
-
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
-  },
-};
-
-export default function Footer({ version = "1.1.0" }: FooterProps) {
+export default function Footer({ version = "2.1.0" }: FooterProps) {
   const pathname = usePathname();
-  
-  // Agrupamento para Variante Simple: páginas públicas, jurídicas e fluxos de autenticação.
-  const isSimplePage = pathname === "/" || 
+
+  const isSimplePage =
+    pathname === "/" ||
     ["/privacy", "/terms", "/login", "/forgot-password", "/reset-password", "/vagas"].some(
       (route) => pathname?.startsWith(route)
     );
 
   if (isSimplePage) {
     return (
-      <footer className="relative mt-auto border-t border-border bg-background/50 backdrop-blur-md py-8">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="relative w-7 h-7 rounded-lg overflow-hidden flex-shrink-0">
-              <Image
-                src="/brand/logo-dark.webp"
-                alt="TalentFlow Logo"
-                fill
-                sizes="28px"
-                className="object-contain dark:hidden"
-              />
-              <Image
-                src="/brand/logo-light.webp"
-                alt="TalentFlow Logo"
-                fill
-                sizes="28px"
-                className="object-contain hidden dark:block"
-              />
+      <footer className="border-t border-border/60 bg-background py-5">
+        <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div className="flex items-center gap-2.5">
+            <div className="relative w-5 h-5 rounded-[4px] overflow-hidden flex-shrink-0">
+              <Image src="/brand/logo-dark.webp" alt="TalentFlow Logo" fill sizes="20px" className="object-contain dark:hidden" />
+              <Image src="/brand/logo-light.webp" alt="TalentFlow Logo" fill sizes="20px" className="object-contain hidden dark:block" />
             </div>
-            <span className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
-              <span>
-                © {new Date().getFullYear()} TalentFlow. Todos os direitos reservados. Desenvolvido por{" "}
-                <span className="text-foreground font-semibold">Space Square</span>.
-              </span>
-              <span className="text-[10px] text-muted-foreground/70 font-mono bg-secondary/80 dark:bg-zinc-800 px-1.5 py-0.5 rounded border border-border/80">
-                v{version}
-              </span>
+            <span className="text-[12px] text-muted-foreground">
+              © {new Date().getFullYear()} TalentFlow — Desenvolvido por{" "}
+              <span className="text-foreground font-medium">Space Square</span>
+            </span>
+            <span className="text-[10px] text-muted-foreground/60 font-mono bg-surface-2 border border-border px-1.5 py-0.5 rounded">
+              v{version}
             </span>
           </div>
-          <div className="flex gap-6 text-xs text-muted-foreground">
-            <Link href="/" className="hover:text-primary transition-colors">Home</Link>
-            <Link href="/terms" className="hover:text-primary transition-colors">Termos de Uso</Link>
-            <Link href="/privacy" className="hover:text-primary transition-colors">Privacidade</Link>
-            <a href="mailto:plataforma.talentflow@outlook.com" className="hover:text-primary transition-colors">Suporte</a>
+          <div className="flex gap-5 text-[12px] text-muted-foreground">
+            <Link href="/terms" className="hover:text-foreground transition-colors">Termos</Link>
+            <Link href="/privacy" className="hover:text-foreground transition-colors">Privacidade</Link>
+            <a href="mailto:plataforma.talentflow@outlook.com" className="hover:text-foreground transition-colors">Suporte</a>
           </div>
         </div>
       </footer>
     );
   }
 
-  // Variante Full: ambiente interno logado do Workspace
+  // Variante interna — workspace logado
   return (
-    <footer className="relative mt-auto border-t border-border bg-background overflow-hidden">
-      {/* Subtle gradient glow at top edge */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] h-[80px] bg-primary/[0.04] blur-[60px] pointer-events-none" />
-
-      {/* Main grid */}
-      <motion.div
-        className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 gap-10 md:grid-cols-3 md:gap-8"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-40px" }}
-      >
-        {/* ── Col 1: Brand ── */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-4">
-          <div className="flex items-center gap-3">
-            <div className="relative w-9 h-9 rounded-xl overflow-hidden flex-shrink-0">
-              <Image
-                src="/brand/logo-dark.webp"
-                alt="TalentFlow Logo"
-                fill
-                sizes="36px"
-                className="object-contain dark:hidden"
-              />
-              <Image
-                src="/brand/logo-light.webp"
-                alt="TalentFlow Logo"
-                fill
-                sizes="36px"
-                className="object-contain hidden dark:block"
-              />
-            </div>
-            <span className="text-lg font-semibold tracking-tight text-foreground">
-              TalentFlow
-            </span>
+    <footer className="border-t border-border/60 bg-background py-5 mt-auto">
+      <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div className="flex items-center gap-2.5">
+          <div className="relative w-5 h-5 rounded-[4px] overflow-hidden flex-shrink-0">
+            <Image src="/brand/logo-dark.webp" alt="TalentFlow Logo" fill sizes="20px" className="object-contain dark:hidden" />
+            <Image src="/brand/logo-light.webp" alt="TalentFlow Logo" fill sizes="20px" className="object-contain hidden dark:block" />
           </div>
-          <p className="text-sm text-muted-foreground leading-relaxed max-w-[240px]">
-            Banco de Talentos com triagem inteligente de currículos via IA
-            generativa.
-          </p>
-          <div className="flex items-center gap-2 mt-1">
-            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              Live
-            </span>
-            <span className="text-xs text-muted-foreground font-mono">
-              v{version}
-            </span>
-          </div>
-        </motion.div>
-
-        {/* ── Col 2: Navigation ── */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-4">
-          <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Navegação
-          </h3>
-          <ul className="flex flex-col gap-2.5">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-200 hover:translate-x-0.5 inline-flex items-center gap-1.5 group"
-                >
-                  <span className="w-1 h-1 rounded-full bg-primary/40 group-hover:bg-primary transition-colors duration-200 flex-shrink-0" />
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-
-          </ul>
-        </motion.div>
-
-        {/* ── Col 3: Contato ── */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-4">
-          <h3 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-            Contato
-          </h3>
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            Precisa de suporte ou quer falar com a equipe?
-          </p>
-          <a
-            href="mailto:plataforma.talentflow@outlook.com"
-            className="inline-flex items-center gap-2 px-4 py-2 mt-1 rounded-lg bg-muted/60 border border-border text-sm font-medium text-muted-foreground hover:text-foreground hover:border-primary/30 hover:bg-primary/5 transition-all duration-200 w-fit"
-          >
-            <Mail className="w-4 h-4 text-primary/70" />
-            plataforma.talentflow@outlook.com
-          </a>
-        </motion.div>
-      </motion.div>
-
-      {/* ── Bottom bar ── */}
-      <div className="border-t border-border/60">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-muted-foreground">
-            © {new Date().getFullYear()} TalentFlow. Todos os direitos
-            reservados.
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Desenvolvido por{" "}
-            <span className="text-foreground font-medium">Space Square</span>
-          </p>
+          <span className="text-[12px] text-muted-foreground">
+            © {new Date().getFullYear()} TalentFlow —{" "}
+            <span className="text-foreground/70 font-medium">Space Square</span>
+          </span>
+          <span className="inline-flex items-center gap-1 text-[10px] text-muted-foreground/60 font-mono bg-surface-2 border border-border px-1.5 py-0.5 rounded">
+            <span className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+            v{version}
+          </span>
+        </div>
+        <div className="flex gap-5 text-[12px] text-muted-foreground">
+          <Link href="/terms" className="hover:text-foreground transition-colors">Termos</Link>
+          <Link href="/privacy" className="hover:text-foreground transition-colors">Privacidade</Link>
+          <a href="mailto:plataforma.talentflow@outlook.com" className="hover:text-foreground transition-colors">Suporte</a>
         </div>
       </div>
     </footer>

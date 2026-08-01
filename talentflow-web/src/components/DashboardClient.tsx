@@ -3,23 +3,25 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { 
-  Users, 
+import {
+  Users,
   Target,
-  Layers, 
-  AlertTriangle, 
-  TrendingUp, 
-  UserCheck, 
-  FileText, 
-  Sparkles, 
-  Clock, 
+  Layers,
+  AlertTriangle,
+  TrendingUp,
+  UserCheck,
+  FileText,
+  Clock,
   ArrowRight,
   ChevronRight,
-  ShieldAlert
+  ShieldAlert,
+  Sparkles,
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { getSession } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
+
+// ── Types ────────────────────────────────────────────────────────────────────
 
 interface CandidateStats {
   total: number;
@@ -37,10 +39,7 @@ interface JobStats {
 interface CategoryStats {
   total: number;
   uncategorized: number;
-  top_category: {
-    name: string;
-    count: number;
-  };
+  top_category: { name: string; count: number };
 }
 
 interface RecentCandidate {
@@ -81,486 +80,457 @@ interface DashboardClientProps {
   initialJobs: Job[];
 }
 
-// ── Componente de Animação Numérica de KPIs (NumberTicker) ────────────────────
-function NumberTicker({ value, suffix = "" }: { value: number; suffix?: string }) {
-  const [displayValue, setDisplayValue] = useState(0);
+// ── Animated Number ──────────────────────────────────────────────────────────
+function NumberTicker({ value, suffix = '' }: { value: number; suffix?: string }) {
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    let start = 0;
-    const end = value;
-    if (start === end) {
-      setDisplayValue(end);
-      return;
-    }
-    const duration = 1000;
+    if (value === 0) { setDisplay(0); return; }
+    const duration = 900;
     const startTime = performance.now();
-
-    const animateNumber = (now: number) => {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
-      const current = Math.round(eased * end);
-      setDisplayValue(current);
-      if (progress < 1) {
-        requestAnimationFrame(animateNumber);
-      }
+    const animate = (now: number) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const eased = 1 - Math.pow(2, -10 * progress);
+      setDisplay(Math.round(eased * value));
+      if (progress < 1) requestAnimationFrame(animate);
     };
-
-    requestAnimationFrame(animateNumber);
+    requestAnimationFrame(animate);
   }, [value]);
 
   return (
-    <span className="tabular-nums font-mono font-extrabold tracking-tight">
-      {displayValue}{suffix}
+    <span className="tabular-nums font-mono font-bold tracking-tight">
+      {display}{suffix}
     </span>
   );
 }
 
+// ── Stagger Variants ─────────────────────────────────────────────────────────
+const container = {
+  hidden: { opacity: 0 },
+  show: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
+};
+const item = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: 'easeOut' } },
+};
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+const getInitials = (name: string) =>
+  name.split(' ').filter(Boolean).map(n => n[0]).slice(0, 2).join('').toUpperCase();
+
+const formatTimeAgo = (dateStr: string | null) => {
+  if (!dateStr) return 'N/A';
+  try {
+    const diff = Date.now() - new Date(dateStr).getTime();
+    const mins = Math.floor(diff / 60000);
+    if (mins < 1) return 'Agora';
+    if (mins < 60) return `${mins}min atrás`;
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours}h atrás`;
+    return `${Math.floor(hours / 24)}d atrás`;
+  } catch { return 'Recente'; }
+};
+
+const scoreColor = (score: number | null) => {
+  if (score === null) return 'text-muted-foreground';
+  if (score >= 80) return 'text-emerald-600 dark:text-emerald-400';
+  if (score >= 60) return 'text-blue-600 dark:text-blue-400';
+  return 'text-amber-600 dark:text-amber-400';
+};
+
+const matchBadge = (score: number) => {
+  if (score >= 80) return 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20';
+  if (score >= 50) return 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20';
+  return 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20';
+};
+
+// ── KPI Card ─────────────────────────────────────────────────────────────────
+interface KpiCardProps {
+  label: string;
+  title: string;
+  value: number;
+  valueSuffix?: string;
+  icon: React.ReactNode;
+  href: string;
+  linkLabel: string;
+  children?: React.ReactNode;
+}
+
+function KpiCard({ label, title, value, valueSuffix = '', icon, href, linkLabel, children }: KpiCardProps) {
+  return (
+    <motion.div
+      variants={item}
+      whileHover={{ y: -2, transition: { duration: 0.18 } }}
+      className="bg-card border border-border/60 rounded-lg p-5 flex flex-col justify-between gap-5 shadow-xs hover:border-primary/25 hover:shadow-sm transition-all duration-200"
+    >
+      <div className="flex-1">
+        {/* Label + Icon */}
+        <div className="flex items-center justify-between mb-4">
+          <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80">
+            {label}
+          </span>
+          <div className="p-1.5 rounded-md bg-primary/8 text-primary border border-primary/15">
+            {icon}
+          </div>
+        </div>
+
+        {/* Title */}
+        <p className="text-[13px] font-medium text-muted-foreground mb-1">{title}</p>
+
+        {/* Big Number */}
+        <div className="text-[2rem] leading-none font-bold text-foreground mb-4">
+          <NumberTicker value={value} suffix={valueSuffix} />
+        </div>
+
+        {/* Sub-rows */}
+        {children && (
+          <div className="border-t border-border/50 pt-3 space-y-2">
+            {children}
+          </div>
+        )}
+      </div>
+
+      {/* CTA */}
+      <Link
+        href={href}
+        className="flex items-center justify-between text-[12px] font-medium text-primary bg-primary/6 hover:bg-primary hover:text-primary-foreground px-3 py-2 rounded-md border border-primary/15 hover:border-primary transition-all duration-150 group"
+      >
+        {linkLabel}
+        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150" />
+      </Link>
+    </motion.div>
+  );
+}
+
+// ── SubRow helper ─────────────────────────────────────────────────────────────
+function SubRow({ icon, label, value, highlight }: { icon: React.ReactNode; label: string; value: React.ReactNode; highlight?: boolean }) {
+  return (
+    <div className="flex items-center justify-between text-[12px]">
+      <span className="text-muted-foreground flex items-center gap-1.5">
+        {icon}
+        {label}
+      </span>
+      <span className={`font-semibold font-mono tabular-nums ${highlight ? 'text-destructive' : 'text-foreground'}`}>
+        {value}
+      </span>
+    </div>
+  );
+}
+
+// ── Avatar ───────────────────────────────────────────────────────────────────
+function Avatar({ photo_url, full_name }: { photo_url: string | null; full_name: string }) {
+  if (photo_url) {
+    return (
+      <img
+        src={photo_url}
+        alt={full_name}
+        className="w-8 h-8 rounded-full object-cover border border-border/60 flex-shrink-0"
+      />
+    );
+  }
+  return (
+    <div className="w-8 h-8 rounded-full bg-primary/10 text-primary border border-primary/20 flex items-center justify-center text-[11px] font-bold flex-shrink-0">
+      {getInitials(full_name)}
+    </div>
+  );
+}
+
+// ── Dashboard ────────────────────────────────────────────────────────────────
 export default function DashboardClient({ initialStats, initialJobs }: DashboardClientProps) {
   const [selectedJobId, setSelectedJobId] = useState<string>(initialJobs[0]?.id || '');
   const [matches, setMatches] = useState<Match[]>([]);
   const [loadingMatches, setLoadingMatches] = useState<boolean>(false);
   const [mounted, setMounted] = useState<boolean>(false);
-  
-  const [, setUserRole] = useState<string | null>(null);
   const [userName, setUserName] = useState<string | null>(null);
+  const matchesCache = useRef<Map<string, Match[]>>(new Map());
+  const activeJobs = initialJobs.filter(j => j.is_active);
 
   useEffect(() => {
     setMounted(true);
     const session = getSession();
-    setUserRole(session.role);
     setUserName(session.name);
   }, []);
 
-  const matchesCache = useRef<Map<string, any[]>>(new Map());
-  const activeJobs = initialJobs.filter(j => j.is_active);
-
   useEffect(() => {
     if (!selectedJobId) return;
-
     async function fetchMatches() {
       const cached = matchesCache.current.get(selectedJobId);
-      if (cached) {
-        setMatches(cached);
-        return;
-      }
-
+      if (cached) { setMatches(cached); return; }
       setLoadingMatches(true);
       try {
         const data = await apiFetch(`/api/jobs/${selectedJobId}/match`);
-        const matchList = data.matches || [];
-        matchesCache.current.set(selectedJobId, matchList);
-        setMatches(matchList);
+        const list = data.matches || [];
+        matchesCache.current.set(selectedJobId, list);
+        setMatches(list);
       } catch (err) {
-        console.error("Erro ao buscar matches no Dashboard:", err);
+        console.error('Erro ao buscar matches:', err);
       } finally {
         setLoadingMatches(false);
       }
     }
-
     fetchMatches();
   }, [selectedJobId]);
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .filter(n => n.length > 0)
-      .map(n => n[0])
-      .slice(0, 2)
-      .join('')
-      .toUpperCase();
-  };
-
-  const formatTimeAgo = (dateStr: string | null) => {
-    if (!dateStr) return "N/A";
-    try {
-      const date = new Date(dateStr);
-      const now = new Date();
-      const diffMs = now.getTime() - date.getTime();
-      const diffMins = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMins / 60);
-      const diffDays = Math.floor(diffHours / 24);
-
-      if (diffMins < 1) return "Agora mesmo";
-      if (diffMins < 60) return `Há ${diffMins} min`;
-      if (diffHours < 24) return `Há ${diffHours} h`;
-      return `Há ${diffDays} dia${diffDays > 1 ? 's' : ''}`;
-    } catch {
-      return "Recém adicionado";
-    }
-  };
-
-  const getQualityTier = (score: number | null) => {
-    if (score === null) return { name: "N/A", color: "text-muted-foreground bg-muted border-border/40" };
-    if (score >= 80) return { name: "Excelente", color: "text-emerald-500 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20" };
-    if (score >= 60) return { name: "Bom", color: "text-blue-500 dark:text-blue-400 bg-blue-500/10 border-blue-500/20" };
-    return { name: "Regular", color: "text-amber-500 dark:text-amber-400 bg-amber-500/10 border-amber-500/20" };
-  };
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
-  };
-
   return (
-    <div className="flex-1 flex flex-col justify-between bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[25%] right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+    <div className="flex-1 flex flex-col bg-background text-foreground selection:bg-primary/20">
 
-      <div>
-        {/* Navbar */}
-        <Navbar />
+      {/* Dot-grid background — sutil, não invasivo */}
+      <div className="fixed inset-0 bg-dot-grid pointer-events-none opacity-60 -z-10" />
 
-        {/* Main Content */}
-        <main className="max-w-7xl mx-auto px-6 py-8">
-          {/* Welcome Room Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-2 mb-1.5 text-xs font-medium uppercase tracking-wider text-primary">
-              <Sparkles className="w-4 h-4" />
-              Painel Tático Operacional
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground mb-2">
-              Olá, {userName || 'Recrutador'}
-            </h2>
-            <p className="text-muted-foreground max-w-2xl text-xs sm:text-sm leading-relaxed">
-              Sua sala de controle tático. Acompanhe prioridades operacionais, inteligência de banco de talentos e o status dos processos seletivos ativos.
-            </p>
-          </div>
+      <Navbar />
 
-          {/* Bento Grid Layout Minimalista */}
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+      <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
+
+        {/* ── Page Header ── */}
+        <motion.div
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: 'easeOut' }}
+          className="mb-8"
+        >
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-primary/70 mb-1.5 flex items-center gap-1.5">
+            <Sparkles className="w-3 h-3" />
+            Workspace
+          </p>
+          <h1 className="text-[1.65rem] font-semibold tracking-tight text-foreground mb-1.5">
+            Olá, {userName || 'Recrutador'}
+          </h1>
+          <p className="text-[13px] text-muted-foreground leading-relaxed max-w-lg">
+            Visão consolidada do seu banco de talentos, vagas ativas e scores de compatibilidade.
+          </p>
+        </motion.div>
+
+        {/* ── Bento Grid ── */}
+        <motion.div
+          variants={container}
+          initial="hidden"
+          animate="show"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        >
+
+          {/* KPI 1 — Candidatos */}
+          <KpiCard
+            label="Banco de Talentos"
+            title="Candidatos indexados"
+            value={initialStats.candidates.total}
+            icon={<Users className="w-4 h-4" />}
+            href="/candidates"
+            linkLabel="Acessar banco"
           >
-            {/* Bloco 1: Ativos - Candidatos */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -2 }}
-              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-border hover:bg-accent/30 transition-all duration-200"
-            >
+            <SubRow
+              icon={<Clock className="w-3 h-3 text-primary/70" />}
+              label="Ingeridos em 24h"
+              value={initialStats.candidates.added_today}
+            />
+            <SubRow
+              icon={<TrendingUp className="w-3 h-3 text-emerald-500" />}
+              label="Qualidade média"
+              value={`${initialStats.candidates.average_quality}%`}
+            />
+            <SubRow
+              icon={<ShieldAlert className="w-3 h-3 text-destructive" />}
+              label="Em restrição"
+              value={initialStats.candidates.flagged_count}
+              highlight={initialStats.candidates.flagged_count > 0}
+            />
+          </KpiCard>
+
+          {/* KPI 2 — Vagas */}
+          <KpiCard
+            label="Demandas Ativas"
+            title="Vagas em aberto"
+            value={initialStats.jobs.active}
+            icon={<Target className="w-4 h-4" />}
+            href="/jobs"
+            linkLabel="Gerenciar vagas"
+          >
+            <SubRow
+              label="Total registradas"
+              icon={<span className="w-3 h-3" />}
+              value={initialStats.jobs.total}
+            />
+            <SubRow
+              icon={<AlertTriangle className="w-3 h-3 text-amber-500" />}
+              label="Prazos críticos (7d)"
+              value={
+                initialStats.jobs.upcoming_deadlines > 0
+                  ? <span className="px-1.5 py-0.5 bg-destructive/10 text-destructive border border-destructive/20 rounded text-[11px]">
+                      {initialStats.jobs.upcoming_deadlines}
+                    </span>
+                  : <span>0</span>
+              }
+            />
+          </KpiCard>
+
+          {/* KPI 3 — Categorias */}
+          <KpiCard
+            label="Taxonomia"
+            title="Tags & Categorias"
+            value={initialStats.categories.total}
+            icon={<Layers className="w-4 h-4" />}
+            href="/categories"
+            linkLabel="Configurar categorias"
+          >
+            <SubRow
+              icon={<AlertTriangle className="w-3 h-3 text-amber-500" />}
+              label="Sem tag (ponto cego)"
+              value={
+                initialStats.categories.uncategorized > 0
+                  ? <span className="px-1.5 py-0.5 bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20 rounded text-[11px]">
+                      {initialStats.categories.uncategorized}
+                    </span>
+                  : <span>0</span>
+              }
+            />
+            <SubRow
+              icon={<span className="w-3 h-3" />}
+              label="Maior concentração"
+              value={
+                <span className="truncate max-w-[120px] block text-right" title={initialStats.categories.top_category.name}>
+                  {initialStats.categories.top_category.name}
+                </span>
+              }
+            />
+          </KpiCard>
+
+          {/* Bloco 4 — Candidate Matching (2 colunas) */}
+          <motion.div
+            variants={item}
+            className="lg:col-span-2 bg-card border border-border/60 rounded-lg p-5 shadow-xs flex flex-col gap-4 hover:border-primary/20 transition-colors duration-200"
+          >
+            {/* Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Ativo Principal</span>
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
-                    <Users className="w-4 h-4" />
-                  </div>
-                </div>
-                <h3 className="text-base font-semibold text-foreground mb-1">Banco de Talentos</h3>
-                <div className="flex items-baseline gap-2 mb-4 text-3xl font-bold text-foreground">
-                  <NumberTicker value={initialStats.candidates.total} />
-                  <span className="text-xs font-normal text-muted-foreground">candidatos</span>
-                </div>
-                
-                <div className="space-y-2 border-t border-border/40 pt-3 text-xs">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-primary" /> Ingeridos nas últimas 24h:
-                    </span>
-                    <span className="font-semibold text-foreground font-mono tabular-nums">{initialStats.candidates.added_today}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground flex items-center gap-1.5">
-                      <TrendingUp className="w-3.5 h-3.5 text-emerald-500" /> Qualidade média:
-                    </span>
-                    <span className="font-semibold text-foreground font-mono tabular-nums">{initialStats.candidates.average_quality}%</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground flex items-center gap-1.5">
-                      <ShieldAlert className="w-3.5 h-3.5 text-destructive" /> Em restrição:
-                    </span>
-                    <span className={`font-semibold font-mono tabular-nums ${initialStats.candidates.flagged_count > 0 ? 'text-destructive font-bold' : 'text-foreground'}`}>
-                      {initialStats.candidates.flagged_count}
-                    </span>
-                  </div>
-                </div>
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70 mb-1 flex items-center gap-1.5">
+                  <UserCheck className="w-3 h-3" />
+                  Candidate Matching
+                </p>
+                <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
+                  Scores de Compatibilidade
+                </h2>
               </div>
+              {/* Selector */}
+              {activeJobs.length > 0 ? (
+                <select
+                  value={selectedJobId}
+                  onChange={(e) => setSelectedJobId(e.target.value)}
+                  className="w-full sm:w-[200px] bg-background border border-border text-foreground px-3 py-1.5 rounded-md text-[12px] font-medium focus:outline-none focus:ring-1 focus:ring-ring transition-colors"
+                >
+                  {activeJobs.map((job) => (
+                    <option key={job.id} value={job.id}>{job.title}</option>
+                  ))}
+                </select>
+              ) : (
+                <span className="text-[12px] text-destructive bg-destructive/8 border border-destructive/20 px-3 py-1.5 rounded-md font-medium">
+                  Nenhuma vaga ativa
+                </span>
+              )}
+            </div>
 
-              <Link href="/candidates" className="mt-5 flex items-center justify-between text-xs font-medium text-primary hover:text-primary-foreground group bg-primary/10 hover:bg-primary px-3.5 py-2 rounded-lg border border-primary/20 transition-all duration-200">
-                Acessar Banco de Talentos
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-
-            {/* Bloco 2: Pipelines - Vagas */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -2 }}
-              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-border hover:bg-accent/30 transition-all duration-200"
-            >
-              <div>
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Demandas</span>
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
-                    <Target className="w-4 h-4" />
-                  </div>
-                </div>
-                <h3 className="text-base font-semibold text-foreground mb-1">Vagas & Processos</h3>
-                <div className="flex items-baseline gap-2 mb-4 text-3xl font-bold text-primary">
-                  <NumberTicker value={initialStats.jobs.active} />
-                  <span className="text-xs font-normal text-muted-foreground">vagas ativas</span>
-                </div>
-
-                <div className="space-y-2 border-t border-border/40 pt-3 text-xs">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Registradas Totais:</span>
-                    <span className="font-semibold text-foreground font-mono tabular-nums">{initialStats.jobs.total}</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Prazos críticos (7 dias):
-                    </span>
-                    <span className={`font-semibold px-2 py-0.5 rounded-md text-[11px] font-mono tabular-nums ${
-                      initialStats.jobs.upcoming_deadlines > 0 
-                        ? 'bg-destructive/10 text-destructive font-bold border border-destructive/20' 
-                        : 'text-foreground'
-                    }`}>
-                      {initialStats.jobs.upcoming_deadlines} vaga{initialStats.jobs.upcoming_deadlines !== 1 ? 's' : ''}
-                    </span>
-                  </div>
-                </div>
+            {/* Matches */}
+            {loadingMatches ? (
+              <div className="h-40 flex items-center justify-center">
+                <div className="w-5 h-5 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
               </div>
-
-              <Link href="/jobs" className="mt-5 flex items-center justify-between text-xs font-medium text-primary hover:text-primary-foreground group bg-primary/10 hover:bg-primary px-3.5 py-2 rounded-lg border border-primary/20 transition-all duration-200">
-                Gerenciar Vagas
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-
-            {/* Bloco 3: Organização - Categorias */}
-            <motion.div
-              variants={itemVariants}
-              whileHover={{ y: -2 }}
-              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between hover:border-border hover:bg-accent/30 transition-all duration-200"
-            >
-              <div>
-                <div className="flex justify-between items-center mb-3">
-                  <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Taxonomia</span>
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary border border-primary/20">
-                    <Layers className="w-4 h-4" />
-                  </div>
-                </div>
-                <h3 className="text-base font-semibold text-foreground mb-1">Tags & Categorias</h3>
-                <div className="flex items-baseline gap-2 mb-4 text-3xl font-bold text-foreground">
-                  <NumberTicker value={initialStats.categories.total} />
-                  <span className="text-xs font-normal text-muted-foreground">categorias</span>
-                </div>
-
-                <div className="space-y-2 border-t border-border/40 pt-3 text-xs">
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground flex items-center gap-1.5">
-                      <AlertTriangle className="w-3.5 h-3.5 text-amber-500" /> Sem tag (ponto cego):
-                    </span>
-                    <span className={`font-semibold px-2 py-0.5 rounded-md text-[11px] font-mono tabular-nums ${
-                      initialStats.categories.uncategorized > 0 
-                        ? 'bg-amber-500/10 text-amber-500 border border-amber-500/20' 
-                        : 'text-foreground'
-                    }`}>
-                      {initialStats.categories.uncategorized} talentos
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">Maior concentração:</span>
-                    <span className="font-semibold text-foreground text-xs truncate max-w-[130px]" title={initialStats.categories.top_category.name}>
-                      {initialStats.categories.top_category.name}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <Link href="/categories" className="mt-5 flex items-center justify-between text-xs font-medium text-primary hover:text-primary-foreground group bg-primary/10 hover:bg-primary px-3.5 py-2 rounded-lg border border-primary/20 transition-all duration-200">
-                Configurar Categorias
-                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </motion.div>
-
-            {/* Bloco 4 (Spans 2 columns on lg): Candidate Matching Scores */}
-            <motion.div
-              variants={itemVariants}
-              className="lg:col-span-2 bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between min-h-[360px]"
-            >
-              <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-                  <div>
-                    <h3 className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2">
-                      <UserCheck className="w-4 h-4 text-primary" />
-                      Candidate Matching Scores
-                    </h3>
-                    <p className="text-muted-foreground text-xs mt-0.5">
-                      Selecione uma vaga para consultar a pontuação de compatibilidade em tempo real.
-                    </p>
-                  </div>
-                  
-                  {/* Styled Selector */}
-                  <div className="relative">
-                    {activeJobs.length > 0 ? (
-                      <select
-                        value={selectedJobId}
-                        onChange={(e) => setSelectedJobId(e.target.value)}
-                        className="w-full sm:w-[200px] bg-background border border-border text-foreground px-3 py-1.5 rounded-lg text-xs font-medium focus:outline-none focus:ring-1 focus:ring-ring shadow-xs cursor-pointer"
+            ) : matches.length > 0 ? (
+              <div className="divide-y divide-border/40">
+                {matches.slice(0, 4).map((match, idx) => (
+                  <div key={match.candidate_id} className="flex items-center justify-between py-2.5 gap-3 group hover:bg-accent/30 -mx-1 px-1 rounded-md transition-colors duration-150">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-[11px] font-mono text-muted-foreground/50 w-4 shrink-0 tabular-nums">
+                        {idx + 1}
+                      </span>
+                      <Avatar photo_url={match.photo_url} full_name={match.full_name} />
+                      <div className="min-w-0">
+                        <p className="text-[13px] font-medium text-foreground truncate leading-tight">{match.full_name}</p>
+                        <p className="text-[11px] text-muted-foreground truncate">{match.current_job || 'Não informado'}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`px-2 py-0.5 rounded border text-[11px] font-bold font-mono tabular-nums ${matchBadge(match.match_score)}`}>
+                        {match.match_score}%
+                      </span>
+                      <Link
+                        href={`/candidates?candidateId=${match.candidate_id}`}
+                        className="p-1 rounded opacity-0 group-hover:opacity-100 hover:bg-muted text-muted-foreground transition-all"
+                        title="Ver perfil"
                       >
-                        {activeJobs.map((job) => (
-                          <option key={job.id} value={job.id}>
-                            {job.title}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <div className="text-xs text-destructive bg-destructive/10 border border-destructive/20 px-3 py-1.5 rounded-lg font-medium">
-                        Nenhuma vaga ativa
-                      </div>
-                    )}
+                        <ChevronRight className="w-3.5 h-3.5" />
+                      </Link>
+                    </div>
                   </div>
-                </div>
-
-                {/* Loading State */}
-                {loadingMatches ? (
-                  <div className="h-44 flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-6 w-6 border-2 border-primary border-t-transparent"></div>
-                  </div>
-                ) : matches.length > 0 ? (
-                  <div className="space-y-2.5">
-                    {matches.slice(0, 3).map((match, idx) => (
-                      <div 
-                        key={match.candidate_id} 
-                        className="flex items-center justify-between p-3 rounded-lg bg-muted/20 hover:bg-accent/40 border border-border/40 transition-all group"
-                      >
-                        <div className="flex items-center gap-3 min-w-0">
-                          <span className="text-xs font-mono font-bold text-muted-foreground w-4">
-                            #{idx + 1}
-                          </span>
-                          
-                          {match.photo_url ? (
-                            <img 
-                              src={match.photo_url} 
-                              alt={match.full_name} 
-                              className="w-9 h-9 rounded-full object-cover border border-border/50"
-                            />
-                          ) : (
-                            <div className="w-9 h-9 rounded-full bg-muted text-muted-foreground flex items-center justify-center font-bold text-xs border border-border/50">
-                              {getInitials(match.full_name)}
-                            </div>
-                          )}
-                          
-                          <div className="min-w-0">
-                            <h4 className="text-xs font-semibold text-foreground truncate">{match.full_name}</h4>
-                            <p className="text-muted-foreground text-[11px] truncate max-w-[180px] sm:max-w-[280px]">
-                              {match.current_job || "Não informado"}
-                            </p>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          <span className={`px-2 py-0.5 rounded-md text-xs font-bold font-mono tabular-nums border ${
-                            match.match_score >= 80 
-                              ? 'bg-emerald-500/10 text-emerald-500 dark:text-emerald-400 border-emerald-500/20' 
-                              : match.match_score >= 50 
-                                ? 'bg-amber-500/10 text-amber-500 dark:text-amber-400 border-amber-500/20' 
-                                : 'bg-rose-500/10 text-rose-500 dark:text-rose-400 border-rose-500/20'
-                          }`}>
-                            {match.match_score}% Match
-                          </span>
-
-                          <Link 
-                            href={`/candidates?candidateId=${match.candidate_id}`}
-                            className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-                            title="Ver Perfil Completo"
-                          >
-                            <ChevronRight className="w-4 h-4" />
-                          </Link>
-                        </div>
-                      </div>
-                    ))}
-                    {matches.length > 3 && (
-                      <div className="text-right pt-1">
-                        <Link 
-                          href="/smart-match" 
-                          className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline"
-                        >
-                          Ver todos os {matches.length} matches no Smart Match
-                          <ChevronRight className="w-3.5 h-3.5" />
-                        </Link>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="h-44 border border-dashed border-border/60 rounded-lg flex flex-col items-center justify-center text-center p-6 bg-muted/10">
-                    <AlertTriangle className="w-6 h-6 text-muted-foreground mb-1.5 opacity-60" />
-                    <h5 className="text-xs font-semibold text-foreground mb-0.5">Nenhum match calculado</h5>
-                    <p className="text-muted-foreground text-[11px] max-w-sm">
-                      Não há candidatos com habilidades compatíveis com esta vaga.
-                    </p>
+                ))}
+                {matches.length > 4 && (
+                  <div className="pt-3">
+                    <Link href="/smart-match" className="inline-flex items-center gap-1 text-[12px] font-medium text-primary hover:underline">
+                      Ver todos os {matches.length} matches
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </Link>
                   </div>
                 )}
               </div>
-            </motion.div>
-
-            {/* Bloco 5: Últimas Ingestões IA */}
-            <motion.div
-              variants={itemVariants}
-              className="bg-card border border-border/60 rounded-xl p-5 shadow-xs flex flex-col justify-between"
-            >
-              <div>
-                <h3 className="text-base font-semibold tracking-tight text-foreground flex items-center gap-2 mb-1">
-                  <FileText className="w-4 h-4 text-primary" />
-                  Últimas Ingestões IA
-                </h3>
-                <p className="text-muted-foreground text-xs mb-4">
-                  Currículos indexados recentemente pelo motor cognitivo.
-                </p>
-
-                <div className="space-y-3">
-                  {initialStats.recent_candidates.length > 0 ? (
-                    initialStats.recent_candidates.map((cand) => {
-                      const tier = getQualityTier(cand.quality_score);
-                      return (
-                        <div key={cand.id} className="flex justify-between items-start border-b border-border/40 pb-2.5 last:border-b-0 last:pb-0">
-                          <div className="min-w-0">
-                            <h4 className="text-xs font-semibold text-foreground truncate max-w-[150px]">{cand.full_name}</h4>
-                            <p className="text-[11px] text-muted-foreground truncate max-w-[150px]">{cand.current_job || "Não informado"}</p>
-                            <span className="text-[10px] text-muted-foreground inline-flex items-center gap-1 mt-0.5 font-mono">
-                              <Clock className="w-2.5 h-2.5" /> {mounted ? formatTimeAgo(cand.created_at) : "Aguardando..."}
-                            </span>
-                          </div>
-                          
-                          <div className="flex flex-col items-end gap-1">
-                            <span className={`px-2 py-0.5 rounded-md text-[10px] font-semibold font-mono tabular-nums border ${tier.color}`}>
-                              {tier.name} ({cand.quality_score ?? 0}%)
-                            </span>
-                            <Link 
-                              href={`/candidates?candidateId=${cand.id}`} 
-                              className="text-[10px] font-medium text-primary hover:underline flex items-center"
-                            >
-                              Ver perfil
-                              <ChevronRight className="w-3 h-3" />
-                            </Link>
-                          </div>
-                        </div>
-                      );
-                    })
-                  ) : (
-                    <div className="h-36 flex flex-col items-center justify-center text-center p-4">
-                      <FileText className="w-6 h-6 text-muted-foreground mb-1 opacity-50" />
-                      <span className="text-xs font-medium text-muted-foreground">Nenhum currículo importado</span>
-                    </div>
-                  )}
-                </div>
+            ) : (
+              <div className="h-40 flex flex-col items-center justify-center text-center border border-dashed border-border/50 rounded-lg bg-muted/10">
+                <AlertTriangle className="w-5 h-5 text-muted-foreground/40 mb-2" />
+                <p className="text-[12px] font-medium text-muted-foreground">Nenhum match calculado</p>
+                <p className="text-[11px] text-muted-foreground/60 mt-0.5">Sem candidatos compatíveis com esta vaga.</p>
               </div>
-            </motion.div>
+            )}
           </motion.div>
-        </main>
-      </div>
+
+          {/* Bloco 5 — Últimas Ingestões */}
+          <motion.div
+            variants={item}
+            className="bg-card border border-border/60 rounded-lg p-5 shadow-xs flex flex-col gap-4 hover:border-primary/20 transition-colors duration-200"
+          >
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/70 mb-1 flex items-center gap-1.5">
+                <FileText className="w-3 h-3" />
+                Atividade Recente
+              </p>
+              <h2 className="text-[15px] font-semibold text-foreground tracking-tight">
+                Últimas Ingestões
+              </h2>
+            </div>
+
+            <div className="flex-1 divide-y divide-border/40">
+              {initialStats.recent_candidates.length > 0 ? (
+                initialStats.recent_candidates.map((cand) => (
+                  <div key={cand.id} className="py-2.5 flex items-start justify-between gap-3 group">
+                    <div className="min-w-0">
+                      <p className="text-[13px] font-medium text-foreground truncate leading-tight">{cand.full_name}</p>
+                      <p className="text-[11px] text-muted-foreground truncate">{cand.current_job || 'Não informado'}</p>
+                      <span className="text-[10px] text-muted-foreground/60 font-mono flex items-center gap-1 mt-0.5">
+                        <Clock className="w-2.5 h-2.5" />
+                        {mounted ? formatTimeAgo(cand.created_at) : '—'}
+                      </span>
+                    </div>
+                    <div className="flex flex-col items-end gap-1.5 shrink-0">
+                      {cand.quality_score !== null && (
+                        <span className={`text-[11px] font-bold font-mono tabular-nums ${scoreColor(cand.quality_score)}`}>
+                          {cand.quality_score}%
+                        </span>
+                      )}
+                      <Link
+                        href={`/candidates?candidateId=${cand.id}`}
+                        className="text-[10px] font-medium text-primary hover:underline flex items-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        Ver perfil <ChevronRight className="w-3 h-3" />
+                      </Link>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="h-36 flex flex-col items-center justify-center text-center">
+                  <FileText className="w-5 h-5 text-muted-foreground/30 mb-2" />
+                  <span className="text-[12px] text-muted-foreground">Nenhum currículo importado</span>
+                </div>
+              )}
+            </div>
+          </motion.div>
+
+        </motion.div>
+      </main>
     </div>
   );
 }
-

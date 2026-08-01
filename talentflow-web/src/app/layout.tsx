@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { PresetProvider } from "@/components/preset-provider";
-import { DesignSwitcher } from "@/components/design-switcher";
 import dynamic from "next/dynamic";
 
 const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
@@ -65,31 +63,18 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrainsMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      {/* Melhoria #2 — Script anti-FOUC: aplica data-preset ANTES da hidratação React.
-          Executa síncronamente, impedindo qualquer flash de estilos padrão. */}
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=localStorage.getItem('talentflow-design-preset')||'linear';document.documentElement.setAttribute('data-preset',p);}catch(e){}})();`,
-          }}
-        />
-      </head>
       <body className="min-h-screen flex flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
+          defaultTheme="dark"
+          enableSystem={true}
           disableTransitionOnChange
         >
-          {/* Melhoria #1 — PresetProvider dentro do ThemeProvider para acessar useTheme() */}
-          <PresetProvider>
-            {children}
-            <Footer version={version} />
-            {/* DesignSwitcher ativo para avaliação de presets em ambiente real */}
-            <DesignSwitcher />
-          </PresetProvider>
+          {children}
+          <Footer version={version} />
         </ThemeProvider>
       </body>
     </html>
   );
 }
+

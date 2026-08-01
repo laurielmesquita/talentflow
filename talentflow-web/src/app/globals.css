@@ -2,13 +2,6 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* ── Design Preset Tokens ───────────────────────────────────────────────── */
-@import "../styles/presets/linear.css";
-@import "../styles/presets/superhuman.css";
-@import "../styles/presets/supabase.css";
-@import "../styles/presets/resend.css";
-@import "../styles/presets/stripe.css";
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -84,7 +77,7 @@
   to {
     background-position: 0% 0%;}}}
 
-:root:not([data-preset]) {
+:root {
   --background: oklch(0.985 0.005 260);
   --foreground: oklch(0.12 0.03 260);
   --card: oklch(1 0 0);
@@ -119,7 +112,7 @@
   --sidebar-ring: oklch(0.5 0.25 260);
 }
 
-.dark:not([data-preset]) {
+.dark {
   --background: oklch(0.12 0.03 260);
   --foreground: oklch(0.985 0.005 260);
   --card: oklch(0.15 0.04 260);

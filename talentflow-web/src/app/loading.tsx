@@ -13,7 +13,7 @@ export default function Loading() {
         </div>
         
         <div className="space-y-1">
-          <p className="text-sm font-semibold tracking-tight text-foreground animate-pulse">Carregando dados táticos...</p>
+          <p className="text-sm font-semibold tracking-tight text-foreground animate-pulse">Carregando dados...</p>
           <p className="text-xs text-muted-foreground">Sincronizando banco de talentos e pipelines</p>
         </div>
       </div>

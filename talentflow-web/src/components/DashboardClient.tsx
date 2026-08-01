@@ -108,11 +108,11 @@ function NumberTicker({ value, suffix = '' }: { value: number; suffix?: string }
 const container = {
   hidden: { opacity: 0 },
   show: { opacity: 1, transition: { staggerChildren: 0.07, delayChildren: 0.1 } },
-};
+} as const;
 const item = {
   hidden: { opacity: 0, y: 10 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: 'easeOut' } },
-};
+  show: { opacity: 1, y: 0, transition: { duration: 0.28, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } },
+} as const;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 const getInitials = (name: string) =>
@@ -160,7 +160,8 @@ function KpiCard({ label, title, value, valueSuffix = '', icon, href, linkLabel,
   return (
     <motion.div
       variants={item}
-      whileHover={{ y: -2, transition: { duration: 0.18 } }}
+      whileHover={{ y: -2 }}
+      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
       className="bg-card border border-border/60 rounded-lg p-5 flex flex-col justify-between gap-5 shadow-xs hover:border-primary/25 hover:shadow-sm transition-all duration-200"
     >
       <div className="flex-1">
@@ -285,7 +286,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
         <motion.div
           initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.35, ease: 'easeOut' }}
+          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
           className="mb-8"
         >
           <p className="text-[11px] font-semibold uppercase tracking-widest text-primary/70 mb-1.5 flex items-center gap-1.5">

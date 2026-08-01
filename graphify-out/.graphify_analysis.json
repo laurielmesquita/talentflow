@@ -1,0 +1,995 @@
+{
+  "communities": {
+    "0": [
+      "base",
+      "candidate",
+      "talentflow_api_app_api_candidates",
+      "talentflow_api_app_api_candidates_delete_candidate",
+      "talentflow_api_app_api_candidates_extract_cloudinary_public_id",
+      "talentflow_api_app_api_candidates_flag_candidate",
+      "talentflow_api_app_api_candidates_flagrequest",
+      "talentflow_api_app_api_candidates_get_candidate",
+      "talentflow_api_app_api_candidates_list_candidates",
+      "talentflow_api_app_api_candidates_py_basemodel",
+      "talentflow_api_app_api_candidates_rationale_67",
+      "talentflow_api_app_api_candidates_replace_candidate",
+      "talentflow_api_app_api_candidates_replacerequest",
+      "talentflow_api_app_api_candidates_upload_resume",
+      "talentflow_api_app_api_jobs_jobupdate",
+      "talentflow_api_app_api_jobs_match_candidates",
+      "talentflow_api_app_api_jobs_update_job",
+      "talentflow_api_app_api_public_apply_otpverifyrequest",
+      "talentflow_api_app_api_public_apply_py_basemodel",
+      "talentflow_api_app_models_domain",
+      "talentflow_api_app_models_domain_auditlog",
+      "talentflow_api_app_models_domain_batchjob",
+      "talentflow_api_app_models_domain_candidate",
+      "talentflow_api_app_models_domain_category",
+      "talentflow_api_app_models_domain_experience",
+      "talentflow_api_app_models_domain_jobapplication",
+      "talentflow_api_app_models_domain_jobmatch",
+      "talentflow_api_app_models_domain_jobposition",
+      "talentflow_api_app_models_domain_rationale_202",
+      "talentflow_api_app_models_domain_skill",
+      "talentflow_api_app_models_domain_tenant",
+      "talentflow_api_app_services_quality_score",
+      "talentflow_api_app_services_quality_score_alert",
+      "talentflow_api_app_services_quality_score_calculate_quality_score",
+      "talentflow_api_app_services_quality_score_rationale_1",
+      "talentflow_api_app_services_quality_score_rationale_147",
+      "talentflow_api_app_services_quality_score_rationale_164",
+      "talentflow_api_app_services_quality_score_rationale_64",
+      "talentflow_api_app_services_quality_score_score_tier",
+      "talentflow_api_backfill_quality_score",
+      "talentflow_api_backfill_quality_score_build_extraction_from_candidate",
+      "talentflow_api_backfill_quality_score_rationale_1",
+      "talentflow_api_backfill_quality_score_rationale_23",
+      "talentflow_api_backfill_quality_score_run_backfill",
+      "talentflow_api_ingest",
+      "talentflow_api_ingest_calculate_file_hash",
+      "talentflow_api_ingest_candidateextraction",
+      "talentflow_api_ingest_cleanup",
+      "talentflow_api_ingest_configure_cloudinary",
+      "talentflow_api_ingest_experienceitem",
+      "talentflow_api_ingest_extract_and_upload_photo",
+      "talentflow_api_ingest_extract_candidate_from_pdf",
+      "talentflow_api_ingest_extract_text",
+      "talentflow_api_ingest_ingest_directory",
+      "talentflow_api_ingest_process_ocr_via_gemini",
+      "talentflow_api_ingest_process_single_pdf",
+      "talentflow_api_ingest_py_basemodel",
+      "talentflow_api_ingest_py_path",
+      "talentflow_api_ingest_py_session",
+      "talentflow_api_ingest_rationale_1",
+      "talentflow_api_ingest_rationale_108",
+      "talentflow_api_ingest_rationale_119",
+      "talentflow_api_ingest_rationale_167",
+      "talentflow_api_ingest_rationale_181",
+      "talentflow_api_ingest_rationale_251",
+      "talentflow_api_ingest_rationale_333",
+      "talentflow_api_ingest_rationale_36",
+      "talentflow_api_ingest_rationale_409",
+      "talentflow_api_ingest_rationale_456",
+      "talentflow_api_ingest_rationale_468",
+      "talentflow_api_ingest_save_candidate_to_db",
+      "talentflow_api_ingest_upload_pdf",
+      "talentflow_api_seed",
+      "talentflow_api_seed_jobs",
+      "talentflow_api_seed_jobs_seed_jobs",
+      "talentflow_api_seed_seed_categories",
+      "talentflow_api_test_match_engine",
+      "talentflow_api_test_match_engine_mockuser",
+      "talentflow_api_test_match_engine_mockuser_init",
+      "talentflow_api_test_match_engine_run_tests",
+      "talentflow_api_verify_tenants",
+      "talentflow_api_verify_tenants_verify_tenants",
+      "uuid"
+    ],
+    "1": [
+      "talentflow_api_app_api_billing",
+      "talentflow_api_app_api_billing_create_checkout_session",
+      "talentflow_api_app_api_billing_create_customer_portal_session",
+      "talentflow_api_app_api_billing_py_request",
+      "talentflow_api_app_api_billing_py_session",
+      "talentflow_api_app_api_billing_rationale_27",
+      "talentflow_api_app_api_billing_rationale_73",
+      "talentflow_api_app_api_billing_rationale_93",
+      "talentflow_api_app_api_billing_stripe_webhook",
+      "talentflow_api_app_api_candidates_get_batch_job_status",
+      "talentflow_api_app_api_candidates_get_candidate_versions",
+      "talentflow_api_app_api_candidates_rationale_839",
+      "talentflow_api_app_api_candidates_unflag_candidate",
+      "talentflow_api_app_api_categories",
+      "talentflow_api_app_api_categories_categorycreate",
+      "talentflow_api_app_api_categories_categoryupdate",
+      "talentflow_api_app_api_categories_create_category",
+      "talentflow_api_app_api_categories_delete_category",
+      "talentflow_api_app_api_categories_list_categories",
+      "talentflow_api_app_api_categories_py_basemodel",
+      "talentflow_api_app_api_categories_update_category",
+      "talentflow_api_app_api_dashboard",
+      "talentflow_api_app_api_dashboard_get_dashboard_stats",
+      "talentflow_api_app_api_deps",
+      "talentflow_api_app_api_deps_get_current_user",
+      "talentflow_api_app_api_deps_get_db",
+      "talentflow_api_app_api_deps_get_scoped_db",
+      "talentflow_api_app_api_deps_py_any",
+      "talentflow_api_app_api_deps_py_request",
+      "talentflow_api_app_api_deps_py_session",
+      "talentflow_api_app_api_deps_rationale_12",
+      "talentflow_api_app_api_deps_rationale_145",
+      "talentflow_api_app_api_deps_rationale_27",
+      "talentflow_api_app_api_deps_rationale_67",
+      "talentflow_api_app_api_deps_rationale_84",
+      "talentflow_api_app_api_deps_rolechecker",
+      "talentflow_api_app_api_deps_rolechecker_call",
+      "talentflow_api_app_api_deps_rolechecker_init",
+      "talentflow_api_app_api_deps_scopedsession",
+      "talentflow_api_app_api_deps_scopedsession_add",
+      "talentflow_api_app_api_deps_scopedsession_commit",
+      "talentflow_api_app_api_deps_scopedsession_delete",
+      "talentflow_api_app_api_deps_scopedsession_execute",
+      "talentflow_api_app_api_deps_scopedsession_init",
+      "talentflow_api_app_api_deps_scopedsession_query",
+      "talentflow_api_app_api_deps_scopedsession_refresh",
+      "talentflow_api_app_api_deps_scopedsession_rollback",
+      "talentflow_api_app_api_jobs",
+      "talentflow_api_app_api_jobs_create_job",
+      "talentflow_api_app_api_jobs_delete_job",
+      "talentflow_api_app_api_jobs_get_job",
+      "talentflow_api_app_api_jobs_jobcreate",
+      "talentflow_api_app_api_jobs_list_jobs",
+      "talentflow_api_app_api_jobs_py_basemodel",
+      "talentflow_api_app_models_domain_user",
+      "talentflow_api_app_services_auth_decode_access_token",
+      "talentflow_api_app_services_auth_rationale_44",
+      "talentflow_api_app_services_match_engine",
+      "talentflow_api_app_services_match_engine_generate_match_justification",
+      "talentflow_api_app_services_match_engine_rationale_18",
+      "talentflow_api_app_services_slug",
+      "talentflow_api_app_services_slug_generate_slug",
+      "talentflow_api_app_services_slug_py_session",
+      "talentflow_api_app_services_slug_rationale_19",
+      "talentflow_api_app_services_slug_rationale_7",
+      "talentflow_api_app_services_slug_slugify"
+    ],
+    "2": [
+      "response",
+      "talentflow_api_app_api_auth",
+      "talentflow_api_app_api_auth_change_password",
+      "talentflow_api_app_api_auth_forgot_password",
+      "talentflow_api_app_api_auth_login",
+      "talentflow_api_app_api_auth_logout",
+      "talentflow_api_app_api_auth_py_session",
+      "talentflow_api_app_api_auth_rationale_145",
+      "talentflow_api_app_api_auth_rationale_162",
+      "talentflow_api_app_api_auth_rationale_217",
+      "talentflow_api_app_api_auth_rationale_33",
+      "talentflow_api_app_api_auth_rationale_62",
+      "talentflow_api_app_api_auth_rationale_99",
+      "talentflow_api_app_api_auth_register",
+      "talentflow_api_app_api_auth_reset_password",
+      "talentflow_api_app_api_auth_set_token_cookie",
+      "talentflow_api_app_models_domain_passwordreset",
+      "talentflow_api_app_schemas_auth",
+      "talentflow_api_app_schemas_auth_changepasswordrequest",
+      "talentflow_api_app_schemas_auth_forgotpasswordrequest",
+      "talentflow_api_app_schemas_auth_loginrequest",
+      "talentflow_api_app_schemas_auth_py_basemodel",
+      "talentflow_api_app_schemas_auth_registerrequest",
+      "talentflow_api_app_schemas_auth_resetpasswordrequest",
+      "talentflow_api_app_schemas_auth_tokenresponse",
+      "talentflow_api_app_services_auth",
+      "talentflow_api_app_services_auth_create_access_token",
+      "talentflow_api_app_services_auth_hash_password",
+      "talentflow_api_app_services_auth_rationale_17",
+      "talentflow_api_app_services_auth_rationale_29",
+      "talentflow_api_app_services_auth_rationale_7",
+      "talentflow_api_app_services_auth_verify_password",
+      "timedelta"
+    ],
+    "3": [
+      "ref_dom",
+      "ref_dom_iterable",
+      "ref_esnext",
+      "ref_mts",
+      "ref_next_dev_types_ts",
+      "ref_next_env_d_ts",
+      "ref_next_types_ts",
+      "ref_node_modules",
+      "ref_ts",
+      "ref_tsx",
+      "talentflow_web_tsconfig",
+      "talentflow_web_tsconfig_compileroptions",
+      "talentflow_web_tsconfig_compileroptions_allowjs",
+      "talentflow_web_tsconfig_compileroptions_esmoduleinterop",
+      "talentflow_web_tsconfig_compileroptions_incremental",
+      "talentflow_web_tsconfig_compileroptions_isolatedmodules",
+      "talentflow_web_tsconfig_compileroptions_jsx",
+      "talentflow_web_tsconfig_compileroptions_lib",
+      "talentflow_web_tsconfig_compileroptions_module",
+      "talentflow_web_tsconfig_compileroptions_moduleresolution",
+      "talentflow_web_tsconfig_compileroptions_noemit",
+      "talentflow_web_tsconfig_compileroptions_paths",
+      "talentflow_web_tsconfig_compileroptions_plugins",
+      "talentflow_web_tsconfig_compileroptions_resolvejsonmodule",
+      "talentflow_web_tsconfig_compileroptions_skiplibcheck",
+      "talentflow_web_tsconfig_compileroptions_strict",
+      "talentflow_web_tsconfig_compileroptions_target",
+      "talentflow_web_tsconfig_exclude",
+      "talentflow_web_tsconfig_include"
+    ],
+    "4": [
+      "base_ui_react",
+      "class_variance_authority",
+      "clsx",
+      "date_fns",
+      "framer_motion",
+      "lucide_react",
+      "next",
+      "next_themes",
+      "react",
+      "react_dom",
+      "shadcn",
+      "tailwind_merge",
+      "talentflow_web_package_dependencies",
+      "talentflow_web_package_dependencies_base_ui_react",
+      "talentflow_web_package_dependencies_class_variance_authority",
+      "talentflow_web_package_dependencies_clsx",
+      "talentflow_web_package_dependencies_date_fns",
+      "talentflow_web_package_dependencies_framer_motion",
+      "talentflow_web_package_dependencies_lucide_react",
+      "talentflow_web_package_dependencies_next",
+      "talentflow_web_package_dependencies_next_themes",
+      "talentflow_web_package_dependencies_react",
+      "talentflow_web_package_dependencies_react_dom",
+      "talentflow_web_package_dependencies_shadcn",
+      "talentflow_web_package_dependencies_tailwind_merge",
+      "talentflow_web_package_dependencies_tw_animate_css",
+      "tw_animate_css"
+    ],
+    "5": [
+      "eslint",
+      "eslint_config_next",
+      "tailwindcss",
+      "tailwindcss_postcss",
+      "talentflow_web_package",
+      "talentflow_web_package_devdependencies",
+      "talentflow_web_package_devdependencies_eslint",
+      "talentflow_web_package_devdependencies_eslint_config_next",
+      "talentflow_web_package_devdependencies_tailwindcss",
+      "talentflow_web_package_devdependencies_tailwindcss_postcss",
+      "talentflow_web_package_devdependencies_types_node",
+      "talentflow_web_package_devdependencies_types_react",
+      "talentflow_web_package_devdependencies_types_react_dom",
+      "talentflow_web_package_devdependencies_typescript",
+      "talentflow_web_package_name",
+      "talentflow_web_package_private",
+      "talentflow_web_package_scripts",
+      "talentflow_web_package_scripts_build",
+      "talentflow_web_package_scripts_dev",
+      "talentflow_web_package_scripts_lint",
+      "talentflow_web_package_scripts_start",
+      "talentflow_web_package_version",
+      "types_node",
+      "types_react",
+      "types_react_dom",
+      "typescript"
+    ],
+    "6": [
+      "talentflow_api_app_api_public_apply",
+      "talentflow_api_app_api_public_apply_apply_to_job",
+      "talentflow_api_app_api_public_apply_detect_divergences",
+      "talentflow_api_app_api_public_apply_generate_otp",
+      "talentflow_api_app_api_public_apply_get_application_status",
+      "talentflow_api_app_api_public_apply_py_backgroundtasks",
+      "talentflow_api_app_api_public_apply_py_path",
+      "talentflow_api_app_api_public_apply_py_request",
+      "talentflow_api_app_api_public_apply_py_session",
+      "talentflow_api_app_api_public_apply_py_uploadfile",
+      "talentflow_api_app_api_public_apply_rationale_1",
+      "talentflow_api_app_api_public_apply_rationale_194",
+      "talentflow_api_app_api_public_apply_rationale_316",
+      "talentflow_api_app_api_public_apply_rationale_355",
+      "talentflow_api_app_api_public_apply_rationale_51",
+      "talentflow_api_app_api_public_apply_rationale_56",
+      "talentflow_api_app_api_public_apply_rationale_85",
+      "talentflow_api_app_api_public_apply_run_ai_pipeline_background",
+      "talentflow_api_app_api_public_apply_send_otp_email",
+      "talentflow_api_app_api_public_apply_verify_otp",
+      "talentflow_api_app_services_email",
+      "talentflow_api_app_services_email_date_year",
+      "talentflow_api_app_services_email_rationale_35",
+      "talentflow_api_app_services_email_rationale_7",
+      "talentflow_api_app_services_email_send_email",
+      "talentflow_api_app_services_email_send_reset_password_email"
+    ],
+    "7": [
+      "talentflow_web_components",
+      "talentflow_web_components_aliases",
+      "talentflow_web_components_aliases_components",
+      "talentflow_web_components_aliases_hooks",
+      "talentflow_web_components_aliases_lib",
+      "talentflow_web_components_aliases_ui",
+      "talentflow_web_components_aliases_utils",
+      "talentflow_web_components_iconlibrary",
+      "talentflow_web_components_menuaccent",
+      "talentflow_web_components_menucolor",
+      "talentflow_web_components_registries",
+      "talentflow_web_components_rsc",
+      "talentflow_web_components_rtl",
+      "talentflow_web_components_schema",
+      "talentflow_web_components_style",
+      "talentflow_web_components_tailwind",
+      "talentflow_web_components_tailwind_basecolor",
+      "talentflow_web_components_tailwind_config",
+      "talentflow_web_components_tailwind_css",
+      "talentflow_web_components_tailwind_cssvariables",
+      "talentflow_web_components_tailwind_prefix",
+      "talentflow_web_components_tsx"
+    ],
+    "8": [
+      "talentflow_web_src_app_page",
+      "talentflow_web_src_app_page_landingpage",
+      "talentflow_web_src_app_page_metadata",
+      "talentflow_web_src_components_herovisual",
+      "talentflow_web_src_components_herovisual_extracted",
+      "talentflow_web_src_components_herovisual_herovisual",
+      "talentflow_web_src_components_herovisual_phase",
+      "talentflow_web_src_components_herovisual_sleep",
+      "talentflow_web_src_components_herovisual_steps",
+      "talentflow_web_src_components_revealsection",
+      "talentflow_web_src_components_revealsection_revealsection",
+      "talentflow_web_src_components_revealsection_revealsectionprops",
+      "talentflow_web_src_components_sandboxdemowrapper",
+      "talentflow_web_src_components_sandboxdemowrapper_sandboxdemo",
+      "talentflow_web_src_components_sandboxdemowrapper_sandboxdemowrapper",
+      "talentflow_web_src_components_scrolltotop",
+      "talentflow_web_src_components_scrolltotop_scrolltotop"
+    ],
+    "9": [
+      "talentflow_web_src_app_vagas_slug_page",
+      "talentflow_web_src_app_vagas_slug_page_generatemetadata",
+      "talentflow_web_src_app_vagas_slug_page_getpublicjob",
+      "talentflow_web_src_app_vagas_slug_page_pageprops",
+      "talentflow_web_src_app_vagas_slug_page_publicjobpage",
+      "talentflow_web_src_components_jobapplicationform",
+      "talentflow_web_src_components_jobapplicationform_fielderror",
+      "talentflow_web_src_components_jobapplicationform_formdata",
+      "talentflow_web_src_components_jobapplicationform_inputfield",
+      "talentflow_web_src_components_jobapplicationform_jobapplicationform",
+      "talentflow_web_src_components_jobapplicationform_jobapplicationformprops",
+      "talentflow_web_src_components_jobapplicationform_progressbar",
+      "talentflow_web_src_components_jobapplicationform_step",
+      "talentflow_web_src_components_jobapplicationform_validateform",
+      "talentflow_web_src_components_publicjobdetail",
+      "talentflow_web_src_components_publicjobdetail_publicjobdetail",
+      "talentflow_web_src_components_publicjobdetail_publicjobdetailprops"
+    ],
+    "10": [
+      "talentflow_web_src_components_batchuploadbutton",
+      "talentflow_web_src_components_batchuploadbutton_batchuploadbutton",
+      "talentflow_web_src_components_batchuploadbutton_batchuploadbuttonprops",
+      "talentflow_web_src_components_batchuploadbutton_uploadstatus",
+      "talentflow_web_src_components_candidatemodal",
+      "talentflow_web_src_components_candidatemodal_candidatemodal",
+      "talentflow_web_src_components_candidatemodal_qualitysection",
+      "talentflow_web_src_components_jobdetailview",
+      "talentflow_web_src_components_jobdetailview_job",
+      "talentflow_web_src_components_jobdetailview_jobdetailview",
+      "talentflow_web_src_components_jobformdrawer",
+      "talentflow_web_src_components_jobformdrawer_job",
+      "talentflow_web_src_components_jobformdrawer_jobformdrawer",
+      "talentflow_web_src_components_jobformdrawer_jobformdrawerprops",
+      "talentflow_web_src_components_portal",
+      "talentflow_web_src_components_portal_portal",
+      "talentflow_web_src_components_portal_portalprops"
+    ],
+    "11": [
+      "talentflow_web_src_components_categoriesdashboard",
+      "talentflow_web_src_components_categoriesdashboard_categoriesdashboard",
+      "talentflow_web_src_components_categoriesdashboard_category",
+      "talentflow_web_src_components_dashboardclient",
+      "talentflow_web_src_components_dashboardclient_candidatestats",
+      "talentflow_web_src_components_dashboardclient_categorystats",
+      "talentflow_web_src_components_dashboardclient_dashboardclient",
+      "talentflow_web_src_components_dashboardclient_dashboardclientprops",
+      "talentflow_web_src_components_dashboardclient_dashboardstats",
+      "talentflow_web_src_components_dashboardclient_job",
+      "talentflow_web_src_components_dashboardclient_jobstats",
+      "talentflow_web_src_components_dashboardclient_match",
+      "talentflow_web_src_components_dashboardclient_recentcandidate",
+      "talentflow_web_src_lib_auth_getcookie",
+      "talentflow_web_src_lib_auth_getsession"
+    ],
+    "12": [
+      "talentflow_web_src_components_jobmatchviewer",
+      "talentflow_web_src_components_jobmatchviewer_jobmatchviewer",
+      "talentflow_web_src_components_jobmatchviewer_match",
+      "talentflow_web_src_components_jobmatchviewer_matchresponse",
+      "talentflow_web_src_components_jobmatchviewer_skeletonrow",
+      "talentflow_web_src_components_jobsdashboard",
+      "talentflow_web_src_components_jobsdashboard_job",
+      "talentflow_web_src_components_jobsdashboard_jobsdashboard",
+      "talentflow_web_src_components_pageheader",
+      "talentflow_web_src_components_pageheader_pageheader",
+      "talentflow_web_src_components_pageheader_pageheaderprops",
+      "talentflow_web_src_components_smartmatchdashboard",
+      "talentflow_web_src_components_smartmatchdashboard_job",
+      "talentflow_web_src_components_smartmatchdashboard_smartmatchdashboard"
+    ],
+    "13": [
+      "talentflow_api_app_api_candidates_process_batch_uploads_task",
+      "talentflow_api_app_api_candidates_process_single_file",
+      "talentflow_api_app_api_candidates_py_backgroundtasks",
+      "talentflow_api_app_api_candidates_py_path",
+      "talentflow_api_app_api_candidates_py_uploadfile",
+      "talentflow_api_app_api_candidates_rationale_646",
+      "talentflow_api_app_api_candidates_rationale_679",
+      "talentflow_api_app_api_candidates_rationale_740",
+      "talentflow_api_app_api_candidates_rationale_751",
+      "talentflow_api_app_api_candidates_rationale_790",
+      "talentflow_api_app_api_candidates_run_extraction_and_save",
+      "talentflow_api_app_api_candidates_update_batch_job_progress",
+      "talentflow_api_app_api_candidates_upload_batch_resumes"
+    ],
+    "14": [
+      "talentflow_web_src_app_candidates_page",
+      "talentflow_web_src_app_candidates_page_candidate",
+      "talentflow_web_src_app_candidates_page_candidatespage",
+      "talentflow_web_src_app_candidates_page_candidatesresponse",
+      "talentflow_web_src_app_candidates_page_category",
+      "talentflow_web_src_app_candidates_page_getcandidates",
+      "talentflow_web_src_app_candidates_page_getcategories",
+      "talentflow_web_src_app_candidates_page_metadata",
+      "talentflow_web_src_components_searchandfilters",
+      "talentflow_web_src_components_searchandfilters_category",
+      "talentflow_web_src_components_searchandfilters_searchandfilters",
+      "talentflow_web_src_components_searchandfilters_searchandfiltersprops"
+    ],
+    "15": [
+      "talentflow_web_src_app_dashboard_page",
+      "talentflow_web_src_app_dashboard_page_candidatestats",
+      "talentflow_web_src_app_dashboard_page_categorystats",
+      "talentflow_web_src_app_dashboard_page_dashboardpage",
+      "talentflow_web_src_app_dashboard_page_dashboardstats",
+      "talentflow_web_src_app_dashboard_page_getjobs",
+      "talentflow_web_src_app_dashboard_page_getstats",
+      "talentflow_web_src_app_dashboard_page_job",
+      "talentflow_web_src_app_dashboard_page_jobstats",
+      "talentflow_web_src_app_dashboard_page_metadata",
+      "talentflow_web_src_app_dashboard_page_recentcandidate"
+    ],
+    "16": [
+      "talentflow_api_app_main",
+      "talentflow_api_app_main_api_health_check",
+      "talentflow_api_app_main_health_check",
+      "talentflow_api_app_main_startup_event",
+      "talentflow_api_measure_performance",
+      "talentflow_api_measure_performance_before_cursor_execute",
+      "talentflow_api_measure_performance_main",
+      "talentflow_api_measure_performance_print_report",
+      "talentflow_api_measure_performance_py_any",
+      "talentflow_api_measure_performance_run_benchmark"
+    ],
+    "17": [
+      "talentflow_web_src_components_candidatetable",
+      "talentflow_web_src_components_candidatetable_candidatetable",
+      "talentflow_web_src_components_candidatetable_scorering",
+      "talentflow_web_src_components_deleteconfirmmodal",
+      "talentflow_web_src_components_deleteconfirmmodal_deleteconfirmmodal",
+      "talentflow_web_src_components_deleteconfirmmodal_deleteconfirmmodalprops",
+      "talentflow_web_src_lib_api",
+      "talentflow_web_src_lib_api_apierror",
+      "talentflow_web_src_lib_api_apierror_constructor",
+      "talentflow_web_src_lib_api_apioptions"
+    ],
+    "18": [
+      "talentflow_web_src_app_change_password_page",
+      "talentflow_web_src_app_change_password_page_changepasswordpage",
+      "talentflow_web_src_components_logoutbutton",
+      "talentflow_web_src_components_logoutbutton_logoutbutton",
+      "talentflow_web_src_components_usermenu",
+      "talentflow_web_src_components_usermenu_usermenu",
+      "talentflow_web_src_lib_api_apifetch",
+      "talentflow_web_src_lib_auth_clearsession",
+      "talentflow_web_src_lib_auth_deletecookie"
+    ],
+    "19": [
+      "talentflow_web_src_app_layout",
+      "talentflow_web_src_app_layout_footer",
+      "talentflow_web_src_app_layout_inter",
+      "talentflow_web_src_app_layout_jetbrainsmono",
+      "talentflow_web_src_app_layout_metadata",
+      "talentflow_web_src_app_layout_rootlayout",
+      "talentflow_web_src_app_layout_version",
+      "talentflow_web_src_components_themeprovider",
+      "talentflow_web_src_components_themeprovider_themeprovider"
+    ],
+    "20": [
+      "talentflow_web_src_app_login_page",
+      "talentflow_web_src_app_login_page_logincontent",
+      "talentflow_web_src_app_login_page_loginpage",
+      "talentflow_web_src_lib_auth",
+      "talentflow_web_src_lib_auth_authsession",
+      "talentflow_web_src_lib_auth_getauthheaders",
+      "talentflow_web_src_lib_auth_setcookie",
+      "talentflow_web_src_lib_auth_setsession"
+    ],
+    "21": [
+      "talentflow_api_app_api_sandbox",
+      "talentflow_api_app_api_sandbox_extract_resume_sandbox",
+      "talentflow_api_app_api_sandbox_py_basemodel",
+      "talentflow_api_app_api_sandbox_py_request",
+      "talentflow_api_app_api_sandbox_py_uploadfile",
+      "talentflow_api_app_api_sandbox_sandboxexperience",
+      "talentflow_api_app_api_sandbox_sandboxresponse"
+    ],
+    "22": [
+      "talentflow_web_scripts_generate_og",
+      "talentflow_web_scripts_generate_og_backupdir",
+      "talentflow_web_scripts_generate_og_branddir",
+      "talentflow_web_scripts_generate_og_fs",
+      "talentflow_web_scripts_generate_og_generateogimage",
+      "talentflow_web_scripts_generate_og_path",
+      "talentflow_web_scripts_generate_og_sharp"
+    ],
+    "23": [
+      "talentflow_web_src_app_vagas_page",
+      "talentflow_web_src_app_vagas_page_getpublicjobs",
+      "talentflow_web_src_app_vagas_page_metadata",
+      "talentflow_web_src_app_vagas_page_publicjobspage",
+      "talentflow_web_src_components_publicjobslist",
+      "talentflow_web_src_components_publicjobslist_publicjob",
+      "talentflow_web_src_components_publicjobslist_publicjobslist"
+    ],
+    "24": [
+      "talentflow_web_src_components_jobcard",
+      "talentflow_web_src_components_jobcard_job",
+      "talentflow_web_src_components_jobcard_jobcard",
+      "talentflow_web_src_components_jobcard_jobcardprops",
+      "talentflow_web_src_components_jobslistdashboard",
+      "talentflow_web_src_components_jobslistdashboard_job",
+      "talentflow_web_src_components_jobslistdashboard_jobslistdashboard"
+    ],
+    "25": [
+      "talentflow_api_app_api_public_jobs",
+      "talentflow_api_app_api_public_jobs_get_public_job",
+      "talentflow_api_app_api_public_jobs_list_public_jobs",
+      "talentflow_api_app_api_public_jobs_py_session",
+      "talentflow_api_app_api_public_jobs_rationale_13",
+      "talentflow_api_app_api_public_jobs_rationale_41"
+    ],
+    "26": [
+      "talentflow_web_scripts_optimize_images",
+      "talentflow_web_scripts_optimize_images_branddir",
+      "talentflow_web_scripts_optimize_images_fs",
+      "talentflow_web_scripts_optimize_images_optimizeimages",
+      "talentflow_web_scripts_optimize_images_path",
+      "talentflow_web_scripts_optimize_images_sharp"
+    ],
+    "27": [
+      "talentflow_web_src_components_footer",
+      "talentflow_web_src_components_footer_containervariants",
+      "talentflow_web_src_components_footer_footer",
+      "talentflow_web_src_components_footer_footerprops",
+      "talentflow_web_src_components_footer_itemvariants",
+      "talentflow_web_src_components_footer_navlinks"
+    ],
+    "28": [
+      "talentflow_web_src_components_landingheader",
+      "talentflow_web_src_components_landingheader_landingheader",
+      "talentflow_web_src_components_navbar",
+      "talentflow_web_src_components_navbar_navbar",
+      "talentflow_web_src_components_themetoggle",
+      "talentflow_web_src_components_themetoggle_themetoggle"
+    ],
+    "29": [
+      "talentflow_web_src_app_categories_page",
+      "talentflow_web_src_app_categories_page_categoriespage",
+      "talentflow_web_src_app_categories_page_category",
+      "talentflow_web_src_app_categories_page_getcategories",
+      "talentflow_web_src_app_categories_page_metadata"
+    ],
+    "30": [
+      "talentflow_web_src_app_jobs_page",
+      "talentflow_web_src_app_jobs_page_getjobs",
+      "talentflow_web_src_app_jobs_page_job",
+      "talentflow_web_src_app_jobs_page_jobspage",
+      "talentflow_web_src_app_jobs_page_metadata"
+    ],
+    "31": [
+      "talentflow_web_src_app_jobs_slug_page",
+      "talentflow_web_src_app_jobs_slug_page_getjobdetail",
+      "talentflow_web_src_app_jobs_slug_page_job",
+      "talentflow_web_src_app_jobs_slug_page_jobdetailpage",
+      "talentflow_web_src_app_jobs_slug_page_pageprops"
+    ],
+    "32": [
+      "talentflow_web_src_app_smart_match_page",
+      "talentflow_web_src_app_smart_match_page_getjobs",
+      "talentflow_web_src_app_smart_match_page_job",
+      "talentflow_web_src_app_smart_match_page_metadata",
+      "talentflow_web_src_app_smart_match_page_smartmatchpage"
+    ],
+    "33": [
+      "talentflow_web_src_components_conflictmodal",
+      "talentflow_web_src_components_conflictmodal_candidateconflictpayload",
+      "talentflow_web_src_components_conflictmodal_conflictmodal",
+      "talentflow_web_src_components_conflictmodal_conflictmodalprops",
+      "talentflow_web_src_components_conflictmodal_experiencediffitem"
+    ],
+    "34": [
+      "talentflow_web_src_components_ui_button",
+      "talentflow_web_src_components_ui_button_button",
+      "talentflow_web_src_components_ui_button_buttonvariants",
+      "talentflow_web_src_lib_utils",
+      "talentflow_web_src_lib_utils_cn"
+    ],
+    "35": [
+      "talentflow_web_src_middleware",
+      "talentflow_web_src_middleware_decodejwt",
+      "talentflow_web_src_middleware_middleware",
+      "talentflow_web_src_middleware_public_routes"
+    ],
+    "36": [
+      "basesettings",
+      "talentflow_api_app_core_config",
+      "talentflow_api_app_core_config_settings"
+    ],
+    "37": [
+      "talentflow_api_alembic_env",
+      "talentflow_api_alembic_env_run_migrations_offline",
+      "talentflow_api_alembic_env_run_migrations_online"
+    ],
+    "38": [
+      "talentflow_api_alembic_versions_0375ed483df0_add_versioning_and_soft_delete_to",
+      "talentflow_api_alembic_versions_0375ed483df0_add_versioning_and_soft_delete_to_downgrade",
+      "talentflow_api_alembic_versions_0375ed483df0_add_versioning_and_soft_delete_to_upgrade"
+    ],
+    "39": [
+      "talentflow_api_alembic_versions_1bd8a5184eea_initial_schema",
+      "talentflow_api_alembic_versions_1bd8a5184eea_initial_schema_downgrade",
+      "talentflow_api_alembic_versions_1bd8a5184eea_initial_schema_upgrade"
+    ],
+    "40": [
+      "talentflow_api_alembic_versions_20db5e2e133f_remove_invites_table",
+      "talentflow_api_alembic_versions_20db5e2e133f_remove_invites_table_downgrade",
+      "talentflow_api_alembic_versions_20db5e2e133f_remove_invites_table_upgrade"
+    ],
+    "41": [
+      "talentflow_api_alembic_versions_356fceb7530a_add_job_fields",
+      "talentflow_api_alembic_versions_356fceb7530a_add_job_fields_downgrade",
+      "talentflow_api_alembic_versions_356fceb7530a_add_job_fields_upgrade"
+    ],
+    "42": [
+      "talentflow_api_alembic_versions_39cf2631e1c8_add_slug_to_job_positions",
+      "talentflow_api_alembic_versions_39cf2631e1c8_add_slug_to_job_positions_downgrade",
+      "talentflow_api_alembic_versions_39cf2631e1c8_add_slug_to_job_positions_upgrade"
+    ],
+    "43": [
+      "talentflow_api_alembic_versions_661edde5c9ba_add_auth_and_rbac_tables",
+      "talentflow_api_alembic_versions_661edde5c9ba_add_auth_and_rbac_tables_downgrade",
+      "talentflow_api_alembic_versions_661edde5c9ba_add_auth_and_rbac_tables_upgrade"
+    ],
+    "44": [
+      "talentflow_api_alembic_versions_69b3a8731ba4_add_blacklist_fields_to_candidates",
+      "talentflow_api_alembic_versions_69b3a8731ba4_add_blacklist_fields_to_candidates_downgrade",
+      "talentflow_api_alembic_versions_69b3a8731ba4_add_blacklist_fields_to_candidates_upgrade"
+    ],
+    "45": [
+      "talentflow_api_alembic_versions_921235d54e22_add_job_applications_table",
+      "talentflow_api_alembic_versions_921235d54e22_add_job_applications_table_downgrade",
+      "talentflow_api_alembic_versions_921235d54e22_add_job_applications_table_upgrade"
+    ],
+    "46": [
+      "talentflow_api_alembic_versions_9e2b62eb4039_create_audit_logs_table",
+      "talentflow_api_alembic_versions_9e2b62eb4039_create_audit_logs_table_downgrade",
+      "talentflow_api_alembic_versions_9e2b62eb4039_create_audit_logs_table_upgrade"
+    ],
+    "47": [
+      "talentflow_api_alembic_versions_a890dbce7895_add_quality_score_to_candidates",
+      "talentflow_api_alembic_versions_a890dbce7895_add_quality_score_to_candidates_downgrade",
+      "talentflow_api_alembic_versions_a890dbce7895_add_quality_score_to_candidates_upgrade"
+    ],
+    "48": [
+      "talentflow_api_alembic_versions_c5425e3f18a7_add_pdf_hash_and_partial_email_unique",
+      "talentflow_api_alembic_versions_c5425e3f18a7_add_pdf_hash_and_partial_email_unique_downgrade",
+      "talentflow_api_alembic_versions_c5425e3f18a7_add_pdf_hash_and_partial_email_unique_upgrade"
+    ],
+    "49": [
+      "talentflow_api_alembic_versions_c9c1a5bcdb71_add_batch_jobs_table",
+      "talentflow_api_alembic_versions_c9c1a5bcdb71_add_batch_jobs_table_downgrade",
+      "talentflow_api_alembic_versions_c9c1a5bcdb71_add_batch_jobs_table_upgrade"
+    ],
+    "50": [
+      "talentflow_api_alembic_versions_f54b27ab7a01_make_category_and_skill_tenant_scoped",
+      "talentflow_api_alembic_versions_f54b27ab7a01_make_category_and_skill_tenant_scoped_downgrade",
+      "talentflow_api_alembic_versions_f54b27ab7a01_make_category_and_skill_tenant_scoped_upgrade"
+    ],
+    "51": [
+      "talentflow_api_alembic_versions_f7fafd77c98b_add_tenant_and_multi_tenancy",
+      "talentflow_api_alembic_versions_f7fafd77c98b_add_tenant_and_multi_tenancy_downgrade",
+      "talentflow_api_alembic_versions_f7fafd77c98b_add_tenant_and_multi_tenancy_upgrade"
+    ],
+    "52": [
+      "talentflow_api_alembic_versions_fd028f3c38e3_add_stripe_billing_to_tenants",
+      "talentflow_api_alembic_versions_fd028f3c38e3_add_stripe_billing_to_tenants_downgrade",
+      "talentflow_api_alembic_versions_fd028f3c38e3_add_stripe_billing_to_tenants_upgrade"
+    ],
+    "53": [
+      "talentflow_web_src_app_reset_password_page",
+      "talentflow_web_src_app_reset_password_page_resetpasswordcontent",
+      "talentflow_web_src_app_reset_password_page_resetpasswordpage"
+    ],
+    "54": [
+      "talentflow_web_src_components_candidatecard",
+      "talentflow_web_src_components_candidatecard_candidatecard",
+      "talentflow_web_src_components_candidatecard_qualitygauge"
+    ],
+    "55": [
+      "talentflow_web_src_components_sandboxdemo",
+      "talentflow_web_src_components_sandboxdemo_sandboxdemo",
+      "talentflow_web_src_components_sandboxdemo_sandboxresult"
+    ],
+    "56": [
+      "generate_test_pdf",
+      "generate_test_pdf_generate_test_pdf"
+    ],
+    "57": [
+      "talentflow_api_app_core_database",
+      "talentflow_api_app_core_database_get_db"
+    ],
+    "58": [
+      "talentflow_api_migrate_db_data",
+      "talentflow_api_migrate_db_data_migrate"
+    ],
+    "59": [
+      "talentflow_web_eslint_config",
+      "talentflow_web_eslint_config_eslintconfig"
+    ],
+    "60": [
+      "talentflow_web_next_config",
+      "talentflow_web_next_config_nextconfig"
+    ],
+    "61": [
+      "talentflow_web_postcss_config",
+      "talentflow_web_postcss_config_config"
+    ],
+    "62": [
+      "talentflow_web_src_app_forgot_password_page",
+      "talentflow_web_src_app_forgot_password_page_forgotpasswordpage"
+    ],
+    "63": [
+      "talentflow_web_src_app_loading",
+      "talentflow_web_src_app_loading_loading"
+    ],
+    "64": [
+      "talentflow_web_src_app_privacy_page",
+      "talentflow_web_src_app_privacy_page_privacypage"
+    ],
+    "65": [
+      "talentflow_web_src_app_terms_page",
+      "talentflow_web_src_app_terms_page_termspage"
+    ],
+    "66": [
+      "talentflow_web_vercel",
+      "talentflow_web_vercel_headers"
+    ]
+  },
+  "cohesion": {
+    "0": 0.06553041434028799,
+    "1": 0.052214452214452214,
+    "2": 0.13068181818181818,
+    "3": 0.06896551724137931,
+    "4": 0.07407407407407407,
+    "5": 0.07692307692307693,
+    "6": 0.1076923076923077,
+    "7": 0.09090909090909091,
+    "8": 0.13970588235294118,
+    "9": 0.13970588235294118,
+    "10": 0.15441176470588236,
+    "11": 0.1523809523809524,
+    "12": 0.15384615384615385,
+    "13": 0.19230769230769232,
+    "14": 0.19696969696969696,
+    "15": 0.21818181818181817,
+    "16": 0.26666666666666666,
+    "17": 0.2,
+    "18": 0.4166666666666667,
+    "19": 0.25,
+    "20": 0.35714285714285715,
+    "21": 0.42857142857142855,
+    "22": 0.3333333333333333,
+    "23": 0.3333333333333333,
+    "24": 0.2857142857142857,
+    "25": 0.4,
+    "26": 0.4,
+    "27": 0.3333333333333333,
+    "28": 0.4666666666666667,
+    "29": 0.5,
+    "30": 0.5,
+    "31": 0.5,
+    "32": 0.5,
+    "33": 0.4,
+    "34": 0.7,
+    "35": 0.8333333333333334,
+    "36": 0.6666666666666666,
+    "37": 0.6666666666666666,
+    "38": 0.6666666666666666,
+    "39": 0.6666666666666666,
+    "40": 0.6666666666666666,
+    "41": 0.6666666666666666,
+    "42": 0.6666666666666666,
+    "43": 0.6666666666666666,
+    "44": 0.6666666666666666,
+    "45": 0.6666666666666666,
+    "46": 0.6666666666666666,
+    "47": 0.6666666666666666,
+    "48": 0.6666666666666666,
+    "49": 0.6666666666666666,
+    "50": 0.6666666666666666,
+    "51": 0.6666666666666666,
+    "52": 0.6666666666666666,
+    "53": 0.6666666666666666,
+    "54": 0.6666666666666666,
+    "55": 0.6666666666666666,
+    "56": 1.0,
+    "57": 1.0,
+    "58": 1.0,
+    "59": 1.0,
+    "60": 1.0,
+    "61": 1.0,
+    "62": 1.0,
+    "63": 1.0,
+    "64": 1.0,
+    "65": 1.0,
+    "66": 1.0
+  },
+  "gods": [
+    {
+      "id": "talentflow_api_app_api_deps_scopedsession",
+      "label": "ScopedSession",
+      "degree": 43
+    },
+    {
+      "id": "talentflow_api_app_models_domain_user",
+      "label": "User",
+      "degree": 30
+    },
+    {
+      "id": "talentflow_web_src_lib_api_apifetch",
+      "label": "apiFetch()",
+      "degree": 27
+    },
+    {
+      "id": "talentflow_api_app_models_domain_candidate",
+      "label": "Candidate",
+      "degree": 20
+    },
+    {
+      "id": "talentflow_api_app_models_domain_jobposition",
+      "label": "JobPosition",
+      "degree": 18
+    },
+    {
+      "id": "talentflow_api_ingest_extract_candidate_from_pdf",
+      "label": "extract_candidate_from_pdf()",
+      "degree": 18
+    },
+    {
+      "id": "talentflow_api_app_models_domain_category",
+      "label": "Category",
+      "degree": 17
+    },
+    {
+      "id": "talentflow_api_ingest_candidateextraction",
+      "label": "CandidateExtraction",
+      "degree": 16
+    },
+    {
+      "id": "talentflow_web_tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 16
+    },
+    {
+      "id": "talentflow_api_app_api_candidates_replacerequest",
+      "label": "ReplaceRequest",
+      "degree": 14
+    }
+  ],
+  "surprises": [
+    {
+      "source": "ReplaceRequest",
+      "target": "ScopedSession",
+      "source_files": [
+        "talentflow-api/app/api/candidates.py",
+        "talentflow-api/app/api/deps.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "ReplaceRequest",
+      "target": "User",
+      "source_files": [
+        "talentflow-api/app/api/candidates.py",
+        "talentflow-api/app/models/domain.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "FlagRequest",
+      "target": "ScopedSession",
+      "source_files": [
+        "talentflow-api/app/api/candidates.py",
+        "talentflow-api/app/api/deps.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "FlagRequest",
+      "target": "User",
+      "source_files": [
+        "talentflow-api/app/api/candidates.py",
+        "talentflow-api/app/models/domain.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    },
+    {
+      "source": "CategoryCreate",
+      "target": "Category",
+      "source_files": [
+        "talentflow-api/app/api/categories.py",
+        "talentflow-api/app/models/domain.py"
+      ],
+      "confidence": "INFERRED",
+      "relation": "uses",
+      "why": "inferred connection - not explicitly stated in source; bridges separate communities"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `ThemeToggle()` connect `Navbar.tsx` to `apiFetch`, `dependencies`?",
+      "why": "High betweenness centrality (0.057) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `dependencies` connect `dependencies` to `devDependencies`?",
+      "why": "High betweenness centrality (0.046) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `react` connect `dependencies` to `Navbar.tsx`?",
+      "why": "High betweenness centrality (0.043) - this node is a cross-community bridge."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 7 inferred relationships involving `ScopedSession` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?",
+      "why": "`ScopedSession` has 7 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 8 inferred relationships involving `User` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?",
+      "why": "`User` has 8 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 8 inferred relationships involving `Candidate` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?",
+      "why": "`Candidate` has 8 INFERRED edges - model-reasoned connections that need verification."
+    },
+    {
+      "type": "verify_inferred",
+      "question": "Are the 4 inferred relationships involving `JobPosition` (e.g. with `JobCreate` and `JobUpdate`) actually correct?",
+      "why": "`JobPosition` has 4 INFERRED edges - model-reasoned connections that need verification."
+    }
+  ]
+}

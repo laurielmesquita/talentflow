@@ -6,6 +6,21 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ---
 
 
+## [2.2.0] — 2026-08-01
+
+Esta versão refatora a interface de toda a aplicação para o **Design System Semântico em OKLCH (Tailwind v4)** e introduz animações High-Tech no Smart Match, Kanban de Candidatos e Dashboard Bento Grid.
+
+### Adicionado
+- **Sistema de Design & UX (`DESIGN.md` & `CLAUDE.md`):** Padronização formal das diretrizes visuais em `DESIGN.md` e consolidação das regras técnicas de desenvolvimento em `CLAUDE.md` na raiz do projeto.
+- **Componentes Visuais (MagicUI / Shadcn):** Integração dos componentes `ShimmerButton`, `ShineBorder` e `NumberTicker` para microinterações avançadas de IA e dashboards.
+
+### Modificado
+- **Refatoração Semântica de Cores (OKLCH):** Substituição de todas as cores estáticas brutas por variáveis semânticas do tema (`bg-background`, `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border/50`, `hover:bg-accent/40`) em `CandidateCard.tsx`, `CandidateTable.tsx`, `JobMatchViewer.tsx`, `SmartMatchDashboard.tsx` e `DashboardClient.tsx`.
+- **Refatoração do Dashboard (Bento Grid & NumberTicker):** Reestruturação do painel principal para um layout Bento Grid minimalista, com contagem animada de números de KPIs via `NumberTicker` (`requestAnimationFrame` + `font-mono tabular-nums`) e suporte impecável a múltiplos temas.
+- **Visual High-Tech no Smart Match (`/smart-match`):** Animações de entrada escalonadas via `framer-motion`, barra de afinidade animada por IA e cards com borda iluminada (`border-primary/20`).
+- **Acessibilidade & Microinterações:** Revelação suave de ações secundárias no Kanban/Tabela tanto no hover quanto no foco por teclado (`opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200`) e elevação `whileHover={{ y: -2 }}` acelerada por GPU.
+
+
 ## [2.1.0] — 2026-07-20
 
 Esta versão adiciona **21 correções de auditoria full-stack** abrangendo segurança, performance e UX, além de refatorar o sistema de autenticação para cookies HttpOnly.

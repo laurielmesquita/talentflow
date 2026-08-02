@@ -298,7 +298,7 @@ export default function CandidateTable({
                 layout
                 variants={itemVariants}
                 whileHover={{ y: -2 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                 key={cand.id}
                 className="group relative flex flex-col bg-card border border-border/60 rounded-xl shadow-xs hover:border-border hover:bg-accent/40 transition-colors overflow-hidden"
               >

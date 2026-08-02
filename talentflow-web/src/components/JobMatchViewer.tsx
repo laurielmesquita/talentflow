@@ -124,8 +124,8 @@ export default function JobMatchViewer() {
 
   const itemVariants = {
     hidden: { opacity: 0, y: 12 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } }
-  };
+    show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] } }
+  } as const;
 
   // Resultado High-Tech Linear Style
   return (
@@ -212,7 +212,7 @@ export default function JobMatchViewer() {
                   <motion.div 
                     initial={{ width: 0 }}
                     animate={{ width: `${cand.match_score}%` }}
-                    transition={{ duration: 1, ease: "easeOut", delay: 0.15 * idx }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: 0.15 * idx }}
                     className="h-full rounded-full bg-gradient-to-r from-primary/70 via-primary to-emerald-400"
                   />
                 </div>

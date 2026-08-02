@@ -28,7 +28,7 @@ function QualityGauge({ score, tier }: { score: number | null; tier: string | nu
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset }}
-          transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: 0.1 }}
           strokeLinecap="round"
         />
       </svg>
@@ -69,7 +69,7 @@ export default function CandidateCard({
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ y: -2 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
+      transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
       className={`group relative rounded-xl border transition-all duration-200 overflow-hidden shadow-xs hover:border-border hover:bg-accent/40 ${
         isNew ? 'border-primary ring-1 ring-primary/40' : 'border-border/60'
       } ${cand.is_flagged ? 'bg-destructive/5 border-destructive/40' : 'bg-card'}`}

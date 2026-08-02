@@ -589,7 +589,7 @@ export default function JobApplicationForm({ jobSlug, jobTitle, onClose }: JobAp
                     className="h-full bg-gradient-to-r from-primary to-purple-500 rounded-full"
                     initial={{ width: "10%" }}
                     animate={{ width: "90%" }}
-                    transition={{ duration: 25, ease: "easeOut" }}
+                    transition={{ duration: 25, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                   />
                 </div>
                 <p className="text-xs text-slate-400 animate-pulse">

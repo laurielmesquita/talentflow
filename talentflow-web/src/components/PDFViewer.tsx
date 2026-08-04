@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileText, ExternalLink, Download, AlertCircle, RefreshCw, Eye } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -13,6 +13,19 @@ interface PDFViewerProps {
 export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDFViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  // Timeout de segurança e destrave automático para WebKit/Safari e visualizadores nativos de PDF
+  useEffect(() => {
+    if (!pdfUrl) return;
+    setIsLoading(true);
+    setHasError(false);
+
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, [pdfUrl]);
 
   // Formata URL com parâmetros para melhor visualização no visualizador nativo do navegador
   const enhancedUrl = pdfUrl ? `${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH` : null;
@@ -58,6 +71,7 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
             onClick={() => {
               setIsLoading(true);
               setHasError(false);
+              setTimeout(() => setIsLoading(false), 800);
             }}
             title="Recarregar visualizador"
             className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg transition-colors"

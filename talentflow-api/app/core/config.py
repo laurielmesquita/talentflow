@@ -1,4 +1,6 @@
 import os
+import re
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -51,6 +53,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str = ""
 
     # Cloudinary — armazenamento de PDFs e fotos
+    CLOUDINARY_URL: str = ""
     CLOUDINARY_CLOUD_NAME: str = ""
     CLOUDINARY_API_KEY: str = ""
     CLOUDINARY_API_SECRET: str = ""
@@ -77,6 +80,16 @@ class Settings(BaseSettings):
     SANDBOX_DAILY_BUDGET: int = 100
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
+    @model_validator(mode="after")
+    def _parse_cloudinary_url(self):
+        if self.CLOUDINARY_URL and not all([self.CLOUDINARY_CLOUD_NAME, self.CLOUDINARY_API_KEY, self.CLOUDINARY_API_SECRET]):
+            m = re.match(r"cloudinary://([^:]+):([^@]+)@(.+)", self.CLOUDINARY_URL)
+            if m:
+                self.CLOUDINARY_API_KEY = m.group(1)
+                self.CLOUDINARY_API_SECRET = m.group(2)
+                self.CLOUDINARY_CLOUD_NAME = m.group(3)
+        return self
 
 
 settings = Settings()

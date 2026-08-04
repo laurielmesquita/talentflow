@@ -45,12 +45,15 @@ def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
     Gera URL assinada autenticada no Cloudinary e recupera os bytes do PDF original.
     """
     if not pdf_url or "cloudinary.com" not in pdf_url:
+        print(f"[pdf_proxy] URL inválida ou não é Cloudinary: {pdf_url}")
         return None
     try:
         import cloudinary
         import cloudinary.utils
         import httpx
         from app.core.config import settings
+
+        print(f"[pdf_proxy] Cloudinary config: cloud_name={settings.CLOUDINARY_CLOUD_NAME}, api_key={'***' if settings.CLOUDINARY_API_KEY else 'VAZIO'}")
 
         cloudinary.config(
             cloud_name=settings.CLOUDINARY_CLOUD_NAME,
@@ -60,25 +63,29 @@ def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
 
         public_id = extract_cloudinary_public_id(pdf_url, is_raw=True)
         if not public_id:
+            print(f"[pdf_proxy] Falha ao extrair public_id de: {pdf_url}")
             return None
 
-        # Gera URL de download assinada autenticada para o Cloudinary
+        print(f"[pdf_proxy] public_id={public_id}")
+
         signed_url = cloudinary.utils.private_download_url(
             public_id, "", resource_type="raw", type="upload"
         )
+        print(f"[pdf_proxy] signed_url={signed_url[:100]}...")
         res = httpx.get(signed_url, follow_redirects=True, timeout=15.0)
+        print(f"[pdf_proxy] signed_url response: status={res.status_code}, size={len(res.content)}")
         if res.status_code == 200 and len(res.content) > 0:
             return res.content
 
-        # Fallback direto com User-Agent de navegador
         headers = {
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
         res_direct = httpx.get(pdf_url, headers=headers, follow_redirects=True, timeout=15.0)
+        print(f"[pdf_proxy] direct fallback response: status={res_direct.status_code}, size={len(res_direct.content)}")
         if res_direct.status_code in (200, 206, 304) and len(res_direct.content) > 0:
             return res_direct.content
     except Exception as e:
-        print(f"[pdf_proxy] Erro ao recuperar PDF do Cloudinary: {e}")
+        print(f"[pdf_proxy] Erro ao recuperar PDF do Cloudinary: {type(e).__name__}: {e}")
     return None
 
 

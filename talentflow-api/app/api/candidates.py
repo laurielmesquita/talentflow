@@ -40,6 +40,48 @@ def extract_cloudinary_public_id(url: str, is_raw: bool = False) -> Optional[str
         return None
 
 
+def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
+    """
+    Gera URL assinada autenticada no Cloudinary e recupera os bytes do PDF original.
+    """
+    if not pdf_url or "cloudinary.com" not in pdf_url:
+        return None
+    try:
+        import cloudinary
+        import cloudinary.utils
+        import httpx
+        from app.core.config import settings
+
+        cloudinary.config(
+            cloud_name=settings.CLOUDINARY_CLOUD_NAME,
+            api_key=settings.CLOUDINARY_API_KEY,
+            api_secret=settings.CLOUDINARY_API_SECRET,
+        )
+
+        public_id = extract_cloudinary_public_id(pdf_url, is_raw=True)
+        if not public_id:
+            return None
+
+        # Gera URL de download assinada autenticada para o Cloudinary
+        signed_url = cloudinary.utils.private_download_url(
+            public_id, "", resource_type="raw", type="upload"
+        )
+        res = httpx.get(signed_url, follow_redirects=True, timeout=15.0)
+        if res.status_code == 200 and len(res.content) > 0:
+            return res.content
+
+        # Fallback direto com User-Agent de navegador
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        res_direct = httpx.get(pdf_url, headers=headers, follow_redirects=True, timeout=15.0)
+        if res_direct.status_code in (200, 206, 304) and len(res_direct.content) > 0:
+            return res_direct.content
+    except Exception as e:
+        print(f"[pdf_proxy] Erro ao recuperar PDF do Cloudinary: {e}")
+    return None
+
+
 class ReplaceRequest(BaseModel):
     action: str  # "replace" | "keep_both"
     extracted_data: dict
@@ -233,37 +275,26 @@ async def get_candidate_pdf(
 ):
     """
     Serviço de Proxy Inline de PDF:
-    Consome o arquivo original do Cloudinary e serve para o cliente com Content-Type application/pdf,
-    Content-Disposition inline e CORS liberado. Resolve travamentos do Safari e incompatibilidades de attachment.
+    Consome o arquivo original do Cloudinary via URL assinada privada e serve para o cliente
+    com Content-Type application/pdf, Content-Disposition inline e CORS liberado.
     """
     c = db.query(Candidate).filter(Candidate.id == candidate_id).first()
     if not c or not c.original_pdf_url:
         raise HTTPException(status_code=404, detail="PDF não encontrado")
 
-    try:
-        import httpx
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-        }
-        async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
-            res = await client.get(c.original_pdf_url, headers=headers)
-            if res.status_code not in (200, 206, 304):
-                print(f"[pdf_proxy] Cloudinary retornou HTTP {res.status_code} para URL: {c.original_pdf_url}")
-                raise HTTPException(status_code=502, detail=f"Erro ao recuperar arquivo PDF original do storage (Status: {res.status_code})")
+    pdf_bytes = get_cloudinary_pdf_bytes(c.original_pdf_url)
+    if not pdf_bytes:
+        raise HTTPException(status_code=502, detail="Erro ao recuperar arquivo PDF original do Cloudinary")
 
-            return Response(
-                content=res.content,
-                media_type="application/pdf",
-                headers={
-                    "Content-Disposition": f'inline; filename="{c.full_name}.pdf"',
-                    "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
-                    "Access-Control-Allow-Origin": "*",
-                }
-            )
-    except HTTPException:
-        raise
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Falha ao conectar com o serviço de mídia: {str(e)}")
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "Content-Disposition": f'inline; filename="{c.full_name}.pdf"',
+            "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
+            "Access-Control-Allow-Origin": "*",
+        }
+    )
 
 
 @router.post("/upload")

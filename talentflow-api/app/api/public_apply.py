@@ -163,6 +163,8 @@ def _run_ai_pipeline_background(application_id: str, tmp_path: Path, tenant_id: 
                 fallback_db.commit()
         except Exception:
             pass
+        finally:
+            fallback_db.close()
     finally:
         db.close()
         try:

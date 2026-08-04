@@ -10,6 +10,8 @@ if "neon.tech" in settings.DATABASE_URL:
 engine = create_engine(
     settings.DATABASE_URL,
     connect_args=connect_args,
+    pool_size=5,          # tamanho padrão do pool de conexões
+    max_overflow=10,      # limite máximo de conexões temporárias sob pico
     pool_pre_ping=True,   # testa a conexão antes de usar — reconecta se fechada
     pool_recycle=300,     # recicla conexões a cada 5 minutos (Neon fecha ociosas)
 )

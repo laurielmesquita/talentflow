@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+# Instala o binario oficial do uv (Astral)
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/
+
 WORKDIR /app
 
 # Dependencias do sistema necessarias para PyMuPDF e pdfplumber
@@ -10,8 +13,8 @@ RUN apt-get update && apt-get install -y \
     g++ \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+COPY pyproject.toml requirements.txt ./
+RUN uv pip install --system --no-cache -r requirements.txt
 
 COPY . .
 

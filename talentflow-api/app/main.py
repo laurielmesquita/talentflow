@@ -44,6 +44,10 @@ def startup_event():
     logger.info(f"Iniciando TalentFlow API v{settings.VERSION}")
     print(f"Iniciando TalentFlow API v{settings.VERSION}")
 
+@app.get("/")
+def root():
+    return {"status": "ok", "service": "TalentFlow API", "version": settings.VERSION, "docs": "/docs"}
+
 @app.get("/health")
 def health_check():
     return {"status": "ok", "message": "TalentFlow API is running", "version": settings.VERSION}

@@ -15,17 +15,28 @@ type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
 export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [batchErrors, setBatchErrors] = useState<any[]>([]);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
 
+  useEffect(() => {
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+      }
+    };
+  }, []);
 
   async function pollBatchStatus(batchId: string) {
-    const interval = setInterval(async () => {
+    if (pollIntervalRef.current) {
+      clearInterval(pollIntervalRef.current);
+    }
+    pollIntervalRef.current = setInterval(async () => {
       try {
         const data = await apiFetch(`/api/batches/${batchId}`).catch(() => {
-          clearInterval(interval);
+          if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
           if (typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
           }
@@ -44,7 +55,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         }
         
         if (data.status === 'completed') {
-          clearInterval(interval);
+          if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
           setBatchErrors(data.errors || []);
           
           if (typeof window !== 'undefined') {
@@ -58,7 +69,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
             setShowSummaryModal(true);
           }
         } else if (data.status === 'failed') {
-          clearInterval(interval);
+          if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
           if (typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
           }
@@ -125,7 +136,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const icon: Record<UploadStatus, React.ReactNode> = {
     idle: <UploadCloud className="w-4 h-4" />,
     uploading: (
-      <svg className="animate-spin w-4 h-4 text-indigo-300" fill="none" viewBox="0 0 24 24">
+      <svg className="animate-spin w-4 h-4 text-primary-foreground/80" fill="none" viewBox="0 0 24 24">
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
       </svg>
@@ -135,10 +146,10 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   };
 
   const btnClass: Record<UploadStatus, string> = {
-    idle: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-900/20',
-    uploading: 'bg-indigo-700 text-indigo-300 cursor-not-allowed',
+    idle: 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20',
+    uploading: 'bg-primary/80 text-primary-foreground/80 cursor-not-allowed',
     success: 'bg-emerald-600 text-white',
-    error: 'bg-red-600/80 text-white',
+    error: 'bg-destructive text-destructive-foreground',
   };
 
   const successCount = progress.total - batchErrors.length;

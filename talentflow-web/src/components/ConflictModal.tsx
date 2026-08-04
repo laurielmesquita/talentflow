@@ -165,9 +165,9 @@ export default function ConflictModal({
     const newVal = (newCand?.[field] || '').trim();
 
     if (oldVal === newVal) return { label: 'Igual', code: 'equal', color: 'text-muted-foreground bg-slate-100 dark:bg-white/5 border-slate-200 dark:border-white/10' };
-    if (!oldVal && newVal) return { label: 'Adicionado', code: 'added', color: 'text-emerald-550 dark:text-emerald-450 bg-emerald-500/10 border-emerald-500/20' };
-    if (oldVal && !newVal) return { label: 'Removido', code: 'removed', color: 'text-rose-550 dark:text-rose-450 bg-rose-500/10 border-rose-500/20' };
-    return { label: 'Alterado', code: 'changed', color: 'text-amber-550 dark:text-amber-450 bg-amber-500/10 border-amber-500/20' };
+    if (!oldVal && newVal) return { label: 'Adicionado', code: 'added', color: 'text-emerald-600 dark:text-emerald-400 bg-emerald-500/10 border-emerald-500/20' };
+    if (oldVal && !newVal) return { label: 'Removido', code: 'removed', color: 'text-rose-600 dark:text-rose-400 bg-rose-500/10 border-rose-500/20' };
+    return { label: 'Alterado', code: 'changed', color: 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20' };
   }
 
   // Comparação de Skills sem sensibilidade a case (Case-Insensitive)
@@ -455,9 +455,9 @@ export default function ConflictModal({
 
                       const diffColors: Record<string, string> = {
                         equal: 'border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 text-muted-foreground',
-                        changed: 'border-amber-550/25 bg-amber-550/5 text-amber-400',
-                        added: 'border-emerald-550/25 bg-emerald-550/5 text-emerald-400',
-                        removed: 'border-rose-550/25 bg-rose-550/5 text-rose-400',
+                        changed: 'border-amber-500/25 bg-amber-500/5 text-amber-400',
+                        added: 'border-emerald-500/25 bg-emerald-500/5 text-emerald-400',
+                        removed: 'border-rose-500/25 bg-rose-500/5 text-rose-400',
                       };
 
                       return (

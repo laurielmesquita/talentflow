@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, Sparkles, ShieldAlert, Trash2, ChevronDown, ChevronLeft, ChevronRight, Mail, Phone, MapPin, Briefcase, AlertTriangle } from "lucide-react";
+import { Loader2, Sparkles, ShieldAlert, Trash2, ChevronDown, ChevronLeft, ChevronRight, Mail, Phone, MapPin, Briefcase, AlertTriangle, FileCheck2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import { apiFetch } from "@/lib/api";
@@ -349,7 +349,19 @@ export default function CandidateTable({
                   </div>
 
                   {/* Score & Ações */}
-                  <div className="flex items-center justify-end gap-5 w-1/3 ml-auto">
+                  <div className="flex items-center justify-end gap-3 w-1/3 ml-auto">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        router.push(`/dashboard/candidates/${cand.id}/audit`);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white dark:text-indigo-300 text-xs font-bold tracking-tight transition-all duration-200 border border-indigo-500/30 shadow-sm"
+                      title="Auditar & Comparar PDF Original vs. IA"
+                    >
+                      <FileCheck2 className="w-3.5 h-3.5 shrink-0" />
+                      <span className="hidden lg:inline">Auditar CV</span>
+                    </button>
+
                     <ScoreRing score={cand.quality_score} tier={cand.quality_tier} />
                     
                     <button
@@ -400,6 +412,25 @@ export default function CandidateTable({
                               <p className="text-sm text-foreground leading-relaxed">
                                 {fullCand.summary || "Nenhum resumo de perfil extraído."}
                               </p>
+                            </div>
+
+                            {/* Banner de Acesso Rápido ao Workspace de Auditoria */}
+                            <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-500/15 via-indigo-500/10 to-transparent border border-indigo-500/30 flex items-center justify-between shadow-sm">
+                              <div className="space-y-0.5">
+                                <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                                  <FileCheck2 className="w-4 h-4 text-indigo-400" />
+                                  Auditoria de Currículo Side-by-Side
+                                </h5>
+                                <p className="text-[11px] text-muted-foreground">
+                                  Compare o PDF original com a extração da IA em tela cheia sem modais.
+                                </p>
+                              </div>
+                              <button
+                                onClick={() => router.push(`/dashboard/candidates/${fullCand.id}/audit`)}
+                                className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shrink-0 ml-3"
+                              >
+                                Abrir Workspace
+                              </button>
                             </div>
 
                             {/* Informações de Contato */}

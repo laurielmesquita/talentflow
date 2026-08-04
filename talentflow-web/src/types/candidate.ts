@@ -20,6 +20,7 @@ export interface Candidate {
   added_at?: string | null;
   created_at?: string | null;
   pdf_url?: string | null;
+  original_pdf_url?: string | null;
   photo_url?: string | null;
   quality_score?: number | null;
   quality_tier?: 'high' | 'medium' | 'low' | null;

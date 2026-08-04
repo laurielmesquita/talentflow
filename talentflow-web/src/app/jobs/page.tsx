@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: 'Vagas',
 };
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 interface Job {
   id: string;
@@ -25,23 +26,7 @@ interface Job {
   created_at: string;
 }
 
-async function getJobs(token?: string): Promise<Job[]> {
-  try {
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-    const headers: Record<string, string> = {};
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
-    }
-    const res = await fetch(`${API_URL}/api/jobs`, { 
-      headers,
-      cache: "no-store" 
-    });
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
-}
+import { getJobs } from '@/lib/data/jobs';
 
 export default async function JobsPage() {
   const cookieStore = await cookies();

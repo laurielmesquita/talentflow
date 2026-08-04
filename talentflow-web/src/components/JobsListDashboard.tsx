@@ -10,25 +10,7 @@ import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
 import Portal from "@/components/Portal";
 import { apiFetch } from "@/lib/api";
-
-interface Job {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  employment_type: string;
-  work_model: string;
-  responsibilities: string;
-  requirements: string;
-  benefits: string;
-  application_email: string;
-  application_subject: string;
-  deadline: string;
-  required_skills: string;
-  is_active: boolean;
-  created_at: string;
-  slug?: string;
-}
+import type { Job } from "@/types";
 
 export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();

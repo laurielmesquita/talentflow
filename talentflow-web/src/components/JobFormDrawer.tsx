@@ -6,21 +6,7 @@ import { motion } from "framer-motion";
 import { apiFetch } from "@/lib/api";
 import Portal from "@/components/Portal";
 
-interface Job {
-  id?: string;
-  title: string;
-  description: string;
-  location: string;
-  employment_type: string;
-  work_model: string;
-  responsibilities: string;
-  requirements: string;
-  benefits: string;
-  application_email: string;
-  application_subject: string;
-  deadline: string;
-  required_skills: string;
-}
+import type { Job } from "@/types";
 
 interface JobFormDrawerProps {
   isOpen: boolean;

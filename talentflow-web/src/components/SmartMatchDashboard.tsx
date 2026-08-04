@@ -10,25 +10,7 @@ import { motion } from "framer-motion";
 import JobMatchViewer from "./JobMatchViewer";
 import Navbar from "@/components/Navbar";
 import PageHeader from "@/components/PageHeader";
-
-interface Job {
-  id: string;
-  slug?: string;
-  title: string;
-  description: string;
-  location: string;
-  employment_type: string;
-  work_model: string;
-  responsibilities: string;
-  requirements: string;
-  benefits: string;
-  application_email: string;
-  application_subject: string;
-  deadline: string;
-  required_skills: string;
-  is_active: boolean;
-  created_at: string;
-}
+import type { Job } from "@/types";
 
 export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();

@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { FileText, ExternalLink, Download, AlertCircle, RefreshCw, Eye } from "lucide-react";
-import { motion } from "framer-motion";
+import { FileText, ExternalLink, Download, AlertCircle, Eye } from "lucide-react";
 
 interface PDFViewerProps {
   pdfUrl?: string | null;
@@ -11,32 +10,59 @@ interface PDFViewerProps {
 }
 
 export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDFViewerProps) {
-  const [viewMode, setViewMode] = useState<'web' | 'native'>('web');
+  const [blobUrl, setBlobUrl] = useState<string | null>(pdfUrl || null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Timeout de segurança e destrave automático para WebKit/Safari
   useEffect(() => {
-    if (!pdfUrl) return;
-    setIsLoading(true);
-    setHasError(false);
+    let active = true;
+    let currentBlobUrl: string | null = null;
 
-    const timer = setTimeout(() => {
+    if (!pdfUrl) {
       setIsLoading(false);
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, [pdfUrl, viewMode]);
-
-  // Constrói a URL de renderização com base no motor selecionado
-  const getRenderUrl = () => {
-    if (!pdfUrl) return "";
-    if (viewMode === 'web') {
-      // Motor Web HTML5: contorna cabeçalhos Content-Disposition: attachment do Cloudinary e bloqueios nativos do WebKit
-      return `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
+      return;
     }
-    return `${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`;
-  };
+
+    // Se já é um blob local ou data URL, não refaz o fetch
+    if (pdfUrl.startsWith("blob:") || pdfUrl.startsWith("data:")) {
+      setBlobUrl(pdfUrl);
+      setIsLoading(false);
+      return;
+    }
+
+    async function loadPdfBlob() {
+      try {
+        const res = await fetch(pdfUrl!);
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+
+        const arrayBuffer = await res.arrayBuffer();
+        if (!active) return;
+
+        // Converte em Blob com MIME type 'application/pdf' explícito
+        const blob = new Blob([arrayBuffer], { type: "application/pdf" });
+        currentBlobUrl = URL.createObjectURL(blob);
+        setBlobUrl(currentBlobUrl);
+      } catch (err) {
+        // Fallback para a URL direta caso ocorra falha de rede/CORS
+        if (active) {
+          setBlobUrl(pdfUrl!);
+        }
+      } finally {
+        if (active) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    loadPdfBlob();
+
+    return () => {
+      active = false;
+      if (currentBlobUrl && currentBlobUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(currentBlobUrl);
+      }
+    };
+  }, [pdfUrl]);
 
   if (!pdfUrl) {
     return (
@@ -73,56 +99,8 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
           </div>
         </div>
 
-        {/* Seletor de Motor & Botões de Ação Rápida */}
+        {/* Botões de Ação Rápida */}
         <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
-          <div className="flex items-center bg-muted/70 p-0.5 rounded-lg border border-border/50 text-[11px] font-semibold">
-            <button
-              onClick={() => {
-                if (viewMode !== 'web') {
-                  setViewMode('web');
-                  setIsLoading(true);
-                  setHasError(false);
-                }
-              }}
-              className={`px-2 py-1 rounded-md transition-all flex items-center gap-1 ${
-                viewMode === 'web'
-                  ? 'bg-indigo-600 text-white shadow-sm font-bold'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-              title="Motor Web HTML5 (Compatibilidade máxima com Cloudinary no Safari)"
-            >
-              <span>⚡ Motor Web</span>
-            </button>
-            <button
-              onClick={() => {
-                if (viewMode !== 'native') {
-                  setViewMode('native');
-                  setIsLoading(true);
-                  setHasError(false);
-                }
-              }}
-              className={`px-2 py-1 rounded-md transition-all flex items-center gap-1 ${
-                viewMode === 'native'
-                  ? 'bg-indigo-600 text-white shadow-sm font-bold'
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-              title="Motor Nativo do Navegador (Local)"
-            >
-              <span>💻 Nativo</span>
-            </button>
-          </div>
-
-          <button
-            onClick={() => {
-              setIsLoading(true);
-              setHasError(false);
-              setTimeout(() => setIsLoading(false), 1200);
-            }}
-            title="Recarregar visualizador"
-            className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg transition-colors"
-          >
-            <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin text-primary" : ""}`} />
-          </button>
           <a
             href={pdfUrl}
             target="_blank"
@@ -148,14 +126,14 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
       {/* Área Principal do Visualizador (50% Split) */}
       <div className="relative flex-1 w-full h-full bg-slate-900/10 dark:bg-slate-950/40 min-h-[400px]">
         {/* Loading overlay */}
-        {isLoading && !hasError && (
+        {isLoading && (
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity">
             <div className="relative flex items-center justify-center w-12 h-12 mb-3">
               <span className="absolute w-12 h-12 rounded-full border-2 border-primary border-t-transparent animate-spin" />
               <Eye className="w-5 h-5 text-primary" />
             </div>
             <p className="text-xs font-medium text-muted-foreground animate-pulse">
-              Carregando via {viewMode === 'web' ? 'Motor Web HTML5' : 'Motor Nativo'}...
+              Processando documento de {candidateName}...
             </p>
           </div>
         )}
@@ -166,9 +144,9 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
             <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-4 text-amber-500">
               <AlertCircle className="w-7 h-7" />
             </div>
-            <h5 className="text-base font-bold text-foreground">Não foi possível embutir o PDF</h5>
+            <h5 className="text-base font-bold text-foreground">Não foi possível exibir o PDF</h5>
             <p className="text-xs text-muted-foreground mt-1.5 max-w-sm">
-              As configurações do navegador ou as diretrizes de segurança da rede podem estar bloqueando a renderização embutida do arquivo.
+              O arquivo original está seguro. Você pode visualizá-lo abrindo externamente.
             </p>
             <a
               href={pdfUrl}
@@ -177,20 +155,23 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
               className="mt-5 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center space-x-2"
             >
               <ExternalLink className="w-4 h-4" />
-              <span>Abrir PDF Externamente</span>
+              <span>Abrir PDF em Nova Guia</span>
             </a>
           </div>
         ) : (
-          <iframe
-            src={getRenderUrl()}
-            title={`Currículo Original - ${candidateName}`}
-            className="w-full h-full border-0 focus:outline-none bg-white dark:bg-slate-900"
-            onLoad={() => setIsLoading(false)}
-            onError={() => {
-              setIsLoading(false);
-              setHasError(true);
-            }}
-          />
+          blobUrl && (
+            <object
+              data={blobUrl}
+              type="application/pdf"
+              className="w-full h-full border-0 bg-white dark:bg-slate-900"
+            >
+              <iframe
+                src={blobUrl}
+                title={`Currículo Original - ${candidateName}`}
+                className="w-full h-full border-0"
+              />
+            </object>
+          )
         )}
       </div>
     </div>

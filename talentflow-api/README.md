@@ -53,12 +53,18 @@ uv sync
 uv add <nome-do-pacote>
 ```
 
-### 4. Executando as Migrações
+### 4. Executando a Bateria de Testes Automatizados (`pytest`)
+```bash
+# Executar a suíte de testes unitários e de integração:
+uv run pytest
+```
+
+### 5. Executando as Migrações
 ```bash
 uv run alembic upgrade head
 ```
 
-### 5. Executando o Servidor Localmente
+### 6. Executando o Servidor Localmente
 ```bash
 uv run uvicorn app.main:app --reload --port 8000
 ```

@@ -1,69 +1,58 @@
-# TalentFlow Web 🚀
+# TalentFlow Web 🎨
 
-O painel visual e dashboard interativo do **TalentFlow**. Uma plataforma SaaS Tier-1 desenhada para otimizar o fluxo de RH, unindo processamento de currículos com uma interface de altíssima performance estruturada nos pilares de **Design Engineering**.
-
----
-
-## 🧬 Arquitetura de UI e Experiência
-O sistema adota os princípios de **Bento UI** e **Glassmorphism**, fornecendo uma navegação fluida através de grids de cards interativos, modais integrados e transições que aumentam a produtividade visual do recrutador.
+Interface web moderna B2B do **TalentFlow**. Construída sobre **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4 (OKLCH)** e **Framer Motion 12**, oferecendo uma experiência de alta performance, responsividade impecável e microinterações fluida.
 
 ---
 
-## 🛠 Stack Tecnológico e Fundamentos
+## 🏗 Arquitetura e Engenharia de Frontend
 
-A arquitetura do TalentFlow foi desenhada para entregar escalabilidade e performance visual fluida a 60fps.
+### 1. Stack Base
+- **Next.js 16 (App Router):** Framework React com Server Components, Server Actions e suporte nativo ao Turbopack.
+- **React 19:** Biblioteca UI com renderização concorrente avançada.
+- **Tailwind CSS v4 (OKLCH Color Space):** Sistema de design semântico baseado no espaço de cores perceptual OKLCH com suporte nativo a temas Claro/Escuro via `next-themes`.
+- **Framer Motion 12:** Animações baseadas em física de molas (`spring physics`) e transições de entrada escalonadas.
+- **Base UI / Shadcn:** Componentes acessíveis com desacoplamento de estilos.
+- **Edge Proxy (`src/proxy.ts`):** Roteamento e autenticação de tokens JWT validados na borda (Vercel Edge).
 
-### 1. Core Frameworks & Componentes
-- **Next.js v16 (App Router):** Roteamento no servidor e geração de páginas dinâmicas ou estáticas, segregando de forma limpa as rotas de servidor e os componentes interativos do cliente (*Client Components*).
-- **React v19:** Base de renderização e concorrência com o suporte moderno ao React Compiler.
-- **Base UI (@base-ui/react):** Componentes headless e acessíveis (WAI-ARIA) que servem de fundação estrutural para as abas, formulários e gavetas (drawers) da aplicação.
-- **Shadcn/ui:** Primitivos de componentes do sistema, facilitando a customização e flexibilidade do design system.
-- **Next-Themes:** Injetado via `ThemeProvider` central para alteração dinâmica de tema no cliente, evitando erros de *Hydration Mismatch*.
-- **Lucide React:** Iconografia em formato de vetor de baixo peso.
-
-### 2. Styling Engine (Tailwind v4)
-- **CSS-First Approach:** Adotamos a nova infraestrutura do Tailwind CSS v4 (`@tailwindcss/postcss`), injetada com agilidade em tempo de build.
-- **OKLCH Color Space (Dual-Theme):** A paleta inteira opera sob o espaço perceptual **OKLCH** (onde L = Lightness, C = Chroma, H = Hue). Isso nos permite um controle perfeito sobre saturação e luminância, blindando o layout contra o fenômeno de *Gamut Clipping* (onde cores estouram para o cinza/branco) e garantindo uma leitura impecável tanto no *Light* quanto no *Dark Mode*.
-- **Arquitetura Semântica:** Substituição de declarações literais (ex: `bg-slate-900`) por Tokens Semânticos (`bg-background`, `text-foreground`, `border-border`) que respondem organicamente ao tema ativo.
-
-### 3. Físicas e Animações (Framer Motion & 21st.dev)
-- **21st.dev:** Nossa referência e hub principal para injeção de ideias de design e micro-interações de componentes prontos baseados em Tailwind CSS e Framer Motion.
-- **Layout Morphing (`layout` prop):** Usado no card do candidato e nas abas de controle de vagas para animar a transição espacial e o dimensionamento dinâmico baseado em física de mola (*spring physics*).
-- **Staggered Entrance:** Efeito de cascata gradual ao renderizar badges de competências e listas de candidatos, suavizando a leitura e o foco visual.
-- **Trigonometria SVG:** Animação matemática baseada no preenchimento gradual da propriedade `strokeDashoffset` para revelar o match do candidato (`ScoreRing`).
+### 2. Camadas de Engenharia (`src/`)
+- **`src/types/`**: Camada centralizada de tipagem de domínio (`job.ts`, `candidate.ts`, `category.ts`).
+- **`src/lib/data/`**: Camada Server Component para data fetching com tratamento de autenticação e redirecionamento 401.
+- **`src/components/`**: Componentes reutilizáveis do sistema de design (Kanban, Bento Grid, Table, Drawers, Modais).
+- **`src/test/`**: Bateria de testes unitários executados via Vitest e React Testing Library.
 
 ---
 
-## ⚙️ Features Core
-- **Dashboard Otimista:** Transição de tema sem flicker visual, suportada por *Ambient Glows* translúcidos.
-- **Triagem de Vagas (Smart Match):** Aba dedicada a calcular a aderência das habilidades dos candidatos com os requisitos da vaga.
-- **Descrição Detalhada das Vagas:** Visualização de detalhes com renderização inteligente de listas, informações de contato e contraste otimizado para o modo claro.
-- **Gestão de Categorias:** Rota para criar, renomear e excluir tags de categorização de talentos.
+## 🛠 Suíte de Testes Automatizados (`Vitest`)
 
----
+O projeto utiliza **Vitest** + **React Testing Library** para validação contínua da interface e dos tipos de domínio.
 
-## 🚀 Como Executar a Aplicação Localmente
-
-### Pré-requisitos
-Certifique-se de ter instalado:
-- **Node.js** v18.x ou superior.
-- Um gerenciador de pacotes (**npm**, **yarn** ou **pnpm**).
-
-### Script de Inicialização
-
-1. Acesse o diretório front-end do TalentFlow:
 ```bash
-cd talentflow-web
+# Executar a bateria de testes automatizados do frontend:
+npm test
 ```
 
-2. Instale as dependências:
+---
+
+## 🚀 Guia de Desenvolvimento (Setup Local)
+
+### 1. Instalação de Dependências
 ```bash
 npm install
 ```
 
-3. Inicie o servidor de desenvolvimento:
+### 2. Executando o Servidor de Desenvolvimento
 ```bash
 npm run dev
 ```
+Acesse `http://localhost:3000` no navegador.
 
-Abra [http://localhost:3000](http://localhost:3000) no seu navegador para acessar a suíte de triagem.
+### 3. Build de Produção
+```bash
+npm run build
+```
+
+---
+
+## 🚢 Deploy
+O frontend é implantado automaticamente na plataforma **Vercel** ao enviar commits para a branch `main`.
+- **Produção Web:** [`tlntflow.vercel.app`](https://tlntflow.vercel.app)

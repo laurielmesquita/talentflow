@@ -6,6 +6,24 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ---
 
 
+## [2.3.0] — 2026-08-04
+
+Esta versão é um marco estratégico de engenharia no TalentFlow, introduzindo a infraestrutura moderna de gerenciamento de dependências com `uv` (PEP 621), a convenção Edge Routing `src/proxy.ts` no Next.js 16, a suíte de testes automatizados full-stack com Pytest e Vitest, e o serviço centralizado de Governança de Feature Flags por Tenant B2B.
+
+### Adicionado
+- **Gerenciamento de Pacotes Python com `uv` (`pyproject.toml` & `uv.lock`):** Adoção oficial do manifesto PEP 621 e lockfile determinístico via `uv`, modernizando a infraestrutura do backend com Dockerfile otimizado no Fly.io.
+- **Governança de Feature Flags B2B (`app/services/features.py`):** Sistema de controle de permissões por plano (`free`, `pro`, `enterprise`) com a tabela `PLAN_FEATURES` em `config.py` e o guardião de rotas `Depends(require_feature())` em `deps.py`.
+- **Suíte de Testes Automatizados Backend (`uv run pytest`):** Testes integrados cobrindo rotas de saúde pública (`test_health.py`), resolução resiliente de vagas (`test_job_lookup.py`), validação de Pydantic schemas (`test_schemas.py`) e regras de Feature Flags (`test_features.py`).
+- **Suíte de Testes Automatizados Frontend (`npm test`):** Bateria de testes unitários com Vitest e React Testing Library em `src/test/` para componentes UI e tipos de domínio.
+- **Convenção Next.js 16 Edge Proxy (`src/proxy.ts`):** Roteamento e validação de tokens JWT na borda da Vercel Edge sem alertas de depreciação Turbopack.
+- **Navegação Responsiva Mobile:** Menu Hambúrguer com Drawer translúcido, animações Framer Motion, backdrop blur e lock de scroll em `Navbar.tsx`.
+- **UX & Componentes:** Dropdown customizado e estilizado para Seleção de Vagas em *Scores de Compatibilidade* no Dashboard.
+
+### Modificado
+- **Navegação do Logo:** Ajustada a rota do logo da marca em `Navbar.tsx` para direcionar usuários autenticados diretamente para `/dashboard`.
+- **Documentação de Engenharia:** Atualização completa dos manuais `talentflow-api/README.md`, `talentflow-web/README.md` e `technical-snapshot.md`.
+
+
 ## [2.2.0] — 2026-08-04
 
 Esta versão consolida a auditoria e refatoração completa de arquitetura (Web & API), corrigindo vazamentos de conexões, eliminando memory leaks de UI, introduzindo schemas Pydantic declarativos e padronizando as camadas de dados e tipos no frontend.

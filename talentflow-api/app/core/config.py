@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "TalentFlow API"
-    VERSION: str = "2.2.0"
+    VERSION: str = "2.3.0"
 
     # Limites de planos (Fonte Única de Verdade)
     PLAN_LIMITS: dict = {

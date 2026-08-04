@@ -1,23 +1,23 @@
-# Technical Snapshot — TalentFlow v2.2.0
-**Gerado em:** 2026-08-04 · **Sessão:** Review de Arquitetura & Refatorações de Produção  
-**Status do Projeto:** v2.2.0 (Refatorado & Estabilizado)
+# Technical Snapshot — TalentFlow v2.3.0
+**Gerado em:** 2026-08-04 · **Sessão:** Consolidação da Release v2.3.0 (Melhores Práticas de Mercado)  
+**Status do Projeto:** v2.3.0 (Estável, Testado & Governado)
 
 ---
 
 ## 1. Stack & Arquitetura Atual
 
 ```
-Frontend:  Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · Framer Motion 12
-           └── Novas Camadas: src/types/ (Tipagem de Domínio) · src/lib/data/ (Server Fetches)
-Backend:   FastAPI (Python 3.11) · Uvicorn · uv (PEP 621 — pyproject.toml & uv.lock) · SQLAlchemy 2.x Sync (pool_size=5, max_overflow=10)
-           └── Novas Camadas: app/schemas/extraction.py · app/schemas/job.py · app/services/job_lookup.py
+Frontend:  Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · Framer Motion 12 · Vitest & Testing Library
+           └── Edge Routing: src/proxy.ts · Camadas: src/types/ · src/lib/data/ · src/test/
+Backend:   FastAPI (Python 3.11) · Uvicorn · uv (PEP 621 — pyproject.toml & uv.lock) · Pytest & httpx
+           └── Governança: app/services/features.py (Feature Flags) · Schemas: app/schemas/
 DB:        PostgreSQL 15 via Neon.tech (serverless, sa-east-1)
 Storage:   Cloudinary (fotos de perfil e PDFs)
 AI:        Groq API (Llama 3.3 70B) · Google Gemini 2.5 Flash (OCR)
 Auth:      PyJWT + Bcrypt · Dual-Cookie (HttpOnly API + Non-HttpOnly Edge)
 Deploy:    Vercel (web: tlntflow.vercel.app) · Fly.io (API: talentflow-api.fly.dev)
 Repo:      github.com/laurielmesquita/talentflow.git
-Versão:    2.2.0
+Versão:    2.3.0
 ```
 
 ---

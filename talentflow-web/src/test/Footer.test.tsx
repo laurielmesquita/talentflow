@@ -7,7 +7,7 @@ describe('Footer Component', () => {
   it('renders default version v2.2.0 correctly', () => {
     render(<Footer />);
     expect(screen.getByText(/2026 TalentFlow/i)).toBeDefined();
-    expect(screen.getByText(/v2.2.0/i)).toBeDefined();
+    expect(screen.getByText(/v2.3.0/i)).toBeDefined();
   });
 
   it('renders custom version prop when passed', () => {

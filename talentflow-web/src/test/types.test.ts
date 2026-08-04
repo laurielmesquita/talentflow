@@ -27,12 +27,14 @@ describe('Frontend Domain Types', () => {
       skills: ['Python', 'FastAPI', 'Next.js', 'TypeScript'],
       quality_score: 98,
       quality_tier: 'high',
+      original_pdf_url: 'https://cloudinary.com/raw/test.pdf',
       summary: 'Fundador e Diretor Tecnológico da Space Square.',
     };
 
     expect(candidate.id).toBe('cand-456');
     expect(candidate.quality_score).toBe(98);
     expect(candidate.quality_tier).toBe('high');
+    expect(candidate.original_pdf_url).toBe('https://cloudinary.com/raw/test.pdf');
     expect(candidate.summary).toContain('Space Square');
   });
 });

@@ -11,6 +11,7 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 Esta versão é um marco estratégico de engenharia no TalentFlow, introduzindo a infraestrutura moderna de gerenciamento de dependências com `uv` (PEP 621), a convenção Edge Routing `src/proxy.ts` no Next.js 16, a suíte de testes automatizados full-stack com Pytest e Vitest, e o serviço centralizado de Governança de Feature Flags por Tenant B2B.
 
 ### Adicionado
+- **Workspace de Auditoria Side-by-Side (`CandidateAuditWorkspace.tsx`):** Interface de tela cheia sem modais para comparação de currículos 50/50 em tempo real (PDF original no Cloudinary vs. Inteligência da IA), incluindo navegação em lote de candidatos e botões para aprovação ou sinalização (Blacklist).
 - **Gerenciamento de Pacotes Python com `uv` (`pyproject.toml` & `uv.lock`):** Adoção oficial do manifesto PEP 621 e lockfile determinístico via `uv`, modernizando a infraestrutura do backend com Dockerfile otimizado no Fly.io.
 - **Governança de Feature Flags B2B (`app/services/features.py`):** Sistema de controle de permissões por plano (`free`, `pro`, `enterprise`) com a tabela `PLAN_FEATURES` em `config.py` e o guardião de rotas `Depends(require_feature())` em `deps.py`.
 - **Suíte de Testes Automatizados Backend (`uv run pytest`):** Testes integrados cobrindo rotas de saúde pública (`test_health.py`), resolução resiliente de vagas (`test_job_lookup.py`), validação de Pydantic schemas (`test_schemas.py`) e regras de Feature Flags (`test_features.py`).

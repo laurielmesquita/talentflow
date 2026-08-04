@@ -44,7 +44,20 @@ Uma área de trabalho dinâmica projetada para maximizar a velocidade ocular dos
 
 ---
 
-## 5. Landing Page de Marketing e Captação de Leads
+## 5. Auditoria Interativa de Currículos (Workspace Side-by-Side)
+
+* **Visualização 50/50 do Currículo Original:** O recrutador visualiza o PDF original do candidato lado a lado com a extração estruturada feita pela IA, em tela cheia e sem abrir arquivos externos. Compatível com todos os navegadores, incluindo Safari.
+* **Navegação Contínua em Lote:** Setas de navegação permitem auditar múltiplos candidatos em sequência sem sair da tela de auditoria, acelerando o fluxo de triagem.
+* **Ações de Decisão Integradas:** Botões de aprovação e sinalização (blacklist) diretamente no workspace, com registro de data e justificativa para conformidade e auditoria.
+* **Segurança de Dados:** O PDF original nunca tem sua URL privada exposta ao navegador — o sistema utiliza um serviço proxy autenticado que transmite o arquivo de forma segura.
+
+## 6. Portal Público de Vagas e Candidatura
+
+* **Vitrine de Vagas Ativas:** Página pública responsiva exibindo todas as vagas abertas da empresa, com detalhes completos de requisitos, localização e modelo de trabalho (remoto/híbrido/presencial).
+* **Formulário de Candidatura com Upload de PDF:** Candidatos externos preenchem dados básicos, anexam o currículo em PDF e recebem verificação de e-mail via código OTP.
+* **Detecção Inteligente de Divergências:** O sistema compara automaticamente os dados preenchidos no formulário com o conteúdo extraído do PDF pela IA, alertando o recrutador sobre discrepâncias em nome, e-mail ou telefone.
+
+## 7. Landing Page de Marketing e Captação de Leads
 
 * **Landing Page de Alta Conversão:** Página de apresentação do produto de estética moderna, com glows neon customizados sob o espaço perceptual de cores OKLCH, depoimentos e demonstração visual animada do funcionamento do sistema.
 * **Formulário de Leads Integrado:** Captura de dados de novos potenciais clientes e integração direta para triagem de contatos no painel administrativo.

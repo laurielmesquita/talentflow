@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileText, ExternalLink, Download, AlertCircle, RefreshCw } from "lucide-react";
 
 interface PDFViewerProps {
@@ -21,12 +21,20 @@ function getCookie(name: string): string | null {
 export default function PDFViewer({ candidateId, pdfUrl, candidateName, className = "" }: PDFViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
-  const [authToken] = useState(() => getCookie("token"));
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [tokenReady, setTokenReady] = useState(false);
+
+  useEffect(() => {
+    const token = getCookie("token");
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (token) setAuthToken(token);
+    setTokenReady(true);
+  }, []);
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
   const proxyPdfUrl = candidateId
-    ? `${API_URL}/api/candidates/${candidateId}/pdf${authToken ? `?token=${authToken}` : ""}`
+    ? (tokenReady ? `${API_URL}/api/candidates/${candidateId}/pdf${authToken ? `?token=${authToken}` : ""}` : null)
     : pdfUrl;
 
   const downloadUrl = pdfUrl || proxyPdfUrl || "#";
@@ -120,6 +128,11 @@ export default function PDFViewer({ candidateId, pdfUrl, candidateName, classNam
               <ExternalLink className="w-4 h-4" />
               <span>Abrir PDF em Nova Guia</span>
             </a>
+          </div>
+        ) : !tokenReady && candidateId ? (
+          <div className="flex flex-col items-center justify-center h-full">
+            <RefreshCw className="w-8 h-8 text-muted-foreground animate-spin" />
+            <p className="text-sm text-muted-foreground mt-3">Preparando visualizador...</p>
           </div>
         ) : (
           proxyPdfUrl && (

@@ -9,8 +9,8 @@ import { apiFetch } from "@/lib/api";
 import type { Candidate } from "@/types";
 
 // ── Score Ring Animado ────────────────────────────────────────────────────────
-function ScoreRing({ score, tier }: { score: number | null; tier: string | null }) {
-  if (score === null || tier === null) return <span className="text-xs text-muted-foreground italic">—</span>;
+function ScoreRing({ score, tier }: { score?: number | null; tier?: string | null }) {
+  if (score === null || score === undefined || !tier) return <span className="text-xs text-muted-foreground italic">—</span>;
   
   const colors = {
     high: "stroke-emerald-500",

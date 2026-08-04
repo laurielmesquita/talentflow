@@ -29,6 +29,7 @@ export interface Candidate {
   is_flagged?: boolean;
   flagged_reason?: string | null;
   flagged_at?: string | null;
+  summary?: string | null;
   parent_id?: string | null;
 }
 

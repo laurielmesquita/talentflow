@@ -70,3 +70,84 @@ Esta documentação detalha a implementação técnica das funcionalidades e as 
   * **Bloqueio de Rota no Frontend:** O middleware do Next.js redireciona automaticamente usuários com cargo `Recruiter` que tentam acessar a tela administrativa `/dashboard/invite`.
 * **Cifragem de Senhas (Bcrypt):** Utilização do algoritmo `bcrypt` com salting de alta complexidade para segurança das senhas no banco.
 * **Disparos SMTP com TLS (Brevo):** Serviço SMTP integrado com a API da Brevo para o envio de e-mails transacionais (convites corporativos expiráveis em 7 dias e links de redefinição de senha válidos por 2 horas).
+
+---
+
+## 6. Serviço Proxy de PDF & Workspace de Auditoria
+
+* **Proxy Autenticado Cloudinary (`GET /api/candidates/{candidate_id}/pdf`):**
+  * Extrai o `public_id` da URL armazenada (`extract_cloudinary_public_id`), gera URL assinada via `cloudinary.utils.private_download_url` com `resource_type="raw"`.
+  * Streaming de bytes com `Content-Type: application/pdf`, `Content-Disposition: inline`, `Access-Control-Allow-Origin: *` e `Cache-Control: public, max-age=86400, stale-while-revalidate=3600`.
+  * Fallback: se a URL assinada falhar, tenta download direto com User-Agent de navegador (`httpx.get` com timeout 15s).
+  * Logging detalhado via `[pdf_proxy]` prefix para diagnóstico em produção.
+* **Configuração Cloudinary (`CLOUDINARY_URL`):** `@model_validator` em `config.py` extrai automaticamente `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` e `CLOUDINARY_API_SECRET` do formato `cloudinary://key:secret@name` quando a env var é setada.
+* **Autenticação Cross-Origin (`?token=`):** `get_current_user` em `deps.py` aceita token JWT como terceira fonte (após Authorization header e cookie HttpOnly) via `request.query_params.get("token")`, essencial para iframes no Safari.
+* **Visualizador de PDF (`PDFViewer.tsx`):**
+  * Monta a URL do proxy com `?token=` injetado do cookie do cliente via `getCookie("token")`.
+  * Gating por `tokenReady` previne race condition de renderização sem token.
+  * `useEffect` com leitura pós-SSR garante disponibilidade do cookie em produção (Vercel).
+  * `key={proxyPdfUrl}` força remount do iframe na troca de URL.
+  * CSP configurado com `frame-src 'self' blob: https: http://localhost:8000` para dev e produção.
+* **Workspace de Auditoria (`CandidateAuditWorkspace.tsx`):** Layout tela cheia com split 50/50, navegação em lote (`candidateIndex` state com setas), ações de approve/flag integradas.
+
+## 7. Portal Público de Vagas & Pipeline de Candidatura
+
+* **Entidade `JobApplication` (job_applications):**
+  * 25+ colunas incluindo: `full_name`, `email`, `phone`, `address`, `linkedin`, `cover_letter` (dados do formulário).
+  * `original_pdf_url`, `pdf_hash` (arquivo enviado pelo candidato).
+  * `ai_extracted_data` (JSON), `quality_score`, `quality_alerts`, `has_divergence`, `divergence_report` (resultado do pipeline IA).
+  * `otp_code` (SHA-256 hash), `otp_expires_at`, `email_verified`, `verified_at` (fluxo de verificação).
+  * `source` (public_portal vs internal), `application_status` (pending/verified/processed/rejected).
+  * `UniqueConstraint('tenant_id', 'candidate_id', 'job_id')` — previne candidaturas duplicadas.
+* **Verificação OTP com SHA-256:**
+  * OTP de 6 dígitos gerado aleatoriamente, armazenado como hash SHA-256 (não plaintext).
+  * Expiração configurável, endpoint de verificação `POST /api/public/apply/verify-otp`.
+  * Endpoint de polling `GET /api/public/apply/status/{application_id}` para acompanhar status do processamento.
+* **Detecção de Divergências (`_detect_divergences()`):**
+  * Compara `full_name`, `email`, `phone` entre formulário web e extração IA do PDF.
+  * Classifica severidade: `high` (nome diferente), `medium` (email/telefone diferente).
+  * Resultado armazenado como JSON em `divergence_report` para revisão do recrutador.
+* **Rotas Públicas (`PublicJobResponse`):**
+  * `GET /api/public/vagas` — lista vagas ativas (filtra `is_active=True`, `deleted_at IS NULL`).
+  * `GET /api/public/vagas/{slug}` — detalhe por slug semântico usando `resolve_job_id()`.
+  * Componentes: `PublicJobsList.tsx`, `PublicJobDetail.tsx`, `JobApplicationForm.tsx`.
+
+## 8. Governança de Feature Flags B2B
+
+* **Sistema de Planos (`config.py:PLAN_FEATURES`):**
+  * 6 flags por tier (Free/Pro/Enterprise): `candidate_limit`, `smart_match`, `batch_upload`, `custom_branding`, `quality_score_alerts`, `api_access`.
+  * Free: 50 candidatos, sem batch upload, sem custom branding, sem API access.
+  * Pro: 500 candidatos, todas as features habilitadas.
+  * Enterprise: ilimitado, todas as features.
+* **Serviço de Verificação (`services/features.py`):**
+  * `get_plan_features(plan_type)` retorna o dicionário de flags do plano.
+  * `check_feature_access(plan_type, feature_name)` verifica se uma feature específica está habilitada.
+* **Guardião de Rota (`deps.py:require_feature()`):**
+  * Factory de dependência FastAPI que bloqueia requisições com HTTP 403 se o plano do tenant não tiver a feature.
+  * Uso: `Depends(require_feature("batch_upload"))` em rotas protegidas por plano.
+
+## 9. Sandbox de IA Pública & Rate Limiting
+
+* **Endpoint de Demonstração (`POST /api/sandbox/extract`):**
+  * Aberto ao público (sem autenticação), permite upload de PDF para demonstração em tempo real da extração IA.
+  * Retorna `SandboxResponse` com no máximo 2 experiências.
+* **Rate Limiting por IP (`slowapi`):**
+  * `SANDBOX_RATE_LIMIT_PER_MINUTE = 3` — bloqueia IPs que excederem 3 requisições/minuto.
+  * `SANDBOX_DAILY_BUDGET = 100` — cap diário de processamentos com `threading.Lock` para thread-safety.
+  * Budget reseta à meia-noite (comparação de data), exaustão retorna HTTP 429.
+* **Componentes Frontend:** `SandboxDemo.tsx` (upload + preview), `SandboxDemoWrapper.tsx` (layout container), ambos na landing page.
+
+## 10. Integração de Billing Stripe
+
+* **Webhook (`POST /api/billing/webhook`):** Processa 3 eventos Stripe com lógica de negócio específica:
+  * `checkout.session.completed` → atualiza tenant para Pro, define `stripe_customer_id`, `stripe_subscription_id`, `candidate_count_limit=500`.
+  * `customer.subscription.updated` → sincroniza `plan_status`; se `canceled` ou `unpaid`, faz downgrade automático para Free.
+  * `customer.subscription.deleted` → downgrade para Free, limpa `stripe_subscription_id`.
+* **Checkout (`POST /api/billing/create-checkout-session`):** Cria sessão Stripe com `STRIPE_PRO_PRICE_ID` e redireciona para URL de checkout.
+* **Portal do Cliente (`POST /api/billing/portal`):** Gera sessão do Stripe Customer Portal para gerenciamento de assinatura/faturas.
+
+## 11. Utilitários de Infraestrutura
+
+* **Geração de Slugs (`services/slug.py`):** `slugify()` com normalização Unicode e `generate_slug()` com deduplicação contra a tabela `job_positions` (sufixos `-2`, `-3`).
+* **Resolução de Vagas (`services/job_lookup.py`):** `resolve_job_id(db, job_id, must_be_active)` — aceita UUID ou slug semântico, usada por rotas internas e públicas.
+* **Audit Log (`AuditLog`):** Registro de ações de usuários (`view`, `create`, `update`, `delete`, `flag`, `unflag`) com `entity_name`, `entity_id`, `user_id`, `tenant_id` e `timestamp`.

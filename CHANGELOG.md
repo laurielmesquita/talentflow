@@ -6,6 +6,29 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ---
 
 
+## [2.4.0] — 2026-08-04
+
+Esta versão entrega o **Workspace de Auditoria Side-by-Side com Proxy de PDF**, permitindo que recrutadores visualizem o currículo original lado a lado com os dados extraídos pela IA, diretamente no navegador — incluindo Safari. Inclui também a consolidação da documentação de produto (READMEs, features docs e AGENTS.md) cobrindo todas as funcionalidades implementadas desde a v1.0.
+
+### Adicionado
+- **Serviço Proxy Inline de PDF (`GET /api/candidates/{candidate_id}/pdf`):** Consome arquivos privados do Cloudinary via URL assinada (`cloudinary.utils.private_download_url`), transmite os bytes com `Content-Type: application/pdf` e `Content-Disposition: inline`, com Cache-Control de 24h e `Access-Control-Allow-Origin: *`.
+- **Workspace de Auditoria Side-by-Side (`CandidateAuditWorkspace.tsx`):** Layout de tela cheia 50/50 comparando o PDF original (esquerda) com a análise estruturada da IA (direita), com navegação em lote de candidatos e botões de aprovação/sinalização.
+- **Visualizador de PDF Resiliente (`PDFViewer.tsx`):** Componente de iframe cross-origin com injeção automática de token JWT via query string, gating anti-race condition, SSR hydration seguro, e fallback de erro com link para abrir em nova guia.
+- **Autenticação Cross-Origin para Iframes (`deps.py`):** `get_current_user` aceita token JWT via `?token=` query parameter como terceira fonte de autenticação (após Authorization header e cookie HttpOnly), contornando bloqueios de cookies de terceiros no Safari.
+- **Parse de `CLOUDINARY_URL` no Config (`config.py`):** `@model_validator` que extrai automaticamente `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY` e `CLOUDINARY_API_SECRET` do formato `cloudinary://key:secret@name`, eliminando configuração manual de 3 env vars separadas.
+- **Logging Detalhado no Proxy PDF:** Rastreamento de cada etapa do pipeline Cloudinary (extração de `public_id`, geração de signed URL, status HTTP, fallback direto) via `[pdf_proxy]` prefix para diagnóstico em produção via `fly logs`.
+
+### Corrigido
+- **CSP `frame-src` sem `localhost:8000` (`next.config.ts`):** O navegador bloqueava silenciosamente o iframe em desenvolvimento local por inconsistência entre `connect-src` (que permitia localhost) e `frame-src` (que só permitia `https:`).
+- **Race Condition de Token JWT (`PDFViewer.tsx`):** O iframe renderizava antes do `useEffect` ler o cookie, disparando 401 na API. Corrigido com gating por estado `tokenReady`.
+- **SSR Hydration do Cookie (`PDFViewer.tsx`):** `useState(() => getCookie("token"))` executava no servidor (onde `document` é `undefined`) retornando `null` permanente em produção. Corrigido restaurando `useEffect` para leitura pós-hidratação.
+- **Deploy Fly.io Travado em `gru` (`fly.toml`):** Falta de capacidade na região de São Paulo bloqueou 3 deploys consecutivos. Região primária alterada para `dfw` (Dallas) onde as máquinas já estavam operando.
+
+### Modificado
+- **Região Fly.io:** `primary_region` alterada de `gru` para `dfw`.
+- **Documentação Técnica:** Consolidação completa de 22 arquivos — READMEs, features docs, AGENTS.md, CHANGELOG e technical snapshot — cobrindo todas as funcionalidades implementadas desde a v1.0 que estavam ausentes da documentação.
+
+
 ## [2.3.0] — 2026-08-04
 
 Esta versão é um marco estratégico de engenharia no TalentFlow, introduzindo a infraestrutura moderna de gerenciamento de dependências com `uv` (PEP 621), a convenção Edge Routing `src/proxy.ts` no Next.js 16, a suíte de testes automatizados full-stack com Pytest e Vitest, e o serviço centralizado de Governança de Feature Flags por Tenant B2B.

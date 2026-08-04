@@ -4,6 +4,18 @@ Interface web moderna B2B do **TalentFlow**. Construída sobre **Next.js 16 (App
 
 ---
 
+## 🖥 Workspace de Auditoria Side-by-Side
+
+O diferencial visual do TalentFlow: uma tela de auditoria em **split 50/50** que coloca o **PDF original do currículo** lado a lado com os **dados estruturados extraídos pela IA**:
+
+1. **Painel Esquerdo — Documento Original (`PDFViewer.tsx`):** Renderiza o PDF diretamente do Cloudinary via iframe cross-origin, com injeção automática do token JWT via `?token=` query parameter e fallback visual para estados de erro
+2. **Painel Direito — Análise da IA:** Score de qualidade (0-100), alertas de dados ausentes, timeline de experiências, habilidades mapeadas e justificativas de compatibilidade
+3. **Navegação em Lote:** Setas anterior/próximo permitem auditar múltiplos candidatos sem sair da tela
+4. **Ações Rápidas:** Botões de aprovação e sinalização (blacklist) no próprio workspace
+5. **Segurança:** CSP com `frame-src` compatível, token JWT validado na borda (Edge Middleware), sem exposição de URLs privadas do Cloudinary
+
+---
+
 ## 🏗 Arquitetura e Engenharia de Frontend
 
 ### 1. Stack Base

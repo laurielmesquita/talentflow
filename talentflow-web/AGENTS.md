@@ -36,7 +36,6 @@ talentflow-web/
 │   │   ├── layout.tsx             ← RootLayout + ThemeProvider + metadata
 │   │   ├── page.tsx               ← Landing page (pública)
 │   │   ├── globals.css            ← Design System (tokens OKLCH + Tailwind v4)
-│   │   ├── middleware.ts          ← Edge Auth (valida JWT sem tocar o banco)
 │   │   ├── dashboard/page.tsx     ← Dashboard principal (stats + overview)
 │   │   ├── candidates/page.tsx    ← Banco de talentos
 │   │   ├── jobs/page.tsx          ← Gestão de vagas
@@ -48,7 +47,11 @@ talentflow-web/
 │   │   ├── reset-password/        ← Redefinir senha (token)
 │   │   ├── vagas/                 ← Página pública de vagas abertas
 │   │   ├── privacy/               ← Política de privacidade
+│   │   ├── jobs/[slug]/page.tsx    ← Detalhe de vaga (auth)
+│   │   ├── vagas/[slug]/page.tsx   ← Detalhe público de vaga
+│   │   ├── dashboard/candidates/[id]/audit/page.tsx ← Workspace de auditoria
 │   │   └── terms/                 ← Termos de uso
+│   ├── proxy.ts                   ← Proxy (valida JWT sem tocar o banco)
 │   ├── components/
 │   │   ├── CandidateTable.tsx     ← Tabela principal com inline expansion
 │   │   ├── CandidateModal.tsx     ← Modal de detalhe do candidato
@@ -71,10 +74,36 @@ talentflow-web/
 │   │   ├── LandingHeader.tsx      ← Header da landing page
 │   │   ├── HeroVisual.tsx         ← Seção hero da landing
 │   │   ├── Footer.tsx             ← Rodapé
-│   │   └── ui/                    ← Primitivos Shadcn/ui
-│   └── lib/
-│       ├── api.ts                 ← Wrapper fetch (credentials + Bearer)
-│       └── auth.ts                ← getSession / setSession / clearSession
+│   │   ├── ui/                    ← Primitivos Shadcn/ui
+│   │   ├── CandidateAuditWorkspace.tsx ← Tela cheia split 50/50 PDF vs IA
+│   │   ├── DeleteConfirmModal.tsx       ← Modal de confirmação de exclusão
+│   │   ├── design-switcher.tsx          ← Controle de variantes de design
+│   │   ├── JobApplicationForm.tsx       ← Formulário público de candidatura
+│   │   ├── JobCard.tsx                  ← Card compacto de vaga
+│   │   ├── LogoutButton.tsx             ← Botão de logout standalone
+│   │   ├── PageHeader.tsx               ← Cabeçalho de página reutilizável
+│   │   ├── PDFViewer.tsx                ← Visualizador de PDF cross-origin
+│   │   ├── Portal.tsx                   ← React Portal utility
+│   │   ├── preset-provider.tsx          ← Provider de preset de tema/design
+│   │   ├── PublicJobDetail.tsx          ← Detalhe público de vaga
+│   │   ├── PublicJobsList.tsx           ← Lista pública de vagas
+│   │   ├── RevealSection.tsx            ← Seção com reveal scroll (landing)
+│   │   ├── SandboxDemo.tsx              ← Demo interativa de extração IA
+│   │   ├── SandboxDemoWrapper.tsx       ← Wrapper do sandbox demo
+│   │   └── ScrollToTop.tsx              ← Botão flutuante voltar ao topo
+│   ├── lib/
+│   │   ├── api.ts                 ← Wrapper fetch com `credentials: 'include'` + `Authorization: Bearer`, classe `ApiError` com `status` e `data`
+│   │   ├── auth.ts                ← getSession / setSession / clearSession
+│   │   ├── data/
+│   │   │   ├── candidates.ts   ← Server Component data fetcher
+│   │   │   ├── jobs.ts         ← Server Component data fetcher
+│   │   │   └── categories.ts   ← Server Component data fetcher
+│   │   └── utils.ts            ← Utilitários gerais
+│   ├── types/
+│   │   ├── index.ts            ← Barrel export
+│   │   ├── job.ts              ← Job, PublicJob interfaces
+│   │   ├── candidate.ts        ← Candidate interface
+│   │   └── category.ts         ← Category interface
 ├── next.config.ts                 ← Security headers + CSP + rewrites
 ├── vercel.json                    ← Cache headers + config de deploy
 └── components.json                ← Configuração Shadcn/ui
@@ -143,7 +172,7 @@ login/page.tsx → apiFetch('/api/auth/login')
     │
     ▼ window.location.href = '/dashboard'  ← HARD REDIRECT obrigatório
     │
-    ▼ middleware.ts (Edge) lê cookie 'token' → valida JWT
+    ▼ proxy.ts (Edge) lê cookie 'token' → valida JWT
     │
     ├── Válido → renderiza dashboard
     └── Inválido → redireciona para /login
@@ -157,9 +186,9 @@ login/page.tsx → apiFetch('/api/auth/login')
 
 | Arquivo              | Função                                          |
 |----------------------|-------------------------------------------------|
-| `src/lib/api.ts`     | Wrapper `fetch` com `credentials: 'include'` + `Authorization: Bearer` do cookie client-side |
-| `src/lib/auth.ts`    | `getSession()`, `setSession()`, `clearSession()` |
-| `src/middleware.ts`  | Edge validation — decodifica JWT, valida `exp`  |
+| `src/lib/api.ts`     | Wrapper `fetch` com `credentials: 'include'` + `Authorization: Bearer`, classe `ApiError` com `status` e `data` |
+| `src/lib/auth.ts`    | `getSession()`, `setSession()` (salva 4 cookies: token, user_role, user_name, user_email), `clearSession()`, `getAuthHeaders()` |
+| `src/proxy.ts`  | Edge validation — decodifica JWT, valida `exp`  |
 
 ---
 
@@ -262,7 +291,7 @@ Configurações em:
 ### ⚠️ Modificar com cautela (exige revisão)
 - `src/lib/api.ts` — wrapper de fetch usado em todo o projeto
 - `src/lib/auth.ts` — gerenciamento de sessão
-- `src/middleware.ts` — lógica de Edge Auth
+- `src/proxy.ts` — lógica de Edge Auth
 
 ### 🚫 Proibido alterar sem aprovação do PO
 - Lógica de hard redirect no fluxo de login (`window.location.href`)

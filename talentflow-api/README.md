@@ -4,6 +4,18 @@ O motor de inteligência e ingestão de dados do **TalentFlow**. Construído sob
 
 ---
 
+## 📦 Serviço Proxy de PDF
+
+O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba currículos originais diretamente no navegador via iframe, sem expor URLs privadas do Cloudinary:
+
+1. **Recuperação Autenticada:** Extrai o `public_id` do Cloudinary da URL armazenada no banco e gera uma **URL assinada** via `cloudinary.utils.private_download_url`
+2. **Streaming Seguro:** Transmite os bytes brutos do PDF com `Content-Type: application/pdf`, `Content-Disposition: inline` e `Access-Control-Allow-Origin: *`
+3. **Cache de 24h:** Resposta com `Cache-Control: public, max-age=86400, stale-while-revalidate=3600`
+4. **Autenticação Cross-Origin:** Suporte a `?token=` query parameter para iframes em domínios diferentes (contorna bloqueio de cookies de terceiros no Safari)
+5. **Fallback Robusto:** Se a URL assinada falhar, tenta download direto com User-Agent de navegador
+
+---
+
 ## 🏗 Arquitetura e Engenharia de Dados
 
 ### 1. Stack Base

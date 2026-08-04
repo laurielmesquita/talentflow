@@ -17,7 +17,7 @@
 | Banco de dados | PostgreSQL 15 — Neon.tech (serverless)         |
 | ORM            | SQLAlchemy 2.x (async-compatible)              |
 | Migrações      | Alembic                                        |
-| Deploy         | Fly.io — região `gru` (São Paulo)              |
+| Deploy         | Fly.io — região `dfw` (Dallas)                 |
 | Porta local    | `8000`                                         |
 | Docs Swagger   | `http://localhost:8000/docs`                   |
 
@@ -45,10 +45,17 @@ talentflow-api/
 │   ├── models/
 │   │   └── domain.py        ← SQLAlchemy ORM models (todas as entidades)
 │   ├── schemas/
-│   │   └── auth.py          ← Pydantic schemas (min_length=8 em senhas)
+│   │   ├── auth.py          ← Login, Register, Token, ResetPassword (min_length=8)
+│   │   ├── extraction.py    ← CandidateExtraction, ExperienceItem (canonical AI output)
+│   │   └── job.py           ← JobResponse, PublicJobResponse (from_attributes=True)
 │   └── services/
-│       ├── auth.py          ← JWT (exp=4h, claim `iss`)
-│       └── sandbox.py       ← lógica demo com threading.Lock
+│       ├── auth.py          ← JWT (exp=4h, claim `iss`), hash/verify password
+│       ├── email.py         ← SMTP Brevo, send_email(), send_reset_password_email()
+│       ├── features.py      ← Feature Flags B2B, get_plan_features(), check_feature_access()
+│       ├── job_lookup.py    ← resolve_job_id() — UUID ou slug semântico
+│       ├── match_engine.py  ← Smart Match com Groq + Gemini fallback + static fallback
+│       ├── quality_score.py ← CV Quality Score 0-100 com score_tier() high/medium/low
+│       └── slug.py          ← slugify() + generate_slug() com deduplicação
 ├── alembic/                 ← histórico de migrações SQL
 ├── alembic.ini
 ├── ingest.py                ← script de ingestão em lote (CLI)
@@ -134,7 +141,7 @@ uvicorn app.main:app --reload --port 8000
 | `JWT_SECRET_KEY`        | PyJWT         | Assina tokens HMAC-SHA256              |
 | `GROQ_API_KEY`          | Groq          | Extração de texto (Llama 3.3 70B)      |
 | `GEMINI_API_KEY`        | Google        | OCR de PDFs escaneados (Gemini 2.5 Flash)|
-| `CLOUDINARY_URL`        | Cloudinary    | Storage de fotos de perfil             |
+| `CLOUDINARY_URL`        | Cloudinary    | Storage de fotos de perfil. Auto-parsed: `cloudinary://key:secret@name` → cloud_name, api_key, api_secret |
 | `STRIPE_SECRET_KEY`     | Stripe        | Billing/assinaturas                    |
 | `STRIPE_WEBHOOK_SECRET` | Stripe        | Verificação de webhooks                |
 
@@ -160,31 +167,85 @@ uvicorn app.main:app --reload --port 8000
 
 ## 7. Endpoints da API
 
-| Método | Rota                              | Auth   | Descrição                  |
-|--------|-----------------------------------|--------|----------------------------|
-| POST   | `/api/auth/login`                 | Não    | Login (emite JWT + cookie) |
-| POST   | `/api/auth/register`              | Não    | Cadastro de novo tenant    |
-| POST   | `/api/auth/logout`                | Cookie | Limpa cookie HttpOnly      |
-| POST   | `/api/auth/change-password`       | Cookie | Alterar senha              |
-| GET    | `/api/dashboard/stats`            | Cookie | Estatísticas do tenant     |
-| GET    | `/api/candidates`                 | Cookie | Lista candidatos           |
-| GET    | `/api/candidates/:id`             | Cookie | Detalhe de candidato       |
-| POST   | `/api/candidates/:id/flag`        | Cookie | Marcar candidato           |
-| POST   | `/api/candidates/:id/unflag`      | Cookie | Desmarcar candidato        |
-| DELETE | `/api/candidates/:id`             | Cookie | Remover candidato          |
-| GET    | `/api/jobs`                       | Cookie | Lista vagas                |
-| POST   | `/api/jobs`                       | Cookie | Criar vaga                 |
-| PUT    | `/api/jobs/:id`                   | Cookie | Atualizar vaga             |
-| DELETE | `/api/jobs/:id`                   | Cookie | Remover vaga               |
-| GET    | `/api/jobs/:id/match`             | Cookie | Smart Match (com cache)    |
-| GET    | `/api/categories`                 | Cookie | Lista categorias           |
-| POST   | `/api/categories`                 | Cookie | Criar categoria            |
-| PUT    | `/api/categories/:id`             | Cookie | Atualizar categoria        |
-| DELETE | `/api/categories/:id`             | Cookie | Remover categoria          |
-| POST   | `/api/public/apply`               | Não    | Candidatura pública        |
-| POST   | `/api/public/apply/verify-otp`    | Não    | Verificar OTP              |
-| POST   | `/api/public/apply/resend-otp`    | Não    | Reenviar OTP               |
-| GET    | `/api/health`                     | Não    | Health check               |
+### Autenticação
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/api/auth/login` | Não | Login (emite JWT + cookie HttpOnly) |
+| POST | `/api/auth/register` | Não | Cadastro de novo tenant + admin |
+| POST | `/api/auth/logout` | Cookie | Limpa cookie HttpOnly |
+| POST | `/api/auth/change-password` | Cookie | Alterar senha |
+| POST | `/api/auth/forgot-password` | Não | Gera token de reset + envia e-mail |
+| POST | `/api/auth/reset-password` | Não | Redefine senha via token |
+
+### Dashboard
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/dashboard/stats` | Cookie | Estatísticas agregadas do tenant |
+
+### Candidatos
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/candidates` | Cookie | Lista candidatos (paginado, filtrável) |
+| GET | `/api/candidates/:id` | Cookie | Detalhe completo do candidato |
+| GET | `/api/candidates/:id/pdf` | Cookie+Query | Proxy inline do PDF original (Cloudinary signed URL) |
+| GET | `/api/candidates/:id/versions` | Cookie | Histórico de versões do currículo |
+| POST | `/api/candidates/:id/replace` | Cookie | Substitui currículo por nova versão |
+| POST | `/api/candidates/:id/flag` | Cookie | Marcar candidato (blacklist) |
+| POST | `/api/candidates/:id/unflag` | Cookie | Desmarcar candidato |
+| DELETE | `/api/candidates/:id` | Cookie | Soft delete (preenche deleted_at) |
+
+### Upload
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/api/upload` | Cookie | Upload individual de PDF + extração IA |
+| POST | `/api/batches/upload` | Cookie | Upload em lote assíncrono (BackgroundTasks) |
+| GET | `/api/batches/:batch_id` | Cookie | Status do processamento em lote |
+
+### Vagas
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/jobs` | Cookie | Lista vagas do tenant |
+| GET | `/api/jobs/:id` | Cookie | Detalhe da vaga |
+| POST | `/api/jobs` | Cookie | Criar vaga (slug auto-gerado) |
+| PUT | `/api/jobs/:id` | Cookie | Atualizar vaga (invalida cache de match) |
+| DELETE | `/api/jobs/:id` | Cookie | Soft delete da vaga |
+| GET | `/api/jobs/:id/match` | Cookie | Smart Match (cache Warm Path < 50ms) |
+
+### Categorias
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/categories` | Cookie | Lista categorias do tenant |
+| POST | `/api/categories` | Cookie | Criar categoria |
+| PUT | `/api/categories/:id` | Cookie | Atualizar categoria |
+| DELETE | `/api/categories/:id` | Cookie | Remover categoria |
+
+### Público (sem auth)
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/public/vagas` | Não | Lista vagas ativas |
+| GET | `/api/public/vagas/:slug` | Não | Detalhe da vaga por slug |
+| POST | `/api/public/apply/:job_slug` | Não | Candidatura pública + upload PDF + envia OTP |
+| POST | `/api/public/apply/verify-otp` | Não | Verifica código OTP (SHA-256) |
+| GET | `/api/public/apply/status/:application_id` | Não | Polling de status da candidatura |
+
+### Billing (Stripe)
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/api/billing/create-checkout-session` | Cookie | Cria sessão de checkout Stripe (Pro) |
+| POST | `/api/billing/portal` | Cookie | Gera sessão do Customer Portal |
+| POST | `/api/billing/webhook` | Stripe | Processa eventos de assinatura |
+
+### Sandbox
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| POST | `/api/sandbox/extract` | Não | Demo pública de extração IA (rate-limited) |
+
+### Sistema
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/` | Não | Raiz: status + versão |
+| GET | `/health` | Não | Health check |
+| GET | `/api/health` | Não | Health check (prefixado) |
 
 ---
 

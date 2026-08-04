@@ -34,10 +34,12 @@ def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     
-    # Try Authorization header first, then cookie fallback
+    # Try Authorization header first, then cookie fallback, then query param fallback (for cross-origin iframes)
     actual_token = token
     if not actual_token:
         actual_token = request.cookies.get("token")
+    if not actual_token:
+        actual_token = request.query_params.get("token")
     
     if not actual_token:
         raise credentials_exception

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FileText, ExternalLink, Download, AlertCircle, RefreshCw } from "lucide-react";
 
 interface PDFViewerProps {
@@ -10,17 +10,34 @@ interface PDFViewerProps {
   className?: string;
 }
 
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift() || null;
+  return null;
+}
+
 export default function PDFViewer({ candidateId, pdfUrl, candidateName, className = "" }: PDFViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [authToken, setAuthToken] = useState<string | null>(null);
+
+  // Lê o token JWT do cookie do cliente para autenticação de iframe cross-origin
+  useEffect(() => {
+    const token = getCookie("token");
+    if (token) {
+      setAuthToken(token);
+    }
+  }, []);
 
   // API Backend URL para o Proxy de PDF
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
   
-  // Se possuímos o candidateId, utilizamos nosso serviço Proxy Inline de alta performance no FastAPI.
+  // Se possuímos o candidateId, utilizamos nosso serviço Proxy Inline com a query token no FastAPI.
   // Caso contrário, usamos a URL direta do Cloudinary.
   const proxyPdfUrl = candidateId 
-    ? `${API_URL}/api/candidates/${candidateId}/pdf`
+    ? `${API_URL}/api/candidates/${candidateId}/pdf${authToken ? `?token=${authToken}` : ""}`
     : pdfUrl;
 
   const downloadUrl = pdfUrl || proxyPdfUrl || "#";

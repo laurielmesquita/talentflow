@@ -1,70 +1,31 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { FileText, ExternalLink, Download, AlertCircle, Eye } from "lucide-react";
+import { useState } from "react";
+import { FileText, ExternalLink, Download, AlertCircle, RefreshCw } from "lucide-react";
 
 interface PDFViewerProps {
+  candidateId?: string | null;
   pdfUrl?: string | null;
   candidateName: string;
   className?: string;
 }
 
-export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDFViewerProps) {
-  const [blobUrl, setBlobUrl] = useState<string | null>(pdfUrl || null);
+export default function PDFViewer({ candidateId, pdfUrl, candidateName, className = "" }: PDFViewerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  useEffect(() => {
-    let active = true;
-    let currentBlobUrl: string | null = null;
+  // API Backend URL para o Proxy de PDF
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  
+  // Se possuímos o candidateId, utilizamos nosso serviço Proxy Inline de alta performance no FastAPI.
+  // Caso contrário, usamos a URL direta do Cloudinary.
+  const proxyPdfUrl = candidateId 
+    ? `${API_URL}/api/candidates/${candidateId}/pdf`
+    : pdfUrl;
 
-    if (!pdfUrl) {
-      setIsLoading(false);
-      return;
-    }
+  const downloadUrl = pdfUrl || proxyPdfUrl || "#";
 
-    // Se já é um blob local ou data URL, não refaz o fetch
-    if (pdfUrl.startsWith("blob:") || pdfUrl.startsWith("data:")) {
-      setBlobUrl(pdfUrl);
-      setIsLoading(false);
-      return;
-    }
-
-    async function loadPdfBlob() {
-      try {
-        const res = await fetch(pdfUrl!);
-        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-        const arrayBuffer = await res.arrayBuffer();
-        if (!active) return;
-
-        // Converte em Blob com MIME type 'application/pdf' explícito
-        const blob = new Blob([arrayBuffer], { type: "application/pdf" });
-        currentBlobUrl = URL.createObjectURL(blob);
-        setBlobUrl(currentBlobUrl);
-      } catch (err) {
-        // Fallback para a URL direta caso ocorra falha de rede/CORS
-        if (active) {
-          setBlobUrl(pdfUrl!);
-        }
-      } finally {
-        if (active) {
-          setIsLoading(false);
-        }
-      }
-    }
-
-    loadPdfBlob();
-
-    return () => {
-      active = false;
-      if (currentBlobUrl && currentBlobUrl.startsWith("blob:")) {
-        URL.revokeObjectURL(currentBlobUrl);
-      }
-    };
-  }, [pdfUrl]);
-
-  if (!pdfUrl) {
+  if (!pdfUrl && !candidateId) {
     return (
       <div className={`flex flex-col items-center justify-center h-full bg-card/60 backdrop-blur-sm rounded-xl border border-border/60 p-8 text-center ${className}`}>
         <div className="w-16 h-16 rounded-2xl bg-muted/50 flex items-center justify-center mb-4 text-muted-foreground">
@@ -101,8 +62,18 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
 
         {/* Botões de Ação Rápida */}
         <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          <button
+            onClick={() => {
+              setIsLoading(true);
+              setHasError(false);
+            }}
+            title="Recarregar visualizador"
+            className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg transition-colors"
+          >
+            <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin text-primary" : ""}`} />
+          </button>
           <a
-            href={pdfUrl}
+            href={proxyPdfUrl || "#"}
             target="_blank"
             rel="noopener noreferrer"
             title="Abrir em nova guia"
@@ -112,7 +83,7 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
             <span className="hidden xl:inline">Nova Guia</span>
           </a>
           <a
-            href={pdfUrl}
+            href={downloadUrl}
             download={`${candidateName.replace(/\s+/g, "_")}_Curriculo.pdf`}
             title="Baixar arquivo original"
             className="flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg shadow-sm transition-all hover:shadow"
@@ -125,20 +96,6 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
 
       {/* Área Principal do Visualizador (50% Split) */}
       <div className="relative flex-1 w-full h-full bg-slate-900/10 dark:bg-slate-950/40 min-h-[400px]">
-        {/* Loading overlay */}
-        {isLoading && (
-          <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-background/80 backdrop-blur-sm transition-opacity">
-            <div className="relative flex items-center justify-center w-12 h-12 mb-3">
-              <span className="absolute w-12 h-12 rounded-full border-2 border-primary border-t-transparent animate-spin" />
-              <Eye className="w-5 h-5 text-primary" />
-            </div>
-            <p className="text-xs font-medium text-muted-foreground animate-pulse">
-              Processando documento de {candidateName}...
-            </p>
-          </div>
-        )}
-
-        {/* Error / Fallback UI */}
         {hasError ? (
           <div className="flex flex-col items-center justify-center h-full p-8 text-center bg-card">
             <div className="w-14 h-14 rounded-2xl bg-amber-500/10 flex items-center justify-center mb-4 text-amber-500">
@@ -149,7 +106,7 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
               O arquivo original está seguro. Você pode visualizá-lo abrindo externamente.
             </p>
             <a
-              href={pdfUrl}
+              href={downloadUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="mt-5 px-5 py-2.5 bg-primary text-primary-foreground text-sm font-semibold rounded-xl shadow-md hover:shadow-lg transition-all flex items-center space-x-2"
@@ -159,18 +116,17 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
             </a>
           </div>
         ) : (
-          blobUrl && (
-            <object
-              data={blobUrl}
-              type="application/pdf"
-              className="w-full h-full border-0 bg-white dark:bg-slate-900"
-            >
-              <iframe
-                src={blobUrl}
-                title={`Currículo Original - ${candidateName}`}
-                className="w-full h-full border-0"
-              />
-            </object>
+          proxyPdfUrl && (
+            <iframe
+              src={proxyPdfUrl}
+              title={`Currículo Original - ${candidateName}`}
+              className="w-full h-full border-0 focus:outline-none bg-white dark:bg-slate-900"
+              onLoad={() => setIsLoading(false)}
+              onError={() => {
+                setIsLoading(false);
+                setHasError(true);
+              }}
+            />
           )
         )}
       </div>

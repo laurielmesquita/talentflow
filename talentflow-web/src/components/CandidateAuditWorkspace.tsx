@@ -270,6 +270,7 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
             {/* ── PAINEL ESQUERDO: VISUALIZADOR DO PDF ORIGINAL (50%) ──────── */}
             <div className="flex flex-col h-full w-full overflow-hidden rounded-xl border border-slate-800/80 bg-slate-900 shadow-xl">
               <PDFViewer
+                candidateId={candidate.id}
                 pdfUrl={candidate.original_pdf_url || candidate.pdf_url}
                 candidateName={candidate.full_name}
                 className="h-full border-0 rounded-none"

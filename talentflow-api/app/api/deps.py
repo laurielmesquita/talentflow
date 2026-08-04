@@ -146,3 +146,19 @@ def get_scoped_db(
     Dependência de banco de dados que retorna um ScopedSession atrelado ao tenant_id do usuário atual.
     """
     return ScopedSession(db, current_user.tenant_id)
+
+
+def require_feature(feature_name: str):
+    """
+    Factory de dependência FastAPI que verifica se o tenant do usuário logado tem acesso à feature especificada.
+    """
+    from app.services.features import check_feature_access
+    def dependency(current_user: User = Depends(get_current_user)):
+        plan_type = getattr(current_user.tenant, "plan_type", "free") if current_user.tenant else "free"
+        if not check_feature_access(plan_type, feature_name):
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"O recurso '{feature_name}' não está disponível no plano {plan_type.upper()}. Faça upgrade no menu Faturamento."
+            )
+        return True
+    return dependency

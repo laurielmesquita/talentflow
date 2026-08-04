@@ -11,10 +11,11 @@ interface PDFViewerProps {
 }
 
 export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDFViewerProps) {
+  const [viewMode, setViewMode] = useState<'web' | 'native'>('web');
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
-  // Timeout de segurança e destrave automático para WebKit/Safari e visualizadores nativos de PDF
+  // Timeout de segurança e destrave automático para WebKit/Safari
   useEffect(() => {
     if (!pdfUrl) return;
     setIsLoading(true);
@@ -22,13 +23,20 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
 
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 800);
+    }, 1200);
 
     return () => clearTimeout(timer);
-  }, [pdfUrl]);
+  }, [pdfUrl, viewMode]);
 
-  // Formata URL com parâmetros para melhor visualização no visualizador nativo do navegador
-  const enhancedUrl = pdfUrl ? `${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH` : null;
+  // Constrói a URL de renderização com base no motor selecionado
+  const getRenderUrl = () => {
+    if (!pdfUrl) return "";
+    if (viewMode === 'web') {
+      // Motor Web HTML5: contorna cabeçalhos Content-Disposition: attachment do Cloudinary e bloqueios nativos do WebKit
+      return `https://docs.google.com/viewer?url=${encodeURIComponent(pdfUrl)}&embedded=true`;
+    }
+    return `${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH`;
+  };
 
   if (!pdfUrl) {
     return (
@@ -47,7 +55,7 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
   return (
     <div className={`flex flex-col h-full bg-card/80 backdrop-blur-md rounded-xl border border-border/60 shadow-lg overflow-hidden transition-all duration-300 ${className}`}>
       {/* Barra de Ferramentas / Cabeçalho do PDF */}
-      <div className="flex items-center justify-between px-4 py-3 bg-muted/40 border-b border-border/60 backdrop-blur-md">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 bg-muted/40 border-b border-border/60 backdrop-blur-md">
         <div className="flex items-center space-x-2.5 min-w-0">
           <div className="p-1.5 bg-primary/10 rounded-lg text-primary flex-shrink-0">
             <FileText className="w-4 h-4" />
@@ -59,19 +67,56 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
                 PDF
               </span>
             </div>
-            <p className="text-sm font-medium text-foreground truncate max-w-[240px] sm:max-w-xs">
+            <p className="text-sm font-medium text-foreground truncate max-w-[200px] sm:max-w-xs">
               {candidateName}.pdf
             </p>
           </div>
         </div>
 
-        {/* Botões de Ação Rápida */}
+        {/* Seletor de Motor & Botões de Ação Rápida */}
         <div className="flex items-center space-x-1 sm:space-x-2 flex-shrink-0">
+          <div className="flex items-center bg-muted/70 p-0.5 rounded-lg border border-border/50 text-[11px] font-semibold">
+            <button
+              onClick={() => {
+                if (viewMode !== 'web') {
+                  setViewMode('web');
+                  setIsLoading(true);
+                  setHasError(false);
+                }
+              }}
+              className={`px-2 py-1 rounded-md transition-all flex items-center gap-1 ${
+                viewMode === 'web'
+                  ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              title="Motor Web HTML5 (Compatibilidade máxima com Cloudinary no Safari)"
+            >
+              <span>⚡ Motor Web</span>
+            </button>
+            <button
+              onClick={() => {
+                if (viewMode !== 'native') {
+                  setViewMode('native');
+                  setIsLoading(true);
+                  setHasError(false);
+                }
+              }}
+              className={`px-2 py-1 rounded-md transition-all flex items-center gap-1 ${
+                viewMode === 'native'
+                  ? 'bg-indigo-600 text-white shadow-sm font-bold'
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+              title="Motor Nativo do Navegador (Local)"
+            >
+              <span>💻 Nativo</span>
+            </button>
+          </div>
+
           <button
             onClick={() => {
               setIsLoading(true);
               setHasError(false);
-              setTimeout(() => setIsLoading(false), 800);
+              setTimeout(() => setIsLoading(false), 1200);
             }}
             title="Recarregar visualizador"
             className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted/60 rounded-lg transition-colors"
@@ -110,7 +155,7 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
               <Eye className="w-5 h-5 text-primary" />
             </div>
             <p className="text-xs font-medium text-muted-foreground animate-pulse">
-              Carregando documento de {candidateName}...
+              Carregando via {viewMode === 'web' ? 'Motor Web HTML5' : 'Motor Nativo'}...
             </p>
           </div>
         )}
@@ -137,9 +182,9 @@ export default function PDFViewer({ pdfUrl, candidateName, className = "" }: PDF
           </div>
         ) : (
           <iframe
-            src={enhancedUrl ?? ""}
+            src={getRenderUrl()}
             title={`Currículo Original - ${candidateName}`}
-            className="w-full h-full border-0 focus:outline-none"
+            className="w-full h-full border-0 focus:outline-none bg-white dark:bg-slate-900"
             onLoad={() => setIsLoading(false)}
             onError={() => {
               setIsLoading(false);

@@ -16,6 +16,7 @@ Esta versão consolida a auditoria e refatoração completa de arquitetura (Web 
 - **Utilitário de Resolução de Vagas (`app/services/job_lookup.py`):** Função `resolve_job_id()` centralizando a resolução resiliente por UUID vs. Slug semântico.
 - **Camada de Tipos do Frontend (`src/types/`):** Módulos centralizados `job.ts`, `candidate.ts`, `category.ts` e barrel `index.ts`.
 - **Camada de Data Fetching (`src/lib/data/`):** Módulos Server Component `jobs.ts`, `candidates.ts` e `categories.ts` com tratamento unificado de auth.
+- **Gerenciamento de Pacotes Python com `uv` (`pyproject.toml` & `uv.lock`):** Adoção oficial do manifesto PEP 621 e lockfile determinístico via `uv`, modernizando a infraestrutura do backend.
 - **Sistema de Design & UX (`DESIGN.md` & `CLAUDE.md`):** Padronização formal das diretrizes visuais e regras técnicas de desenvolvimento.
 
 ### Corrigido

@@ -12,6 +12,7 @@
 | Atributo       | Valor                                          |
 |----------------|------------------------------------------------|
 | Runtime        | Python 3.11+                                   |
+| Package Manager| **uv** (PEP 621 — `pyproject.toml` & `uv.lock`) |
 | Framework      | FastAPI (assíncrono, ASGI via Uvicorn)         |
 | Banco de dados | PostgreSQL 15 — Neon.tech (serverless)         |
 | ORM            | SQLAlchemy 2.x (async-compatible)              |

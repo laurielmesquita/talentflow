@@ -6,19 +6,28 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ---
 
 
-## [2.2.0] — 2026-08-01
+## [2.2.0] — 2026-08-04
 
-Esta versão refatora a interface de toda a aplicação para o **Design System Semântico em OKLCH (Tailwind v4)** e introduz animações High-Tech no Smart Match, Kanban de Candidatos e Dashboard Bento Grid.
+Esta versão consolida a auditoria e refatoração completa de arquitetura (Web & API), corrigindo vazamentos de conexões, eliminando memory leaks de UI, introduzindo schemas Pydantic declarativos e padronizando as camadas de dados e tipos no frontend.
 
 ### Adicionado
-- **Sistema de Design & UX (`DESIGN.md` & `CLAUDE.md`):** Padronização formal das diretrizes visuais em `DESIGN.md` e consolidação das regras técnicas de desenvolvimento em `CLAUDE.md` na raiz do projeto.
-- **Componentes Visuais (MagicUI / Shadcn):** Integração dos componentes `ShimmerButton`, `ShineBorder` e `NumberTicker` para microinterações avançadas de IA e dashboards.
+- **Schemas Canônicos de Extração (`app/schemas/extraction.py`):** Isolamento de `CandidateExtraction` e `ExperienceItem` em módulo Pydantic canônico, eliminando acoplamentos com o CLI `ingest.py`.
+- **DTOs Pydantic de Resposta (`app/schemas/job.py`):** Interfaces `JobResponse` e `PublicJobResponse` com `model_config = ConfigDict(from_attributes=True)` para serialização tipada das rotas de vagas.
+- **Utilitário de Resolução de Vagas (`app/services/job_lookup.py`):** Função `resolve_job_id()` centralizando a resolução resiliente por UUID vs. Slug semântico.
+- **Camada de Tipos do Frontend (`src/types/`):** Módulos centralizados `job.ts`, `candidate.ts`, `category.ts` e barrel `index.ts`.
+- **Camada de Data Fetching (`src/lib/data/`):** Módulos Server Component `jobs.ts`, `candidates.ts` e `categories.ts` com tratamento unificado de auth.
+- **Sistema de Design & UX (`DESIGN.md` & `CLAUDE.md`):** Padronização formal das diretrizes visuais e regras técnicas de desenvolvimento.
+
+### Corrigido
+- **Connection Leak no Pipeline de IA (P0):** Injeção de `finally: fallback_db.close()` no tratamento de exceção em `public_apply.py`.
+- **Memory Leak de Polling no Upload em Lote:** `useRef` e hook de unmount para `setInterval` em `BatchUploadButton.tsx`.
+- **Redirecionamento Incondicional no 401:** `jobs/page.tsx` e `smart-match/page.tsx` agora redirecionam para `/login` ao detectar sessão expirada.
+- **Classes CSS Tailwind Inválidas:** Substituição de `emerald-550`, `rose-550` e `amber-550` por tokens padronizados em `ConflictModal.tsx`.
 
 ### Modificado
-- **Refatoração Semântica de Cores (OKLCH):** Substituição de todas as cores estáticas brutas por variáveis semânticas do tema (`bg-background`, `bg-card`, `text-foreground`, `text-muted-foreground`, `border-border/50`, `hover:bg-accent/40`) em `CandidateCard.tsx`, `CandidateTable.tsx`, `JobMatchViewer.tsx`, `SmartMatchDashboard.tsx` e `DashboardClient.tsx`.
-- **Refatoração do Dashboard (Bento Grid & NumberTicker):** Reestruturação do painel principal para um layout Bento Grid minimalista, com contagem animada de números de KPIs via `NumberTicker` (`requestAnimationFrame` + `font-mono tabular-nums`) e suporte impecável a múltiplos temas.
-- **Visual High-Tech no Smart Match (`/smart-match`):** Animações de entrada escalonadas via `framer-motion`, barra de afinidade animada por IA e cards com borda iluminada (`border-primary/20`).
-- **Acessibilidade & Microinterações:** Revelação suave de ações secundárias no Kanban/Tabela tanto no hover quanto no foco por teclado (`opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-200`) e elevação `whileHover={{ y: -2 }}` acelerada por GPU.
+- **Configuração Explícita do Pool DB:** `pool_size=5` e `max_overflow=10` no `create_engine` em `database.py`.
+- **Fonte Única para `PLAN_LIMITS`:** Centralização no `Settings` em `config.py` e consumo padronizado na API de Auth e Billing.
+- **Refatoração Semântica de Cores (OKLCH):** Substituição de cores estáticas por variáveis semânticas do tema em componentes principais.
 
 
 ## [2.1.0] — 2026-07-20

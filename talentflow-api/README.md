@@ -44,21 +44,23 @@ Copie o template de chaves ambientais e configure as chaves do Neon, Gemini e Gr
 cp .env.example .env
 ```
 
-### 3. Engine Python e Dependências
+### 3. Gerenciamento com `uv` (PEP 621)
 ```bash
-python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+# Sincronizar o ambiente e criar venv automaticamente com uv:
+uv sync
+
+# Para adicionar novos pacotes:
+uv add <nome-do-pacote>
 ```
 
 ### 4. Executando as Migrações
 ```bash
-alembic upgrade head
+uv run alembic upgrade head
 ```
 
-### 5. Executando o Servidor
+### 5. Executando o Servidor Localmente
 ```bash
-uvicorn app.main:app --reload --port 8000
+uv run uvicorn app.main:app --reload --port 8000
 ```
 A arquitetura OpenAPI gera documentação Swagger UI automaticamente em `http://localhost:8000/docs`.
 

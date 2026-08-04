@@ -6,6 +6,13 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "TalentFlow API"
     VERSION: str = "2.1.0"
 
+    # Limites de planos (Fonte Única de Verdade)
+    PLAN_LIMITS: dict = {
+        "free": 50,
+        "pro": 500,
+        "enterprise": 999999
+    }
+
     # Banco de dados — Neon.tech em producao, PostgreSQL local em dev
     DATABASE_URL: str = "postgresql://postgres:password@localhost:5432/talentflow"
 

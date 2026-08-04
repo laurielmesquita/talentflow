@@ -8,7 +8,26 @@ from app.api.deps import get_db
 
 router = APIRouter()
 
-@router.get("/public/vagas")
+from app.schemas.job import PublicJobResponse
+
+def _serialize_public_job(j: JobPosition) -> PublicJobResponse:
+    return PublicJobResponse(
+        id=str(j.id),
+        slug=j.slug,
+        title=j.title,
+        description=j.description,
+        location=j.location,
+        employment_type=j.employment_type,
+        work_model=j.work_model,
+        responsibilities=j.responsibilities,
+        requirements=j.requirements,
+        benefits=j.benefits,
+        deadline=j.deadline.isoformat() if j.deadline else None,
+        required_skills=j.required_skills,
+        created_at=j.created_at.isoformat() if j.created_at else None
+    )
+
+@router.get("/public/vagas", response_model=List[PublicJobResponse])
 def list_public_jobs(db: Session = Depends(get_db)):
     """
     Retorna a listagem de todas as vagas ativas no portal público.
@@ -20,66 +39,21 @@ def list_public_jobs(db: Session = Depends(get_db)):
         (JobPosition.deadline == None) | (JobPosition.deadline >= today)
     ).order_by(JobPosition.created_at.desc()).all()
     
-    return [{
-        "id": str(j.id),
-        "slug": j.slug,
-        "title": j.title,
-        "description": j.description,
-        "location": j.location,
-        "employment_type": j.employment_type,
-        "work_model": j.work_model,
-        "responsibilities": j.responsibilities,
-        "requirements": j.requirements,
-        "benefits": j.benefits,
-        "deadline": j.deadline.isoformat() if j.deadline else None,
-        "required_skills": j.required_skills,
-        "created_at": j.created_at.isoformat() if j.created_at else None
-    } for j in jobs]
+    return [_serialize_public_job(j) for j in jobs]
 
-@router.get("/public/vagas/{slug}")
+@router.get("/public/vagas/{slug}", response_model=PublicJobResponse)
 def get_public_job(slug: str, db: Session = Depends(get_db)):
     """
     Retorna os detalhes de uma vaga pública específica identificada pelo slug semântico ou ID.
     Não exige autenticação.
     """
-    import uuid
-    is_uuid = False
-    try:
-        uuid.UUID(slug)
-        is_uuid = True
-    except ValueError:
-        pass
-
-    if is_uuid:
-        job = db.query(JobPosition).filter(
-            JobPosition.id == slug,
-            JobPosition.is_active == True
-        ).first()
-    else:
-        job = db.query(JobPosition).filter(
-            JobPosition.slug == slug,
-            JobPosition.is_active == True
-        ).first()
+    from app.services.job_lookup import resolve_job_id
+    job = resolve_job_id(db, slug, must_be_active=True)
 
     if not job:
-
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, 
             detail="Vaga não encontrada ou não está mais ativa."
         )
         
-    return {
-        "id": str(job.id),
-        "slug": job.slug,
-        "title": job.title,
-        "description": job.description,
-        "location": job.location,
-        "employment_type": job.employment_type,
-        "work_model": job.work_model,
-        "responsibilities": job.responsibilities,
-        "requirements": job.requirements,
-        "benefits": job.benefits,
-        "deadline": job.deadline.isoformat() if job.deadline else None,
-        "required_skills": job.required_skills,
-        "created_at": job.created_at.isoformat() if job.created_at else None
-    }
+    return _serialize_public_job(job)

@@ -11,12 +11,8 @@ router = APIRouter(tags=["Billing"])
 stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
-# Plan Limits Configuration
-PLAN_LIMITS = {
-    "free": 50,
-    "pro": 500,
-    "enterprise": 999999
-}
+# Plan Limits Configuration (consome a fonte única em config.py)
+PLAN_LIMITS = settings.PLAN_LIMITS
 
 @router.post("/create-checkout-session")
 def create_checkout_session(

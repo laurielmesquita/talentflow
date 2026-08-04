@@ -6,6 +6,7 @@ import { Loader2, Sparkles, ShieldAlert, Trash2, ChevronDown, ChevronLeft, Chevr
 import { motion, AnimatePresence } from "framer-motion";
 import DeleteConfirmModal from "./DeleteConfirmModal";
 import { apiFetch } from "@/lib/api";
+import type { Candidate } from "@/types";
 
 // ── Score Ring Animado ────────────────────────────────────────────────────────
 function ScoreRing({ score, tier }: { score: number | null; tier: string | null }) {
@@ -48,7 +49,7 @@ export default function CandidateTable({
   totalItems,
   pageSize,
 }: {
-  candidates: any[];
+  candidates: Candidate[];
   initialCandidateId?: string;
   currentPage: number;
   totalItems: number;
@@ -61,7 +62,7 @@ export default function CandidateTable({
   const [processingStatus, setProcessingStatus] = useState<{ done: number; total: number } | null>(null);
 
   // Detalhes dinâmicos de candidatos carregados sob demanda
-  const [loadedCandidates, setLoadedCandidates] = useState<Record<string, any>>({});
+  const [loadedCandidates, setLoadedCandidates] = useState<Record<string, Candidate>>({});
   const [loadingDetails, setLoadingDetails] = useState<Record<string, boolean>>({});
   const [flaggingId, setFlaggingId] = useState<string | null>(null);
   const [flagReason, setFlagReason] = useState("");

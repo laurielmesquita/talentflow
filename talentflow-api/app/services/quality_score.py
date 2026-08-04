@@ -17,13 +17,7 @@ Critérios de pontuação:
 Score máximo: 100 pts.
 """
 
-from __future__ import annotations
-
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    # Evita import circular — usado apenas para type hints
-    from ingest import CandidateExtraction
+from app.schemas.extraction import CandidateExtraction
 
 
 # ---------------------------------------------------------------------------

@@ -40,64 +40,42 @@ class JobUpdate(BaseModel):
     required_skills: Optional[str] = None
     is_active: Optional[bool] = None
 
-@router.get("/jobs")
+from app.schemas.job import JobResponse
+
+def _serialize_job(j: JobPosition) -> JobResponse:
+    return JobResponse(
+        id=str(j.id),
+        slug=j.slug,
+        title=j.title,
+        description=j.description,
+        location=j.location,
+        employment_type=j.employment_type,
+        work_model=j.work_model,
+        responsibilities=j.responsibilities,
+        requirements=j.requirements,
+        benefits=j.benefits,
+        application_email=j.application_email,
+        application_subject=j.application_subject,
+        deadline=j.deadline.isoformat() if j.deadline else None,
+        required_skills=j.required_skills,
+        is_active=j.is_active,
+        created_at=j.created_at.isoformat() if j.created_at else None
+    )
+
+@router.get("/jobs", response_model=List[JobResponse])
 def list_jobs(db: ScopedSession = Depends(get_scoped_db)):
     jobs = db.query(JobPosition).order_by(JobPosition.created_at.desc()).all()
-    return [{
-        "id": str(j.id),
-        "slug": j.slug,
-        "title": j.title,
-        "description": j.description,
-        "location": j.location,
-        "employment_type": j.employment_type,
-        "work_model": j.work_model,
-        "responsibilities": j.responsibilities,
-        "requirements": j.requirements,
-        "benefits": j.benefits,
-        "application_email": j.application_email,
-        "application_subject": j.application_subject,
-        "deadline": j.deadline.isoformat() if j.deadline else None,
-        "required_skills": j.required_skills,
-        "is_active": j.is_active,
-        "created_at": j.created_at.isoformat() if j.created_at else None
-    } for j in jobs]
+    return [_serialize_job(j) for j in jobs]
 
-@router.get("/jobs/{job_id}")
+@router.get("/jobs/{job_id}", response_model=JobResponse)
 def get_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
-    import uuid
-    is_uuid = False
-    try:
-        uuid.UUID(job_id)
-        is_uuid = True
-    except ValueError:
-        pass
-
-    if is_uuid:
-        job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
-    else:
-        job = db.query(JobPosition).filter(JobPosition.slug == job_id).first()
+    from app.services.job_lookup import resolve_job_id
+    job = resolve_job_id(db, job_id)
 
     if not job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
 
-    return {
-        "id": str(job.id),
-        "slug": job.slug,
-        "title": job.title,
-        "description": job.description,
-        "location": job.location,
-        "employment_type": job.employment_type,
-        "work_model": job.work_model,
-        "responsibilities": job.responsibilities,
-        "requirements": job.requirements,
-        "benefits": job.benefits,
-        "application_email": job.application_email,
-        "application_subject": job.application_subject,
-        "deadline": job.deadline.isoformat() if job.deadline else None,
-        "required_skills": job.required_skills,
-        "is_active": job.is_active,
-        "created_at": job.created_at.isoformat() if job.created_at else None
-    }
+    return _serialize_job(job)
 
 @router.post("/jobs")
 def create_job(job: JobCreate, db: ScopedSession = Depends(get_scoped_db)):

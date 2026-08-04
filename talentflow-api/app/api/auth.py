@@ -176,7 +176,7 @@ def register(request: RegisterRequest, response: Response, db: Session = Depends
             name=request.company_name,
             plan_name="free",
             plan_status="active",
-            candidate_count_limit=50
+            candidate_count_limit=settings.PLAN_LIMITS["free"]
         )
         db.add(tenant)
         db.commit()

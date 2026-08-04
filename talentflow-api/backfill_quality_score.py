@@ -16,7 +16,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from app.core.database import SessionLocal
 from app.models.domain import Candidate
 from app.services.quality_score import calculate_quality_score, score_tier
-from ingest import CandidateExtraction, ExperienceItem
+from app.schemas.extraction import CandidateExtraction, ExperienceItem
 
 
 def build_extraction_from_candidate(c: Candidate) -> CandidateExtraction:

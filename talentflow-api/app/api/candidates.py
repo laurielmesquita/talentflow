@@ -378,7 +378,8 @@ def replace_candidate(
     if not existing:
         raise HTTPException(status_code=404, detail="Candidato existente não encontrado")
 
-    from ingest import save_candidate_to_db, CandidateExtraction, ExperienceItem
+    from ingest import save_candidate_to_db
+    from app.schemas.extraction import CandidateExtraction, ExperienceItem
 
     ext = req.extracted_data
     exps = [

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks, Query
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, BackgroundTasks, Query, Response
 from sqlalchemy import or_, func, case
 from sqlalchemy.orm import Session, selectinload
 from pathlib import Path
@@ -223,6 +223,41 @@ def get_candidate(
         "flagged_reason": c.flagged_reason,
         "flagged_at": c.flagged_at.isoformat() if c.flagged_at else None
     }
+
+
+@router.get("/candidates/{candidate_id}/pdf")
+async def get_candidate_pdf(
+    candidate_id: str,
+    db: ScopedSession = Depends(get_scoped_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Serviço de Proxy Inline de PDF:
+    Consome o arquivo original do Cloudinary e serve para o cliente com Content-Type application/pdf,
+    Content-Disposition inline e CORS liberado. Resolve travamentos do Safari e incompatibilidades de attachment.
+    """
+    c = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+    if not c or not c.original_pdf_url:
+        raise HTTPException(status_code=404, detail="PDF não encontrado")
+
+    try:
+        import httpx
+        async with httpx.AsyncClient(follow_redirects=True, timeout=15.0) as client:
+            res = await client.get(c.original_pdf_url)
+            if res.status_code != 200:
+                raise HTTPException(status_code=502, detail="Erro ao recuperar arquivo PDF original do storage")
+
+            return Response(
+                content=res.content,
+                media_type="application/pdf",
+                headers={
+                    "Content-Disposition": f'inline; filename="{c.full_name}.pdf"',
+                    "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
+                    "Access-Control-Allow-Origin": "*",
+                }
+            )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Falha ao conectar com o serviço de mídia: {str(e)}")
 
 
 @router.post("/upload")

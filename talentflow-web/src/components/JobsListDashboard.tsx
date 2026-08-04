@@ -100,7 +100,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
   const filteredJobs = jobs.filter((job) => {
     const matchesSearch = 
       job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      job.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (job.location && job.location.toLowerCase().includes(searchTerm.toLowerCase())) ||
       (job.required_skills && job.required_skills.toLowerCase().includes(searchTerm.toLowerCase()));
     
     const isExpired = job.deadline ? new Date(job.deadline) < new Date() : false;

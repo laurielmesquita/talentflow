@@ -242,10 +242,14 @@ async def get_candidate_pdf(
 
     try:
         import httpx
-        async with httpx.AsyncClient(follow_redirects=True, timeout=15.0) as client:
-            res = await client.get(c.original_pdf_url)
-            if res.status_code != 200:
-                raise HTTPException(status_code=502, detail="Erro ao recuperar arquivo PDF original do storage")
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        }
+        async with httpx.AsyncClient(follow_redirects=True, timeout=20.0) as client:
+            res = await client.get(c.original_pdf_url, headers=headers)
+            if res.status_code not in (200, 206, 304):
+                print(f"[pdf_proxy] Cloudinary retornou HTTP {res.status_code} para URL: {c.original_pdf_url}")
+                raise HTTPException(status_code=502, detail=f"Erro ao recuperar arquivo PDF original do storage (Status: {res.status_code})")
 
             return Response(
                 content=res.content,
@@ -256,6 +260,8 @@ async def get_candidate_pdf(
                     "Access-Control-Allow-Origin": "*",
                 }
             )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Falha ao conectar com o serviço de mídia: {str(e)}")
 

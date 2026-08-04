@@ -58,12 +58,7 @@ interface DashboardStats {
   recent_candidates: RecentCandidate[];
 }
 
-interface Job {
-  id: string;
-  title: string;
-  deadline: string;
-  is_active: boolean;
-}
+import type { Job } from "@/types";
 
 interface Match {
   candidate_id: string;

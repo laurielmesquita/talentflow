@@ -16,24 +16,7 @@ import PageHeader from "@/components/PageHeader";
 import { getSession } from "@/lib/auth";
 import { apiFetch } from "@/lib/api";
 import Portal from "@/components/Portal";
-
-interface Job {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  employment_type: string;
-  work_model: string;
-  responsibilities: string;
-  requirements: string;
-  benefits: string;
-  application_email: string;
-  application_subject: string;
-  deadline: string;
-  required_skills: string;
-  is_active: boolean;
-  created_at: string;
-}
+import type { Job } from "@/types";
 
 export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
   const router = useRouter();

@@ -46,23 +46,7 @@ interface DashboardStats {
   recent_candidates: RecentCandidate[];
 }
 
-interface Job {
-  id: string;
-  title: string;
-  description: string;
-  location: string;
-  employment_type: string;
-  work_model: string;
-  responsibilities: string;
-  requirements: string;
-  benefits: string;
-  application_email: string;
-  application_subject: string;
-  deadline: string;
-  required_skills: string;
-  is_active: boolean;
-  created_at: string;
-}
+import type { Job } from "@/types";
 
 async function getStats(token?: string): Promise<DashboardStats> {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';

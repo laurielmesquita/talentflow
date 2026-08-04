@@ -29,7 +29,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between px-6 h-14 max-w-7xl mx-auto">
 
         {/* ── Logo / Brand ── */}
-        <Link href="/" className="flex items-center gap-2.5 group shrink-0">
+        <Link href="/dashboard" className="flex items-center gap-2.5 group shrink-0">
           <div className="relative w-7 h-7 rounded-[6px] overflow-hidden group-hover:scale-105 transition-transform duration-200 flex-shrink-0">
             <Image
               src="/brand/logo-dark.webp"

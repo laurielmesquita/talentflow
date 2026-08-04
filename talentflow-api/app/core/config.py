@@ -13,6 +13,34 @@ class Settings(BaseSettings):
         "enterprise": 999999
     }
 
+    # Governança de Recursos e Feature Flags por Plano B2B
+    PLAN_FEATURES: dict = {
+        "free": {
+            "candidate_limit": 50,
+            "smart_match": True,
+            "batch_upload": False,
+            "custom_branding": False,
+            "quality_score_alerts": True,
+            "api_access": False,
+        },
+        "pro": {
+            "candidate_limit": 500,
+            "smart_match": True,
+            "batch_upload": True,
+            "custom_branding": True,
+            "quality_score_alerts": True,
+            "api_access": True,
+        },
+        "enterprise": {
+            "candidate_limit": 999999,
+            "smart_match": True,
+            "batch_upload": True,
+            "custom_branding": True,
+            "quality_score_alerts": True,
+            "api_access": True,
+        },
+    }
+
     # Banco de dados — Neon.tech em producao, PostgreSQL local em dev
     DATABASE_URL: str = "postgresql://postgres:password@localhost:5432/talentflow"
 

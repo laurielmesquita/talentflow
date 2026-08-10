@@ -2,13 +2,13 @@
 
 > Documento de planejamento visual e técnico para o redesign do TalentFlow.
 > Branch inicial: `design/foundation`
-> Status: combinação aprovada; vertical slice do Dashboard em implementação
+> Status: combinação aprovada; fundação técnica entregue; assets visuais pendentes
 
 ## 1. Objetivo
 
 Transformar o TalentFlow em uma plataforma SaaS B2B mais atraente, compreensível e persuasiva, sem sacrificar a densidade operacional necessária para recrutadores.
 
-O redesign não será apenas uma troca de cores ou aplicação de glassmorphism. Ele combina:
+O redesign combina:
 
 - Redesign de produto
 - Direção de arte
@@ -37,324 +37,71 @@ As pastas `02-Branding/` e `03-Midia/` estão vazias. Portanto, o trabalho inclu
 
 **Human-centered AI recruitment platform with cinematic glass interfaces.**
 
-O produto deve combinar tecnologia visualmente impressionante com pessoas, contexto, clareza e benefício operacional.
+### 3.2 Estratégia híbrida aprovada
 
-### 3.2 Estratégia híbrida recomendada
-
-- **Área operacional:** Liquid Glass moderado e alta densidade de informação
+- **Produto (dashboard, candidatos, vagas):** Liquid Glass moderado, alta densidade
 - **Landing page:** Human Editorial + Cinematic AI
-- **Smart Match:** linguagem tecnológica, explicável e mais animada
-- **Auditoria e PDF:** glass discreto, priorizando legibilidade
-- **Autenticação:** superfície limpa, confiável e com baixa distração
-
-### 3.3 Liquid Glass
-
-Usar como sistema de profundidade, não como decoração aplicada a todos os elementos:
-
-- Superfícies translúcidas em camadas
-- `backdrop-filter: blur()` e `saturate()` com fallback
-- Bordas especulares suaves
-- Gradientes violetas, azulados e âmbar
-- Sombras difusas de profundidade
-- Auroras e grids sutis
-- Diferentes níveis de elevação visual
-
-Tabelas, campos críticos, documentos e áreas de leitura devem permanecer mais opacos e sólidos.
-
-## 4. Direções de Experimentação
-
-As direções serão testadas em branches independentes:
-
-```text
-main
-├── design/foundation
-├── design/liquid-glass
-├── design/cinematic-ai
-├── design/human-editorial
-└── design/swiss-minimal
-```
-
-### Liquid Glass
-
-Premium, espacial e tecnológico. Melhor para dashboard, Smart Match, hero e componentes de produto.
-
-### Cinematic AI
-
-Mais expressivo, com composição 3D, narrativa visual e transições de maior impacto. Melhor para landing e campanhas.
-
-### Human Editorial
-
-Mais humano, confiável e contextual. Usa imagens editoriais e narrativa centrada no recrutador.
-
-### Swiss Minimal
-
-Precisão, clareza e foco em conversão. Útil como comparação para evitar excesso visual.
-
-## 5. Comunicação Visual
-
-O novo site deve usar quatro camadas de comunicação:
-
-### Interface de produto
-
-- Dashboards
-- Scores de candidatos
-- Smart Match
-- Upload e processamento
-- Auditoria de currículos
-
-### Ilustrações explicativas
-
-- Currículo entrando no sistema
-- IA extraindo informações
-- Candidato sendo ranqueado
-- Recrutador tomando decisão
-- Fluxo entre vaga, candidatos e Smart Match
-
-### Imagens editoriais
-
-- Recrutadores em contexto profissional
-- Times avaliando talentos
-- Cenas humanas e corporativas
-- Diversidade com aparência autêntica, não banco de imagens genérico
-
-### Elementos 3D e motion
-
-- Objetos abstratos representando dados
-- Cards, documentos e esferas flutuantes
-- Fluxos de partículas
-- Camadas de glass em movimento
-- Visualização do processamento de IA
-
-Todo elemento visual deve explicar, reforçar ou orientar. Nenhum efeito deve existir apenas para preencher espaço.
-
-## 6. Landing Page e Conversão
-
-A landing deve seguir esta narrativa:
-
-1. Hero com proposta de valor direta
-2. Demonstração visual imediata do produto
-3. Problemas do recrutamento tradicional
-4. Solução correspondente para cada problema
-5. Fluxo visual de ingestão e análise de currículo
-6. Smart Match explicado visualmente
-7. Auditoria e confiabilidade da IA
-8. Segurança, LGPD e isolamento multi-tenant
-9. Recursos organizados por plano
-10. CTA final com baixa fricção
-
-Cada seção deve responder uma pergunta concreta do visitante. Elementos decorativos não devem competir com o CTA ou com a mensagem principal.
-
-## 7. Biblioteca de Assets
-
-Os assets visuais devem ser organizados em:
-
-```text
-talentflow-web/public/visuals/
-├── hero/
-├── product-scenes/
-├── workflow/
-├── smart-match/
-├── audit/
-├── people/
-├── backgrounds/
-└── social/
-```
-
-### Assets prioritários
-
-- Hero principal sem texto embutido
-- Fluxo visual de análise de currículo
-- Smart Match
-- Auditoria lado a lado
-- Backgrounds abstratos para glass
-- Imagens editoriais de confiança
-- Open Graph image
-- Assets para compartilhamento social
-
-Imagens geradas não devem conter títulos, botões ou textos importantes. O texto deve ser renderizado em HTML para preservar acessibilidade, responsividade e tradução.
-
-## 8. 3D e Interatividade
-
-### Usos recomendados
-
-- Hero da landing
-- Seção de processamento de IA
-- Smart Match
-- CTA final
-- Empty states premium selecionados
-
-### Áreas sem 3D pesado
-
-- Tabelas de candidatos
-- Formulários
-- Auditoria de PDF
-- Modais operacionais
-- Listas longas
-- Navegação principal
-
-### Estratégia técnica
-
-Começar com CSS 3D e Framer Motion. Adicionar React Three Fiber somente quando houver uma cena que realmente comunique o produto.
-
-Dependências candidatas, somente após validação do protótipo:
-
-- `three`
-- `@react-three/fiber`
-- `@react-three/drei`
-
-Toda cena 3D deve ter:
-
-- Carregamento dinâmico
-- Fallback estático
-- Poster ou imagem substituta
-- Suspense
-- Redução automática com `prefers-reduced-motion`
-- Limite explícito de custo de renderização
-
-## 9. Motion Design
-
-Framer Motion continuará como base do projeto.
-
-Usar:
-
-- Spring physics
-- Staggered reveals
-- Scroll-triggered sections
-- Layout transitions
-- Hover com reflexo de luz
-- Transições de processamento
-- Progressão visual de upload
-- Animações de score
-- Parallax leve no hero
-
-Evitar:
-
-- Blur animado continuamente
-- Animações em tabelas extensas
-- Movimento obrigatório em mobile
-- Alterações que causem layout shift
-- Backgrounds pesados em todas as rotas
-
-GSAP poderá ser avaliado para timelines cinematográficas ou scroll pinning, mas não deve ser adicionado antes de existir uma necessidade concreta. Lenis e bibliotecas redundantes de animação não são prioridade.
-
-## 10. Skills e Ferramentas
-
-### Skills
-
-- `design`: direção de arte, branding, assets e ícones
-- `design-system`: tokens, especificações e componentes
-- `ui-styling`: Tailwind, componentes acessíveis e responsividade
-- `ui-ux-pro-max`: padrões de UX, conversão, motion e performance
-- `banner-design`: hero, Open Graph e assets sociais
-- `ai-multimodal`: geração e avaliação de imagens
-- `chrome-devtools`: screenshots e validação visual por breakpoint
-
-### Princípios de uso
-
-- Gerar várias direções antes de escolher uma
-- Separar imagem de fundo de conteúdo textual
-- Comparar variantes no mesmo viewport
-- Validar assets em light e dark mode
-- Não instalar dependências sem validar o protótipo
-
-## 11. Tokens e Componentes
-
-O primeiro trabalho técnico será evoluir `src/app/globals.css` com tokens para:
-
-- Superfícies glass
-- Superfícies opacas
-- Bordas especulares
-- Highlights
-- Sombras de profundidade
-- Níveis de blur
-- Auroras e gradientes
-- Estados interativos
-
-Componentes candidatos, a extrair somente após repetição comprovada:
-
-- `GlassPanel`
-- `GlassCard`
-- `GlassButton`
-- `GlassInput`
-- `GlassDialog`
-- `GlassDrawer`
-- `GlassBadge`
-- `GlassSkeleton`
-- `GlassTooltip`
-
-Não criar abstrações antecipadamente. Primeiro validar os padrões no protótipo.
-
-## 12. Ordem de Implementação
-
-1. Tokens e base visual
-2. Protótipo do Dashboard
-3. Navbar, headers e componentes compartilhados
-4. Banco de candidatos
-5. Vagas
-6. Smart Match
-7. Auditoria PDF
-8. Landing page
-9. Autenticação
-10. Páginas públicas
-11. Assets sociais e Open Graph
-12. Auditoria visual, funcional, acessível e de performance
-
-O primeiro vertical slice deve conter apenas:
-
-- Navbar
-- Dashboard
-- Um KPI
-- Um card
-- Um modal
-- Light mode
-- Dark mode
-- Mobile
-
-## 13. Critérios de Sucesso
-
-### Comunicação
-
-- O visitante entende o produto em poucos segundos
-- O benefício aparece antes da descrição técnica
-- Cada seção possui uma função narrativa
-- O CTA principal é evidente
-
-### Produto
-
-- Tabelas continuam legíveis
-- Scores e estados continuam claros
-- Fluxos de upload não perdem feedback
-- Smart Match parece explicável, não apenas decorativo
-
-### Técnica
-
-- Sem regressão de autenticação
-- Sem alteração da API
-- Sem alteração do CSP sem revisão explícita
-- Sem alteração do dual-cookie
-- Sem impacto relevante no carregamento inicial
-- Fallback para navegadores sem `backdrop-filter` ou WebGL
-
-### Acessibilidade
-
-- Contraste mínimo WCAG validado
-- Foco de teclado visível
-- Imagens significativas com texto alternativo
-- Cor não é o único indicador de estado
-- Suporte a `prefers-reduced-motion`
-- Alvos interativos com pelo menos 44px
-
-### Performance
-
-- 3D carregado sob demanda
-- Imagens otimizadas com `next/image`
-- Assets comprimidos e dimensionados
-- Sem animação de propriedades que causem reflow
-- Testes em mobile real e conexão limitada
-
-## 14. Limites de Segurança
-
-Este redesign não deve alterar sem aprovação explícita:
+- **Smart Match:** linguagem tecnológica, explicável e animada
+- **Autenticação:** superfície limpa, confiável, baixa distração
+
+### 3.3 Moodboards aprovados
+
+Os três moodboards comparáveis estão em:
+
+- `docs/moodboards/liquid-glass.svg`
+- `docs/moodboards/cinematic-ai.svg`
+- `docs/moodboards/human-editorial.svg`
+- `docs/moodboards/index.html` (visualização lado a lado)
+
+## 4. O que foi entregue (fundação técnica)
+
+### Tokens CSS em `talentflow-web/src/app/globals.css`
+
+- `--glass-bg`, `--glass-bg-strong` — superfícies translúcidas
+- `--glass-border`, `--glass-highlight` — bordas especulares
+- `--glass-shadow`, `--glass-blur` — profundidade
+- `--aurora-violet`, `--aurora-cyan`, `--aurora-warm` — atmosfera
+- Classes utilitárias: `.glass-panel`, `.glass-panel-strong`, `.glass-panel-interactive`, `.dashboard-atmosphere`
+- Suporte a light mode, dark mode e `prefers-reduced-motion`
+
+### Componentes atualizados (18 arquivos)
+
+| Arquivo | Alteração |
+|---------|-----------|
+| `Navbar.tsx` | Header flutuante glass, link "Início" para landing |
+| `DashboardClient.tsx` | Atmosfera, KPIs com glass, Smart Match com glass |
+| `candidates/page.tsx` | KPIs glass, atmosfera, remoção de cores slate |
+| `CandidateTable.tsx` | Linhas e painéis com glass |
+| `SearchAndFilters.tsx` | Inputs glass, chips glass, filtros glass |
+| `JobsListDashboard.tsx` | Filtros, cards e modais glass |
+| `JobCard.tsx` | Card com glass interativo |
+| `SmartMatchDashboard.tsx` | Lista de vagas glass, painel de match glass, overflow corrigido |
+| `CategoriesDashboard.tsx` | Cards e modais glass |
+| `CandidateAuditWorkspace.tsx` | Header e painéis glass |
+| `page.tsx` (landing) | Atmosfera, seções glass, badge com glow |
+| `HeroVisual.tsx` | Substituído: de terminal para ilustração SVG editorial |
+| `login/page.tsx` | Atmosfera, card glass |
+| `forgot-password/page.tsx` | Atmosfera, card glass |
+| `reset-password/page.tsx` | Atmosfera, card glass |
+| `PublicJobsList.tsx` | Hero glass, lista glass, barra de busca glass |
+| `PublicJobDetail.tsx` | Sidebar glass, atmosfera |
+
+### Assets visuais
+
+- `public/visuals/hero/talentflow-hero.svg` — ilustração abstrata editorial (figura humana, rede de dados, painéis IA, sinais de score)
+
+### Graphify
+
+- Base de conhecimento atualizada em `graphify-out/`
+- 1027 nós, 1492 arestas, 88 comunidades
+
+### Validação
+
+- `npm run build` ✓
+- `npm run test` (6 testes) ✓
+- API local funcional (`uv run uvicorn`) ✓
+
+### O que NÃO foi alterado (limites de segurança)
 
 - `src/lib/auth.ts`
 - `src/proxy.ts`
@@ -362,52 +109,178 @@ Este redesign não deve alterar sem aprovação explícita:
 - Proxy de PDF
 - Autenticação cross-origin
 - API ou modelos de dados
-- `next.config.ts` e CSP
+- `next.config.ts`
 - Variáveis de ambiente
 
-## 15. Processo de Aprovação
+## 5. O que está pendente (segunda rodada)
 
-1. Gerar três moodboards
-2. Escolher uma direção visual
-3. Criar o vertical slice do Dashboard
-4. Validar desktop, mobile, light e dark
-5. Aprovar ou rejeitar a linguagem visual
-6. Consolidar tokens e componentes
-7. Expandir para as demais rotas
+### Landing page — composição editorial
 
-O redesign completo só deve começar após a aprovação do vertical slice.
+Cada seção da landing precisa de um tratamento visual próprio, não apenas glass sobre o layout antigo:
 
-## 16. Primeira Referência de Design System
+| Seção | Estado atual | Necessário |
+|-------|-------------|------------|
+| Hero | Ilustração editorial pronta ✓ | Motion, glow refinado |
+| Sandbox demo | Glass aplicado | Ilustração de fluxo de extração |
+| Problemas (3 cards) | Glass aplicado | Substituir por composição editorial com imagens de contexto humano |
+| Features (bento grid) | Glass aplicado | Ilustrações por feature, não ícones genéricos |
+| How it works | Igual ao original | Ilustração de pipeline passo a passo |
+| CTA final | Igual ao original | Composição com profundidade, imagem humana |
 
-Uma busca inicial com `ui-ux-pro-max` apontou para uma direção de SaaS de IA cinematográfico, com glass, iluminação ambiente e sensação premium. A recomendação será adaptada para web e não será aplicada literalmente:
+### Assets visuais pendentes
 
-- **Base:** dark mode atmosférico como referência para o hero e para o Smart Match
-- **Contraste:** light mode continua suportado e não deve ser tratado como uma conversão automática do dark mode
-- **Primária:** violeta elétrico
-- **Secundária:** índigo
-- **Acento:** rosa ou âmbar usado apenas para CTA e sinais de IA
-- **Tipografia:** Inter continua como base operacional; uma fonte display mais humana poderá ser avaliada somente para títulos da comunicação pública
-- **Motion:** transições spring, iluminação ambiente lenta e reveals de seção
-- **Glass:** blur moderado, borda especular e superfícies com opacidade suficiente para WCAG
+Ilustrações a gerar:
 
-A referência também sugeriu Calistoga para títulos e GSAP Flip para transições complexas. Essas opções ficam em avaliação: o sistema atual usa Inter, JetBrains Mono e Framer Motion, portanto nenhuma troca de tipografia ou inclusão de GSAP deve ocorrer sem validação no protótipo e análise de bundle.
+1. Fluxo de análise de currículo (para seção Sandbox)
+2. Smart Match visual (para seção Features)
+3. Auditoria side-by-side (para seção Features)
+4. Imagens editoriais de contexto humano (para seção Problemas)
+5. Pipeline de ingestão (para seção How it works)
+6. Background abstrato para CTA final
+7. Open Graph image
+8. Assets para redes sociais
 
-## 17. Primeiro Vertical Slice
+### 3D e motion
 
-A combinação aprovada pelo PO é:
+- Hero: parallax, partículas ou cena 3D leve
+- Seções: scroll-triggered reveals com mais expressão
+- Smart Match: animação de score e ranking
+- CTA: elemento 3D ou motion cinematográfico
 
-- **Human Editorial** para comunicação e conversão
-- **Liquid Glass** para dashboard e produto
-- **Cinematic AI** para hero, Smart Match e demonstrações
+### Ajustes de produto
 
-O primeiro vertical slice começou na branch `design/foundation` e aplica a linguagem Liquid Glass ao Dashboard sem alterar dados, autenticação ou API. Ele inclui auroras ambientais, superfícies glass, bordas especulares, motion com fallback para redução de movimento e um seletor de vagas baseado apenas em tokens semânticos.
+- Intensidade do glass nas tabelas (reduzir se prejudicar legibilidade)
+- Consistência entre páginas de vagas (JobsListDashboard vs JobsDashboard — um está glass, o outro não)
+- Tema do ThemeToggle ainda usa classes slate estáticas
+- Páginas de termos e privacidade sem tratamento visual
 
-## 18. Próximo Entregável
+## 6. Análise de erros da primeira rodada
 
-O próximo entregável após a validação visual do Dashboard será:
+### O que deu errado
 
-1. Liquid Glass premium
-2. Cinematic AI
-3. Human Editorial
+1. **Salto do plano para a execução em massa.** O plano previa moodboards → protótipo do Dashboard → aprovação → expansão. Em vez disso, apliquei tokens em 18 arquivos de uma vez, sem validação visual intermediária.
 
-Cada variante deverá conter hero, paleta, tipografia, tratamento de imagem, motion, exemplo de KPI e uma composição de Smart Match. A escolha da direção será feita antes da implementação das 16 rotas.
+2. **Confundi fundação com redesign.** Tokens de glass e auroras são infraestrutura, não o redesign em si. Entregar CSS como se fosse a direção de arte frustrou a expectativa de ver imagens, composição e narrativa visual.
+
+3. **Não gerei assets antes do código.** O plano explicitamente listava ilustrações como etapa prioritária. Fui direto para classes Tailwind sem produzir as imagens que dariam identidade às seções.
+
+4. **Ausência de gates de aprovação.** Cada seção da landing deveria ter sido substituída uma a uma, com o usuário validando antes de avançar. Aplicar tudo de uma vez impediu a correção de rota.
+
+5. **Não consultei o Graphify.** O AGENTS.md manda usar `graphify-out/` como fonte primária para economia de tokens. Li arquivos fonte diretamente, consumindo contexto desnecessariamente.
+
+6. **Contexto da conversa saturado.** Com 55+ mensagens, o histórico carregado degradou a qualidade incremental. O redesign visual completo exigia uma conversa dedicada.
+
+### O que funcionou
+
+- Tokens semânticos OKLCH estão corretos e consistentes
+- Light/dark mode funcionando
+- Build e testes mantidos verdes
+- Nenhuma regressão de autenticação ou API
+- Graphify atualizado
+- Moodboards documentados e aprovados
+
+## 7. Modelo para a segunda rodada
+
+### Princípios
+
+1. **Assets antes de código.** Gerar e aprovar ilustrações primeiro. Só depois aplicar ao HTML.
+2. **Uma seção por vez.** Cada seção da landing é uma entrega independente com aprovação explícita.
+3. **Gates obrigatórios.** Nenhum avanço sem confirmação visual do usuário.
+4. **Graphify primeiro.** Consultar `graphify-out/GRAPH_REPORT.md` antes de ler arquivos fonte.
+5. **Conversa focada.** Uma conversa para assets/landing. Outra para motion/3D se necessário.
+
+### Fases da segunda rodada
+
+**Fase A — Assets visuais (sem código)**
+- Gerar ilustração para cada seção da landing
+- Gerar imagens editoriais de contexto humano
+- Apresentar cada asset individualmente para aprovação
+- Gate: todos os assets aprovados
+
+**Fase B — Landing: Hero e Sandbox**
+- Substituir composição do hero por versão final com motion
+- Substituir seção Sandbox com ilustração de fluxo
+- Gate: hero e sandbox aprovados
+
+**Fase C — Landing: Problemas e Features**
+- Substituir seção Problemas por composição editorial com imagens
+- Substituir bento grid de Features por cards com ilustrações próprias
+- Gate: problemas e features aprovados
+
+**Fase D — Landing: How it works e CTA**
+- Substituir seção How it works por ilustração de pipeline
+- Criar CTA final com profundidade visual
+- Gate: landing completa aprovada
+
+**Fase E — Produto: ajustes finos**
+- Refinar intensidade do glass nas tabelas
+- Corrigir páginas sem tratamento (JobsDashboard, termos, privacidade)
+- Unificar tema do ThemeToggle
+
+**Fase F — Motion, 3D e performance (opcional)**
+- Adicionar motion onde aprovado
+- Avaliar viabilidade de elemento 3D
+- Validar performance e acessibilidade
+
+Cada fase é independente e requer aprovação explícita antes de avançar. Se uma fase falhar na revisão, ela é corrigida antes de prosseguir.
+
+## 8. Como iniciar a segunda rodada
+
+Copie e cole o bloco abaixo em uma conversa nova:
+
+---
+
+INSTRUÇÃO PARA NOVA CONVERSA:
+
+Estou continuando o redesign do TalentFlow a partir da branch `design/foundation`. O repositório está em `~/Space Square/02-Customers/TalentFlow/05-Projetos/`.
+
+Antes de qualquer ação, consulte estes arquivos na ordem:
+1. `graphify-out/GRAPH_REPORT.md` — grafo de dependências atualizado (1027 nós, 1492 arestas)
+2. `docs/redesign-liquid-glass.md` — plano completo, fundação entregue, pendências
+3. `docs/moodboards/index.html` — direções visuais aprovadas (Liquid Glass + Human Editorial + Cinematic AI)
+
+O que já está pronto:
+- Tokens CSS de glass, aurora e atmosfera no produto inteiro
+- Hero visual com ilustração editorial
+- Navbar flutuante
+- Build e testes verdes
+- API local funcional
+
+O que preciso agora — Fase A (assets, sem tocar em código):
+- Gerar ilustrações visuais para cada seção da landing page
+- Gerar imagens editoriais de contexto humano
+- Cada asset deve ser aprovado individualmente antes de prosseguir
+- As imagens não devem conter texto (o texto fica no HTML)
+- Formato: SVG ou PNG otimizado, salvo em `talentflow-web/public/visuals/`
+
+Seções que precisam de ilustração:
+1. Sandbox demo — fluxo visual de currículo sendo processado por IA
+2. Problemas do recrutamento manual — composição editorial com contexto humano
+3. Features — uma ilustração por feature (Smart Match, auditoria, pipeline, segurança)
+4. How it works — pipeline visual da ingestão à decisão
+5. CTA final — composição abstrata ou editorial de fechamento
+
+IMPORTANTE:
+- NÃO aplique nada ao código ainda
+- NÃO modifique componentes
+- Trabalhe UMA seção por vez
+- Mostre cada asset para aprovação antes de gerar o próximo
+- Consulte o Graphify antes de ler arquivos fonte
+
+---
+
+## 9. Referências
+
+| Recurso | Caminho |
+|---------|---------|
+| Plano de redesign | `docs/redesign-liquid-glass.md` |
+| Moodboards | `docs/moodboards/` |
+| Graphify | `graphify-out/GRAPH_REPORT.md` |
+| Design system CSS | `talentflow-web/src/app/globals.css` |
+| Landing page | `talentflow-web/src/app/page.tsx` |
+| Navbar | `talentflow-web/src/components/Navbar.tsx` |
+| Hero visual | `talentflow-web/src/components/HeroVisual.tsx` |
+| Assets públicos | `talentflow-web/public/visuals/` |
+| AGENTS.md (regras gerais) | `AGENTS.md` |
+| AGENTS.md (web) | `talentflow-web/AGENTS.md` |
+| DESIGN.md | `docs/DESIGN.md` |

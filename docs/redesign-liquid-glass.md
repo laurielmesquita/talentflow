@@ -184,43 +184,89 @@ Ilustrações a gerar:
 ### Princípios
 
 1. **Assets antes de código.** Gerar e aprovar ilustrações primeiro. Só depois aplicar ao HTML.
-2. **Uma seção por vez.** Cada seção da landing é uma entrega independente com aprovação explícita.
+2. **Uma fase por vez.** Cada fase é uma entrega independente com aprovação explícita.
 3. **Gates obrigatórios.** Nenhum avanço sem confirmação visual do usuário.
 4. **Graphify primeiro.** Consultar `graphify-out/GRAPH_REPORT.md` antes de ler arquivos fonte.
-5. **Conversa focada.** Uma conversa para assets/landing. Outra para motion/3D se necessário.
+5. **Modelo certo para cada fase.** Fases de assets usam skills de geração. Fases de código usam GPT 5.6 Luna (Go).
 
-### Fases da segunda rodada
+### Fases da segunda rodada (6 fases, 1 modelo por fase)
+
+---
 
 **Fase A — Assets visuais (sem código)**
-- Gerar ilustração para cada seção da landing
+
+**Modelo:** GPT 5.6 Luna para planejamento e coordenação. Skills `design` + `ai-multimodal` (Gemini) para geração de imagens.
+
+- Gerar 1 ilustração por seção da landing
 - Gerar imagens editoriais de contexto humano
 - Apresentar cada asset individualmente para aprovação
-- Gate: todos os assets aprovados
+- Formato: SVG ou PNG otimizado em `talentflow-web/public/visuals/`
+- Imagens sem texto (texto fica no HTML)
+
+**Gate:** todos os assets aprovados.
+
+---
 
 **Fase B — Landing: Hero e Sandbox**
-- Substituir composição do hero por versão final com motion
-- Substituir seção Sandbox com ilustração de fluxo
-- Gate: hero e sandbox aprovados
+
+**Modelo:** GPT 5.6 Luna.
+
+- Substituir composição do hero por versão final com motion + parallax
+- Substituir seção Sandbox com ilustração de fluxo de extração
+- Aplicar glass onde melhora, remover onde atrapalha
+
+**Gate:** hero e sandbox aprovados visualmente (screenshot ou preview local).
+
+---
 
 **Fase C — Landing: Problemas e Features**
-- Substituir seção Problemas por composição editorial com imagens
-- Substituir bento grid de Features por cards com ilustrações próprias
-- Gate: problemas e features aprovados
+
+**Modelo:** GPT 5.6 Luna.
+
+- Trocar os 3 cards de "Problemas" por composição editorial com imagens humanas
+- Substituir bento grid de Features por cards com ilustrações próprias (não ícones genéricos)
+- Cada feature com sua imagem: Smart Match, auditoria, pipeline, segurança
+
+**Gate:** problemas e features aprovados.
+
+---
 
 **Fase D — Landing: How it works e CTA**
-- Substituir seção How it works por ilustração de pipeline
-- Criar CTA final com profundidade visual
-- Gate: landing completa aprovada
+
+**Modelo:** GPT 5.6 Luna.
+
+- Substituir seção "Como funciona" por ilustração de pipeline visual
+- Criar CTA final com profundidade, imagem e motion
+
+**Gate:** landing completa aprovada.
+
+---
 
 **Fase E — Produto: ajustes finos**
-- Refinar intensidade do glass nas tabelas
-- Corrigir páginas sem tratamento (JobsDashboard, termos, privacidade)
-- Unificar tema do ThemeToggle
 
-**Fase F — Motion, 3D e performance (opcional)**
-- Adicionar motion onde aprovado
-- Avaliar viabilidade de elemento 3D
-- Validar performance e acessibilidade
+**Modelo:** GPT 5.6 Luna.
+
+- Reduzir glass em tabelas se prejudicar leitura
+- Corrigir páginas sem tratamento (JobsDashboard, termos, privacidade)
+- Unificar ThemeToggle (ainda usa slate estático)
+- Revisar contraste e acessibilidade (WCAG)
+
+**Gate:** produto consistente aprovado.
+
+---
+
+**Fase F — Motion, 3D e performance**
+
+**Modelo:** GPT 5.6 Luna para código. Se necessário elemento 3D pesado, assets podem usar Antigravity (Gemini), mas o código fica no Luna.
+
+- Adicionar scroll-triggered reveals com mais expressão
+- Parallax no hero
+- Elemento 3D (React Three Fiber) apenas se viável e aprovado
+- Validar performance, bundle size e `prefers-reduced-motion`
+
+**Gate:** motion aprovado, sem regressão de performance.
+
+---
 
 Cada fase é independente e requer aprovação explícita antes de avançar. Se uma fase falhar na revisão, ela é corrigida antes de prosseguir.
 
@@ -232,40 +278,64 @@ Copie e cole o bloco abaixo em uma conversa nova:
 
 INSTRUÇÃO PARA NOVA CONVERSA:
 
-Estou continuando o redesign do TalentFlow a partir da branch `design/foundation`. O repositório está em `~/Space Square/02-Customers/TalentFlow/05-Projetos/`.
+Estou continuando o redesign do TalentFlow a partir da branch `design/foundation`.
+Repositório: `~/Space Square/02-Customers/TalentFlow/05-Projetos/`
+Modelo principal: GPT 5.6 Luna (OpenCode Go)
 
-Antes de qualquer ação, consulte estes arquivos na ordem:
-1. `graphify-out/GRAPH_REPORT.md` — grafo de dependências atualizado (1027 nós, 1492 arestas)
-2. `docs/redesign-liquid-glass.md` — plano completo, fundação entregue, pendências
-3. `docs/moodboards/index.html` — direções visuais aprovadas (Liquid Glass + Human Editorial + Cinematic AI)
+Antes de qualquer ação, consulte nesta ordem:
+1. `graphify-out/GRAPH_REPORT.md` — grafo de dependências (1027 nós, 1492 arestas)
+2. `docs/redesign-liquid-glass.md` — plano completo, fundação entregue, pendências, 6 fases
+3. `docs/moodboards/index.html` — direções aprovadas (Liquid Glass + Human Editorial + Cinematic AI)
 
-O que já está pronto:
-- Tokens CSS de glass, aurora e atmosfera no produto inteiro
-- Hero visual com ilustração editorial
-- Navbar flutuante
-- Build e testes verdes
-- API local funcional
+Fundação técnica já entregue:
+- Tokens glass, aurora, atmosfera (globals.css)
+- Hero com ilustração (public/visuals/hero/talentflow-hero.svg)
+- Navbar flutuante com link "Início"
+- 18 componentes/páginas com glass
+- Build, testes e API funcionando
+- Graphify atualizado
 
-O que preciso agora — Fase A (assets, sem tocar em código):
-- Gerar ilustrações visuais para cada seção da landing page
+O processo tem 6 FASES. Cada fase é independente e exige aprovação explícita.
+Modelo para cada fase está especificado no documento.
+
+FASE A — Assets visuais (sem tocar em código)
+Modelo: GPT 5.6 Luna + skills design/ai-multimodal (Gemini)
+- Gerar 1 ilustração por seção da landing
 - Gerar imagens editoriais de contexto humano
-- Cada asset deve ser aprovado individualmente antes de prosseguir
-- As imagens não devem conter texto (o texto fica no HTML)
-- Formato: SVG ou PNG otimizado, salvo em `talentflow-web/public/visuals/`
+- Formato SVG ou PNG em talentflow-web/public/visuals/
+- Sem texto nas imagens
 
-Seções que precisam de ilustração:
-1. Sandbox demo — fluxo visual de currículo sendo processado por IA
-2. Problemas do recrutamento manual — composição editorial com contexto humano
-3. Features — uma ilustração por feature (Smart Match, auditoria, pipeline, segurança)
-4. How it works — pipeline visual da ingestão à decisão
-5. CTA final — composição abstrata ou editorial de fechamento
+FASE B — Hero + Sandbox
+Modelo: GPT 5.6 Luna
+- Substituir hero com ilustração final + motion
+- Substituir seção Sandbox com ilustração de fluxo
 
-IMPORTANTE:
-- NÃO aplique nada ao código ainda
-- NÃO modifique componentes
-- Trabalhe UMA seção por vez
-- Mostre cada asset para aprovação antes de gerar o próximo
-- Consulte o Graphify antes de ler arquivos fonte
+FASE C — Problemas + Features
+Modelo: GPT 5.6 Luna
+- Composição editorial com imagens humanas nos Problemas
+- Ilustrações próprias por feature (não ícones genéricos)
+
+FASE D — How it works + CTA
+Modelo: GPT 5.6 Luna
+- Pipeline visual na seção How it works
+- CTA final com profundidade
+
+FASE E — Ajustes finos de produto
+Modelo: GPT 5.6 Luna
+- Refinar glass nas tabelas
+- Corrigir páginas sem tratamento
+- Unificar ThemeToggle
+
+FASE F — Motion, 3D e performance
+Modelo: GPT 5.6 Luna
+- Motion, parallax, possível elemento 3D
+- Validar bundle, acessibilidade, reduced-motion
+
+REGRAS:
+- UMA fase por vez
+- NÃO avance sem aprovação explícita
+- Consulte Graphify antes de ler arquivos fonte
+- NÃO altere auth, API, CSP ou dual-cookie
 
 ---
 

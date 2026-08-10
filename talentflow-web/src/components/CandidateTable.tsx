@@ -301,7 +301,7 @@ export default function CandidateTable({
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                 key={cand.id}
-                className="group relative flex flex-col bg-card border border-border/60 rounded-xl shadow-xs hover:border-border hover:bg-accent/40 transition-colors overflow-hidden"
+                 className="group relative flex flex-col glass-panel rounded-2xl shadow-xs hover:border-primary/25 transition-colors overflow-hidden"
               >
                 {/* Iluminação interna sutil no hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/[0.03] to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
@@ -395,7 +395,7 @@ export default function CandidateTable({
                       animate={{ opacity: 1, height: "auto" }}
                       exit={{ opacity: 0, height: 0 }}
                       transition={{ type: "spring", bounce: 0, duration: 0.3 }}
-                      className="border-t border-border/40 bg-muted/20"
+                       className="border-t border-border/40 bg-background/25"
                     >
                       {loadingDetails[cand.id] ? (
                         <div className="p-6 flex justify-center text-muted-foreground">
@@ -474,7 +474,7 @@ export default function CandidateTable({
                             )}
 
                             {/* Seção de Flag / Blacklist */}
-                            <div className="p-4 rounded-xl bg-card border border-border/50">
+                               <div className="p-4 rounded-xl glass-panel-strong border-border/50">
                               <div className="flex items-center justify-between">
                                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Blacklist / Triagem</span>
                                 {!fullCand.is_flagged ? (
@@ -544,7 +544,7 @@ export default function CandidateTable({
                               {fullCand.experiences && fullCand.experiences.length > 0 ? (
                                 <div className="space-y-3">
                                   {fullCand.experiences.map((exp: any, idx: number) => (
-                                    <div key={idx} className="p-4 rounded-xl border border-border/50 bg-card shadow-none">
+                                     <div key={idx} className="p-4 rounded-xl border border-border/50 bg-background/30 shadow-none">
                                       <div className="font-semibold text-sm text-foreground">{exp.job_title}</div>
                                       <div className="text-xs text-primary font-medium mt-0.5">{exp.company_name}</div>
                                       {exp.description && (
@@ -587,7 +587,7 @@ export default function CandidateTable({
 
       {/* Controles de Paginação */}
       {totalItems > 0 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 bg-card border border-border/50 rounded-xl shadow-none mt-4 select-none">
+         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 glass-panel-strong border-border/50 rounded-2xl shadow-none mt-4 select-none">
           
           {/* Seletor de Page Size & Texto Informativo */}
           <div className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -670,4 +670,3 @@ export default function CandidateTable({
     </div>
   );
 }
-

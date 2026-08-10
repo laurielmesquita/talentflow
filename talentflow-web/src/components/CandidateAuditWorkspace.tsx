@@ -168,7 +168,7 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
       </AnimatePresence>
 
       {/* ── CABEÇALHO DO WORKSPACE (HEADER) ────────────────────────────────── */}
-      <header className="flex items-center justify-between px-6 py-3 bg-card/80 border-b border-border/80 backdrop-blur-md z-20 shadow-sm flex-shrink-0">
+      <header className="flex items-center justify-between px-6 py-3 glass-panel-strong border-b border-border/80 backdrop-blur-md z-20 shadow-sm flex-shrink-0">
         <div className="flex items-center space-x-4">
           <button
             onClick={() => router.push("/dashboard")}
@@ -267,7 +267,7 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
         ) : (
           <>
             {/* ── PAINEL ESQUERDO: VISUALIZADOR DO PDF ORIGINAL (50%) ──────── */}
-            <div className="flex flex-col h-full w-full overflow-hidden rounded-xl border border-border/80 bg-card shadow-xl">
+            <div className="flex flex-col h-full w-full overflow-hidden rounded-2xl border border-border/80 bg-background/55 shadow-xl">
               <PDFViewer
                 candidateId={candidate.id}
                 pdfUrl={candidate.original_pdf_url || candidate.pdf_url}
@@ -277,7 +277,7 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
             </div>
 
             {/* ── PAINEL DIREITO: ANÁLISE COMPLETA E INTELIGÊNCIA DA IA (50%) ─ */}
-            <div className="flex flex-col h-full w-full overflow-y-auto pr-1 rounded-xl border border-border/80 bg-card/90 shadow-xl p-6 custom-scrollbar">
+            <div className="flex flex-col h-full w-full overflow-y-auto pr-1 rounded-2xl border border-border/80 glass-panel-strong shadow-xl p-6 custom-scrollbar">
               {/* Alerta de Blacklist Ativo */}
               {candidate.is_flagged && (
                 <div className="mb-6 p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 flex items-start gap-3 shadow-inner">

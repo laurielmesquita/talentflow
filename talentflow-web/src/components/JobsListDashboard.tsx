@@ -112,10 +112,10 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
   });
 
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
+    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
       <Navbar />
@@ -138,7 +138,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
         {/* Filtros e Busca */}
-        <div className="flex flex-col md:flex-row gap-4 justify-between items-center mb-8 bg-slate-50/50 dark:bg-white/5 border border-slate-200 dark:border-white/10 p-4 rounded-2xl">
+         <div className="glass-panel-strong flex flex-col md:flex-row gap-4 justify-between items-center mb-8 p-4 rounded-2xl">
           <div className="relative w-full md:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
             <input
@@ -146,7 +146,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
               placeholder="Buscar por título, local ou habilidade..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-xl text-sm text-foreground focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+               className="w-full pl-10 pr-4 py-2.5 bg-background/35 border border-border/70 rounded-xl text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
             />
           </div>
 
@@ -156,7 +156,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
               className={`flex-1 md:flex-none text-xs font-semibold px-4 py-2 rounded-xl transition-all cursor-pointer border ${
                 statusFilter === "all"
                   ? "bg-primary/10 border-primary text-primary"
-                  : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-muted-foreground hover:text-foreground"
+                   : "bg-background/35 border-border/70 text-muted-foreground hover:text-foreground"
               }`}
             >
               Todas
@@ -166,7 +166,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
               className={`flex-1 md:flex-none text-xs font-semibold px-4 py-2 rounded-xl transition-all cursor-pointer border ${
                 statusFilter === "active"
                   ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-                  : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-muted-foreground hover:text-foreground"
+                   : "bg-background/35 border-border/70 text-muted-foreground hover:text-foreground"
               }`}
             >
               Ativas
@@ -176,7 +176,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
               className={`flex-1 md:flex-none text-xs font-semibold px-4 py-2 rounded-xl transition-all cursor-pointer border ${
                 statusFilter === "inactive"
                   ? "bg-slate-500/10 border-slate-500/20 text-slate-600 dark:text-slate-400"
-                  : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 text-muted-foreground hover:text-foreground"
+                   : "bg-background/35 border-border/70 text-muted-foreground hover:text-foreground"
               }`}
             >
               Inativas
@@ -186,7 +186,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
 
         {/* Grid de Vagas */}
         {filteredJobs.length === 0 ? (
-          <div className="border border-dashed border-slate-300 dark:border-white/10 rounded-2xl p-16 text-center">
+           <div className="glass-panel-strong border-dashed border-border/70 rounded-2xl p-16 text-center">
             <Briefcase className="w-12 h-12 text-slate-400 mx-auto mb-4 opacity-50" />
             <h4 className="text-lg font-bold text-foreground mb-1">Nenhuma vaga encontrada</h4>
             <p className="text-sm text-muted-foreground max-w-sm mx-auto">
@@ -215,7 +215,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 px-6 py-3 rounded-2xl shadow-xl z-[150] text-sm font-semibold flex items-center gap-2 border border-slate-800 dark:border-slate-200"
+             className="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel-strong text-foreground px-6 py-3 rounded-2xl shadow-xl z-[150] text-sm font-semibold flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
             {toastMessage}
@@ -255,7 +255,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden z-10"
+                 className="relative w-full max-w-md glass-panel-strong rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden z-10"
               >
                 <button
                   onClick={handleCloseDeleteModal}

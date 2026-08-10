@@ -34,12 +34,12 @@ export default function LandingPage() {
   return (
     <>
       <LandingHeader />
-      <div className="flex-1 flex flex-col bg-background text-foreground font-sans overflow-x-hidden selection:bg-primary/20">
+      <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans overflow-x-hidden selection:bg-primary/20">
 
         {/* ── Ambient Glows (fixos, atrás de tudo) ───────────────────── */}
         <div className="fixed inset-0 pointer-events-none -z-10" aria-hidden="true">
           <div className="absolute -top-[20%] -left-[10%] w-[700px] h-[700px] bg-primary/8 rounded-full blur-[220px]" />
-          <div className="absolute top-[35%] -right-[15%] w-[600px] h-[600px] bg-indigo-500/6 rounded-full blur-[200px]" />
+          <div className="absolute top-[35%] -right-[15%] w-[600px] h-[600px] bg-secondary/35 rounded-full blur-[200px]" />
           <div className="absolute bottom-[10%] left-[15%] w-[500px] h-[500px] bg-violet-500/5 rounded-full blur-[160px]" />
         </div>
 
@@ -52,7 +52,7 @@ export default function LandingPage() {
           {/* Left — Copy */}
           <div className="flex flex-col gap-8">
             {/* Badge */}
-            <div className="opacity-0-initial animate-fade-in delay-100 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide w-fit">
+            <div className="opacity-0-initial animate-fade-in delay-100 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide w-fit shadow-[0_0_24px_color-mix(in_oklch,var(--primary)_12%,transparent)]">
               <Sparkles className="w-3.5 h-3.5" />
               Motor de IA para Triagem de Talentos
             </div>
@@ -73,7 +73,7 @@ export default function LandingPage() {
             </p>
 
             {/* CTAs */}
-            <div className="opacity-0-initial animate-fade-in-up delay-400 flex flex-col sm:flex-row items-start gap-3">
+              <div className="opacity-0-initial animate-fade-in-up delay-400 flex flex-col sm:flex-row items-start gap-3">
               <Link
                 href="/login?signup=true"
                 id="cta-hero-primary"
@@ -93,7 +93,7 @@ export default function LandingPage() {
             </div>
 
             {/* Social proof micro */}
-            <div className="opacity-0-initial animate-fade-in delay-500 flex items-center gap-3 pt-2">
+              <div className="opacity-0-initial animate-fade-in delay-500 flex items-center gap-3 pt-2">
               <div className="flex -space-x-2">
                 {["#6366f1", "#8b5cf6", "#a78bfa", "#c4b5fd"].map((color, i) => (
                   <div
@@ -123,12 +123,12 @@ export default function LandingPage() {
       ═══════════════════════════════════════════════════════════════ */}
       <section
         id="sandbox"
-        className="py-20 md:py-32 border-y border-border/40 bg-secondary/20 relative"
+        className="py-20 md:py-32 border-y border-border/40 bg-secondary/15 relative"
         aria-labelledby="sandbox-title"
       >
         <div className="max-w-5xl mx-auto px-6">
           <RevealSection className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 text-xs font-semibold tracking-wide mb-5">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-600 text-xs font-semibold tracking-wide mb-5 shadow-[0_0_22px_color-mix(in_oklch,oklch(0.7_0.18_150)_12%,transparent)]">
               <Zap className="w-3.5 h-3.5" />
               Zero cadastro necessário
             </div>
@@ -193,7 +193,7 @@ export default function LandingPage() {
             },
           ].map((item, i) => (
             <RevealSection key={item.title} delay={i * 0.1}>
-              <div className="group h-full p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-border transition-all duration-300 space-y-4">
+              <div className="group h-full p-6 rounded-2xl glass-panel glass-panel-interactive space-y-4">
                 <div className={`w-11 h-11 rounded-xl ${item.bg} border ${item.border} flex items-center justify-center ${item.color} group-hover:scale-110 transition-transform`}>
                   <item.icon className="w-5 h-5" />
                 </div>
@@ -210,7 +210,7 @@ export default function LandingPage() {
       ═══════════════════════════════════════════════════════════════ */}
       <section
         id="features"
-        className="py-20 md:py-32 border-y border-border/40 bg-secondary/20 relative"
+        className="py-20 md:py-32 border-y border-border/40 bg-secondary/15 relative"
         aria-labelledby="features-title"
       >
         <div className="max-w-7xl mx-auto px-6">
@@ -234,7 +234,7 @@ export default function LandingPage() {
 
             {/* Card GRANDE — Smart Match (col-span-2) */}
             <RevealSection className="md:col-span-2" delay={0}>
-              <div className="group h-full p-8 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-primary/30 transition-all duration-300 relative overflow-hidden">
+               <div className="group h-full p-8 rounded-2xl glass-panel glass-panel-interactive relative overflow-hidden">
                 <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-primary/5 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/10 transition-colors" />
                 <div className="relative z-10 flex flex-col gap-5">
                   <div className="flex items-start justify-between">

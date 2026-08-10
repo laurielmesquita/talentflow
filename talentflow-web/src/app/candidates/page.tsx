@@ -65,10 +65,10 @@ export default async function CandidatesPage({
   const stats = data.stats || { total: 0, active: 0, flagged: 0, average_quality: null };
 
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
+    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
       <Navbar />
@@ -104,48 +104,48 @@ export default async function CandidatesPage({
         {/* KPI Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {/* Card 1: Total de Talentos */}
-          <div className="relative overflow-hidden p-6 rounded-2xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-4 transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
             <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-500 dark:text-indigo-400">
               <Users className="w-6 h-6" />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Total de Talentos</p>
-              <h4 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{stats.total}</h4>
+               <h4 className="text-2xl font-bold text-foreground mt-1">{stats.total}</h4>
             </div>
           </div>
 
           {/* Card 2: Perfis Ativos */}
-          <div className="relative overflow-hidden p-6 rounded-2xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-4 transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
             <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400">
               <UserCheck className="w-6 h-6" />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Perfis Ativos</p>
-              <h4 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{stats.active}</h4>
+               <h4 className="text-2xl font-bold text-foreground mt-1">{stats.active}</h4>
             </div>
           </div>
 
           {/* Card 3: Quality Score Médio */}
-          <div className="relative overflow-hidden p-6 rounded-2xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-4 transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
             <div className="p-3 rounded-xl bg-purple-500/10 text-purple-500 dark:text-purple-400">
               <Sparkles className="w-6 h-6" />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Quality Score Médio</p>
-              <h4 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">
+               <h4 className="text-2xl font-bold text-foreground mt-1">
                 {stats.average_quality !== null ? stats.average_quality : "—"}
               </h4>
             </div>
           </div>
 
           {/* Card 4: Sinalizados */}
-          <div className="relative overflow-hidden p-6 rounded-2xl bg-white/50 dark:bg-white/5 backdrop-blur-md border border-slate-200 dark:border-white/10 shadow-sm flex items-center gap-4 transition-all duration-300 hover:border-slate-300 dark:hover:border-white/20">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
             <div className="p-3 rounded-xl bg-rose-500/10 text-rose-500 dark:text-rose-400">
               <ShieldAlert className="w-6 h-6" />
             </div>
             <div>
               <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Sinalizados</p>
-              <h4 className="text-2xl font-bold text-slate-900 dark:text-slate-100 mt-1">{stats.flagged}</h4>
+               <h4 className="text-2xl font-bold text-foreground mt-1">{stats.flagged}</h4>
             </div>
           </div>
         </div>

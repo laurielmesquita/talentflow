@@ -32,7 +32,7 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-foreground selection:bg-primary/30 relative overflow-hidden flex flex-col">
+    <div className="dashboard-atmosphere min-h-screen bg-background font-sans text-foreground selection:bg-primary/30 relative overflow-hidden flex flex-col">
       {/* Background Orbs */}
       <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-[100px] pointer-events-none -z-10" />
@@ -48,7 +48,7 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
             <Sparkles className="w-4 h-4" />
             <span>Vagas Abertas</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-slate-900 dark:text-white mb-6 leading-tight">
+           <h1 className="text-5xl md:text-7xl font-extrabold tracking-tight text-foreground mb-6 leading-tight">
             Faça parte do nosso <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-500">
               time de talentos
@@ -61,14 +61,14 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
           {/* Search Bar */}
           <div className="relative max-w-2xl mx-auto group">
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-2xl blur-xl transition-all duration-500 group-hover:blur-2xl opacity-50" />
-            <div className="relative flex items-center bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-2 shadow-xl">
+             <div className="relative flex items-center glass-panel-strong rounded-2xl p-2 shadow-xl">
               <Search className="w-6 h-6 text-slate-400 ml-4" />
               <input
                 type="text"
                 placeholder="Busque por cargo, tecnologia ou localização..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-transparent border-none text-slate-900 dark:text-white placeholder:text-slate-400 px-4 py-3 focus:outline-none focus:ring-0 text-lg"
+                 className="w-full bg-transparent border-none text-foreground placeholder:text-muted-foreground px-4 py-3 focus:outline-none focus:ring-0 text-lg"
               />
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="text-center py-20 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm border border-slate-200 dark:border-slate-800 rounded-3xl"
+               className="text-center py-20 glass-panel-strong border-border/70 rounded-3xl"
             >
               <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-700 mx-auto mb-6" />
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Nenhuma vaga encontrada</h3>
@@ -101,7 +101,7 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                 >
                   <Link href={`/vagas/${job.slug}`}>
-                    <div className="group relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 overflow-hidden">
+                     <div className="group relative glass-panel glass-panel-interactive rounded-3xl p-6 md:p-8 overflow-hidden">
                       {/* Hover Gradient Overlay */}
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                       

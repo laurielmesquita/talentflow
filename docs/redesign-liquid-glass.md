@@ -195,7 +195,7 @@ Ilustrações a gerar:
 
 **Fase A — Assets visuais (sem código)**
 
-**Modelo:** GPT 5.6 Luna para planejamento e coordenação. Skills `design` + `ai-multimodal` (Gemini) para geração de imagens.
+**Modelo:** GPT 5.6 Luna, variant `high` (`--variant=high`). Skills `design` + `ai-multimodal` (Gemini) para geração de imagens.
 
 - Gerar 1 ilustração por seção da landing
 - Gerar imagens editoriais de contexto humano
@@ -209,7 +209,7 @@ Ilustrações a gerar:
 
 **Fase B — Landing: Hero e Sandbox**
 
-**Modelo:** GPT 5.6 Luna.
+**Modelo:** GPT 5.6 Luna, variant `high`.
 
 - Substituir composição do hero por versão final com motion + parallax
 - Substituir seção Sandbox com ilustração de fluxo de extração
@@ -221,7 +221,7 @@ Ilustrações a gerar:
 
 **Fase C — Landing: Problemas e Features**
 
-**Modelo:** GPT 5.6 Luna.
+**Modelo:** GPT 5.6 Luna, variant `high`.
 
 - Trocar os 3 cards de "Problemas" por composição editorial com imagens humanas
 - Substituir bento grid de Features por cards com ilustrações próprias (não ícones genéricos)
@@ -233,7 +233,7 @@ Ilustrações a gerar:
 
 **Fase D — Landing: How it works e CTA**
 
-**Modelo:** GPT 5.6 Luna.
+**Modelo:** GPT 5.6 Luna, variant `high`.
 
 - Substituir seção "Como funciona" por ilustração de pipeline visual
 - Criar CTA final com profundidade, imagem e motion
@@ -244,7 +244,7 @@ Ilustrações a gerar:
 
 **Fase E — Produto: ajustes finos**
 
-**Modelo:** GPT 5.6 Luna.
+**Modelo:** GPT 5.6 Luna, variant `medium`.
 
 - Reduzir glass em tabelas se prejudicar leitura
 - Corrigir páginas sem tratamento (JobsDashboard, termos, privacidade)
@@ -257,7 +257,7 @@ Ilustrações a gerar:
 
 **Fase F — Motion, 3D e performance**
 
-**Modelo:** GPT 5.6 Luna para código. Se necessário elemento 3D pesado, assets podem usar Antigravity (Gemini), mas o código fica no Luna.
+**Modelo:** GPT 5.6 Luna, variant `xhigh`. Se necessário elemento 3D pesado, assets podem usar Antigravity (Gemini), mas o código fica no Luna.
 
 - Adicionar scroll-triggered reveals com mais expressão
 - Parallax no hero
@@ -273,6 +273,8 @@ Cada fase é independente e requer aprovação explícita antes de avançar. Se 
 ## 8. Como iniciar a segunda rodada
 
 Copie e cole o bloco abaixo em uma conversa nova:
+
+> **Nota sobre variant (nível de raciocínio):** O default do GPT 5.6 Luna (`medium`) produziu um resultado fraco na primeira rodada. As fases abaixo especificam explicitamente o variant a usar via `--variant=high` (ou `medium`/`xhigh` onde indicado). Lembre de iniciar a conversa já com o variant correto: `opencode run --model opencode-go/gpt-5.6-luna --variant=high`.
 
 ---
 
@@ -296,38 +298,38 @@ Fundação técnica já entregue:
 - Graphify atualizado
 
 O processo tem 6 FASES. Cada fase é independente e exige aprovação explícita.
-Modelo para cada fase está especificado no documento.
+Modelo: GPT 5.6 Luna (OpenCode Go). Nível de raciocínio (variant) especificado por fase.
 
 FASE A — Assets visuais (sem tocar em código)
-Modelo: GPT 5.6 Luna + skills design/ai-multimodal (Gemini)
+Modelo: GPT 5.6 Luna, variant=high + skills design/ai-multimodal (Gemini)
 - Gerar 1 ilustração por seção da landing
 - Gerar imagens editoriais de contexto humano
 - Formato SVG ou PNG em talentflow-web/public/visuals/
 - Sem texto nas imagens
 
 FASE B — Hero + Sandbox
-Modelo: GPT 5.6 Luna
+Modelo: GPT 5.6 Luna, variant=high
 - Substituir hero com ilustração final + motion
 - Substituir seção Sandbox com ilustração de fluxo
 
 FASE C — Problemas + Features
-Modelo: GPT 5.6 Luna
+Modelo: GPT 5.6 Luna, variant=high
 - Composição editorial com imagens humanas nos Problemas
 - Ilustrações próprias por feature (não ícones genéricos)
 
 FASE D — How it works + CTA
-Modelo: GPT 5.6 Luna
+Modelo: GPT 5.6 Luna, variant=high
 - Pipeline visual na seção How it works
 - CTA final com profundidade
 
 FASE E — Ajustes finos de produto
-Modelo: GPT 5.6 Luna
+Modelo: GPT 5.6 Luna, variant=medium
 - Refinar glass nas tabelas
 - Corrigir páginas sem tratamento
 - Unificar ThemeToggle
 
 FASE F — Motion, 3D e performance
-Modelo: GPT 5.6 Luna
+Modelo: GPT 5.6 Luna, variant=xhigh
 - Motion, parallax, possível elemento 3D
 - Validar bundle, acessibilidade, reduced-motion
 

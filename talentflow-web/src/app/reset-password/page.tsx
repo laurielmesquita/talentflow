@@ -65,11 +65,11 @@ function ResetPasswordContent() {
   };
 
   return (
-    <div className="flex-1 w-full bg-background text-foreground flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
+    <div className="dashboard-atmosphere flex-1 w-full bg-background text-foreground flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse duration-[6000ms]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />
 
-      <div className="w-full max-w-md bg-card/65 backdrop-blur-xl border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
+      <div className="w-full max-w-md glass-panel-strong rounded-3xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
         
         {success ? (
           <div className="flex flex-col items-center text-center py-4">

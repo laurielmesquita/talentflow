@@ -42,7 +42,7 @@ export default function PublicJobDetail({ job }: PublicJobDetailProps) {
   const isExpired = job.deadline ? new Date(job.deadline) < new Date() : false;
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 font-sans text-foreground selection:bg-primary/30 relative overflow-hidden flex flex-col">
+    <div className="dashboard-atmosphere min-h-screen bg-background font-sans text-foreground selection:bg-primary/30 relative overflow-hidden flex flex-col">
       {/* Background Ambience */}
       <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[150px] pointer-events-none -z-10 translate-x-1/3 -translate-y-1/3" />
       
@@ -155,7 +155,7 @@ export default function PublicJobDetail({ job }: PublicJobDetailProps) {
 
             {/* Right Sidebar Column */}
             <div className="lg:col-span-1">
-              <div className="sticky top-28 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 shadow-xl shadow-slate-200/50 dark:shadow-none">
+             <div className="sticky top-28 glass-panel-strong rounded-3xl p-6 shadow-xl">
                 <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">
                   Gostou da oportunidade?
                 </h3>

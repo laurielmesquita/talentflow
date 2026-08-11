@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 780" role="img" aria-labelledby="title desc">
+  <title id="title">TalentFlow transforma currículos em decisões</title>
+  <desc id="desc">Ilustração abstrata de uma pessoa no centro de uma rede de dados, cercada por painéis de candidatos e sinais de inteligência artificial.</desc>
+  <defs>
+    <linearGradient id="stage" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#09081c"/>
+      <stop offset=".55" stop-color="#1e174d"/>
+      <stop offset="1" stop-color="#081b35"/>
+    </linearGradient>
+    <linearGradient id="skin" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#ffd6b3"/>
+      <stop offset="1" stop-color="#d89577"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#5b42db"/>
+      <stop offset="1" stop-color="#17133f"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#fb7185"/>
+      <stop offset="1" stop-color="#fbbf24"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#a78bfa" stop-opacity=".7"/>
+      <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="36"/></filter>
+    <filter id="soft-shadow"><feDropShadow dx="0" dy="24" stdDeviation="25" flood-color="#000" flood-opacity=".4"/></filter>
+    <filter id="small-shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+    <clipPath id="round"><rect width="920" height="780" rx="36"/></clipPath>
+  </defs>
+  <rect width="920" height="780" rx="36" fill="url(#stage)"/>
+  <g clip-path="url(#round)">
+    <circle cx="220" cy="180" r="260" fill="url(#glow)" filter="url(#blur)"/>
+    <circle cx="770" cy="650" r="240" fill="#06b6d4" opacity=".14" filter="url(#blur)"/>
+    <path d="M-20 620 C170 500 240 730 420 600s280-80 520-240" fill="none" stroke="#c4b5fd" stroke-opacity=".14" stroke-width="2"/>
+    <path d="M-40 670 C180 560 290 780 500 625s260-50 480-210" fill="none" stroke="#67e8f9" stroke-opacity=".1" stroke-width="1"/>
+    <g fill="none" stroke="#a5b4fc" stroke-opacity=".35" stroke-width="1.5">
+      <path d="M435 370 C350 270 270 240 180 210"/>
+      <path d="M480 390 C590 290 690 240 790 190"/>
+      <path d="M464 460 C570 520 650 570 790 605"/>
+      <circle cx="180" cy="210" r="5" fill="#67e8f9" stroke="none"/>
+      <circle cx="790" cy="190" r="5" fill="#fb7185" stroke="none"/>
+      <circle cx="790" cy="605" r="5" fill="#fbbf24" stroke="none"/>
+    </g>
+    <g filter="url(#soft-shadow)">
+      <rect x="56" y="116" width="258" height="152" rx="22" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".25"/>
+      <text x="84" y="155" fill="#a5b4fc" font-family="Arial,sans-serif" font-size="13" letter-spacing="2">CURRÍCULO ANALISADO</text>
+      <rect x="84" y="181" width="42" height="42" rx="14" fill="#818cf8" fill-opacity=".25"/>
+      <path d="M96 211c2-12 8-18 18-18s16 6 18 18" fill="none" stroke="#c4b5fd" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="114" cy="193" r="7" fill="#ffd6b3"/>
+      <text x="142" y="197" fill="#fff" font-family="Arial,sans-serif" font-size="17" font-weight="700">Ana Carvalho</text>
+      <text x="142" y="220" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="12">Product Designer Sr.</text>
+      <rect x="84" y="239" width="176" height="7" rx="3.5" fill="#fff" fill-opacity=".12"/>
+      <rect x="84" y="239" width="138" height="7" rx="3.5" fill="url(#cyan)"/>
+    </g>
+    <g filter="url(#small-shadow)">
+      <rect x="665" y="104" width="196" height="124" rx="20" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".24"/>
+      <text x="694" y="142" fill="#fda4af" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">AI SIGNAL</text>
+      <text x="694" y="188" fill="#fff" font-family="Arial,sans-serif" font-size="37" font-weight="700">94%</text>
+      <text x="780" y="188" fill="#a5b4fc" font-family="Arial,sans-serif" font-size="13">match</text>
+    </g>
+    <g filter="url(#small-shadow)">
+      <rect x="662" y="548" width="214" height="126" rx="20" fill="#ffffff" fill-opacity=".1" stroke="#fbbf24" stroke-opacity=".34"/>
+      <text x="691" y="586" fill="#fcd34d" font-family="Arial,sans-serif" font-size="12" letter-spacing="2">NEXT ACTION</text>
+      <text x="691" y="626" fill="#fff" font-family="Arial,sans-serif" font-size="17" font-weight="700">Agendar entrevista</text>
+      <circle cx="695" cy="650" r="5" fill="#34d399"/><text x="710" y="655" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="11">recomendação explicável</text>
+    </g>
+    <g transform="translate(280 176)">
+      <ellipse cx="180" cy="500" rx="200" ry="34" fill="#000" opacity=".28" filter="url(#blur)"/>
+      <path d="M106 464 C108 342 116 300 145 266 C163 245 199 235 226 248 C278 273 292 340 300 464Z" fill="url(#shirt)" stroke="#a5b4fc" stroke-opacity=".35" stroke-width="2"/>
+      <path d="M147 282 C142 238 149 184 181 151 C205 126 243 128 267 155 C295 187 294 239 276 284 C246 313 177 311 147 282Z" fill="url(#skin)"/>
+      <path d="M149 194 C151 139 193 113 237 126 C273 136 289 163 283 204 C260 179 238 170 204 179 C184 184 168 194 149 194Z" fill="#24183e"/>
+      <path d="M191 220 C206 231 229 231 244 219" fill="none" stroke="#a95f55" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="195" cy="199" r="4" fill="#24183e"/><circle cx="245" cy="199" r="4" fill="#24183e"/>
+      <path d="M150 301 C116 324 84 356 60 405" fill="none" stroke="#ffd6b3" stroke-width="34" stroke-linecap="round"/>
+      <path d="M273 302 C314 319 341 356 363 397" fill="none" stroke="#ffd6b3" stroke-width="34" stroke-linecap="round"/>
+      <circle cx="65" cy="410" r="19" fill="#ffd6b3"/><circle cx="369" cy="403" r="19" fill="#ffd6b3"/>
+      <circle cx="215" cy="220" r="126" fill="none" stroke="#c4b5fd" stroke-opacity=".2" stroke-width="2" stroke-dasharray="4 9"/>
+      <circle cx="215" cy="220" r="150" fill="none" stroke="#67e8f9" stroke-opacity=".12" stroke-width="1"/>
+    </g>
+    <g transform="translate(402 78)">
+      <circle cx="58" cy="58" r="58" fill="#ffffff" fill-opacity=".1" stroke="#ffffff" stroke-opacity=".22"/>
+      <path d="M58 25v66M25 58h66" stroke="url(#cyan)" stroke-width="3" stroke-linecap="round"/>
+      <circle cx="58" cy="58" r="12" fill="url(#warm)"/>
+    </g>
+    <text x="58" y="724" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="14" letter-spacing="3">TALENTFLOW / HUMAN + AI</text>
+  </g>
+</svg>

@@ -135,7 +135,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
+    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
@@ -162,7 +162,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
       <main className="max-w-7xl mx-auto px-6 py-8 w-full">
 
         {categories.length === 0 ? (
-          <div className="p-12 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-center max-w-md mx-auto mt-12">
+          <div className="glass-panel-strong p-12 rounded-2xl text-center max-w-md mx-auto mt-12">
             <Tag className="w-10 h-10 text-slate-400 mx-auto mb-4 opacity-55 animate-pulse" />
             <p className="text-base font-semibold text-foreground mb-1">Nenhuma categoria cadastrada</p>
             <p className="text-sm text-muted-foreground mb-6">Crie a sua primeira categoria para organizar os currículos recebidos.</p>
@@ -179,7 +179,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
             {categories.map((cat) => (
               <div
                 key={cat.id}
-                className="bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-white/10 rounded-xl p-6 transition-all group relative hover:border-primary/50 dark:hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/5 shadow-sm hover:shadow-md overflow-hidden"
+                className="glass-panel glass-panel-interactive border-border/70 rounded-2xl p-6 transition-all group relative hover:border-primary/50 overflow-hidden"
               >
                 {/* Actions Overlay */}
                 <div className="absolute top-4 right-4 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity">
@@ -235,7 +235,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden z-10"
+              className="relative w-full max-w-md glass-panel-strong rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden z-10"
             >
               <button
                 onClick={handleCloseModal}
@@ -320,7 +320,7 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden z-10"
+              className="relative w-full max-w-md glass-panel-strong rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden z-10"
             >
               <button
                 onClick={handleCloseDeleteModal}

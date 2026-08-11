@@ -25,7 +25,7 @@ export default function JobCard({ job, onEdit, onDelete, onCopyLink }: JobCardPr
   const statusLabel = job.is_active && !isExpired ? "Ativa" : "Inativa/Encerrada";
 
   return (
-    <div className="group relative bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-2xl p-6 transition-all hover:shadow-xl hover:shadow-primary/5 hover:border-primary/30 flex flex-col justify-between min-h-[250px]">
+    <div className="group relative glass-panel glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between min-h-[250px]">
       {/* Glow effect on hover */}
       <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 

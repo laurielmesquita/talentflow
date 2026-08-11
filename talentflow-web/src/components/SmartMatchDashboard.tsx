@@ -59,10 +59,10 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
+    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-x-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-primary/5 rounded-full blur-[150px] pointer-events-none -z-10" />
+      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[150px] pointer-events-none -z-10" />
 
       {/* Navbar */}
       <Navbar />
@@ -85,12 +85,12 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
             </h3>
 
             {jobs.length === 0 ? (
-              <div className="p-8 rounded-xl border border-border/50 bg-card text-center">
+              <div className="glass-panel-strong p-8 rounded-2xl border-border/50 text-center">
                 <Briefcase className="w-8 h-8 text-muted-foreground mx-auto mb-2 opacity-40" />
                 <p className="text-xs text-muted-foreground">Nenhuma vaga cadastrada.</p>
               </div>
             ) : (
-              <div className="space-y-2.5 max-h-[calc(100vh-250px)] overflow-y-auto pr-1">
+              <div className="space-y-2.5 pr-1">
                 {jobs.map((job) => {
                   const isSelected = jobId === job.id;
                   return (
@@ -100,8 +100,8 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
                       whileHover={{ y: -1 }}
                       className={`w-full text-left block p-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                         isSelected
-                          ? "bg-primary/10 border-primary/40 shadow-[0_0_15px_rgba(var(--primary),0.1)]"
-                          : "bg-card border-border/60 hover:bg-accent/40 hover:border-border"
+                           ? "bg-primary/10 border-primary/40 shadow-[0_0_25px_color-mix(in_oklch,var(--primary)_18%,transparent)]"
+                           : "glass-panel border-border/60 hover:bg-accent/40 hover:border-primary/25"
                       }`}
                     >
                       <div className="flex justify-between items-start mb-1.5">
@@ -156,7 +156,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
           {/* Coluna direita: Painel de Match & Detalhes com Brilho High-Tech */}
           <div className="lg:col-span-2">
             {!selectedJob ? (
-              <div className="bg-card border border-border/50 rounded-xl p-12 min-h-[500px] flex flex-col items-center justify-center text-muted-foreground">
+              <div className="glass-panel-strong border-border/50 rounded-2xl p-12 min-h-[500px] flex flex-col items-center justify-center text-muted-foreground">
                 {jobs.length === 0 ? (
                   <>
                     <Briefcase className="w-12 h-12 mb-4 opacity-20 text-muted-foreground" />
@@ -178,7 +178,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
                 )}
               </div>
             ) : (
-              <div className="bg-card border border-primary/20 shadow-[0_0_25px_rgba(var(--primary),0.06)] rounded-xl p-6 min-h-[500px] flex flex-col transition-all duration-300">
+              <div className="glass-panel-strong border-primary/25 shadow-[0_0_35px_color-mix(in_oklch,var(--primary)_12%,transparent)] rounded-2xl p-6 min-h-[500px] flex flex-col transition-all duration-300">
                 
                 {/* Header do painel detalhado */}
                 <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-border/40 pb-5 mb-5 gap-4">
@@ -306,4 +306,3 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
     </div>
   );
 }
-

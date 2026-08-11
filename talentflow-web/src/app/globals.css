@@ -46,6 +46,7 @@
   /* AI accent token */
   --color-ai-accent: var(--ai-accent);
   --color-ai-accent-foreground: var(--ai-accent-foreground);
+  --color-glass-border: var(--glass-border);
   /* Radius tokens */
   --radius-sm: calc(var(--radius) * 0.5);
   --radius-md: calc(var(--radius) * 0.75);
@@ -110,6 +111,17 @@
   --ai-accent:             oklch(0.80 0.175 82);   /* âmbar vivo */
   --ai-accent-foreground:  oklch(0.22 0.060 68);   /* marrom-escuro sobre âmbar */
 
+  /* Liquid Glass */
+  --glass-bg:              oklch(0.995 0.002 280 / 72%);
+  --glass-bg-strong:       oklch(0.995 0.002 280 / 88%);
+  --glass-border:          oklch(1 0 0 / 66%);
+  --glass-highlight:       oklch(1 0 0 / 82%);
+  --glass-shadow:          0 22px 70px oklch(0.32 0.12 280 / 10%);
+  --glass-blur:            22px;
+  --aurora-violet:         oklch(0.68 0.19 292 / 18%);
+  --aurora-cyan:           oklch(0.78 0.14 215 / 13%);
+  --aurora-warm:           oklch(0.82 0.17 82 / 12%);
+
   /* ── Estado & Utilitários ── */
   --destructive: oklch(0.55 0.235 25);
   --border:      oklch(0.88 0.014 280);
@@ -168,6 +180,17 @@
   /* ── Acento de IA (âmbar elétrico dark) ── */
   --ai-accent:             oklch(0.78 0.170 82);
   --ai-accent-foreground:  oklch(0.12 0.040 68);
+
+  /* Liquid Glass - dark mode */
+  --glass-bg:              oklch(0.18 0.035 280 / 62%);
+  --glass-bg-strong:       oklch(0.16 0.032 280 / 84%);
+  --glass-border:          oklch(1 0 0 / 14%);
+  --glass-highlight:       oklch(1 0 0 / 22%);
+  --glass-shadow:          0 24px 80px oklch(0.03 0.03 280 / 42%);
+  --glass-blur:            24px;
+  --aurora-violet:         oklch(0.56 0.22 292 / 24%);
+  --aurora-cyan:           oklch(0.65 0.18 215 / 14%);
+  --aurora-warm:           oklch(0.72 0.17 82 / 13%);
 
   /* ── Estado & Utilitários ── */
   --destructive: oklch(0.65 0.215 25);
@@ -267,22 +290,24 @@
 }
 
 /* ── Animation Utilities ────────────────────────────────────────────────── */
-.animate-fade-in       { animation: fade-in 0.7s ease-out forwards; }
-.animate-fade-in-up    { animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-fade-in-down  { animation: fade-in-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-float         { animation: float 5s ease-in-out infinite; }
-.animate-shimmer       { background-size: 200% auto; animation: shimmer-slide 2.5s linear infinite; }
-.animate-gradient      { background-size: 200% 200%; animation: gradient-flow 5s ease infinite; }
-.animate-pulse-glow    { animation: pulse-glow 2.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in       { animation: fade-in 0.7s ease-out forwards; }
+  .animate-fade-in-up    { animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-fade-in-down  { animation: fade-in-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-float         { animation: float 5s ease-in-out infinite; }
+  .animate-shimmer       { background-size: 200% auto; animation: shimmer-slide 2.5s linear infinite; }
+  .animate-gradient      { background-size: 200% 200%; animation: gradient-flow 5s ease infinite; }
+  .animate-pulse-glow    { animation: pulse-glow 2.5s ease-in-out infinite; }
 
-/* Delay utilities */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
+  /* Delay utilities */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+  .delay-700 { animation-delay: 700ms; }
+}
 
 .opacity-0-initial { opacity: 0; }
 
@@ -293,4 +318,105 @@
 }
 .dark .bg-dot-grid {
   background-image: radial-gradient(circle, oklch(0.62 0.195 280 / 8%) 1px, transparent 1px);
+}
+
+/* Liquid Glass primitives */
+.glass-panel {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+  backdrop-filter: blur(var(--glass-blur)) saturate(130%);
+}
+
+.glass-panel-strong {
+  background: var(--glass-bg-strong);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow), inset 0 1px 0 var(--glass-highlight);
+  -webkit-backdrop-filter: blur(calc(var(--glass-blur) * 1.15)) saturate(140%);
+  backdrop-filter: blur(calc(var(--glass-blur) * 1.15)) saturate(140%);
+}
+
+.glass-panel-interactive {
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.glass-panel-interactive:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in oklch, var(--primary) 35%, var(--glass-border));
+  box-shadow: var(--glass-shadow), 0 12px 35px color-mix(in oklch, var(--primary) 12%, transparent), inset 0 1px 0 var(--glass-highlight);
+}
+
+.dashboard-atmosphere {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+.dashboard-atmosphere::before,
+.dashboard-atmosphere::after {
+  content: "";
+  position: fixed;
+  width: 34rem;
+  height: 34rem;
+  border-radius: 999px;
+  pointer-events: none;
+  filter: blur(70px);
+  opacity: 0.9;
+  z-index: -2;
+  animation: ambient-drift 18s ease-in-out infinite alternate;
+}
+
+.dashboard-atmosphere::before {
+  top: -18rem;
+  left: -12rem;
+  background: var(--aurora-violet);
+}
+
+.dashboard-atmosphere::after {
+  right: -16rem;
+  bottom: -18rem;
+  background: var(--aurora-cyan);
+  animation-delay: -7s;
+}
+
+.ambient-warm-orb {
+  position: fixed;
+  width: 18rem;
+  height: 18rem;
+  right: 24%;
+  top: 32%;
+  border-radius: 999px;
+  background: var(--aurora-warm);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: -2;
+  animation: ambient-drift 22s ease-in-out -4s infinite alternate;
+}
+
+@keyframes ambient-drift {
+  from { transform: translate3d(-2%, -3%, 0) scale(0.96); }
+  to { transform: translate3d(3%, 4%, 0) scale(1.04); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dashboard-atmosphere::before,
+  .dashboard-atmosphere::after,
+  .ambient-warm-orb {
+    animation: none;
+  }
+
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-spin-around {
+    animation: none;
+  }
+
+  .glass-panel-interactive {
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .glass-panel-interactive:hover {
+    transform: none;
+  }
 }

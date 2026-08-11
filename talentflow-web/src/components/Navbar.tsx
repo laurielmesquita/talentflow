@@ -11,6 +11,7 @@ import {
   Target, 
   Sparkles, 
   Layers, 
+  Home,
   Menu, 
   X 
 } from 'lucide-react';
@@ -18,6 +19,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import UserMenu from '@/components/UserMenu';
 
 const NAV_LINKS = [
+  { href: '/', label: 'Início', icon: Home },
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/candidates', label: 'Candidatos', icon: Users },
   { href: '/jobs', label: 'Vagas', icon: Target },
@@ -46,15 +48,18 @@ export default function Navbar() {
     };
   }, [mobileMenuOpen]);
 
-  const isActive = (path: string) =>
-    path === '/dashboard' ? pathname === '/dashboard' : pathname.startsWith(path);
+  const isActive = (path: string) => {
+    if (path === '/') return pathname === '/';
+    if (path === '/dashboard') return pathname === '/dashboard';
+    return pathname.startsWith(path);
+  };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl transition-colors duration-300">
+    <header className="sticky top-0 z-50 border-b border-glass-border/70 bg-background/55 backdrop-blur-2xl transition-colors duration-300">
       {/* Linha de acento superior */}
       <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-      <div className="flex items-center justify-between px-4 sm:px-6 h-14 max-w-7xl mx-auto">
+      <div className="flex items-center justify-between px-4 sm:px-6 h-16 max-w-7xl mx-auto">
 
         {/* ── Logo / Brand ── */}
         <Link href="/dashboard" className="flex items-center gap-2.5 group shrink-0">
@@ -90,7 +95,7 @@ export default function Navbar() {
                 key={href}
                 href={href}
                 className={[
-                  'relative px-3 py-1.5 text-[13px] font-medium rounded-md transition-all duration-150',
+                  'relative px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-150',
                   active
                     ? 'text-primary bg-primary/8'
                     : 'text-muted-foreground hover:text-foreground hover:bg-accent/60',

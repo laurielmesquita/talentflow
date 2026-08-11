@@ -290,22 +290,24 @@
 }
 
 /* ── Animation Utilities ────────────────────────────────────────────────── */
-.animate-fade-in       { animation: fade-in 0.7s ease-out forwards; }
-.animate-fade-in-up    { animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-fade-in-down  { animation: fade-in-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.animate-float         { animation: float 5s ease-in-out infinite; }
-.animate-shimmer       { background-size: 200% auto; animation: shimmer-slide 2.5s linear infinite; }
-.animate-gradient      { background-size: 200% 200%; animation: gradient-flow 5s ease infinite; }
-.animate-pulse-glow    { animation: pulse-glow 2.5s ease-in-out infinite; }
+@media (prefers-reduced-motion: no-preference) {
+  .animate-fade-in       { animation: fade-in 0.7s ease-out forwards; }
+  .animate-fade-in-up    { animation: fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-fade-in-down  { animation: fade-in-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .animate-float         { animation: float 5s ease-in-out infinite; }
+  .animate-shimmer       { background-size: 200% auto; animation: shimmer-slide 2.5s linear infinite; }
+  .animate-gradient      { background-size: 200% 200%; animation: gradient-flow 5s ease infinite; }
+  .animate-pulse-glow    { animation: pulse-glow 2.5s ease-in-out infinite; }
 
-/* Delay utilities */
-.delay-100 { animation-delay: 100ms; }
-.delay-200 { animation-delay: 200ms; }
-.delay-300 { animation-delay: 300ms; }
-.delay-400 { animation-delay: 400ms; }
-.delay-500 { animation-delay: 500ms; }
-.delay-600 { animation-delay: 600ms; }
-.delay-700 { animation-delay: 700ms; }
+  /* Delay utilities */
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+  .delay-700 { animation-delay: 700ms; }
+}
 
 .opacity-0-initial { opacity: 0; }
 
@@ -400,6 +402,13 @@
   .dashboard-atmosphere::before,
   .dashboard-atmosphere::after,
   .ambient-warm-orb {
+    animation: none;
+  }
+
+  .animate-pulse,
+  .animate-spin,
+  .animate-bounce,
+  .animate-spin-around {
     animation: none;
   }
 

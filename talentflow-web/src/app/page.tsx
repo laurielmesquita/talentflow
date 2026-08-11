@@ -14,6 +14,7 @@ import HeroVisual from "@/components/HeroVisual";
 import RevealSection from "@/components/RevealSection";
 import LandingHeader from "@/components/LandingHeader";
 import ScrollToTop from "@/components/ScrollToTop";
+import ThreeOrbBackdrop from "@/components/ThreeOrbBackdropDynamic";
 
 export const metadata = {
   title: "TalentFlow — Motor de IA para Triagem de Talentos",
@@ -474,6 +475,7 @@ export default function LandingPage() {
               aria-hidden="true"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/78 to-background/35" aria-hidden="true" />
+            <ThreeOrbBackdrop />
 
             <div className="relative z-10 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide mb-6">

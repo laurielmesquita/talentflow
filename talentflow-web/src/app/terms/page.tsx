@@ -4,7 +4,7 @@ import { ArrowLeft, Shield } from 'lucide-react';
 
 export default function TermsPage() {
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30">
+    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30">
       {/* Background Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 dark:bg-primary/5 rounded-full blur-[140px] pointer-events-none -z-10" />
       <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[500px] bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-[130px] pointer-events-none -z-10" />
@@ -47,19 +47,20 @@ export default function TermsPage() {
 
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-6 py-16 md:py-24">
-        <div className="flex items-center gap-3 mb-6 text-primary">
-          <Shield className="w-6 h-6" />
-          <span className="text-sm font-bold tracking-wider uppercase">Políticas da Plataforma</span>
-        </div>
+        <article className="glass-panel-strong rounded-3xl p-8 md:p-12 shadow-xl">
+          <div className="flex items-center gap-3 mb-6 text-primary">
+            <Shield className="w-6 h-6" />
+            <span className="text-sm font-bold tracking-wider uppercase">Políticas da Plataforma</span>
+          </div>
 
-        <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-transparent">
-          Termos de Uso
-        </h1>
-        <p className="text-muted-foreground text-sm mb-12">
-          Última atualização: 21 de junho de 2026
-        </p>
+          <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight mb-4 bg-gradient-to-b from-foreground to-muted-foreground bg-clip-text text-transparent">
+            Termos de Uso
+          </h1>
+          <p className="text-muted-foreground text-sm mb-12">
+            Última atualização: 21 de junho de 2026
+          </p>
 
-        <div className="prose prose-neutral dark:prose-invert max-w-none space-y-8 text-foreground/90 leading-relaxed">
+          <div className="prose prose-neutral dark:prose-invert max-w-none space-y-8 text-foreground/90 leading-relaxed">
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">1. Aceitação dos Termos</h2>
             <p>
@@ -126,7 +127,8 @@ export default function TermsPage() {
               Para esclarecer dúvidas sobre estes Termos de Uso, entre em contato através de nosso e-mail de atendimento: <a href="mailto:plataforma.talentflow@outlook.com" className="text-primary hover:underline">plataforma.talentflow@outlook.com</a>.
             </p>
           </section>
-        </div>
+          </div>
+        </article>
       </main>
 
     </div>

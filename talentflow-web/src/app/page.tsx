@@ -1,18 +1,13 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Sparkles,
   Brain,
   UploadCloud,
-  ShieldCheck,
   ArrowRight,
-  Activity,
   Zap,
-  Clock,
-  FolderX,
   Target,
   ChevronDown,
-  Code2,
-  Building2,
 } from "lucide-react";
 import SandboxDemoWrapper from "@/components/SandboxDemoWrapper";
 import HeroVisual from "@/components/HeroVisual";
@@ -168,37 +163,40 @@ export default function LandingPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             {
-              icon: Clock,
-              color: "text-amber-600 dark:text-amber-400",
-              bg: "bg-amber-50 dark:bg-amber-500/10",
-              border: "border-amber-200 dark:border-amber-500/20",
+              image: "/visuals/problemas/recrutador-sobrecarga-curriculos.jpg",
+              imageAlt: "Profissional sobrecarregada diante de uma grande pilha de curriculos",
               title: "Tempo desperdiçado",
               desc: "Horas por semana lendo currículos que não chegam perto do perfil. O tempo mais valioso do RH gasto no trabalho mais repetitivo.",
             },
             {
-              icon: FolderX,
-              color: "text-rose-600 dark:text-rose-400",
-              bg: "bg-rose-50 dark:bg-rose-500/10",
-              border: "border-rose-200 dark:border-rose-500/20",
+              image: "/visuals/problemas/desorganizacao-processos-manuais.jpg",
+              imageAlt: "Profissional cercada por documentos e processos manuais de trabalho",
               title: "Desorganização estrutural",
               desc: "Planilhas, e-mails e pastas compartilhadas que mais confundem do que organizam. Nenhuma visão consolidada do banco de talentos.",
             },
             {
-              icon: Target,
-              color: "text-violet-600 dark:text-violet-400",
-              bg: "bg-violet-50 dark:bg-violet-500/10",
-              border: "border-violet-200 dark:border-violet-500/20",
+              image: "/visuals/problemas/decisoes-sem-dados-analiticas.jpg",
+              imageAlt: "Profissional analisando documentos para tomar uma decisao de contratacao",
               title: "Decisões sem dados",
               desc: "Contratações baseadas em intuição e disponibilidade, não em critérios objetivos. Viés inconsciente no topo do funil.",
             },
           ].map((item, i) => (
             <RevealSection key={item.title} delay={i * 0.1}>
-              <div className="group h-full p-6 rounded-2xl glass-panel glass-panel-interactive space-y-4">
-                <div className={`w-11 h-11 rounded-xl ${item.bg} border ${item.border} flex items-center justify-center ${item.color} group-hover:scale-110 transition-transform`}>
-                  <item.icon className="w-5 h-5" />
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <Image
+                    src={item.image}
+                    alt={item.imageAlt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#15132f]/60 via-transparent to-transparent" aria-hidden="true" />
                 </div>
-                <h3 className="text-base font-bold text-foreground">{item.title}</h3>
-                <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                <div className="space-y-3 p-6">
+                  <h3 className="text-base font-bold text-foreground">{item.title}</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">{item.desc}</p>
+                </div>
               </div>
             </RevealSection>
           ))}
@@ -234,31 +232,34 @@ export default function LandingPage() {
 
             {/* Card GRANDE — Smart Match (col-span-2) */}
             <RevealSection className="md:col-span-2" delay={0}>
-               <div className="group h-full p-8 rounded-2xl glass-panel glass-panel-interactive relative overflow-hidden">
-                <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-primary/5 rounded-full blur-2xl pointer-events-none group-hover:bg-primary/10 transition-colors" />
-                <div className="relative z-10 flex flex-col gap-5">
-                  <div className="flex items-start justify-between">
-                    <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                      <Brain className="w-6 h-6" />
-                    </div>
-                    <span className="text-[10px] font-semibold uppercase tracking-widest text-primary bg-primary/10 px-2.5 py-1 rounded-full border border-primary/20">
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive relative">
+                <div className="relative aspect-[2.15] overflow-hidden bg-[#11102d]">
+                  <Image
+                    src="/visuals/features/smart-match.svg"
+                    alt="Ranking visual de candidatos conectado a um núcleo de compatibilidade e explicabilidade"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 66vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                  />
+                </div>
+                <div className="relative z-10 flex flex-col gap-5 p-8">
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-xl font-bold text-foreground">
+                      Smart Match com Explicabilidade
+                    </h3>
+                    <span className="shrink-0 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-primary">
                       Diferencial exclusivo
                     </span>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-foreground mb-2">
-                      Smart Match com Explicabilidade
-                    </h3>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Não apenas um score de compatibilidade. Para cada vaga, a IA gera uma{" "}
-                      <span className="text-foreground font-medium">justificativa descritiva</span> —
-                      o que o candidato tem, o que falta, e por que foi ranqueado onde foi.
-                      Decisões de contratação que você consegue explicar.
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 pt-2">
+                  <p className="text-muted-foreground leading-relaxed">
+                    Não apenas um score de compatibilidade. Para cada vaga, a IA gera uma{" "}
+                    <span className="text-foreground font-medium">justificativa descritiva</span> —
+                    o que o candidato tem, o que falta, e por que foi ranqueado onde foi.
+                    Decisões de contratação que você consegue explicar.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
                     {["Ranking automático", "Justificativa em texto", "Comparativo de candidatos", "Multi-vaga"].map(tag => (
-                      <span key={tag} className="text-xs px-3 py-1 rounded-full bg-primary/8 border border-primary/15 text-primary font-mono">
+                      <span key={tag} className="rounded-full border border-primary/15 bg-primary/8 px-3 py-1 text-xs font-mono text-primary">
                         {tag}
                       </span>
                     ))}
@@ -269,13 +270,19 @@ export default function LandingPage() {
 
             {/* Card — Ingestão em Lote */}
             <RevealSection delay={0.1}>
-              <div className="group h-full p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-emerald-500/30 transition-all duration-300 space-y-5">
-                <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
-                  <UploadCloud className="w-5.5 h-5.5" />
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive">
+                <div className="relative aspect-[1.7] overflow-hidden bg-[#11102d]">
+                  <Image
+                    src="/visuals/features/batch-ingestion.svg"
+                    alt="Múltiplos documentos entrando em paralelo e saindo organizados após processamento"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-foreground mb-2">Ingestão em Lote</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="space-y-3 p-6">
+                  <h3 className="text-base font-bold text-foreground">Ingestão em Lote</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Arraste dezenas de PDFs de uma vez. O processamento acontece em background
                     enquanto você continua trabalhando. Nenhum bloqueio de tela.
                   </p>
@@ -285,13 +292,19 @@ export default function LandingPage() {
 
             {/* Card — Quality Score */}
             <RevealSection delay={0.1}>
-              <div className="group h-full p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-amber-500/30 transition-all duration-300 space-y-5">
-                <div className="w-11 h-11 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-200 dark:border-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 group-hover:scale-110 transition-transform">
-                  <Activity className="w-5.5 h-5.5" />
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive">
+                <div className="relative aspect-[1.7] overflow-hidden bg-[#11102d]">
+                  <Image
+                    src="/visuals/features/quality-score.svg"
+                    alt="Indicador visual de qualidade com sinais e validações de perfil"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-foreground mb-2">Quality Score</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="space-y-3 p-6">
+                  <h3 className="text-base font-bold text-foreground">Quality Score</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Identifica automaticamente perfis mal estruturados ou incompletos.
                     Alertas precisos: dados ausentes, inconsistências e sinais de baixa qualidade.
                   </p>
@@ -301,13 +314,19 @@ export default function LandingPage() {
 
             {/* Card — Multi-Tenancy */}
             <RevealSection delay={0.15}>
-              <div className="group h-full p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-indigo-500/30 transition-all duration-300 space-y-5">
-                <div className="w-11 h-11 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200 dark:border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 group-hover:scale-110 transition-transform">
-                  <Building2 className="w-5.5 h-5.5" />
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive">
+                <div className="relative aspect-[1.7] overflow-hidden bg-[#11102d]">
+                  <Image
+                    src="/visuals/features/multi-tenancy.svg"
+                    alt="Três ambientes de empresa isolados e protegidos por um escudo central"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-foreground mb-2">Multi-Tenancy Isolada</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="space-y-3 p-6">
+                  <h3 className="text-base font-bold text-foreground">Multi-Tenancy Isolada</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Cada empresa tem seus dados isolados com precisão cirúrgica. RBAC completo.
                     Ideal para agências de R&S com múltiplos clientes.
                   </p>
@@ -317,13 +336,19 @@ export default function LandingPage() {
 
             {/* Card — Engine Híbrido */}
             <RevealSection delay={0.2}>
-              <div className="group h-full p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-violet-500/30 transition-all duration-300 space-y-5">
-                <div className="w-11 h-11 rounded-xl bg-violet-50 dark:bg-violet-500/10 border border-violet-200 dark:border-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400 group-hover:scale-110 transition-transform">
-                  <Code2 className="w-5.5 h-5.5" />
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive">
+                <div className="relative aspect-[1.7] overflow-hidden bg-[#11102d]">
+                  <Image
+                    src="/visuals/features/hybrid-ai-engine.svg"
+                    alt="Duas rotas de processamento de IA convergindo em uma saída unificada"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-foreground mb-2">Engine Híbrido de IA</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="space-y-3 p-6">
+                  <h3 className="text-base font-bold text-foreground">Engine Híbrido de IA</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Groq (Llama 3.3 70B) para PDFs de texto nativo. Gemini 2.5 Flash para
                     documentos escaneados via OCR. O melhor modelo para cada tipo de arquivo.
                   </p>
@@ -333,13 +358,19 @@ export default function LandingPage() {
 
             {/* Card — Auditoria & LGPD */}
             <RevealSection delay={0.25}>
-              <div className="group h-full p-6 rounded-2xl bg-card border border-border/60 shadow-sm hover:shadow-md hover:border-emerald-500/30 transition-all duration-300 space-y-5">
-                <div className="w-11 h-11 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400 group-hover:scale-110 transition-transform">
-                  <ShieldCheck className="w-5.5 h-5.5" />
+              <div className="group h-full overflow-hidden rounded-2xl glass-panel glass-panel-interactive">
+                <div className="relative aspect-[1.7] overflow-hidden bg-[#11102d]">
+                  <Image
+                    src="/visuals/features/audit-lgpd.svg"
+                    alt="Trilha de auditoria protegida por um escudo com cadeado e registros validados"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                  />
                 </div>
-                <div>
-                  <h3 className="text-base font-bold text-foreground mb-2">Auditoria & LGPD</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div className="space-y-3 p-6">
+                  <h3 className="text-base font-bold text-foreground">Auditoria & LGPD</h3>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
                     Log de auditoria completo de todas as ações. Termos e política de privacidade
                     nativos. Dados de candidatos tratados com conformidade.
                   </p>

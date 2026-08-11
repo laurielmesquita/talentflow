@@ -108,7 +108,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
     if (!text) return null;
     const lines = text.split("\n");
     return (
-      <ul className="list-disc pl-5 space-y-2 text-sm text-slate-700 dark:text-slate-300">
+      <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
         {lines.map((line, idx) => {
           const cleaned = line.replace(/^[•\-\*\s]+/, "").trim();
           if (!cleaned) return null;
@@ -119,15 +119,15 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
   }
 
   function renderTextOrList(text?: string) {
-    if (!text) return <p className="text-slate-500 italic text-sm">Não informado.</p>;
+    if (!text) return <p className="text-muted-foreground italic text-sm">Não informado.</p>;
     if (text.includes("•") || text.includes("\n-") || text.includes("\n*") || text.split("\n").length > 2) {
       return formatListText(text);
     }
-    return <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">{text}</p>;
+    return <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">{text}</p>;
   }
 
   return (
-    <div className="flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
+    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
       {/* Background Ambient Glows */}
       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[150px] pointer-events-none -z-10" />
@@ -162,8 +162,8 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
             </h3>
 
             {jobs.length === 0 ? (
-              <div className="p-8 rounded-xl border border-slate-200 dark:border-white/10 bg-white dark:bg-white/5 text-center">
-                <Briefcase className="w-8 h-8 text-slate-400 mx-auto mb-2 opacity-55" />
+              <div className="glass-panel-strong p-8 rounded-xl text-center">
+                <Briefcase className="w-8 h-8 text-muted-foreground mx-auto mb-2 opacity-55" />
                 <p className="text-sm text-muted-foreground">Nenhuma vaga cadastrada.</p>
               </div>
             ) : (
@@ -175,7 +175,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                     className={`w-full text-left block p-5 rounded-xl border transition-all cursor-pointer ${
                       jobId === job.id
                         ? "bg-primary/10 border-primary shadow-lg shadow-primary/5"
-                        : "bg-white dark:bg-white/5 border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/10 hover:border-slate-300 dark:hover:border-white/20"
+                         : "glass-panel border-border/70 hover:bg-accent/40 hover:border-primary/25"
                     }`}
                   >
                     <div className="flex justify-between items-start mb-2">
@@ -190,12 +190,12 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                     <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-3 text-xs text-muted-foreground font-medium">
                       {job.location && (
                         <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-slate-400" />
+                           <MapPin className="w-3 h-3 text-muted-foreground" />
                           {job.location}
                         </span>
                       )}
                       {job.work_model && (
-                        <span className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10">
+                        <span className="px-1.5 py-0.5 rounded bg-muted border border-border/60">
                           {job.work_model}
                         </span>
                       )}
@@ -211,13 +211,13 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                           .map((s, idx) => (
                             <span
                               key={idx}
-                              className="text-[10px] uppercase font-semibold px-2 py-1 rounded bg-slate-100 dark:bg-white/5 text-muted-foreground border border-slate-200 dark:border-white/10"
+                              className="text-[10px] uppercase font-semibold px-2 py-1 rounded bg-muted text-muted-foreground border border-border/60"
                             >
                               {s.trim()}
                             </span>
                           ))
                       ) : (
-                        <span className="text-[10px] italic text-slate-500">Sem skills exigidas</span>
+                        <span className="text-[10px] italic text-muted-foreground">Sem skills exigidas</span>
                       )}
                     </div>
                   </button>
@@ -229,25 +229,25 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
           {/* Coluna direita: Painel de Match & Detalhes */}
           <div className="lg:col-span-2">
             {!selectedJob ? (
-              <div className="bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-xl p-12 min-h-[500px] flex flex-col items-center justify-center text-slate-500">
+              <div className="glass-panel-strong rounded-xl p-12 min-h-[500px] flex flex-col items-center justify-center text-muted-foreground">
                 <Target className="w-12 h-12 mb-4 opacity-20 text-primary animate-pulse" />
-                <p className="text-lg font-medium text-slate-400">Selecione uma vaga ao lado</p>
+                <p className="text-lg font-medium text-muted-foreground">Selecione uma vaga ao lado</p>
                 <p className="text-sm mt-1 text-center max-w-sm">
                   Selecione ou crie uma vaga para analisar os currículos compatíveis do banco e ver a descrição estruturada.
                 </p>
               </div>
             ) : (
-              <div className="bg-white dark:bg-slate-900/50 border border-slate-200 dark:border-white/10 rounded-xl p-6 min-h-[500px] flex flex-col">
+              <div className="glass-panel-strong rounded-xl p-6 min-h-[500px] flex flex-col">
                 
                 {/* Header do painel detalhado */}
-                <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-slate-200 dark:border-white/5 pb-6 mb-6 gap-4">
+                 <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-border/50 pb-6 mb-6 gap-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100">{selectedJob.title}</h3>
+                    <h3 className="text-2xl font-bold text-foreground">{selectedJob.title}</h3>
                     
                     {/* Badges e Fatos Rápidos */}
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-3 text-sm text-muted-foreground font-medium">
                       <span className="flex items-center gap-1.5">
-                        <MapPin className="w-4 h-4 text-slate-400" />
+                         <MapPin className="w-4 h-4 text-muted-foreground" />
                         {selectedJob.location}
                       </span>
                       <span className="px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-500 dark:text-indigo-400 text-xs border border-indigo-500/10">
@@ -285,7 +285,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                 </div>
 
                 {/* Tabs de Seleção */}
-                <div className="flex border-b border-slate-200 dark:border-white/5 mb-6">
+                 <div className="flex border-b border-border/50 mb-6">
                   <button
                     onClick={() => setActiveTab("matches")}
                     className={`pb-3 text-sm font-semibold border-b-2 transition-all cursor-pointer px-4 ${
@@ -321,12 +321,12 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                       <JobMatchViewer />
                     </div>
                   ) : (
-                    <div className="space-y-6 animate-in fade-in duration-200 text-slate-800 dark:text-slate-200">
+                     <div className="space-y-6 animate-in fade-in duration-200 text-foreground">
                       
                       {/* Sobre a Empresa */}
                       <div className="space-y-2">
                         <h4 className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Sobre a Empresa / Resumo</h4>
-                        <p className="text-sm text-slate-700 dark:text-slate-300 whitespace-pre-line leading-relaxed">
+                         <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed">
                           {selectedJob.description}
                         </p>
                       </div>
@@ -335,7 +335,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                       {selectedJob.responsibilities && (
                         <div className="space-y-2">
                           <h4 className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Principais Atividades</h4>
-                          <div className="p-4 rounded-xl bg-slate-50 dark:bg-black/10 border border-slate-200 dark:border-white/5">
+                           <div className="p-4 rounded-xl bg-background/45 border border-border/50">
                             {renderTextOrList(selectedJob.responsibilities)}
                           </div>
                         </div>
@@ -345,7 +345,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                       {selectedJob.requirements && (
                         <div className="space-y-2">
                           <h4 className="text-xs font-bold text-indigo-500 uppercase tracking-wider">Requisitos e Qualificações</h4>
-                          <div className="p-4 rounded-xl bg-slate-50 dark:bg-black/10 border border-slate-200 dark:border-white/5">
+                           <div className="p-4 rounded-xl bg-background/45 border border-border/50">
                             {renderTextOrList(selectedJob.requirements)}
                           </div>
                         </div>
@@ -355,7 +355,7 @@ export default function JobsDashboard({ initialJobs }: { initialJobs: Job[] }) {
                       {selectedJob.benefits && (
                         <div className="space-y-2">
                           <h4 className="text-xs font-bold text-indigo-500 uppercase tracking-wider">O que oferecemos</h4>
-                          <div className="p-4 rounded-xl bg-slate-50 dark:bg-black/10 border border-slate-200 dark:border-white/5">
+                           <div className="p-4 rounded-xl bg-background/45 border border-border/50">
                             {renderTextOrList(selectedJob.benefits)}
                           </div>
                         </div>

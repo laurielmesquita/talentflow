@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { UploadCloud, Sparkles, CheckCircle2, AlertTriangle, ArrowRight, XCircle, Loader2 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface SandboxResult {
   full_name: string;
@@ -71,45 +72,63 @@ export default function SandboxDemo() {
 
       const data = await response.json();
       setResult(data);
-    } catch (err: any) {
-      setError(err.message || "Erro inesperado.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro inesperado.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="relative mx-auto max-w-5xl rounded-2xl border border-border/80 bg-card/60 p-6 md:p-10 shadow-2xl backdrop-blur-md">
+    <div className="relative mx-auto max-w-5xl rounded-2xl glass-panel-strong p-3 md:p-4 shadow-2xl">
       {!loading && !result && (
-        <div 
-          className="border-2 border-dashed border-border/60 hover:border-primary/50 transition-colors rounded-xl p-12 text-center flex flex-col items-center justify-center cursor-pointer bg-background/50"
-          onClick={() => fileInputRef.current?.click()}
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={handleDrop}
-        >
-          <input 
-            type="file" 
-            accept="application/pdf" 
-            className="hidden" 
-            ref={fileInputRef} 
-            onChange={handleFileChange}
-          />
-          <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-6">
-            <UploadCloud className="w-8 h-8" />
+        <div className="grid overflow-hidden rounded-xl border border-white/10 bg-background/35 md:grid-cols-[1.15fr_0.85fr]">
+          <div className="relative min-h-[280px] overflow-hidden bg-[#11102d] md:min-h-[420px]">
+            <Image
+              src="/visuals/sandbox/extraction-flow.svg"
+              alt="Fluxo visual de um currículo passando pela análise de IA até virar um perfil estruturado"
+              fill
+              sizes="(max-width: 768px) 100vw, 55vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#11102d]/35" aria-hidden="true" />
           </div>
-          <h3 className="text-xl font-bold mb-2">Faça upload de um currículo (PDF)</h3>
-          <p className="text-muted-foreground text-sm max-w-md mx-auto mb-6">
-            Arraste e solte o arquivo aqui ou clique para selecionar. O processamento leva cerca de 3 segundos.
-          </p>
-          <p className="text-xs text-muted-foreground/60">
-            Ao enviar este arquivo, você concorda com o processamento temporário dos dados por nossa IA. Os dados não são armazenados.
-          </p>
 
-          {error && (
-            <div className="mt-6 flex items-center gap-2 text-destructive bg-destructive/10 px-4 py-2 rounded-lg text-sm font-medium">
-              <AlertTriangle className="w-4 h-4" /> {error}
+          <div
+            className="flex cursor-pointer flex-col items-center justify-center border-t-2 border-dashed border-border/60 bg-background/45 p-8 text-center transition-colors hover:border-primary/50 md:border-l-0 md:border-t-0 md:border-l-2 md:p-10"
+            onClick={() => fileInputRef.current?.click()}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={handleDrop}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") fileInputRef.current?.click();
+            }}
+          >
+            <input
+              type="file"
+              accept="application/pdf"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+            />
+            <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <UploadCloud className="h-8 w-8" />
             </div>
-          )}
+            <h3 className="mb-2 text-xl font-bold">Faça upload de um currículo (PDF)</h3>
+            <p className="mx-auto mb-6 max-w-md text-sm text-muted-foreground">
+              Arraste e solte o arquivo aqui ou clique para selecionar. O processamento leva cerca de 3 segundos.
+            </p>
+            <p className="text-xs text-muted-foreground/60">
+              Ao enviar este arquivo, você concorda com o processamento temporário dos dados por nossa IA. Os dados não são armazenados.
+            </p>
+
+            {error && (
+              <div className="mt-6 flex items-center gap-2 rounded-lg bg-destructive/10 px-4 py-2 text-sm font-medium text-destructive">
+                <AlertTriangle className="h-4 w-4" /> {error}
+              </div>
+            )}
+          </div>
         </div>
       )}
 

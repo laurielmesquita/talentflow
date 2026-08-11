@@ -399,10 +399,19 @@ export default function LandingPage() {
           </p>
         </RevealSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
-          {/* Connector line (desktop) */}
-          <div className="hidden md:block absolute top-[2.75rem] left-[calc(16.67%+1.5rem)] right-[calc(16.67%+1.5rem)] h-px bg-gradient-to-r from-transparent via-border to-transparent" aria-hidden="true" />
+        <RevealSection className="mx-auto mb-16 max-w-5xl" delay={0.1}>
+          <div className="overflow-hidden rounded-3xl glass-panel-strong bg-[#11102d] shadow-2xl shadow-primary/10">
+            <Image
+              src="/visuals/how-it-works/ingestion-pipeline.svg"
+              alt="Pipeline visual do upload do currículo até a decisão de contratação"
+              width={1200}
+              height={720}
+              className="h-auto w-full"
+            />
+          </div>
+        </RevealSection>
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
           {[
             {
               step: "01",
@@ -455,12 +464,18 @@ export default function LandingPage() {
       ═══════════════════════════════════════════════════════════════ */}
       <section className="py-20 md:py-32 px-6" aria-labelledby="cta-title">
         <RevealSection>
-          <div className="max-w-4xl mx-auto relative overflow-hidden rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/5 via-background to-indigo-500/5 p-10 md:p-16 text-center shadow-xl shadow-primary/5">
-            {/* Decorative glows */}
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-primary/8 rounded-full blur-[80px] pointer-events-none" aria-hidden="true" />
-            <div className="absolute -bottom-16 -left-16 w-48 h-48 bg-indigo-500/6 rounded-full blur-[60px] pointer-events-none" aria-hidden="true" />
+          <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-primary/20 bg-background p-8 text-center shadow-xl shadow-primary/10 md:p-14 md:text-left">
+            <Image
+              src="/visuals/cta/cta-depth.svg"
+              alt=""
+              fill
+              sizes="(max-width: 768px) 100vw, 960px"
+              className="object-cover object-center"
+              aria-hidden="true"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/95 via-background/78 to-background/35" aria-hidden="true" />
 
-            <div className="relative z-10">
+            <div className="relative z-10 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide mb-6">
                 <Sparkles className="w-3.5 h-3.5" />
                 Acesso Antecipado
@@ -473,12 +488,12 @@ export default function LandingPage() {
                 </span>
               </h2>
 
-              <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+              <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto md:mx-0 mb-10 leading-relaxed">
                 Junte-se às equipes que já estão transformando sua operação de R&S com
                 inteligência artificial. Sem planilhas. Sem achismos.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
                 <Link
                   href="/login?signup=true"
                   id="cta-final-signup"
@@ -497,7 +512,7 @@ export default function LandingPage() {
               </div>
 
               {/* Trust signals */}
-              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-10 text-xs text-muted-foreground/70">
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-6 gap-y-2 mt-10 text-xs text-muted-foreground/70">
                 <span>✓ Sem cartão de crédito</span>
                 <span>✓ Configuração em minutos</span>
                 <span>✓ Dados isolados por empresa</span>

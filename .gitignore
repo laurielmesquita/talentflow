@@ -49,3 +49,18 @@ talentflow-web/next-env.d.ts
 
 # Vercel
 talentflow-web/.vercel
+
+# ========================
+# Seguranca — hardening
+# ========================
+
+# PDFs de teste nunca commitados (gerar via generate_test_pdf.py)
+*.pdf
+# Excecoes futuras: !docs/whitepapers/*.pdf
+
+# Graphify AST cache — vaza paths absolutos locais do ambiente de desenvolvimento
+graphify-out/cache/
+graphify-out/*/cache/
+
+# Scripts one-shot de migracao de banco (liquidas apos uso); nuca re-versionar
+talentflow-api/migrate_db_data.py

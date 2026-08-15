@@ -1,8 +1,8 @@
 # Plano de Ação: Review Estruturado de Arquitetura (TalentFlow API & Web)
 
-Este plano estabelece a metodologia para a revisão técnica dos dois relatórios de arquitetura convertidos para Markdown em [`05-Projetos/docs/`](./docs/):
-- [`architecture-review-api.md`](./docs/architecture-review-api.md)
-- [`architecture-review-web.md`](./docs/architecture-review-web.md)
+Este plano estabelece a metodologia para a revisão técnica dos dois relatórios de arquitetura convertidos para Markdown em [`docs/`](./):
+- [`architecture-review-api.md`](./architecture-review-api.md)
+- [`architecture-review-web.md`](./architecture-review-web.md)
 
 ---
 

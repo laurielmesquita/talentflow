@@ -1,44 +1,46 @@
 import fitz
-import os
 from pathlib import Path
 
+# PII 100% sintetica (sem correspondencia com candidatos reais).
+# E-mail em dominio RFC 5737 (reserved) e dados ficticios.
+CANDIDATE_NAME = "Candidato Sintetico de Teste"
+CANDIDATE_EMAIL = "candidato.sintetico@example.com"
+CANDIDATE_PHONE = "(00) 90000-0000"
+CANDIDATE_CITY = "Cidade Teste, UF"
+OUTPUT_PATH = Path(__file__).parent / "talentflow-api" / "tests" / "fixtures" / "synthetic_candidate.pdf"
+
+
 def generate_test_pdf():
-    # Nome de um candidato que sabemos que existe no banco
-    candidate_name = "REMOVED_CANDIDATE_NAME"
-    
     doc = fitz.open()
     page = doc.new_page()
-    
-    # Texto estruturado simulando novas informações para o candidato existente
-    text = f"""{candidate_name}
-Email: REMOVED_CANDIDATE@EXAMPLE.COM (DIFERENTE do cadastrado)
-Telefone: REMOVED_PHONE
-Endereço: REMOVED_CITY
 
-Áreas de Atuação:
-Tecnologia, Suporte Técnico
+    text = f"""{CANDIDATE_NAME}
+Email: {CANDIDATE_EMAIL}
+Telefone: {CANDIDATE_PHONE}
+Endereco: {CANDIDATE_CITY}
 
-Competências Técnicas:
-Sistemas Operacionais, Redes de Computadores, Atendimento ao Cliente, Python, Docker (NOVA), Linux, Git (NOVA)
+Areas de Atuacao:
+Tecnologia, Suporte Tecnico
 
-Experiência Profissional:
-1. REMOVED_FICTIONAL_EMPLOYER - Técnico de TI Sênior (2025 - Presente)
-Liderança de equipe de infraestrutura, redução de chamados de suporte em 30% e automatização de deploys com Docker e shell scripting.
+Competencias Tecnicas:
+Sistemas Operacionais, Redes de Computadores, Atendimento ao Cliente, Python, Docker, Linux, Git
 
-2. REMOVED_FICTIONAL_EMPLOYER - Auxiliar Técnico (2023 - 2025)
-Manutenção física e lógica de dispositivos móveis de diversas marcas.
+Experiencia Profissional:
+1. Empresa Exemplo S.A. - Tecnico de TI Senior (2025 - Presente)
+Lideranca de equipe de infraestrutura, reducao de chamados de suporte em 30% e automatizacao de deploys com Docker e shell scripting.
+
+2. Empresa Demo LTDA - Auxiliar Tecnico (2023 - 2025)
+Manutencao fisica e logica de dispositivos moveis de diversas marcas.
 """
-    
-    # Insere o texto na página
+
     page.insert_text((50, 50), text, fontsize=11, lineheight=1.4)
-    
-    # Salva o arquivo no diretório raiz do projeto para fácil acesso
-    output_filename = "REMOVED_TEST_FIXTURE.pdf"
-    doc.save(output_filename)
+
+    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    doc.save(str(OUTPUT_PATH))
     doc.close()
-    
-    print(f"✅ PDF de teste gerado com sucesso: {output_filename}")
-    print(f"Caminho absoluto: {Path(output_filename).resolve()}")
+
+    print(f"PDF sintetico gerado com sucesso: {OUTPUT_PATH}")
+
 
 if __name__ == "__main__":
     generate_test_pdf()

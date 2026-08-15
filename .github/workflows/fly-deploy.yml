@@ -18,7 +18,9 @@ jobs:
       - uses: actions/checkout@v4
       
       - name: Setup Flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        # Pin a commit SHA para supply-chain hardening — @master é moving target.
+        # Atualizado em 2026-08-15 (HEAD de superfly/flyctl-actions no momento).
+        uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1
         
       - name: Deploy to Fly.io
         run: flyctl deploy

@@ -1,8 +1,9 @@
 import secrets
 from datetime import datetime, timedelta, timezone
-from fastapi import APIRouter, Depends, HTTPException, status, Response
+from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user, RoleChecker
+from app.api.sandbox import limiter
 from app.models.domain import User, PasswordReset, Tenant
 from app.schemas.auth import (
     LoginRequest, TokenResponse, 
@@ -29,12 +30,13 @@ def _set_token_cookie(response: Response, token: str):
 
 
 @router.post("/login", response_model=TokenResponse)
-def login(request: LoginRequest, response: Response, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+def login(request: Request, payload: LoginRequest, response: Response, db: Session = Depends(get_db)):
     """
     Autentica o usuário e retorna o token JWT de acesso.
     """
-    user = db.query(User).filter(User.email == request.email).first()
-    if not user or not verify_password(request.password, user.hashed_password):
+    user = db.query(User).filter(User.email == payload.email).first()
+    if not user or not verify_password(payload.password, user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="E-mail ou senha incorretos."
@@ -46,7 +48,9 @@ def login(request: LoginRequest, response: Response, db: Session = Depends(get_d
             detail="Sua conta foi desativada pelo administrador."
         )
 
-    access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
+    access_token = create_access_token(
+        data={"sub": str(user.id), "role": user.role, "email": user.email}
+    )
     _set_token_cookie(response, access_token)
     return TokenResponse(
         access_token=access_token,
@@ -58,11 +62,12 @@ def login(request: LoginRequest, response: Response, db: Session = Depends(get_d
 
 
 @router.post("/forgot-password")
-def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def forgot_password(request: Request, payload: ForgotPasswordRequest, db: Session = Depends(get_db)):
     """
     Gera um token de redefinição de senha e envia por e-mail.
     """
-    user = db.query(User).filter(User.email == request.email).first()
+    user = db.query(User).filter(User.email == payload.email).first()
     
     # Prática de segurança: retornar sucesso mesmo se o e-mail não existir
     # para evitar varredura de usuários (User Enumeration).
@@ -71,7 +76,7 @@ def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db
 
     # Desativa tokens anteriores
     db.query(PasswordReset).filter(
-        PasswordReset.email == request.email, 
+        PasswordReset.email == payload.email, 
         PasswordReset.is_used == False
     ).update({"is_used": True})
 
@@ -80,7 +85,7 @@ def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db
     expires_at = datetime.now(timezone.utc) + timedelta(hours=2) # 2 horas de validade
 
     reset_record = PasswordReset(
-        email=request.email,
+        email=payload.email,
         token=token,
         expires_at=expires_at
     )
@@ -89,18 +94,19 @@ def forgot_password(request: ForgotPasswordRequest, db: Session = Depends(get_db
     db.commit()
 
     # Envio do e-mail
-    send_reset_password_email(to_email=request.email, token=token)
+    send_reset_password_email(to_email=payload.email, token=token)
 
     return {"message": "Se este e-mail estiver cadastrado, um link de recuperação será enviado."}
 
 
 @router.post("/reset-password")
-def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db)):
+@limiter.limit("10/minute")
+def reset_password(request: Request, payload: ResetPasswordRequest, db: Session = Depends(get_db)):
     """
     Redefine a senha do usuário com base no token recebido por e-mail.
     """
     reset_record = db.query(PasswordReset).filter(
-        PasswordReset.token == request.token, 
+        PasswordReset.token == payload.token, 
         PasswordReset.is_used == False
     ).first()
     
@@ -129,7 +135,7 @@ def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db))
             detail="Usuário não encontrado."
         )
 
-    user.hashed_password = hash_password(request.password)
+    user.hashed_password = hash_password(payload.password)
     reset_record.is_used = True
     db.commit()
 
@@ -138,32 +144,33 @@ def reset_password(request: ResetPasswordRequest, db: Session = Depends(get_db))
 
 @router.post("/change-password")
 def change_password(
-    request: ChangePasswordRequest,
+    payload: ChangePasswordRequest,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
     """
     Permite ao usuário autenticado alterar sua própria senha.
     """
-    if not verify_password(request.current_password, current_user.hashed_password):
+    if not verify_password(payload.current_password, current_user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="A senha atual informada está incorreta."
         )
     
-    current_user.hashed_password = hash_password(request.new_password)
+    current_user.hashed_password = hash_password(payload.new_password)
     db.commit()
     
     return {"message": "Senha alterada com sucesso!"}
 
 
 @router.post("/register", response_model=TokenResponse)
-def register(request: RegisterRequest, response: Response, db: Session = Depends(get_db)):
+@limiter.limit("3/hour")
+def register(request: Request, payload: RegisterRequest, response: Response, db: Session = Depends(get_db)):
     """
     Registra uma nova empresa (Tenant) e o usuário administrador principal dela.
     """
     # Verifica se o e-mail já existe
-    existing_user = db.query(User).filter(User.email == request.email).first()
+    existing_user = db.query(User).filter(User.email == payload.email).first()
     if existing_user:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -173,7 +180,7 @@ def register(request: RegisterRequest, response: Response, db: Session = Depends
     try:
         # Criação do novo Tenant
         tenant = Tenant(
-            name=request.company_name,
+            name=payload.company_name,
             plan_name="free",
             plan_status="active",
             candidate_count_limit=settings.PLAN_LIMITS["free"]
@@ -184,9 +191,9 @@ def register(request: RegisterRequest, response: Response, db: Session = Depends
 
         # Criação do usuário administrador do Tenant
         user = User(
-            email=request.email,
-            full_name=request.full_name,
-            hashed_password=hash_password(request.password),
+            email=payload.email,
+            full_name=payload.full_name,
+            hashed_password=hash_password(payload.password),
             role="Manager",
             is_active=True,
             tenant_id=tenant.id
@@ -196,7 +203,9 @@ def register(request: RegisterRequest, response: Response, db: Session = Depends
         db.refresh(user)
 
         # Login automático
-        access_token = create_access_token(data={"sub": str(user.id), "role": user.role})
+        access_token = create_access_token(
+            data={"sub": str(user.id), "role": user.role, "email": user.email}
+        )
         _set_token_cookie(response, access_token)
         return TokenResponse(
             access_token=access_token,

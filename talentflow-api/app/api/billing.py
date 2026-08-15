@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 import stripe
 from app.core.config import settings
 from app.models.domain import User, Tenant
-from app.api.deps import get_current_user, get_db
+from app.api.deps import get_current_user, get_db, RoleChecker
 from sqlalchemy.orm import Session
 import logging
 
@@ -11,6 +11,8 @@ router = APIRouter(tags=["Billing"])
 stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
+_manager_admin = RoleChecker(["Manager", "SuperAdmin"])
+
 # Plan Limits Configuration (consome a fonte única em config.py)
 PLAN_LIMITS = settings.PLAN_LIMITS
 
@@ -18,7 +20,8 @@ PLAN_LIMITS = settings.PLAN_LIMITS
 def create_checkout_session(
     plan: str,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
+    _role_check: User = Depends(_manager_admin),
 ):
     """
     Cria uma sessão de checkout no Stripe para o plano escolhido.
@@ -65,6 +68,7 @@ def create_checkout_session(
 @router.post("/portal")
 def create_customer_portal_session(
     current_user: User = Depends(get_current_user),
+    _role_check: User = Depends(_manager_admin),
 ):
     """
     Cria uma sessão no portal do cliente (para gerenciar assinaturas, ver faturas, etc).
@@ -93,8 +97,11 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     sig_header = request.headers.get("stripe-signature")
     
     if not settings.STRIPE_WEBHOOK_SECRET:
-        logger.warning("Stripe webhook ignorado (STRIPE_WEBHOOK_SECRET não configurado).")
-        return {"status": "ignored"}
+        logger.error("Stripe webhook rejeitado: STRIPE_WEBHOOK_SECRET ausente no servidor.")
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Webhook secret não configurado no servidor."
+        )
 
     try:
         event = stripe.Webhook.construct_event(

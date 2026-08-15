@@ -1,5 +1,5 @@
 import uuid
-from sqlalchemy import Column, String, Date, Boolean, Text, ForeignKey, Float, DateTime, Table, Integer, UniqueConstraint, JSON
+from sqlalchemy import Column, String, Date, Boolean, Text, ForeignKey, Float, DateTime, Table, Integer, UniqueConstraint, JSON, Index
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
@@ -69,6 +69,14 @@ class Skill(Base):
 
 class Candidate(Base):
     __tablename__ = "candidates"
+    __table_args__ = (
+        Index(
+            "uq_candidate_tenant_email_active",
+            "tenant_id", "email",
+            unique=True,
+            postgresql_where="is_active = true AND deleted_at IS NULL AND email IS NOT NULL",
+        ),
+    )
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     full_name = Column(String, nullable=False, index=True)

@@ -7,6 +7,7 @@ import tempfile
 import json
 import os
 import asyncio
+import logging
 from pydantic import BaseModel
 from uuid import UUID
 
@@ -14,8 +15,11 @@ from app.core.database import SessionLocal
 from app.models.domain import Candidate, Category, Skill, Experience, BatchJob, User, JobMatch, AuditLog
 from app.services.quality_score import score_tier
 
-from app.api.deps import get_current_user, get_scoped_db, ScopedSession
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession, RoleChecker, require_feature
 router = APIRouter(dependencies=[Depends(get_current_user)])
+
+_manager_admin = RoleChecker(["Manager", "SuperAdmin"])
+logger = logging.getLogger(__name__)
 
 
 
@@ -45,7 +49,7 @@ def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
     Gera URL assinada autenticada no Cloudinary e recupera os bytes do PDF original.
     """
     if not pdf_url or "cloudinary.com" not in pdf_url:
-        print(f"[pdf_proxy] URL inválida ou não é Cloudinary: {pdf_url}")
+        logger.debug("[pdf_proxy] URL invalida ou nao eh Cloudinary (detalhes omitidos por seguranca)")
         return None
     try:
         import cloudinary
@@ -53,7 +57,10 @@ def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
         import httpx
         from app.core.config import settings
 
-        print(f"[pdf_proxy] Cloudinary config: cloud_name={settings.CLOUDINARY_CLOUD_NAME}, api_key={'***' if settings.CLOUDINARY_API_KEY else 'VAZIO'}")
+        logger.debug(
+            f"[pdf_proxy] Cloudinary config: cloud_name={settings.CLOUDINARY_CLOUD_NAME}, "
+            f"api_key={'***' if settings.CLOUDINARY_API_KEY else 'VAZIO'}"
+        )
 
         cloudinary.config(
             cloud_name=settings.CLOUDINARY_CLOUD_NAME,
@@ -63,17 +70,17 @@ def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
 
         public_id = extract_cloudinary_public_id(pdf_url, is_raw=True)
         if not public_id:
-            print(f"[pdf_proxy] Falha ao extrair public_id de: {pdf_url}")
+            logger.debug("[pdf_proxy] Falha ao extrair public_id da URL fornecida (detalhes omitidos)")
             return None
 
-        print(f"[pdf_proxy] public_id={public_id}")
+        logger.debug(f"[pdf_proxy] public_id={public_id}")
 
         signed_url = cloudinary.utils.private_download_url(
             public_id, "", resource_type="raw", type="upload"
         )
-        print(f"[pdf_proxy] signed_url={signed_url[:100]}...")
+        # NUNCA logar a signed_url — ela carrega credencial HMAC com TTL de 1h.
         res = httpx.get(signed_url, follow_redirects=True, timeout=15.0)
-        print(f"[pdf_proxy] signed_url response: status={res.status_code}, size={len(res.content)}")
+        logger.debug(f"[pdf_proxy] signed_url fetch: status={res.status_code}, size={len(res.content)}")
         if res.status_code == 200 and len(res.content) > 0:
             return res.content
 
@@ -81,11 +88,11 @@ def get_cloudinary_pdf_bytes(pdf_url: str) -> Optional[bytes]:
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         }
         res_direct = httpx.get(pdf_url, headers=headers, follow_redirects=True, timeout=15.0)
-        print(f"[pdf_proxy] direct fallback response: status={res_direct.status_code}, size={len(res_direct.content)}")
+        logger.debug(f"[pdf_proxy] direct fallback: status={res_direct.status_code}, size={len(res_direct.content)}")
         if res_direct.status_code in (200, 206, 304) and len(res_direct.content) > 0:
             return res_direct.content
     except Exception as e:
-        print(f"[pdf_proxy] Erro ao recuperar PDF do Cloudinary: {type(e).__name__}: {e}")
+        logger.warning(f"[pdf_proxy] Erro ao recuperar PDF do Cloudinary: {type(e).__name__}")
     return None
 
 
@@ -448,7 +455,7 @@ def replace_candidate(
     candidate_id: str,
     req: ReplaceRequest,
     db: ScopedSession = Depends(get_scoped_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(_manager_admin)
 ):
     # Encontra candidato existente
     existing = db.query(Candidate).filter(
@@ -600,7 +607,7 @@ def get_candidate_versions(
 def delete_candidate(
     candidate_id: str, 
     db: ScopedSession = Depends(get_scoped_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(_manager_admin)
 ):
     c = db.query(Candidate).filter(
         Candidate.id == candidate_id
@@ -868,7 +875,8 @@ async def process_batch_uploads_task(batch_id: str, file_info: List[dict], tenan
 async def upload_batch_resumes(
     background_tasks: BackgroundTasks,
     files: List[UploadFile] = File(...),
-    db: ScopedSession = Depends(get_scoped_db)
+    db: ScopedSession = Depends(get_scoped_db),
+    _: bool = Depends(require_feature("batch_upload"))
 ):
     """
     Inicia o upload de múltiplos currículos em lote.

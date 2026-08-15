@@ -5,8 +5,10 @@ from typing import List, Optional
 from app.core.database import SessionLocal
 from app.models.domain import JobPosition, Candidate, JobMatch, User
 
-from app.api.deps import get_current_user, get_scoped_db, ScopedSession
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession, RoleChecker, require_feature
 router = APIRouter(dependencies=[Depends(get_current_user)])
+
+_manager_admin = RoleChecker(["Manager", "SuperAdmin"])
 
 
 from datetime import date
@@ -102,7 +104,12 @@ def create_job(job: JobCreate, db: ScopedSession = Depends(get_scoped_db)):
     return {"id": str(db_job.id), "slug": db_job.slug, "message": "Vaga criada com sucesso"}
 
 @router.put("/jobs/{job_id}")
-def update_job(job_id: str, job_update: JobUpdate, db: ScopedSession = Depends(get_scoped_db)):
+def update_job(
+    job_id: str,
+    job_update: JobUpdate,
+    db: ScopedSession = Depends(get_scoped_db),
+    current_user: User = Depends(_manager_admin),
+):
     db_job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
     if not db_job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
@@ -119,7 +126,11 @@ def update_job(job_id: str, job_update: JobUpdate, db: ScopedSession = Depends(g
     return {"id": str(db_job.id), "message": "Vaga atualizada com sucesso"}
 
 @router.delete("/jobs/{job_id}")
-def delete_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
+def delete_job(
+    job_id: str,
+    db: ScopedSession = Depends(get_scoped_db),
+    current_user: User = Depends(_manager_admin),
+):
     db_job = db.query(JobPosition).filter(JobPosition.id == job_id).first()
     if not db_job:
         raise HTTPException(status_code=404, detail="Vaga não encontrada")
@@ -129,7 +140,11 @@ def delete_job(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
     return {"message": "Vaga excluída com sucesso"}
 
 @router.get("/jobs/{job_id}/match")
-async def match_candidates(job_id: str, db: ScopedSession = Depends(get_scoped_db)):
+async def match_candidates(
+    job_id: str,
+    db: ScopedSession = Depends(get_scoped_db),
+    _: bool = Depends(require_feature("smart_match")),
+):
     import asyncio
     from app.services.match_engine import generate_match_justification
 

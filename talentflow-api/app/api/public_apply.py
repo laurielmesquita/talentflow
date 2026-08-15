@@ -32,6 +32,7 @@ import random
 import string
 import json
 import hashlib
+import hmac
 
 from app.core.database import SessionLocal
 from app.models.domain import JobPosition, Candidate, JobApplication
@@ -179,7 +180,9 @@ def _run_ai_pipeline_background(application_id: str, tmp_path: Path, tenant_id: 
 # ---------------------------------------------------------------------------
 
 @router.post("/public/apply/{job_slug}", status_code=202)
+@limiter.limit("3/minute")
 async def apply_to_job(
+    request: Request,
     job_slug: str,
     background_tasks: BackgroundTasks,
     # Dados do formulário
@@ -329,7 +332,8 @@ def verify_otp(request: Request, payload: OTPVerifyRequest, db: Session = Depend
     if application.email_verified:
         return {"status": "already_verified", "message": "E-mail já confirmado anteriormente."}
 
-    if application.otp_code != hashlib.sha256(payload.otp_code.encode()).hexdigest():
+    submitted_hash = hashlib.sha256(payload.otp_code.encode()).hexdigest()
+    if not application.otp_code or not hmac.compare_digest(application.otp_code, submitted_hash):
         raise HTTPException(status_code=422, detail="Código OTP inválido.")
 
     if application.otp_expires_at and datetime.now(timezone.utc) > application.otp_expires_at:

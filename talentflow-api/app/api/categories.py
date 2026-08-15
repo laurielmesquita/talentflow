@@ -4,8 +4,10 @@ from pydantic import BaseModel
 from app.core.database import SessionLocal
 from app.models.domain import Category, candidate_category, User
 
-from app.api.deps import get_current_user, get_scoped_db, ScopedSession
+from app.api.deps import get_current_user, get_scoped_db, ScopedSession, RoleChecker
 router = APIRouter(dependencies=[Depends(get_current_user)])
+
+_manager_admin = RoleChecker(["Manager", "SuperAdmin"])
 
 
 class CategoryCreate(BaseModel):
@@ -20,7 +22,11 @@ def list_categories(db: ScopedSession = Depends(get_scoped_db)):
     return [{"id": str(c.id), "name": c.name} for c in cats]
 
 @router.post("/categories")
-def create_category(cat: CategoryCreate, db: ScopedSession = Depends(get_scoped_db)):
+def create_category(
+    cat: CategoryCreate,
+    db: ScopedSession = Depends(get_scoped_db),
+    current_user: User = Depends(_manager_admin),
+):
     name_clean = cat.name.strip()
     if not name_clean:
         raise HTTPException(status_code=400, detail="O nome da categoria não pode ser vazio")
@@ -36,7 +42,12 @@ def create_category(cat: CategoryCreate, db: ScopedSession = Depends(get_scoped_
     return {"id": str(db_cat.id), "name": db_cat.name}
 
 @router.put("/categories/{category_id}")
-def update_category(category_id: str, cat: CategoryUpdate, db: ScopedSession = Depends(get_scoped_db)):
+def update_category(
+    category_id: str,
+    cat: CategoryUpdate,
+    db: ScopedSession = Depends(get_scoped_db),
+    current_user: User = Depends(_manager_admin),
+):
     db_cat = db.query(Category).filter(Category.id == category_id).first()
     if not db_cat:
         raise HTTPException(status_code=404, detail="Categoria não encontrada")
@@ -55,7 +66,11 @@ def update_category(category_id: str, cat: CategoryUpdate, db: ScopedSession = D
     return {"id": str(db_cat.id), "name": db_cat.name}
 
 @router.delete("/categories/{category_id}", status_code=204)
-def delete_category(category_id: str, db: ScopedSession = Depends(get_scoped_db)):
+def delete_category(
+    category_id: str,
+    db: ScopedSession = Depends(get_scoped_db),
+    current_user: User = Depends(_manager_admin),
+):
     db_cat = db.query(Category).filter(Category.id == category_id).first()
     if not db_cat:
         raise HTTPException(status_code=404, detail="Categoria não encontrada")

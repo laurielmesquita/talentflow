@@ -1,6 +1,35 @@
 import type { NextConfig } from "next";
 
+const isDev = process.env.NODE_ENV === "development";
+
+const csp = [
+  "default-src 'self'",
+  // Em produção, serializamos em strict-self sem unsafe-*; em desenvolvimento
+  // mantemos unsafe-inline para o HMR do Next e easy debug.
+  isDev ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" : "script-src 'self'",
+  "style-src 'self' 'unsafe-inline'",
+  // img-src limitado a Cloudinary (foto de candidatos) + data/blob para o PDFViewer.
+  "img-src 'self' data: blob: https://res.cloudinary.com",
+  "font-src 'self' data:",
+  // connect-src limitado a fly.dev (API). Em desevolvimento libera localhost.
+  isDev
+    ? "connect-src 'self' https://talentflow-api-frosty-seastar-3318.fly.dev http://localhost:8000"
+    : "connect-src 'self' https://talentflow-api-frosty-seastar-3318.fly.dev",
+  // frame-src em produção limita a self + blob (PDFViewer emit blob URLs) +
+  // Cloudinary (PDFs públicos se houver fallback). Em desenvolvimento libera
+  // localhost para o iframe de dev.
+  isDev
+    ? "frame-src 'self' blob: https://res.cloudinary.com http://localhost:8000"
+    : "frame-src 'self' blob: https://res.cloudinary.com",
+  "object-src 'self' blob:",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "upgrade-insecure-requests",
+].join("; ");
+
 const nextConfig: NextConfig = {
+  poweredByHeader: false,
   async headers() {
     return [
       // Security headers
@@ -9,7 +38,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' http://localhost:8000 https:; frame-src 'self' blob: https: http://localhost:8000; object-src 'self' blob: https: data:; base-uri 'self';",
+            value: csp,
           },
           {
             key: "X-Frame-Options",
@@ -22,6 +51,12 @@ const nextConfig: NextConfig = {
           {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
+          },
+          // HSTS — implícito em vercel.app, mas reforça o primado se
+          // o apex domain customizar em vez do subdom营io da Vercel.
+          {
+            key: "Strict-Transport-Security",
+            value: "max-age=31536000; includeSubDomains; preload",
           },
         ],
       },
@@ -60,3 +95,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+

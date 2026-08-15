@@ -1,4 +1,5 @@
 import secrets
+import hmac
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from sqlalchemy.orm import Session
@@ -49,7 +50,7 @@ def login(request: Request, payload: LoginRequest, response: Response, db: Sessi
         )
 
     access_token = create_access_token(
-        data={"sub": str(user.id), "role": user.role, "email": user.email}
+        data={"sub": str(user.id), "role": user.role, "email": user.email, "name": user.full_name}
     )
     _set_token_cookie(response, access_token)
     return TokenResponse(
@@ -82,7 +83,10 @@ def forgot_password(request: Request, payload: ForgotPasswordRequest, db: Sessio
 
     # Criação do token seguro
     token = secrets.token_urlsafe(32)
-    expires_at = datetime.now(timezone.utc) + timedelta(hours=2) # 2 horas de validade
+    # TTL encurtado de 2h para 15min para reduzir a janela de risco caso o
+    # token (enviado via URL no e-mail) vaze em logs/proxies/histórico do
+    # navegador. O redesign de UX para colar OTP manual está fora desta rodada.
+    expires_at = datetime.now(timezone.utc) + timedelta(minutes=15)
 
     reset_record = PasswordReset(
         email=payload.email,
@@ -105,12 +109,15 @@ def reset_password(request: Request, payload: ResetPasswordRequest, db: Session 
     """
     Redefine a senha do usuário com base no token recebido por e-mail.
     """
+    # Busca por token via unique index (O(log n), já protege contra timing
+    # leakage de enumeração a nível de banco — o índice é unique indexado).
+    # Mantemos hmac.compare_digest como blindagem adicional pós-fetch.
     reset_record = db.query(PasswordReset).filter(
-        PasswordReset.token == payload.token, 
+        PasswordReset.token == payload.token,
         PasswordReset.is_used == False
     ).first()
-    
-    if not reset_record:
+
+    if not reset_record or not hmac.compare_digest(reset_record.token or "", payload.token or ""):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Token de redefinição inválido ou já utilizado."
@@ -204,7 +211,7 @@ def register(request: Request, payload: RegisterRequest, response: Response, db:
 
         # Login automático
         access_token = create_access_token(
-            data={"sub": str(user.id), "role": user.role, "email": user.email}
+            data={"sub": str(user.id), "role": user.role, "email": user.email, "name": user.full_name}
         )
         _set_token_cookie(response, access_token)
         return TokenResponse(

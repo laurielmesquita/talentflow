@@ -63,15 +63,11 @@ export function proxy(request: NextRequest) {
       if (isPublicRoute) {
         const response = NextResponse.next();
         response.cookies.delete('token');
-        response.cookies.delete('user_role');
-        response.cookies.delete('user_name');
         return response;
       }
 
       const response = NextResponse.redirect(new URL('/login', request.url));
       response.cookies.delete('token');
-      response.cookies.delete('user_role');
-      response.cookies.delete('user_name');
       response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
       response.headers.set('Pragma', 'no-cache');
       return response;

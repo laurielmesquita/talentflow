@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Pre-commit hook: bloqueia commit de credenciais e paths absolutos.
 # Para instalar: ln -s ../../scripts/pre-commit.sh .git/hooks/pre-commit
-# (ou use core.hooksPath). O hook e no-op se rg nao estiver instalado.
+# (ou use core.hooksPath). O hook e no-op se grep nao estiver instalado.
 
 set -euo pipefail
 
-if ! command -v rg >/dev/null 2>&1; then
+if ! command -v grep >/dev/null 2>&1; then
   exit 0
 fi
 
@@ -43,17 +43,17 @@ content=$(git diff --cached --unified=0 | grep '^+[^+]' | sed 's/^+//' || true)
 
 exit_code=0
 for pat in "${PATTERNS[@]}"; do
-  if echo "$content" | rg --no-heading -i "$pat" >/dev/null 2>&1; then
+  if echo "$content" | grep -E -i "$pat" >/dev/null 2>&1; then
     echo "❌ Commit bloqueado: padrão de credencial detectado -> $pat"
-    echo "$content" | rg --no-heading -i "$pat" | head -3
+    echo "$content" | grep -E -i "$pat" | head -3
     exit_code=1
   fi
 done
 
 for pat in "${PATH_PATTERNS[@]}"; do
-  if echo "$content" | rg --no-heading "$pat" >/dev/null 2>&1; then
+  if echo "$content" | grep -E "$pat" >/dev/null 2>&1; then
     echo "⚠️  Aviso: caminho absoluto detectado -> $pat"
-    echo "$content" | rg --no-heading "$pat" | head -3
+    echo "$content" | grep -E "$pat" | head -3
     exit_code=1
   fi
 done

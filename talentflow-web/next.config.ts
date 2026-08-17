@@ -4,9 +4,14 @@ const isDev = process.env.NODE_ENV === "development";
 
 const csp = [
   "default-src 'self'",
-  // Em produção, serializamos em strict-self sem unsafe-*; em desenvolvimento
-  // mantemos unsafe-inline para o HMR do Next e easy debug.
-  isDev ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'" : "script-src 'self'",
+  // O Next.js 16 (App Router) injeta scripts inline de bootstrap do RSC
+  // (self.__next_f.push). Sem 'unsafe-inline' em produção o navegador bloqueia
+  // esses scripts e a hidratação nunca acontece — a página fica presa no
+  // fallback de loading. Por isso script-src precisa de 'unsafe-inline' também
+  // em produção. 'unsafe-eval' continua restrito ao dev (HMR/Turbopack).
+  isDev
+    ? "script-src 'self' 'unsafe-eval' 'unsafe-inline'"
+    : "script-src 'self' 'unsafe-inline'",
   "style-src 'self' 'unsafe-inline'",
   // img-src limitado a Cloudinary (foto de candidatos) + data/blob para o PDFViewer.
   "img-src 'self' data: blob: https://res.cloudinary.com",

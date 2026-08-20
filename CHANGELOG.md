@@ -6,6 +6,33 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ---
 
 
+## [2.5.0] — 2026-08-17
+
+Esta versão consolida o **ciclo de segurança e manutenção** do TalentFlow: hardening completo de backend e frontend, correção crítica da hidratação do Next.js, e automação de prevenção de vazamentos de segredos. Inclui também o plano de manutenção de segurança documentado em `01-Documentos/02-Planejamento/talentflow-plano-seguranca-2026-08.md`.
+
+### Adicionado
+- **Workflow de Secret Scan no CI (`.github/workflows/secret-scan.yml`):** Varre o repositório em push (`main`, `feature/*`) e PRs contra `main` com os mesmos padrões de credencial do hook de pré-commit, falhando o build se qualquer segredo for detectado.
+- **`talentflow-web/.env.example`:** Exemplo de variáveis de ambiente do frontend (`NEXT_PUBLIC_API_URL`, `NEXT_PUBLIC_ENABLE_DESIGN_SWITCHER`) com exceção no `.gitignore` para permitir versionamento.
+- **`safeError.ts` (frontend):** Helper que redige campos sensíveis de erros de API antes de logar no console.
+- **Claim `name` no JWT:** Inclusão de `full_name`/`name` nos tokens emitidos em `/login` e `/register`, permitindo ao frontend derivar o nome do usuário do próprio payload.
+
+### Corrigido
+- **CSP `script-src` sem `unsafe-inline` bloqueava a hidratação do Next.js (crítico):** A CSP de produção não permitia os scripts inline de bootstrap do RSC (`self.__next_f.push`), fazendo a página renderizar o HTML do servidor mas nunca hidratar — sintoma de "Carregando dados..." infinito em qualquer navegador/dispositivo. Corrigido para `script-src 'self' 'unsafe-inline'` em produção (`'unsafe-eval'` segue restrito ao dev).
+- **Visualizador de PDF via `fetch + Blob`:** Substituição do iframe com `?token=` na URL por `fetch()` → `URL.createObjectURL()`, eliminando exposição do JWT em URL/histórico/logs (contorno Safari documentado).
+- **Derivação de sessão a partir do JWT (`auth.ts`):** Removidos cookies de metadata (`user_role`, `user_name`, `user_email`); role/email/name agora são lidos do payload do JWT.
+- **Segurança OTP (`public_apply.py`):** Comparação em tempo constante com `hmac.compare_digest` e rate limit de 3 tentativas/minuto por candidatura.
+- **Reset de senha (`auth.py`):** TTL do token reduzido de 2h para 15min e validação final com `hmac.compare_digest`.
+- **Webhook Stripe:** Retorna `503` quando `STRIPE_SECRET_KEY` não está configurado.
+- **Logs sanitizados (`candidates.py`):** Removido logging de detalhes do Cloudinary (URLs, `public_id`).
+
+### Modificado
+- **Hardening de backend:** RBAC (`RoleChecker`) e `require_feature()` aplicados em `jobs.py`, `categories.py`, `candidates.py`, `billing.py`; rate limits no fluxo de auth; migração Alembic de unicidade de e-mail por tenant (`tenant_id, email`).
+- **Hardening de frontend:** Headers de segurança reforçados (`HSTS`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`) e CSP restrita a domínios confiáveis (Cloudinary, Fly.io); `proxy.ts` ajustado para gerenciar apenas o cookie `token`.
+- **Hook de pré-commit (`scripts/pre-commit.sh`):** Portado de `rg` (não instalado na máquina de desenvolvimento) para `grep -E`, com instalação via symlink em `.git/hooks/pre-commit`; bloqueia credenciais e paths absolutos.
+- **Pin da action de CI (`fly-deploy.yml`):** `superfly/flyctl-actions/setup-flyctl` fixada a SHA específico em vez de branch `@master`.
+- **Versionamento:** `config.py`, `pyproject.toml`, `package.json`, `package-lock.json`, `Footer.tsx` e `AGENTS.md` atualizados para 2.5.0.
+
+
 ## [2.4.0] — 2026-08-04
 
 Esta versão entrega o **Workspace de Auditoria Side-by-Side com Proxy de PDF**, permitindo que recrutadores visualizem o currículo original lado a lado com os dados extraídos pela IA, diretamente no navegador — incluindo Safari. Inclui também a consolidação da documentação de produto (READMEs, features docs e AGENTS.md) cobrindo todas as funcionalidades implementadas desde a v1.0.

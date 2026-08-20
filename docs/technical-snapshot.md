@@ -1,6 +1,6 @@
-# Technical Snapshot — TalentFlow v2.4.0
-**Gerado em:** 2026-08-04 · **Sessão:** Release v2.4.0 — Workspace de Auditoria Side-by-Side & Consolidação Documental  
-**Status do Projeto:** v2.4.0 (Estável, Testado & Documentado)
+# Technical Snapshot — TalentFlow v2.5.0
+**Gerado em:** 2026-08-17 · **Sessão:** Release v2.5.0 — Ciclo de Segurança & Manutenção
+**Status do Projeto:** v2.5.0 (Estável, Testado & Documentado)
 
 ---
 
@@ -17,12 +17,12 @@ AI:        Groq API (Llama 3.3 70B) · Google Gemini 2.5 Flash (OCR)
 Auth:      PyJWT + Bcrypt · Dual-Cookie (HttpOnly API + Non-HttpOnly Edge) · ?token= cross-origin
 Deploy:    Vercel (web: tlntflow.vercel.app) · Fly.io (API: talentflow-api.fly.dev, região dfw)
 Repo:      github.com/laurielmesquita/talentflow.git
-Versão:    2.4.0
+Versão:    2.5.0
 ```
 
 ---
 
-## 2. Novas Funcionalidades na v2.4.0
+## 2. Novas Funcionalidades (desde a v2.4.0)
 
 ### 🚀 Serviço Proxy de PDF & Workspace de Auditoria
 1. **Endpoint `GET /api/candidates/{id}/pdf`:** Proxy autenticado que consome PDFs do Cloudinary via `cloudinary.utils.private_download_url`, com streaming `Content-Type: application/pdf`, `Content-Disposition: inline`, CORS liberado e Cache-Control de 24h.

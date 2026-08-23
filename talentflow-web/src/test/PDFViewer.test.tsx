@@ -4,7 +4,7 @@ import React from 'react';
 import PDFViewer from '@/components/PDFViewer';
 
 describe('PDFViewer Component', () => {
-  it('renders iframe and toolbar when pdfUrl is provided', () => {
+  it('renders the document toolbar when pdfUrl is provided', () => {
     render(
       <PDFViewer 
         pdfUrl="https://res.cloudinary.com/demo/raw/upload/v1/curriculo_lauriel.pdf" 
@@ -14,7 +14,8 @@ describe('PDFViewer Component', () => {
 
     expect(screen.getByText(/Documento Original/i)).toBeDefined();
     expect(screen.getByText(/Lauriel Mesquita.pdf/i)).toBeDefined();
-    expect(screen.getByTitle(/Currículo Original - Lauriel Mesquita/i)).toBeDefined();
+    expect(screen.getByTitle(/Recarregar visualizador/i)).toBeDefined();
+    expect(screen.getByTitle(/Abrir em nova guia \(blob\)/i)).toBeDefined();
   });
 
   it('renders informative fallback state when pdfUrl is null', () => {

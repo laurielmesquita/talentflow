@@ -12,34 +12,8 @@ import Navbar from '@/components/Navbar';
 import PageHeader from '@/components/PageHeader';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-
-interface Candidate {
-  id: string;
-  full_name: string;
-  current_job: string;
-  categories: string[];
-  added_at: string | null;
-  skills: string[];
-  photo_url: string | null;
-}
-
-interface Category {
-  id: string;
-  name: string;
-}
-
-interface CandidatesResponse {
-  candidates: Candidate[];
-  total: number;
-  page: number;
-  limit: number;
-  stats: {
-    total: number;
-    active: number;
-    flagged: number;
-    average_quality: number | null;
-  };
-}
+import type { Candidate, CandidatesResponse } from '@/types/candidate';
+import type { Category } from '@/types/category';
 
 import { getCandidates } from '@/lib/data/candidates';
 import { getCategories } from '@/lib/data/categories';

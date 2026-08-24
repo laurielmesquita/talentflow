@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 import stripe
 from app.core.config import settings
@@ -12,6 +13,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 logger = logging.getLogger(__name__)
 
 _manager_admin = RoleChecker(["Manager", "SuperAdmin"])
+
+# Cache LRU em memória para idempotência de Webhook Stripe (últimos 1.000 event_ids)
+_processed_stripe_events: OrderedDict[str, bool] = OrderedDict()
 
 # Plan Limits Configuration (consome a fonte única em config.py)
 PLAN_LIMITS = settings.PLAN_LIMITS
@@ -114,6 +118,11 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         # Invalid signature
         raise HTTPException(status_code=400, detail="Invalid signature")
 
+    event_id = event.get("id")
+    if event_id and event_id in _processed_stripe_events:
+        logger.info(f"Webhook Stripe evento {event_id} já processado anteriormente (idempotente).")
+        return {"status": "success", "message": "Event already processed"}
+
     event_type = event["type"]
     
     if event_type == "checkout.session.completed":
@@ -173,5 +182,10 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             logger.info(f"Assinatura cancelada. Tenant {tenant.id} rebaixado para plano FREE.")
         else:
             logger.warning(f"Webhook customer.subscription.deleted: Tenant com assinatura {sub_id} não encontrado no banco.")
+
+    if event_id:
+        _processed_stripe_events[event_id] = True
+        if len(_processed_stripe_events) > 1000:
+            _processed_stripe_events.popitem(last=False)
 
     return {"status": "success"}

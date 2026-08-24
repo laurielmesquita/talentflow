@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: talentflow-api
+    runtime: docker
+    rootDir: talentflow-api
+    dockerfilePath: Dockerfile
+    dockerCommand: >-
+      /bin/sh -c "alembic upgrade head && exec uvicorn app.main:app
+      --host 0.0.0.0 --port $PORT"
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: SMTP_HOST
+        value: smtp-relay.brevo.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USERNAME
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: FRONTEND_URL
+        value: https://tlntflow.vercel.app
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRO_PRICE_ID
+        sync: false
+      - key: SANDBOX_RATE_LIMIT_PER_MINUTE
+        value: "3"
+      - key: SANDBOX_DAILY_BUDGET
+        value: "100"

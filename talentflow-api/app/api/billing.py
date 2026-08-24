@@ -143,16 +143,16 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     elif event_type == "customer.subscription.updated":
         subscription = event["data"]["object"]
         sub_id = subscription.get("id")
-        status = subscription.get("status")
+        subscription_status = subscription.get("status")
         
         tenant = db.query(Tenant).filter(Tenant.stripe_subscription_id == sub_id).first()
         if tenant:
-            tenant.plan_status = status
+            tenant.plan_status = subscription_status
             # Se a assinatura estiver cancelada ou past_due, podemos fazer downgrade automático
-            if status in ["canceled", "unpaid"]:
+            if subscription_status in ["canceled", "unpaid"]:
                 tenant.plan_name = "free"
                 tenant.candidate_count_limit = PLAN_LIMITS["free"]
-            elif status == "active":
+            elif subscription_status == "active":
                 tenant.plan_name = "pro"
                 tenant.candidate_count_limit = PLAN_LIMITS["pro"]
             db.commit()

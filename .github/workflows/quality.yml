@@ -1,0 +1,77 @@
+name: Quality Checks
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "talentflow-api/**"
+      - "talentflow-web/**"
+      - ".github/workflows/quality.yml"
+  push:
+    branches: [main]
+    paths:
+      - "talentflow-api/**"
+      - "talentflow-web/**"
+      - ".github/workflows/quality.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  api-tests:
+    name: API tests
+    runs-on: ubuntu-latest
+    env:
+      SECRET_KEY: ci-test-secret
+    defaults:
+      run:
+        working-directory: talentflow-api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+          cache-dependency-glob: talentflow-api/uv.lock
+
+      - name: Install dependencies
+        run: uv sync --locked --dev
+
+      - name: Run tests
+        run: uv run pytest -q
+
+  web-quality:
+    name: Web quality
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: talentflow-web
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: talentflow-web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run lint (informational until lint debt is addressed)
+        continue-on-error: true
+        run: npm run lint
+
+      - name: Verify production build
+        run: npm run build

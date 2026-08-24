@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import dynamic from "next/dynamic";
@@ -9,14 +9,16 @@ const Footer = dynamic(() => import("@/components/Footer"), { ssr: true });
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const { version } = require("../../package.json") as { version: string };
 
-const inter = Inter({
+const inter = localFont({
+  src: "../fonts/InterVariable.woff2",
   variable: "--font-sans",
-  subsets: ["latin"],
+  weight: "100 900",
 });
 
-const jetbrainsMono = JetBrains_Mono({
+const jetbrainsMono = localFont({
+  src: "../fonts/JetBrainsMono[wght].woff2",
   variable: "--font-mono",
-  subsets: ["latin"],
+  weight: "100 800",
 });
 
 export const metadata: Metadata = {
@@ -77,4 +79,3 @@ export default function RootLayout({
     </html>
   );
 }
-

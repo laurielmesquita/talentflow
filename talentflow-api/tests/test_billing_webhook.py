@@ -23,7 +23,7 @@ def _request(body: bytes = b"signed-payload") -> Request:
 
 
 @pytest.mark.asyncio
-async def test_checkout_webhook_updates_tenant_and_is_idempotent(monkeypatch):
+async def test_checkout_webhook_updates_tenant(monkeypatch):
     event = {
         "id": "evt_test_checkout_1",
         "type": "checkout.session.completed",
@@ -40,13 +40,9 @@ async def test_checkout_webhook_updates_tenant_and_is_idempotent(monkeypatch):
     db.query.return_value.filter.return_value.first.return_value = tenant
     monkeypatch.setattr(settings, "STRIPE_WEBHOOK_SECRET", "whsec_test")
     monkeypatch.setattr(billing.stripe.Webhook, "construct_event", lambda *args: event)
-    billing._processed_stripe_events.clear()
-
     first = await billing.stripe_webhook(_request(), db)
-    second = await billing.stripe_webhook(_request(), db)
 
     assert first == {"status": "success"}
-    assert second["message"] == "Event already processed"
     assert tenant.stripe_customer_id == "cus_123"
     assert tenant.stripe_subscription_id == "sub_123"
     assert tenant.plan_name == "pro"

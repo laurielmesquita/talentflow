@@ -129,9 +129,9 @@ def list_candidates(
     if not include_archived:
         count_query = count_query.filter(Candidate.is_active == True)
     if category_id:
-        count_query = count_query.join(Candidate.categories).filter(Category.id == category_id)
+        count_query = count_query.join(Candidate.categories).filter(Category.id == category_id, Category.tenant_id == db.tenant_id)
     elif category:
-        count_query = count_query.join(Candidate.categories).filter(Category.name == category)
+        count_query = count_query.join(Candidate.categories).filter(Category.name == category, Category.tenant_id == db.tenant_id)
     if q:
         search_filter = f"%{q}%"
         count_query = count_query.outerjoin(Candidate.skills).outerjoin(Candidate.experiences).filter(
@@ -155,9 +155,9 @@ def list_candidates(
         query = query.filter(Candidate.is_active == True, Candidate.deleted_at == None)
 
     if category_id:
-        query = query.join(Candidate.categories).filter(Category.id == category_id)
+        query = query.join(Candidate.categories).filter(Category.id == category_id, Category.tenant_id == db.tenant_id)
     elif category:
-        query = query.join(Candidate.categories).filter(Category.name == category)
+        query = query.join(Candidate.categories).filter(Category.name == category, Category.tenant_id == db.tenant_id)
 
     if q:
         search_filter = f"%{q}%"
@@ -292,7 +292,10 @@ async def get_candidate_pdf(
     Consome o arquivo original do Cloudinary via URL assinada privada e serve para o cliente
     com Content-Type application/pdf, Content-Disposition inline e CORS liberado.
     """
-    c = db.query(Candidate).filter(Candidate.id == candidate_id).first()
+    c = db.query(Candidate).filter(
+        Candidate.id == candidate_id,
+        Candidate.deleted_at == None
+    ).first()
     if not c or not c.original_pdf_url:
         raise HTTPException(status_code=404, detail="PDF não encontrado")
 
@@ -300,12 +303,15 @@ async def get_candidate_pdf(
     if not pdf_bytes:
         raise HTTPException(status_code=502, detail="Erro ao recuperar arquivo PDF original do Cloudinary")
 
+    safe_filename = c.full_name.replace('"', '').replace('\n', '').replace('\r', '')
+
     return Response(
         content=pdf_bytes,
         media_type="application/pdf",
         headers={
-            "Content-Disposition": f'inline; filename="{c.full_name}.pdf"',
-            "Cache-Control": "public, max-age=86400, stale-while-revalidate=3600",
+            "Content-Disposition": f'inline; filename="{safe_filename}.pdf"',
+            "Cache-Control": "private, no-cache, no-store, must-revalidate",
+            "Pragma": "no-cache",
             "Access-Control-Allow-Origin": "*",
         }
     )

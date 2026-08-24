@@ -223,6 +223,12 @@ async def apply_to_job(
     if not (resume.filename or "").lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Apenas arquivos PDF são aceitos.")
 
+    # Validação de teto de tamanho (10MB max para evitar Memory Exhaustion no Fly.io)
+    MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+    contents = await resume.read()
+    if len(contents) > MAX_FILE_SIZE:
+        raise HTTPException(status_code=413, detail="O arquivo PDF excede o limite máximo permitido de 10MB.")
+
     # 3. Criar o placeholder da candidatura (status=pending)
     otp = _generate_otp()
     otp_expires_at = datetime.now(timezone.utc) + timedelta(minutes=10)

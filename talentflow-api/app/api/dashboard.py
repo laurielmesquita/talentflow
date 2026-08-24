@@ -59,7 +59,8 @@ def get_dashboard_stats(
     ).filter(
         Candidate.is_active == True,
         Candidate.deleted_at == None,
-        Candidate.tenant_id == db.tenant_id
+        Candidate.tenant_id == db.tenant_id,
+        Category.tenant_id == db.tenant_id
     ).group_by(
         Category.name
     ).order_by(

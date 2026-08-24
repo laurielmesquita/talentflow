@@ -5,8 +5,8 @@ services:
     rootDir: talentflow-api
     dockerfilePath: Dockerfile
     dockerCommand: >-
-      /bin/sh -c "alembic upgrade head && exec uvicorn app.main:app
-      --host 0.0.0.0 --port $PORT"
+      alembic upgrade head && exec uvicorn app.main:app
+      --host 0.0.0.0 --port $PORT
     plan: free
     healthCheckPath: /health
     autoDeploy: true

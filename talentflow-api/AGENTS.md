@@ -17,7 +17,7 @@
 | Banco de dados | PostgreSQL 15 — Neon.tech (serverless)         |
 | ORM            | SQLAlchemy 2.x (async-compatible)              |
 | Migrações      | Alembic                                        |
-| Deploy         | Fly.io — região `dfw` (Dallas)                 |
+| Deploy         | Render Free — API candidata em validação; Fly.io como fallback |
 | Porta local    | `8000`                                         |
 | Docs Swagger   | `http://localhost:8000/docs`                   |
 
@@ -65,7 +65,8 @@ talentflow-api/
 ├── seed_jobs.py             ← seed de vagas de teste
 ├── Dockerfile
 ├── docker-compose.yml
-├── fly.toml                 ← config de deploy Fly.io
+├── fly.toml                 ← config de fallback/deploy Fly.io
+├── start-render.sh          ← migrações + inicialização no Render
 └── requirements.txt
 ```
 
@@ -89,7 +90,7 @@ async def get_candidates(db: AsyncSession = Depends(get_db)):
 ```
 
 ### 3.2 Concorrência
-- O semáforo `asyncio.Semaphore(3)` no pipeline de ingestão é um **guardrail de memória** — a máquina Fly.io tem 512MB de RAM.
+- O semáforo `asyncio.Semaphore(3)` no pipeline de ingestão é um **guardrail de memória** — o ambiente gratuito do Render tem 512MB de RAM.
 - Nunca aumentar a concorrência sem calcular o impacto de memória.
 - O `threading.Lock` no `sandbox.py` é intencional para o endpoint de demonstração.
 
@@ -275,10 +276,13 @@ pdfplumber → texto extraível?
 ## 9. Deploy
 
 ```bash
-# Deploy manual via Fly.io CLI (requer flyctl instalado)
+# Ambiente candidato: Render Free, configurado por render.yaml.
+# O deploy ocorre automaticamente quando a branch configurada é atualizada.
+
+# Fallback manual via Fly.io CLI (requer flyctl instalado)
 fly deploy
 
-# Deploy automático via GitHub Actions
+# Fallback automático via GitHub Actions
 # Configurado em: .github/workflows/fly-deploy.yml
 # Trigger: push na branch main
 ```

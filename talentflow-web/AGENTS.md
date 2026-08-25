@@ -23,7 +23,8 @@
 | Animações       | Framer Motion (spring physics)             |
 | Deploy          | Vercel — `tlntflow.vercel.app`             |
 | Porta local     | `3000`                                     |
-| API base        | `https://talentflow-api.fly.dev`           |
+| API base atual  | `https://talentflow-api.fly.dev` (fallback; troca pendente) |
+| API candidata   | `https://talentflow-api-free.onrender.com` |
 
 ---
 
@@ -203,7 +204,10 @@ npm install
 
 # 3. Configurar variável de ambiente
 # Criar .env.local com:
+# API atual/fallback até o aceite do rollout:
 # NEXT_PUBLIC_API_URL=https://talentflow-api.fly.dev
+# API candidata após validação funcional:
+# NEXT_PUBLIC_API_URL=https://talentflow-api-free.onrender.com
 # (ou http://localhost:8000 para dev com API local)
 
 # 4. Iniciar servidor de desenvolvimento (Turbopack)

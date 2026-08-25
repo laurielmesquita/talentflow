@@ -25,7 +25,8 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - **Alembic:** Engine leve de migrações e controle de versão do esquema SQL.
 - **Google Gemini 2.5 Flash:** O núcleo de processamento cognitivo multimodal. Utilizado para analisar PDFs escaneados (imagens) e extrair JSON determinístico via *structured outputs* (`response_schema`).
 - **Groq API (Llama 3.3 70B):** Responsável por processar e estruturar currículos com texto legível em milissegundos.
-- **Fly.io:** Plataforma em nuvem para empacotamento e deploy automatizado da API.
+- **Render Free:** Ambiente candidato de validação da API durante a migração de infraestrutura.
+- **Fly.io:** Ambiente anterior e fallback até a conclusão do rollout.
 
 ### 2. Ingestão de Dados e IA
 - O pipeline de triagem detecta a legibilidade do PDF (pdfplumber) e delega a extração (OCR) ao Gemini 2.5 Flash apenas quando necessário. Currículos de texto puro usam a Groq para máxima velocidade.
@@ -85,4 +86,7 @@ A arquitetura OpenAPI gera documentação Swagger UI automaticamente em `http://
 ---
 
 ## 🚢 Setup de Deploy
-O projeto está configurado para *deployment* imediato na plataforma **Fly.io** através da integração declarada no arquivo de configuração `fly.toml` em harmonia com o empacotamento definido no `Dockerfile` e automatizado pela GitHub Action `fly-deploy.yml`.
+
+O ambiente candidato usa o Render Free, configurado por [`render.yaml`](../render.yaml), com raiz `talentflow-api`, Dockerfile existente, health check em `/health` e inicialização por [`start-render.sh`](./start-render.sh). Consulte [`docs/DEPLOYMENT_RENDER_FREE.md`](../docs/DEPLOYMENT_RENDER_FREE.md) para o procedimento e os critérios de rollout.
+
+O Fly.io permanece disponível como fallback operacional e continua descrito em `fly.toml` e na GitHub Action `fly-deploy.yml` até o encerramento da validação.

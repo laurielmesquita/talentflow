@@ -10,6 +10,7 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ### Adicionado
 - **Checkpoint de migração para Render Free:** API preparada e publicada na branch `feat/render-free-migration`, com health check, execução controlada das migrações Alembic e documentação operacional em `docs/DEPLOYMENT_RENDER_FREE.md`.
 - **Registro de evolução:** Incidentes dos primeiros deploys, correções aplicadas e critérios de rollout documentados em `docs/change-records/2026-08-24-render-free-migration.md`.
+- **Preparação do frontend:** CSP permite o domínio Render e `NEXT_PUBLIC_API_URL` foi configurada na Vercel para Production e Preview; a promoção para produção depende do merge da branch.
 
 ### Corrigido
 - **Migração de unicidade de candidatos:** Índices legados agora são removidos com `IF EXISTS`, tornando a migração segura para bases que não possuem todos os nomes históricos.

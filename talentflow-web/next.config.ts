@@ -16,10 +16,11 @@ const csp = [
   // img-src limitado a Cloudinary (foto de candidatos) + data/blob para o PDFViewer.
   "img-src 'self' data: blob: https://res.cloudinary.com",
   "font-src 'self' data:",
-  // connect-src limitado a fly.dev (API). Em desevolvimento libera localhost.
+  // Mantém os dois backends durante o rollout: Render é o candidato atual e
+  // Fly.io permanece disponível para rollback. Em desenvolvimento libera localhost.
   isDev
-    ? "connect-src 'self' https://talentflow-api-frosty-seastar-3318.fly.dev http://localhost:8000"
-    : "connect-src 'self' https://talentflow-api-frosty-seastar-3318.fly.dev",
+    ? "connect-src 'self' https://talentflow-api-free.onrender.com https://talentflow-api-frosty-seastar-3318.fly.dev https://talentflow-api.fly.dev http://localhost:8000"
+    : "connect-src 'self' https://talentflow-api-free.onrender.com https://talentflow-api-frosty-seastar-3318.fly.dev https://talentflow-api.fly.dev",
   // frame-src em produção limita a self + blob (PDFViewer emit blob URLs) +
   // Cloudinary (PDFs públicos se houver fallback). Em desenvolvimento libera
   // localhost para o iframe de dev.
@@ -100,4 +101,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-

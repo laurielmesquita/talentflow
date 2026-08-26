@@ -33,6 +33,7 @@ Versão:    2.5.0
 6. **CSP (`next.config.ts`):** `frame-src` atualizado com `http://localhost:8000` para dev local, mantendo `https:` para produção.
 7. **Deploy Fly.io:** `primary_region` alterada de `gru` para `dfw` (Dallas) devido a falta de capacidade em São Paulo.
 8. **Render Free em produção:** API publicada na `main`, frontend Vercel apontando para o Render e health check respondendo `200 OK`; Fly.io permanece parado como fallback manual.
+9. **Validação autenticada:** Registro, login, cookie `token` HttpOnly/Secure/SameSite, leitura de jobs/candidatos/categorias/dashboard e logout foram validados com uma conta de teste.
 
 ### 📚 Consolidação Documental
 9. **READMEs:** Adicionadas seções de destaque do Workspace de Auditoria e Proxy PDF nos READMEs da API e Web.

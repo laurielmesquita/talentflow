@@ -4,7 +4,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.deps import get_current_user, get_db
 from app.models.domain import Tenant, User
-from app.schemas.tenant import TenantClosureRequest, TenantClosureResponse
+from app.schemas.tenant import (
+    TenantClosureRequest,
+    TenantClosureResponse,
+    TenantOwnerTransferRequest,
+    TenantOwnerTransferResponse,
+)
 from app.services.auth import verify_password
 
 
@@ -24,6 +29,33 @@ def _require_owner(tenant: Tenant, current_user: User):
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Somente o proprietário pode gerenciar o encerramento da organização.",
         )
+
+
+@router.post("/owner", response_model=TenantOwnerTransferResponse)
+def transfer_owner(
+    payload: TenantOwnerTransferRequest,
+    db=Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    tenant = _get_current_tenant(db, current_user)
+    _require_owner(tenant, current_user)
+    if not verify_password(payload.current_password, current_user.hashed_password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="A senha atual informada está incorreta.")
+    if payload.target_user_id == current_user.id:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="O novo Owner precisa ser outro usuário.")
+
+    target = db.query(User).filter(
+        User.id == payload.target_user_id,
+        User.tenant_id == tenant.id,
+        User.is_active == True,
+        User.role.in_(["Manager", "SuperAdmin"]),
+    ).first()
+    if not target:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Selecione um gerente ou Super Admin ativo da organização.")
+
+    tenant.owner_user_id = target.id
+    db.commit()
+    return TenantOwnerTransferResponse(owner_user_id=target.id, owner_name=target.full_name)
 
 
 @router.get("/closure", response_model=TenantClosureResponse)

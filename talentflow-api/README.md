@@ -46,6 +46,7 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 
 ### Organização e encerramento
 
+- `POST /api/tenant/owner`: Owner transfere a titularidade para outro Manager ou Super Admin ativo, mediante senha atual.
 - `GET /api/tenant/closure`: consulta o estado e informa se o usuário autenticado é o Owner.
 - `POST /api/tenant/closure`: Owner agenda o encerramento com senha atual e a confirmação literal `ENCERRAR ORGANIZAÇÃO`.
 - `DELETE /api/tenant/closure`: Owner cancela um encerramento pendente dentro da carência de 30 dias.

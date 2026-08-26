@@ -137,6 +137,20 @@ def send_reset_password_email(to_email: str, token: str) -> bool:
     return send_email(to_email, "Recuperação de Senha - TalentFlow", html_content)
 
 
+def send_email_change_confirmation(to_email: str, token: str) -> bool:
+    """Envia o link que confirma a posse do novo endereço de e-mail."""
+    confirmation_url = f"{settings.FRONTEND_URL}/settings/confirm-email?token={token}"
+    html_content = f"""
+    <html><body>
+      <h2>Confirme seu novo e-mail</h2>
+      <p>Recebemos uma solicitação para usar este endereço na sua conta TalentFlow.</p>
+      <p><a href=\"{confirmation_url}\">Confirmar novo e-mail</a></p>
+      <p>Este link expira em 15 minutos. Se você não solicitou a alteração, ignore esta mensagem.</p>
+    </body></html>
+    """
+    return send_email(to_email, "Confirme seu novo e-mail - TalentFlow", html_content)
+
+
 def date_year() -> int:
     from datetime import datetime
     return datetime.now().year

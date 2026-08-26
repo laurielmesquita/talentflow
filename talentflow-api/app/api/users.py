@@ -71,6 +71,7 @@ def create_user(
 
     user = User(
         email=payload.email,
+        phone=payload.phone.strip() if payload.phone else None,
         full_name=payload.full_name.strip(),
         hashed_password=hash_password(payload.password),
         role=payload.role,
@@ -112,6 +113,8 @@ def update_user(
         user.full_name = changes["full_name"].strip()
     if "email" in changes:
         user.email = changes["email"]
+    if "phone" in changes:
+        user.phone = changes["phone"].strip() if changes["phone"] else None
     if "password" in changes and changes["password"] is not None:
         user.hashed_password = hash_password(changes["password"])
     if "role" in changes and changes["role"] is not None:

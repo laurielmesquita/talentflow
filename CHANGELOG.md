@@ -9,6 +9,12 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 Próxima versão em planejamento. O encerramento seguro de organizações e a purga de dados estão previstos para a linha 2.7.x.
 
+### Configurações de conta
+- Criada a central `/settings`, separando perfil individual, segurança, preferências e privacidade das funções administrativas da organização.
+- Adicionada edição do nome e telefone do próprio usuário por `GET/PATCH /api/auth/me`.
+- Adicionado telefone opcional ao gerenciamento administrativo de usuários.
+- Troca de e-mail implementada com senha atual, confirmação por link de 15 minutos e invalidação de sessões anteriores.
+
 ### Preparação do encerramento de organização
 - Adicionado fluxo de solicitação/cancelamento com confirmação reforçada e carência de 30 dias; a purga física permanece separada e controlada.
 - Adicionado executor manual idempotente para purga de dados do tenant e assets do Cloudinary após a carência.

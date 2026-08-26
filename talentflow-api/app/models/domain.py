@@ -163,6 +163,8 @@ class User(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id = Column(UUID(as_uuid=True), ForeignKey("tenants.id"), nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
+    phone = Column(String, nullable=True)
+    token_version = Column(Integer, nullable=False, default=0, server_default="0")
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     role = Column(String, nullable=False, default="Recruiter")  # SuperAdmin, Manager, Recruiter
@@ -172,6 +174,17 @@ class User(Base):
     tenant = relationship("Tenant", foreign_keys=[tenant_id], back_populates="users")
     owned_tenant = relationship("Tenant", foreign_keys="Tenant.owner_user_id", back_populates="owner", uselist=False)
 
+
+
+class EmailChangeRequest(Base):
+    __tablename__ = "email_change_requests"
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False, index=True)
+    new_email = Column(String, nullable=False, index=True)
+    token_hash = Column(String, unique=True, index=True, nullable=False)
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    used_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
 class PasswordReset(Base):

@@ -111,3 +111,19 @@ def test_update_user_rejects_duplicate_email():
 
     assert error.value.status_code == 409
     db.commit.assert_not_called()
+
+
+def test_update_user_normalizes_optional_phone():
+    target = User(role="Recruiter", is_active=True, email="old@example.com")
+    target.id = uuid4()
+    db = _query_for(target)
+
+    result = update_user(
+        target.id,
+        UserUpdateRequest(phone="  +55 11 99999-9999  "),
+        db=db,
+        current_user=SimpleNamespace(id=uuid4()),
+    )
+
+    assert result.phone == "+55 11 99999-9999"
+    db.commit.assert_called_once()

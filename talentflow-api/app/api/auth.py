@@ -1,19 +1,21 @@
 import secrets
 import hmac
+import hashlib
 from datetime import datetime, timedelta, timezone
 from fastapi import APIRouter, Depends, HTTPException, status, Response, Request
 from sqlalchemy.orm import Session
 from app.api.deps import get_db, get_current_user, RoleChecker
 from app.api.sandbox import limiter
-from app.models.domain import User, PasswordReset, Tenant
+from app.models.domain import User, PasswordReset, EmailChangeRequest, Tenant
 from app.schemas.auth import (
     LoginRequest, TokenResponse, 
     ForgotPasswordRequest, ResetPasswordRequest,
-    ChangePasswordRequest, RegisterRequest
+    ChangePasswordRequest, RegisterRequest, ProfileUpdateRequest,
+    EmailChangeRequestPayload, EmailChangeConfirmPayload
 )
 from app.services.auth import hash_password, verify_password, create_access_token
 from app.core.config import settings
-from app.services.email import send_reset_password_email
+from app.services.email import send_reset_password_email, send_email_change_confirmation
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -50,7 +52,7 @@ def login(request: Request, payload: LoginRequest, response: Response, db: Sessi
         )
 
     access_token = create_access_token(
-        data={"sub": str(user.id), "role": user.role, "email": user.email, "name": user.full_name}
+        data={"sub": str(user.id), "role": user.role, "email": user.email, "name": user.full_name, "token_version": user.token_version}
     )
     _set_token_cookie(response, access_token)
     return TokenResponse(
@@ -170,6 +172,114 @@ def change_password(
     return {"message": "Senha alterada com sucesso!"}
 
 
+@router.get("/me")
+def get_profile(current_user: User = Depends(get_current_user)):
+    """Retorna o perfil do usuário autenticado, sem expor credenciais."""
+    return {
+        "id": current_user.id,
+        "tenant_id": current_user.tenant_id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "phone": current_user.phone,
+        "role": current_user.role,
+        "is_active": current_user.is_active,
+        "created_at": current_user.created_at,
+    }
+
+
+@router.patch("/me")
+def update_profile(
+    payload: ProfileUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Atualiza dados não sensíveis do próprio perfil."""
+    changes = payload.model_dump(exclude_unset=True)
+    if "full_name" in changes:
+        current_user.full_name = changes["full_name"].strip()
+    if "phone" in changes:
+        current_user.phone = changes["phone"].strip() if changes["phone"] else None
+    db.commit()
+    db.refresh(current_user)
+    return {
+        "id": current_user.id,
+        "tenant_id": current_user.tenant_id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "phone": current_user.phone,
+        "role": current_user.role,
+        "is_active": current_user.is_active,
+        "created_at": current_user.created_at,
+    }
+
+
+@router.post("/email-change/request")
+def request_email_change(
+    payload: EmailChangeRequestPayload,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Solicita confirmação de um novo e-mail sem alterar o acesso atual."""
+    new_email = str(payload.new_email).strip().lower()
+    if new_email == current_user.email.lower():
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Informe um e-mail diferente do atual.")
+    if not verify_password(payload.current_password, current_user.hashed_password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="A senha atual informada está incorreta.")
+    if db.query(User).filter(User.email == new_email).first():
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Este e-mail já está cadastrado.")
+
+    db.query(EmailChangeRequest).filter(
+        EmailChangeRequest.user_id == current_user.id,
+        EmailChangeRequest.used_at.is_(None),
+    ).update({"used_at": datetime.now(timezone.utc)})
+    raw_token = secrets.token_urlsafe(32)
+    request_record = EmailChangeRequest(
+        user_id=current_user.id,
+        new_email=new_email,
+        token_hash=hashlib.sha256(raw_token.encode()).hexdigest(),
+        expires_at=datetime.now(timezone.utc) + timedelta(minutes=15),
+    )
+    db.add(request_record)
+    db.commit()
+    if not send_email_change_confirmation(new_email, raw_token):
+        request_record.used_at = datetime.now(timezone.utc)
+        db.commit()
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Não foi possível enviar o e-mail de confirmação.")
+    return {"message": "Enviamos um link de confirmação para o novo e-mail."}
+
+
+@router.post("/email-change/confirm")
+def confirm_email_change(
+    payload: EmailChangeConfirmPayload,
+    db: Session = Depends(get_db),
+):
+    """Confirma o novo endereço e invalida sessões emitidas anteriormente."""
+    token_hash = hashlib.sha256(payload.token.encode()).hexdigest()
+    request_record = db.query(EmailChangeRequest).filter(
+        EmailChangeRequest.token_hash == token_hash,
+        EmailChangeRequest.used_at.is_(None),
+    ).first()
+    if not request_record:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Link de confirmação inválido ou já utilizado.")
+    expires_at = request_record.expires_at.replace(tzinfo=timezone.utc) if request_record.expires_at.tzinfo is None else request_record.expires_at
+    if datetime.now(timezone.utc) > expires_at:
+        request_record.used_at = datetime.now(timezone.utc)
+        db.commit()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Este link de confirmação expirou.")
+    if db.query(User).filter(User.email == request_record.new_email, User.id != request_record.user_id).first():
+        request_record.used_at = datetime.now(timezone.utc)
+        db.commit()
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Este e-mail já está cadastrado.")
+    user = db.query(User).filter(User.id == request_record.user_id, User.is_active == True).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado.")
+    user.email = request_record.new_email
+    user.token_version += 1
+    request_record.used_at = datetime.now(timezone.utc)
+    db.commit()
+    return {"message": "E-mail alterado com sucesso. Faça login novamente."}
+
+
 @router.post("/register", response_model=TokenResponse)
 @limiter.limit("3/hour")
 def register(request: Request, payload: RegisterRequest, response: Response, db: Session = Depends(get_db)):
@@ -213,7 +323,7 @@ def register(request: Request, payload: RegisterRequest, response: Response, db:
 
         # Login automático
         access_token = create_access_token(
-            data={"sub": str(user.id), "role": user.role, "email": user.email, "name": user.full_name}
+            data={"sub": str(user.id), "role": user.role, "email": user.email, "name": user.full_name, "token_version": user.token_version}
         )
         _set_token_cookie(response, access_token)
         return TokenResponse(

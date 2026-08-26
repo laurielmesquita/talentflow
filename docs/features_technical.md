@@ -13,7 +13,7 @@ Esta documentação detalha a implementação técnica das funcionalidades e as 
 * **Ingestão em Lote Concorrente com Controle de Semáforo:**
   * Os arquivos carregados no lote são recebidos pelo endpoint `POST /api/candidates/upload/batch` de forma assíncrona.
   * O processamento em background (leitura de texto, chamadas de IA e salvamento no banco) é delegado a `BackgroundTasks` do FastAPI.
-  * Para evitar estouros de memória e throttling das chaves de API sob a infraestrutura limitada de produção (única máquina de 512MB na Fly.io), o processamento concorrente é controlado por um semáforo de concorrência (`asyncio.Semaphore(3)`), permitindo que no máximo 3 currículos sejam analisados simultaneamente.
+  * Para evitar estouros de memória e throttling das chaves de API sob a infraestrutura limitada de execução (instância de 512MB no Render Free; anteriormente Fly.io), o processamento concorrente é controlado por um semáforo de concorrência (`asyncio.Semaphore(3)`), permitindo que no máximo 3 currículos sejam analisados simultaneamente.
 * **Extração de Foto de Perfil (PyMuPDF):** O backend realiza uma varredura interna nos fluxos binários do arquivo PDF buscando por blocos de imagem (usando `fitz` / PyMuPDF). Ao detectar imagens compatíveis com rostos, isola o arquivo e realiza o upload assíncrono seguro para o Cloudinary, associando a URL gerada ao modelo do candidato.
 * **Garantia de Integridade e LGPD:**
   * **Exclusão Segura (Soft Delete):** Remoção lógica de registros por meio do campo `deleted_at` para trilha de auditoria da LGPD.

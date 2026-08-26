@@ -1,6 +1,6 @@
 # Technical Snapshot — TalentFlow v2.5.0
-**Gerado em:** 2026-08-17 · **Sessão:** Release v2.5.0 — Ciclo de Segurança & Manutenção
-**Status do Projeto:** v2.5.0 (Estável, Testado & Documentado)
+**Gerado em:** 2026-08-24 · **Sessão:** Checkpoint de Migração Render Free após v2.5.0
+**Status do Projeto:** v2.5.0 (estável; API no Render em validação, frontend ainda não redirecionado)
 
 ---
 
@@ -15,7 +15,7 @@ DB:        PostgreSQL 15 via Neon.tech (serverless, sa-east-1)
 Storage:   Cloudinary (fotos de perfil e PDFs) — proxy autenticado via signed URLs
 AI:        Groq API (Llama 3.3 70B) · Google Gemini 2.5 Flash (OCR)
 Auth:      PyJWT + Bcrypt · Dual-Cookie (HttpOnly API + Non-HttpOnly Edge) · ?token= cross-origin
-Deploy:    Vercel (web: tlntflow.vercel.app) · Fly.io (API: talentflow-api.fly.dev, região dfw)
+Deploy:    Vercel (web: tlntflow.vercel.app) · Render (API candidata: talentflow-api-free.onrender.com) · Fly.io (fallback)
 Repo:      github.com/laurielmesquita/talentflow.git
 Versão:    2.5.0
 ```
@@ -32,12 +32,13 @@ Versão:    2.5.0
 5. **`CandidateAuditWorkspace.tsx`:** Tela cheia split 50/50 (PDF original vs IA), navegação em lote, ações de approve/flag integradas.
 6. **CSP (`next.config.ts`):** `frame-src` atualizado com `http://localhost:8000` para dev local, mantendo `https:` para produção.
 7. **Deploy Fly.io:** `primary_region` alterada de `gru` para `dfw` (Dallas) devido a falta de capacidade em São Paulo.
+8. **Checkpoint Render Free:** API publicada e respondendo `/health` com `200 OK`; a troca do frontend permanece pendente de validação funcional.
 
 ### 📚 Consolidação Documental
-8. **READMEs:** Adicionadas seções de destaque do Workspace de Auditoria e Proxy PDF nos READMEs da API e Web.
-9. **Features Docs:** Documentadas 10 seções técnicas anteriormente ausentes: Candidatura Pública com OTP, Billing Stripe, Governança de Feature Flags, Sandbox Rate Limiting, Divergence Detection, Slug Generation, Job Lookup, Audit Log, entre outras.
-10. **AGENTS.md:** Reconstruída tabela completa de endpoints (35, não 23), adicionados 6 services + 2 schemas, 16 componentes frontend + 3 rotas + 5 libs/types, removidos 5 phantoms documentais.
-11. **CHANGELOG:** Adicionado entry `[2.4.0]` consolidando todas as funcionalidades implementadas desde a v2.3.0.
+9. **READMEs:** Adicionadas seções de destaque do Workspace de Auditoria e Proxy PDF nos READMEs da API e Web.
+10. **Features Docs:** Documentadas 10 seções técnicas anteriormente ausentes: Candidatura Pública com OTP, Billing Stripe, Governança de Feature Flags, Sandbox Rate Limiting, Divergence Detection, Slug Generation, Job Lookup, Audit Log, entre outras.
+11. **AGENTS.md:** Reconstruída tabela completa de endpoints (35, não 23), adicionados 6 services + 2 schemas, 16 componentes frontend + 3 rotas + 5 libs/types, removidos 5 phantoms documentais.
+12. **CHANGELOG:** Adicionado entry `[2.4.0]` consolidando todas as funcionalidades implementadas desde a v2.3.0.
 
 ---
 

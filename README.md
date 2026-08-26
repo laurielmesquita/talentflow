@@ -24,7 +24,8 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 desenhada para otimiza
 * **[Neon.tech (PostgreSQL)](https://neon.tech)** — Banco de dados relacional serverless hospedado em nuvem com alta escalabilidade.
 * **[Cloudinary](https://cloudinary.com)** — Armazenamento seguro e processamento de imagens faciais de perfil dos candidatos.
 * **[Alembic](https://alembic.sqlalchemy.org)** — Ferramenta para versionamento e migrações estruturais do banco de dados relacional.
-* **[Fly.io](https://fly.io)** — Plataforma para hosting e deploy automatizado do backend em servidores globais.
+* **[Render](https://render.com)** — Ambiente candidato de hosting gratuito da API durante a validação da migração.
+* **[Fly.io](https://fly.io)** — Ambiente anterior e fallback operacional até a conclusão do rollout.
 * **[Bcrypt & PyJWT](https://pyjwt.readthedocs.io)** — Cifragem de credenciais (bcrypt) e controle de sessões JWT criptografados com HMAC-SHA256.
 * **[Brevo SMTP](https://www.brevo.com)** — Servidor SMTP transacional integrado para disparos de e-mails de onboarding (expiração de 7 dias) e redefinição de senha (expiração de 2 horas) com criptografia TLS.
 
@@ -46,7 +47,7 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 desenhada para otimiza
    * Suporte a tags e competências homônimas entre clientes através de uma restrição de unicidade composta do PostgreSQL: `UniqueConstraint('tenant_id', 'name')`.
 2. **Ingestão Concorrente Segura:**
    * Envio assíncrono controlado por `BackgroundTasks` no FastAPI.
-   * Controle de concorrência com semáforo (`asyncio.Semaphore(3)`) para proteger os 512MB de memória da máquina de produção da Fly.io contra estouros.
+   * Controle de concorrência com semáforo (`asyncio.Semaphore(3)`) para proteger o limite de 512MB do ambiente de execução da API contra estouros.
 3. **Smart Match & Warm Path Cache:**
    * Interseção matemática rápida de competências e justificativa em português via IA (Llama 3.3 com fallback Gemini).
    * Persistência de resultados na tabela `job_matches` atuando como cache, reduzindo o tempo de consulta subsequente para menos de 50ms (*Warm Path*).

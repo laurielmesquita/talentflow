@@ -1,12 +1,8 @@
 name: Fly Deploy
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - 'talentflow-api/**'
-      - '.github/workflows/fly-deploy.yml'
+  # O Fly.io é apenas fallback durante a migração. Deploys devem ser
+  # disparados manualmente até a infraestrutura ser descontinuada.
   workflow_dispatch:
 
 jobs:
@@ -22,7 +18,7 @@ jobs:
         # Atualizado em 2026-08-15 (HEAD de superfly/flyctl-actions no momento).
         uses: superfly/flyctl-actions/setup-flyctl@ed8efb33836e8b2096c7fd3ba1c8afe303ebbff1
         
-      - name: Deploy to Fly.io
+      - name: Deploy to Fly.io (manual fallback)
         run: flyctl deploy
         working-directory: talentflow-api
         env:

@@ -33,7 +33,11 @@ depends_on: Union[str, Sequence[str], None] = None
 
 def upgrade() -> None:
     """Upgrade schema: substitui indice global por indice composto por tenant."""
-    op.drop_index('ix_candidates_email_active_unique', table_name='candidates')
+    # O índice global pode não existir em bancos que receberam a correção
+    # parcialmente ou foram provisionados a partir de um schema equivalente.
+    # IF EXISTS torna a migração segura para esses estados sem remover dados.
+    op.execute('DROP INDEX IF EXISTS ix_candidates_email_active_unique')
+    op.execute('DROP INDEX IF EXISTS uq_candidate_tenant_email_active')
     op.create_index(
         'uq_candidate_tenant_email_active',
         'candidates',

@@ -31,6 +31,7 @@ O diferencial visual do TalentFlow: uma tela de auditoria em **split 50/50** que
 - **`src/lib/data/`**: Camada Server Component para data fetching com tratamento de autenticação e redirecionamento 401.
 - **`src/components/`**: Componentes reutilizáveis do sistema de design (Kanban, Bento Grid, Table, Drawers, Modais).
 - **`src/test/`**: Bateria de testes unitários executados via Vitest e React Testing Library.
+- **`src/app/organization/`**: Tela administrativa do Owner para acompanhar, solicitar e cancelar o encerramento da organização.
 
 ---
 

@@ -44,6 +44,12 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - **`seed.py`**: Script de inicialização rápida para popular tabelas de domínio estático (Categorias).
 - **`purge_tenants.py`**: Executor manual da purga permanente de tenants cuja carência venceu; aceita `--dry-run` e exige `--confirm` para apagar.
 
+### Organização e encerramento
+
+- `GET /api/tenant/closure`: consulta o estado e informa se o usuário autenticado é o Owner.
+- `POST /api/tenant/closure`: Owner agenda o encerramento com senha atual e a confirmação literal `ENCERRAR ORGANIZAÇÃO`.
+- `DELETE /api/tenant/closure`: Owner cancela um encerramento pendente dentro da carência de 30 dias.
+
 ---
 
 ## 🚀 Guia de Desenvolvimento (Setup Local)

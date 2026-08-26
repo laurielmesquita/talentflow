@@ -34,6 +34,7 @@ def get_closure_status(
     tenant = _get_current_tenant(db, current_user)
     return TenantClosureResponse(
         status=tenant.closure_status,
+        is_owner=tenant.owner_user_id == current_user.id,
         requested_at=tenant.closure_requested_at,
         scheduled_for=tenant.closure_scheduled_for,
     )
@@ -61,6 +62,7 @@ def request_closure(
     db.refresh(tenant)
     return TenantClosureResponse(
         status=tenant.closure_status,
+        is_owner=True,
         requested_at=tenant.closure_requested_at,
         scheduled_for=tenant.closure_scheduled_for,
     )
@@ -81,4 +83,4 @@ def cancel_closure(
     tenant.closure_scheduled_for = None
     db.commit()
     db.refresh(tenant)
-    return TenantClosureResponse(status=tenant.closure_status)
+    return TenantClosureResponse(status=tenant.closure_status, is_owner=True)

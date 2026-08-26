@@ -47,6 +47,7 @@ talentflow-web/
 │   │   ├── forgot-password/       ← Esqueci a senha
 │   │   ├── reset-password/        ← Redefinir senha (token)
 │   │   ├── users/                 ← Gerenciamento administrativo de usuários
+│   │   ├── organization/         ← Acompanhamento e encerramento pelo Owner
 │   │   ├── vagas/                 ← Página pública de vagas abertas
 │   │   ├── privacy/               ← Política de privacidade
 │   │   ├── jobs/[slug]/page.tsx    ← Detalhe de vaga (auth)

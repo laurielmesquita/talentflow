@@ -6,9 +6,9 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 
-from app.api.tenants import cancel_closure, request_closure
+from app.api.tenants import cancel_closure, request_closure, transfer_owner
 from app.models.domain import Tenant
-from app.schemas.tenant import TenantClosureRequest
+from app.schemas.tenant import TenantClosureRequest, TenantOwnerTransferRequest
 
 
 def _db_for(tenant):
@@ -104,4 +104,42 @@ def test_closure_cannot_be_scheduled_twice(monkeypatch):
         )
 
     assert error.value.status_code == 409
+    db.commit.assert_not_called()
+
+
+def test_owner_can_transfer_ownership_with_password(monkeypatch):
+    owner, tenant = _owner_and_tenant()
+    target = SimpleNamespace(id=uuid4(), full_name="Nova Gerente")
+    db = MagicMock()
+    tenant_query = MagicMock()
+    tenant_query.filter.return_value.first.return_value = tenant
+    target_query = MagicMock()
+    target_query.filter.return_value.first.return_value = target
+    db.query.side_effect = [tenant_query, target_query]
+    monkeypatch.setattr("app.api.tenants.verify_password", lambda password, hashed: password == "correct")
+
+    result = transfer_owner(
+        payload=TenantOwnerTransferRequest(target_user_id=target.id, current_password="correct"),
+        db=db,
+        current_user=owner,
+    )
+
+    assert result.owner_user_id == target.id
+    assert tenant.owner_user_id == target.id
+    db.commit.assert_called_once()
+
+
+def test_owner_transfer_rejects_invalid_password(monkeypatch):
+    owner, tenant = _owner_and_tenant()
+    db = _db_for(tenant)
+    monkeypatch.setattr("app.api.tenants.verify_password", lambda password, hashed: False)
+
+    with pytest.raises(HTTPException) as error:
+        transfer_owner(
+            payload=TenantOwnerTransferRequest(target_user_id=uuid4(), current_password="wrong"),
+            db=db,
+            current_user=owner,
+        )
+
+    assert error.value.status_code == 400
     db.commit.assert_not_called()

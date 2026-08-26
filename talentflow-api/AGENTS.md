@@ -196,6 +196,7 @@ O primeiro `Manager` cadastrado é associado ao `Owner` do tenant. A migração 
 ### Organização
 | Método | Rota | Auth | Descrição |
 |--------|------|------|-----------|
+| POST | `/api/tenant/owner` | Owner + senha | Transfere a titularidade para Manager/SuperAdmin ativo |
 | GET | `/api/tenant/closure` | Usuário autenticado | Consulta o estado do encerramento |
 | POST | `/api/tenant/closure` | Owner + senha | Agenda encerramento com carência de 30 dias |
 | DELETE | `/api/tenant/closure` | Owner | Cancela encerramento pendente |

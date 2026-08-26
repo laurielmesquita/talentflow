@@ -11,6 +11,7 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 
 ### Preparação do encerramento de organização
 - Adicionado fluxo de solicitação/cancelamento com confirmação reforçada e carência de 30 dias; a purga física permanece separada e controlada.
+- Adicionado executor manual idempotente para purga de dados do tenant e assets do Cloudinary após a carência.
 
 ## [2.6.0] — 2026-08-26
 

@@ -160,9 +160,14 @@ uvicorn app.main:app --reload --port 8000
 | `backfill_quality_score.py` | Recalcular Quality Score em candidatos legados         |
 | `seed.py`                   | Popular categorias de domínio estático                 |
 | `seed_jobs.py`              | Popular vagas de teste no banco                        |
+| `purge_tenants.py --dry-run`| Listar tenants elegíveis sem apagar dados              |
+| `purge_tenants.py --confirm`| Executar purga permanente após revisão operacional      |
 
 > [!WARNING]
 > Os scripts `ingest.py`, `backfill_quality_score.py` e `seed_jobs.py` fazem escrita direta no banco. **Nunca executar em produção sem autorização explícita do PO.**
+
+> [!CAUTION]
+> `purge_tenants.py --confirm` remove permanentemente dados do tenant e seus assets no Cloudinary. Executar somente após revisar a saída do `--dry-run` e obter autorização explícita do PO.
 
 ---
 

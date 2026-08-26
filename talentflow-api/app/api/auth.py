@@ -208,6 +208,8 @@ def register(request: Request, payload: RegisterRequest, response: Response, db:
         db.add(user)
         db.commit()
         db.refresh(user)
+        tenant.owner_user_id = user.id
+        db.commit()
 
         # Login automático
         access_token = create_access_token(
@@ -236,4 +238,3 @@ def logout(response: Response):
     """
     response.delete_cookie(key="token", path="/")
     return {"message": "Sessão encerrada."}
-

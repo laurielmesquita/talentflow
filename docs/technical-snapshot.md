@@ -45,6 +45,7 @@ Versão:    2.6.0
 1. **API administrativa:** `GET/POST /api/users`, `PATCH/DELETE /api/users/:id`, sempre limitados ao tenant autenticado.
 2. **Desativação segura:** a remoção de usuário revoga o acesso sem apagar dados da organização nem quebrar o histórico de auditoria.
 3. **Guardrails de privilégio:** somente `Manager` e `SuperAdmin` administram usuários; o último gerente ativo e o próprio acesso administrativo não podem ser removidos.
+4. **Proprietário explícito:** o primeiro `Manager` é associado ao tenant como `Owner`; seu acesso não pode ser desativado ou rebaixado antes de uma transferência formal.
 
 ---
 

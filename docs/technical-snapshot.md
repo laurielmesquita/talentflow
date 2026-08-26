@@ -51,6 +51,7 @@ Versão:    2.6.0
 1. A solicitação exige propriedade do tenant, senha atual e a confirmação literal `ENCERRAR ORGANIZAÇÃO`.
 2. A solicitação agenda a data de purga para 30 dias depois e pode ser cancelada pelo Owner.
 3. A purga física de banco e Cloudinary ainda não é disparada pelo endpoint; será executada por processo idempotente dedicado.
+4. O executor dedicado está disponível em `talentflow-api/purge_tenants.py`; exige `--dry-run` para inspeção ou `--confirm` para execução explícita.
 
 ---
 

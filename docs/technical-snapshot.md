@@ -52,6 +52,7 @@ Versão:    2.6.0
 2. A solicitação agenda a data de purga para 30 dias depois e pode ser cancelada pelo Owner.
 3. A purga física de banco e Cloudinary ainda não é disparada pelo endpoint; será executada por processo idempotente dedicado.
 4. O executor dedicado está disponível em `talentflow-api/purge_tenants.py`; exige `--dry-run` para inspeção ou `--confirm` para execução explícita.
+5. A migração `6c1d2e3f4a50` repara tenants legados sem Owner: prioriza Manager ativo e usa o único SuperAdmin ativo quando não há Manager.
 
 ---
 

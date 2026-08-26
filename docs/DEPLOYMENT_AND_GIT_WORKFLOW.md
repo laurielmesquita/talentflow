@@ -13,7 +13,7 @@ O TalentFlow utiliza uma arquitetura de deploy contínuo **baseada em disparos a
 Commit & Push na branch `main` (GitHub)
        │
        ├──► Frontend (Next.js): Vercel Deployment (Automático via webhook Vercel-GitHub)
-       └──► Backend (FastAPI): Render Free (branch de validação) · Fly.io (fallback via GitHub Action)
+       └──► Backend (FastAPI): Render Free (branch de validação) · Fly.io (fallback manual)
 ```
 
 ---
@@ -51,7 +51,7 @@ git push origin main
 
 ## 3. Monitoramento dos Deploys em Produção
 
-Após realizar o `git push origin main`, os deploys iniciam automaticamente:
+Após realizar o `git push origin main`, a Vercel inicia o deploy do frontend automaticamente. O Render acompanha a branch configurada para validação; o Fly.io não é acionado automaticamente.
 
 ### A. Frontend (Vercel)
 - **URL de Produção:** `https://tlntflow.vercel.app`
@@ -64,8 +64,9 @@ Após realizar o `git push origin main`, os deploys iniciam automaticamente:
 - **Health check:** `/health`
 - **Observação:** o frontend só deve ser redirecionado após a validação funcional completa.
 
-### C. Backend fallback (Fly.io)
+### C. Backend fallback manual (Fly.io)
 - **URL da API:** `https://talentflow-api.fly.dev`
+- **Deploy:** somente via `workflow_dispatch` em `.github/workflows/fly-deploy.yml`; o merge na `main` não dispara o Fly.io.
 - **Acompanhar Logs em Tempo Real (via CLI):**
   ```bash
   cd talentflow-api

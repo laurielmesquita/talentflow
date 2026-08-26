@@ -282,9 +282,9 @@ pdfplumber → texto extraível?
 # Fallback manual via Fly.io CLI (requer flyctl instalado)
 fly deploy
 
-# Fallback automático via GitHub Actions
+# Fallback manual via GitHub Actions
 # Configurado em: .github/workflows/fly-deploy.yml
-# Trigger: push na branch main
+# Trigger: workflow_dispatch (não executa automaticamente no merge)
 ```
 
 > [!IMPORTANT]

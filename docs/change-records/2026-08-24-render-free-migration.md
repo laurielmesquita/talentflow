@@ -16,6 +16,7 @@ O TalentFlow iniciou uma migração controlada da API do Fly.io para o plano gra
 - Tornada idempotente a migração de unicidade de e-mail de candidatos, evitando falha quando um dos índices legados não existe.
 - Configurado o serviço `talentflow-api-free` no Render, acompanhando a branch `feat/render-free-migration`.
 - Preparado o frontend para o novo backend: a CSP aceita o domínio Render e a variável `NEXT_PUBLIC_API_URL` foi configurada na Vercel para Production e Preview.
+- Desativado o disparo automático do workflow de deploy do Fly.io; o fallback permanece disponível apenas por execução manual.
 
 ## Validação realizada
 
@@ -38,6 +39,8 @@ URL temporária de validação: <https://talentflow-api-free.onrender.com>
 O frontend ainda não aponta para o Render. O Fly.io permanece como fallback até a validação funcional de autenticação, cookies dual, isolamento multi-tenant, upload/PDF, IA, e-mail e Stripe. A troca de `NEXT_PUBLIC_API_URL` será registrada em mudança posterior, após aprovação do PO.
 
 > A variável já está configurada na Vercel, mas a versão de produção só passará a utilizá-la quando a alteração da CSP for promovida para a branch de produção.
+
+> O workflow do Fly.io foi mantido como fallback manual para impedir que o merge acione novos deploys ou reabra a cobrança operacional automaticamente.
 
 ## Próximos passos
 

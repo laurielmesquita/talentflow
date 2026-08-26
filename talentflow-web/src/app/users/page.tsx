@@ -10,13 +10,14 @@ type UserRole = 'Manager' | 'Recruiter' | 'SuperAdmin';
 interface ManagedUser {
   id: string;
   email: string;
+  phone: string | null;
   full_name: string;
   role: UserRole;
   is_active: boolean;
   created_at?: string | null;
 }
 
-const emptyForm = { full_name: '', email: '', password: '', role: 'Recruiter' as UserRole };
+const emptyForm = { full_name: '', email: '', phone: '', password: '', role: 'Recruiter' as UserRole };
 
 export default function UsersPage() {
   const [users, setUsers] = useState<ManagedUser[]>([]);
@@ -55,6 +56,7 @@ export default function UsersPage() {
         const body: Record<string, string> = {
           full_name: form.full_name,
           email: form.email,
+          phone: form.phone,
           role: form.role,
         };
         if (form.password) body.password = form.password;
@@ -113,12 +115,13 @@ export default function UsersPage() {
                     <div className="min-w-0">
                       <p className="truncate font-medium">{user.full_name}</p>
                       <p className="truncate text-sm text-muted-foreground">{user.email}</p>
+                      {user.phone && <p className="truncate text-xs text-muted-foreground">{user.phone}</p>}
                       <span className={`mt-1 inline-block text-xs ${user.is_active ? 'text-emerald-600' : 'text-muted-foreground'}`}>
                         {user.is_active ? 'Ativo' : 'Desativado'} · {user.role === 'Manager' ? 'Gerente' : user.role === 'SuperAdmin' ? 'Super Admin' : 'Recrutador'}
                       </span>
                     </div>
                     {user.is_active && <div className="flex shrink-0 gap-1">
-                      <button aria-label={`Editar ${user.full_name}`} onClick={() => { setEditing(user); setForm({ full_name: user.full_name, email: user.email, password: '', role: user.role }); }} className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground"><Pencil className="w-4 h-4" /></button>
+                      <button aria-label={`Editar ${user.full_name}`} onClick={() => { setEditing(user); setForm({ full_name: user.full_name, email: user.email, phone: user.phone || '', password: '', role: user.role }); }} className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground"><Pencil className="w-4 h-4" /></button>
                       <button aria-label={`Desativar ${user.full_name}`} onClick={() => void handleDeactivate(user)} className="rounded-lg p-2 text-destructive/80 hover:bg-destructive/10 hover:text-destructive"><UserX className="w-4 h-4" /></button>
                     </div>}
                   </div>
@@ -132,6 +135,7 @@ export default function UsersPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <input required minLength={2} value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="Nome completo" className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
               <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="E-mail corporativo" className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
+              <input type="tel" maxLength={32} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Telefone (opcional)" className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
               <input required={!editing} minLength={8} type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={editing ? 'Nova senha (opcional)' : 'Senha (mínimo 8 caracteres)'} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
               <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm">
                 <option value="Recruiter">Recrutador</option>

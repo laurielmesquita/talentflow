@@ -9,7 +9,7 @@ from app.models.domain import User, PasswordReset, Tenant
 from app.schemas.auth import (
     LoginRequest, TokenResponse, 
     ForgotPasswordRequest, ResetPasswordRequest,
-    ChangePasswordRequest, RegisterRequest
+    ChangePasswordRequest, RegisterRequest, ProfileUpdateRequest
 )
 from app.services.auth import hash_password, verify_password, create_access_token
 from app.core.config import settings
@@ -168,6 +168,47 @@ def change_password(
     db.commit()
     
     return {"message": "Senha alterada com sucesso!"}
+
+
+@router.get("/me")
+def get_profile(current_user: User = Depends(get_current_user)):
+    """Retorna o perfil do usuário autenticado, sem expor credenciais."""
+    return {
+        "id": current_user.id,
+        "tenant_id": current_user.tenant_id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "phone": current_user.phone,
+        "role": current_user.role,
+        "is_active": current_user.is_active,
+        "created_at": current_user.created_at,
+    }
+
+
+@router.patch("/me")
+def update_profile(
+    payload: ProfileUpdateRequest,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Atualiza dados não sensíveis do próprio perfil."""
+    changes = payload.model_dump(exclude_unset=True)
+    if "full_name" in changes:
+        current_user.full_name = changes["full_name"].strip()
+    if "phone" in changes:
+        current_user.phone = changes["phone"].strip() if changes["phone"] else None
+    db.commit()
+    db.refresh(current_user)
+    return {
+        "id": current_user.id,
+        "tenant_id": current_user.tenant_id,
+        "email": current_user.email,
+        "full_name": current_user.full_name,
+        "phone": current_user.phone,
+        "role": current_user.role,
+        "is_active": current_user.is_active,
+        "created_at": current_user.created_at,
+    }
 
 
 @router.post("/register", response_model=TokenResponse)

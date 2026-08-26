@@ -44,6 +44,14 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - **`seed.py`**: Script de inicialização rápida para popular tabelas de domínio estático (Categorias).
 - **`purge_tenants.py`**: Executor manual da purga permanente de tenants cuja carência venceu; aceita `--dry-run` e exige `--confirm` para apagar.
 
+### Perfil e configurações
+
+- `GET /api/auth/me`: retorna o perfil do usuário autenticado sem expor credenciais.
+- `PATCH /api/auth/me`: atualiza o nome e o telefone do próprio usuário.
+- `POST /api/auth/change-password`: altera a senha mediante validação da senha atual.
+
+O telefone do usuário é opcional e armazenado separadamente dos dados de contato dos candidatos. A troca de e-mail será concluída em uma etapa específica com confirmação no novo endereço.
+
 ### Organização e encerramento
 
 - `POST /api/tenant/owner`: Owner transfere a titularidade para outro Manager ou Super Admin ativo, mediante senha atual.

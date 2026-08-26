@@ -17,7 +17,7 @@
 | Banco de dados | PostgreSQL 15 — Neon.tech (serverless)         |
 | ORM            | SQLAlchemy 2.x (async-compatible)              |
 | Migrações      | Alembic                                        |
-| Deploy         | Render Free — API candidata em validação; Fly.io como fallback |
+| Deploy         | Render Free — produção; Fly.io parado como fallback manual |
 | Porta local    | `8000`                                         |
 | Docs Swagger   | `http://localhost:8000/docs`                   |
 

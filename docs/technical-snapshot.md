@@ -1,6 +1,6 @@
 # Technical Snapshot — TalentFlow v2.5.0
-**Gerado em:** 2026-08-24 · **Sessão:** Checkpoint de Migração Render Free após v2.5.0
-**Status do Projeto:** v2.5.0 (estável; API no Render em validação, frontend ainda não redirecionado)
+**Gerado em:** 2026-08-26 · **Sessão:** Migração Render Free concluída após v2.5.0
+**Status do Projeto:** v2.5.0 (estável; API no Render e frontend Vercel em produção)
 
 ---
 
@@ -15,7 +15,7 @@ DB:        PostgreSQL 15 via Neon.tech (serverless, sa-east-1)
 Storage:   Cloudinary (fotos de perfil e PDFs) — proxy autenticado via signed URLs
 AI:        Groq API (Llama 3.3 70B) · Google Gemini 2.5 Flash (OCR)
 Auth:      PyJWT + Bcrypt · Dual-Cookie (HttpOnly API + Non-HttpOnly Edge) · ?token= cross-origin
-Deploy:    Vercel (web: tlntflow.vercel.app) · Render (API candidata: talentflow-api-free.onrender.com) · Fly.io (fallback)
+Deploy:    Vercel (web: tlntflow.vercel.app) · Render (API: talentflow-api-free.onrender.com) · Fly.io (fallback parado)
 Repo:      github.com/laurielmesquita/talentflow.git
 Versão:    2.5.0
 ```
@@ -32,7 +32,7 @@ Versão:    2.5.0
 5. **`CandidateAuditWorkspace.tsx`:** Tela cheia split 50/50 (PDF original vs IA), navegação em lote, ações de approve/flag integradas.
 6. **CSP (`next.config.ts`):** `frame-src` atualizado com `http://localhost:8000` para dev local, mantendo `https:` para produção.
 7. **Deploy Fly.io:** `primary_region` alterada de `gru` para `dfw` (Dallas) devido a falta de capacidade em São Paulo.
-8. **Checkpoint Render Free:** API publicada e respondendo `/health` com `200 OK`; a troca do frontend permanece pendente de validação funcional.
+8. **Render Free em produção:** API publicada na `main`, frontend Vercel apontando para o Render e health check respondendo `200 OK`; Fly.io permanece parado como fallback manual.
 
 ### 📚 Consolidação Documental
 9. **READMEs:** Adicionadas seções de destaque do Workspace de Auditoria e Proxy PDF nos READMEs da API e Web.

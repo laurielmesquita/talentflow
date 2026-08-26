@@ -24,8 +24,8 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 desenhada para otimiza
 * **[Neon.tech (PostgreSQL)](https://neon.tech)** — Banco de dados relacional serverless hospedado em nuvem com alta escalabilidade.
 * **[Cloudinary](https://cloudinary.com)** — Armazenamento seguro e processamento de imagens faciais de perfil dos candidatos.
 * **[Alembic](https://alembic.sqlalchemy.org)** — Ferramenta para versionamento e migrações estruturais do banco de dados relacional.
-* **[Render](https://render.com)** — Ambiente candidato de hosting gratuito da API durante a validação da migração.
-* **[Fly.io](https://fly.io)** — Ambiente anterior e fallback operacional até a conclusão do rollout.
+* **[Render](https://render.com)** — Ambiente de produção gratuito da API durante a fase de maturação.
+* **[Fly.io](https://fly.io)** — Ambiente anterior, atualmente parado e reservado como fallback manual.
 * **[Bcrypt & PyJWT](https://pyjwt.readthedocs.io)** — Cifragem de credenciais (bcrypt) e controle de sessões JWT criptografados com HMAC-SHA256.
 * **[Brevo SMTP](https://www.brevo.com)** — Servidor SMTP transacional integrado para disparos de e-mails de onboarding (expiração de 7 dias) e redefinição de senha (expiração de 2 horas) com criptografia TLS.
 

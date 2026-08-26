@@ -22,7 +22,7 @@ O plano gratuito não disponibiliza `preDeployCommand`. Por isso, a migração A
 
 Os nomes das variáveis estão declarados no Blueprint sem valores sensíveis. Os valores devem ser preenchidos no Render Dashboard ou sincronizados por um segredo seguro. Nenhum `.env` deve ser commitado.
 
-## Validação antes da troca do frontend
+## Validação registrada
 
 1. Confirmar resposta `2xx` em `/health`.
 2. Conferir que a versão exibida na raiz é `2.5.0`.
@@ -35,4 +35,4 @@ Os nomes das variáveis estão declarados no Blueprint sem valores sensíveis. O
 
 ## Rollback
 
-O Fly.io permanece como fallback até a validação final. O frontend só deve apontar para a URL do Render depois que todos os testes acima passarem.
+O Fly.io está parado e permanece disponível como fallback manual. Para reativá-lo, será necessário iniciar a máquina e executar manualmente o workflow de deploy correspondente.

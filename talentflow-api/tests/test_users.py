@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 from fastapi import HTTPException
 
-from app.api.users import create_user, deactivate_user, update_user
+from app.api.users import _protect_owner, create_user, deactivate_user, update_user
 from app.models.domain import User
 from app.schemas.user import UserCreateRequest, UserUpdateRequest
 
@@ -54,6 +54,15 @@ def test_manager_cannot_grant_super_admin_role():
 
     assert error.value.status_code == 403
     db.query.assert_not_called()
+
+
+def test_owner_cannot_be_deactivated_before_transfer():
+    owner = SimpleNamespace(owned_tenant=object())
+
+    with pytest.raises(HTTPException) as error:
+        _protect_owner(owner, next_active=False)
+
+    assert error.value.status_code == 409
 
 
 def test_deactivate_user_cannot_remove_last_active_manager():

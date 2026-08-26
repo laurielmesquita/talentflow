@@ -16,6 +16,7 @@ Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organ
 ### Adicionado
 - **API de usuários (`/api/users`):** listagem, criação, edição e desativação de usuários por tenant.
 - **Painel de usuários (`/users`):** interface administrativa para gerenciar membros da organização.
+- **Proprietário do tenant:** associação explícita do primeiro `Manager` ao `Owner`, preparada para o fluxo de transferência e encerramento da organização.
 
 ### Segurança
 - Acesso restrito a `Manager` e `SuperAdmin`.

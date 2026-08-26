@@ -186,6 +186,8 @@ uvicorn app.main:app --reload --port 8000
 | PATCH | `/api/users/:id` | Manager/SuperAdmin | Edita usuário ou redefine senha |
 | DELETE | `/api/users/:id` | Manager/SuperAdmin | Desativa usuário sem apagar dados da organização |
 
+O primeiro `Manager` cadastrado é associado ao `Owner` do tenant. A transferência de propriedade será implementada no fluxo de encerramento da organização.
+
 ### Dashboard
 | Método | Rota | Auth | Descrição |
 |--------|------|------|-----------|

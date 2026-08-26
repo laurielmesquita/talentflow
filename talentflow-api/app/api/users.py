@@ -42,6 +42,15 @@ def _protect_last_manager(db: ScopedSession, user: User, *, next_role: str | Non
         )
 
 
+def _protect_owner(user: User, *, next_role: str | None = None, next_active: bool | None = None):
+    is_owner = getattr(user, "owned_tenant", None) is not None
+    if is_owner and ((next_role is not None and next_role != "Manager") or next_active is False):
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Transfira a propriedade da organização antes de alterar o acesso do proprietário.",
+        )
+
+
 @router.get("", response_model=list[UserResponse])
 def list_users(
     db: ScopedSession = Depends(get_scoped_db),
@@ -97,6 +106,7 @@ def update_user(
         next_role=changes.get("role"),
         next_active=changes.get("is_active"),
     )
+    _protect_owner(user, next_role=changes.get("role"), next_active=changes.get("is_active"))
 
     if "full_name" in changes:
         user.full_name = changes["full_name"].strip()
@@ -123,6 +133,7 @@ def deactivate_user(
     user = _get_user_or_404(db, user_id)
     if user.id == current_user.id:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Você não pode remover seu próprio acesso.")
+    _protect_owner(user, next_active=False)
     _protect_last_manager(db, user, next_active=False)
     user.is_active = False
     db.commit()

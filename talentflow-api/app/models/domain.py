@@ -30,11 +30,13 @@ class Tenant(Base):
     plan_name = Column(String, nullable=False, default="free")
     plan_status = Column(String, nullable=False, default="active")
     candidate_count_limit = Column(Integer, nullable=False, default=50)
+    owner_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True, index=True)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     # Relationships
-    users = relationship("User", back_populates="tenant")
+    users = relationship("User", foreign_keys="User.tenant_id", back_populates="tenant")
+    owner = relationship("User", foreign_keys=[owner_user_id], back_populates="owned_tenant", uselist=False)
     candidates = relationship("Candidate", back_populates="tenant")
     job_positions = relationship("JobPosition", back_populates="tenant")
     job_applications = relationship("JobApplication", back_populates="tenant")
@@ -164,7 +166,8 @@ class User(Base):
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
-    tenant = relationship("Tenant", back_populates="users")
+    tenant = relationship("Tenant", foreign_keys=[tenant_id], back_populates="users")
+    owned_tenant = relationship("Tenant", foreign_keys="Tenant.owner_user_id", back_populates="owner", uselist=False)
 
 
 

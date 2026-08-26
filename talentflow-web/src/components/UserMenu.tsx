@@ -10,7 +10,8 @@ import {
   LogOut, 
   ChevronDown, 
   KeyRound,
-  Users
+  Users,
+  Building2,
 } from 'lucide-react';
 import { getSession, clearSession } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
@@ -144,6 +145,17 @@ export default function UserMenu() {
                 >
                   <Users className="w-4 h-4 text-primary" />
                   Gerenciar usuários
+                </Link>
+              )}
+
+              {(userRole === 'Manager' || userRole === 'SuperAdmin') && (
+                <Link
+                  href="/organization"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all"
+                >
+                  <Building2 className="w-4 h-4 text-amber-500" />
+                  Organização e encerramento
                 </Link>
               )}
 

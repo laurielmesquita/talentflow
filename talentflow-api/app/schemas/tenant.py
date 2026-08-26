@@ -11,5 +11,6 @@ class TenantClosureRequest(BaseModel):
 
 class TenantClosureResponse(BaseModel):
     status: str
+    is_owner: bool = False
     requested_at: datetime | None = None
     scheduled_for: datetime | None = None

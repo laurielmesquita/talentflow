@@ -9,6 +9,9 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 Próxima versão em planejamento. O encerramento seguro de organizações e a purga de dados estão previstos para a linha 2.7.x.
 
+### Preparação do encerramento de organização
+- Adicionado fluxo de solicitação/cancelamento com confirmação reforçada e carência de 30 dias; a purga física permanece separada e controlada.
+
 ## [2.6.0] — 2026-08-26
 
 Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organização.

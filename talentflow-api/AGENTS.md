@@ -188,6 +188,13 @@ uvicorn app.main:app --reload --port 8000
 
 O primeiro `Manager` cadastrado é associado ao `Owner` do tenant. A transferência de propriedade será implementada no fluxo de encerramento da organização.
 
+### Organização
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/tenant/closure` | Usuário autenticado | Consulta o estado do encerramento |
+| POST | `/api/tenant/closure` | Owner + senha | Agenda encerramento com carência de 30 dias |
+| DELETE | `/api/tenant/closure` | Owner | Cancela encerramento pendente |
+
 ### Dashboard
 | Método | Rota | Auth | Descrição |
 |--------|------|------|-----------|

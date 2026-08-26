@@ -31,6 +31,9 @@ class Tenant(Base):
     plan_status = Column(String, nullable=False, default="active")
     candidate_count_limit = Column(Integer, nullable=False, default=50)
     owner_user_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=True, index=True)
+    closure_status = Column(String, nullable=False, default="active")  # active, pending, completed
+    closure_requested_at = Column(DateTime(timezone=True), nullable=True)
+    closure_scheduled_for = Column(DateTime(timezone=True), nullable=True)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 

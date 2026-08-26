@@ -178,6 +178,14 @@ uvicorn app.main:app --reload --port 8000
 | POST | `/api/auth/forgot-password` | Não | Gera token de reset + envia e-mail |
 | POST | `/api/auth/reset-password` | Não | Redefine senha via token |
 
+### Usuários
+| Método | Rota | Auth | Descrição |
+|--------|------|------|-----------|
+| GET | `/api/users` | Manager/SuperAdmin | Lista usuários do tenant |
+| POST | `/api/users` | Manager/SuperAdmin | Cria usuário no tenant |
+| PATCH | `/api/users/:id` | Manager/SuperAdmin | Edita usuário ou redefine senha |
+| DELETE | `/api/users/:id` | Manager/SuperAdmin | Desativa usuário sem apagar dados da organização |
+
 ### Dashboard
 | Método | Rota | Auth | Descrição |
 |--------|------|------|-----------|

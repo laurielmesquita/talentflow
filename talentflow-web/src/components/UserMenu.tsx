@@ -9,7 +9,8 @@ import {
   Shield, 
   LogOut, 
   ChevronDown, 
-  KeyRound 
+  KeyRound,
+  Users
 } from 'lucide-react';
 import { getSession, clearSession } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
@@ -134,6 +135,17 @@ export default function UserMenu() {
                 <KeyRound className="w-4 h-4 text-amber-500" />
                 Segurança & Senha
               </Link>
+
+              {(userRole === 'Manager' || userRole === 'SuperAdmin') && (
+                <Link
+                  href="/users"
+                  onClick={() => setIsOpen(false)}
+                  className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all"
+                >
+                  <Users className="w-4 h-4 text-primary" />
+                  Gerenciar usuários
+                </Link>
+              )}
 
               <div className="border-t border-border/40 my-1.5" />
 

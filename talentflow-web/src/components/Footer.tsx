@@ -8,7 +8,7 @@ interface FooterProps {
   version?: string;
 }
 
-export default function Footer({ version = "2.5.1" }: FooterProps) {
+export default function Footer({ version = "2.6.0" }: FooterProps) {
   const pathname = usePathname();
 
   const isSimplePage =

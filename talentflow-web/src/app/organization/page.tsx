@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { AlertTriangle, Building2, CheckCircle2, Loader2, ShieldCheck, XCircle } from 'lucide-react';
 import { ApiError, apiFetch } from '@/lib/api';
+import { getSession } from '@/lib/auth';
 
 type ClosureStatus = 'active' | 'pending' | 'completed';
 
@@ -15,6 +16,7 @@ interface ClosureState {
 
 interface ManagedUser {
   id: string;
+  email: string;
   full_name: string;
   role: 'Manager' | 'Recruiter' | 'SuperAdmin';
   is_active: boolean;
@@ -46,7 +48,8 @@ export default function OrganizationPage() {
       setClosure(state);
       if (state.is_owner) {
         const users = await apiFetch<ManagedUser[]>('/api/users');
-        setManagers(users.filter((user) => user.is_active && user.role !== 'Recruiter'));
+        const currentEmail = getSession().email;
+        setManagers(users.filter((user) => user.is_active && user.role !== 'Recruiter' && user.email !== currentEmail));
       }
     } catch (err) {
       setError(err instanceof ApiError ? err.message : 'Não foi possível carregar a organização.');

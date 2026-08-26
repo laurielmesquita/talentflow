@@ -8,7 +8,7 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 ## [Unreleased] — 2026-08-24
 
 ### Adicionado
-- **Checkpoint de migração para Render Free:** API preparada e publicada na branch `feat/render-free-migration`, com health check, execução controlada das migrações Alembic e documentação operacional em `docs/DEPLOYMENT_RENDER_FREE.md`.
+- **Migração para Render Free:** API publicada e promovida para produção na branch `main`, com health check, execução controlada das migrações Alembic e documentação operacional em `docs/DEPLOYMENT_RENDER_FREE.md`.
 - **Registro de evolução:** Incidentes dos primeiros deploys, correções aplicadas e critérios de rollout documentados em `docs/change-records/2026-08-24-render-free-migration.md`.
 - **Preparação do frontend:** CSP permite o domínio Render e `NEXT_PUBLIC_API_URL` foi configurada na Vercel para Production e Preview; a promoção para produção depende do merge da branch.
 
@@ -16,7 +16,7 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 - **Migração de unicidade de candidatos:** Índices legados agora são removidos com `IF EXISTS`, tornando a migração segura para bases que não possuem todos os nomes históricos.
 
 ### Em validação
-- O Render é o ambiente candidato da API (`https://talentflow-api-free.onrender.com`), enquanto o Fly.io permanece como fallback. O frontend ainda não foi redirecionado.
+- O Render é o ambiente principal da API (`https://talentflow-api-free.onrender.com`) e o frontend de produção na Vercel já o utiliza. O Fly.io está parado e mantido apenas como fallback manual.
 
 
 ## [2.5.0] — 2026-08-17

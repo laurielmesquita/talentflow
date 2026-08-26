@@ -55,6 +55,11 @@ def get_current_user(
     user = db.query(User).filter(User.id == user_id).first()
     if user is None:
         raise credentials_exception
+
+    # Tokens emitidos antes da migration não possuem esta claim; eles continuam
+    # válidos enquanto o usuário ainda não teve uma alteração crítica.
+    if "token_version" in payload and payload["token_version"] != user.token_version:
+        raise credentials_exception
         
     if not user.is_active:
         raise HTTPException(

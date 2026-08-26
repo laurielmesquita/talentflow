@@ -13,7 +13,7 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - Criada a central `/settings`, separando perfil individual, segurança, preferências e privacidade das funções administrativas da organização.
 - Adicionada edição do nome e telefone do próprio usuário por `GET/PATCH /api/auth/me`.
 - Adicionado telefone opcional ao gerenciamento administrativo de usuários.
-- A troca de e-mail permanece planejada para fluxo posterior com confirmação no novo endereço.
+- Troca de e-mail implementada com senha atual, confirmação por link de 15 minutos e invalidação de sessões anteriores.
 
 ### Preparação do encerramento de organização
 - Adicionado fluxo de solicitação/cancelamento com confirmação reforçada e carência de 30 dias; a purga física permanece separada e controlada.

@@ -32,7 +32,7 @@ O diferencial visual do TalentFlow: uma tela de auditoria em **split 50/50** que
 - **`src/components/`**: Componentes reutilizáveis do sistema de design (Kanban, Bento Grid, Table, Drawers, Modais).
 - **`src/test/`**: Bateria de testes unitários executados via Vitest e React Testing Library.
 - **`src/app/organization/`**: Tela administrativa do Owner para acompanhar, solicitar e cancelar o encerramento da organização.
-- **`src/app/settings/`**: Central de configurações da conta, com edição do nome e telefone do usuário e áreas preparadas para segurança, preferências e privacidade.
+- **`src/app/settings/`**: Central de configurações da conta, com edição do nome, telefone e troca de e-mail confirmada, além de áreas preparadas para segurança, preferências e privacidade.
 
 ---
 

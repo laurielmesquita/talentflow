@@ -2,9 +2,10 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, Loader2, Mail, Phone, Settings, User } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, KeyRound, Loader2, Mail, Phone, Settings, User } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import UserMenu from '@/components/UserMenu';
+import { clearSession } from '@/lib/auth';
 
 type Profile = {
   email: string;
@@ -21,10 +22,13 @@ export default function SettingsPage() {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');
+  const [newEmail, setNewEmail] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [emailMessage, setEmailMessage] = useState<string | null>(null);
 
   useEffect(() => {
     void apiFetch<Profile>('/api/auth/me')
@@ -55,6 +59,23 @@ export default function SettingsPage() {
       setError(errorMessage(err, 'Não foi possível salvar seu perfil.'));
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleEmailChange = async (event: FormEvent) => {
+    event.preventDefault();
+    setEmailMessage(null);
+    setError(null);
+    try {
+      await apiFetch('/api/auth/email-change/request', {
+        method: 'POST',
+        body: JSON.stringify({ current_password: currentPassword, new_email: newEmail }),
+      });
+      setEmailMessage('Enviamos um link de confirmação para o novo e-mail.');
+      setNewEmail('');
+      setCurrentPassword('');
+    } catch (err: unknown) {
+      setError(errorMessage(err, 'Não foi possível solicitar a alteração do e-mail.'));
     }
   };
 
@@ -92,11 +113,18 @@ export default function SettingsPage() {
                 {message && <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-600"><CheckCircle2 className="h-4 w-4" />{message}</div>}
                 {error && <div className="rounded-xl border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
                 <label className="block text-sm font-medium">Nome completo<input required minLength={2} value={fullName} onChange={(e) => setFullName(e.target.value)} className="mt-1.5 w-full rounded-xl border border-border bg-background px-3 py-2.5" /></label>
-                <label className="block text-sm font-medium">E-mail de acesso<div className="mt-1.5 flex items-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-3 py-2.5 text-muted-foreground"><Mail className="h-4 w-4" />{profile.email}<span className="ml-auto text-xs">Troca segura em breve</span></div></label>
+                <div className="block text-sm font-medium">E-mail de acesso<div className="mt-1.5 flex items-center gap-2 rounded-xl border border-border/60 bg-muted/30 px-3 py-2.5 text-muted-foreground"><Mail className="h-4 w-4" />{profile.email}</div></div>
                 <label className="block text-sm font-medium">Telefone<span className="ml-1 text-xs font-normal text-muted-foreground">(opcional)</span><div className="relative mt-1.5"><Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><input value={phone} onChange={(e) => setPhone(e.target.value)} maxLength={32} placeholder="+55 11 99999-9999" className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-3" /></div></label>
                 <button disabled={saving} type="submit" className="flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">{saving && <Loader2 className="h-4 w-4 animate-spin" />}Salvar alterações</button>
               </form>
             )}
+            {!loading && profile && <form onSubmit={handleEmailChange} className="mt-8 space-y-4 border-t border-border/60 pt-6">
+              <div><h3 className="flex items-center gap-2 font-semibold"><Mail className="h-4 w-4 text-primary" />Alterar e-mail</h3><p className="mt-1 text-sm text-muted-foreground">O endereço atual só muda depois da confirmação enviada ao novo endereço.</p></div>
+              {emailMessage && <div className="flex items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-3 text-sm text-emerald-600"><CheckCircle2 className="h-4 w-4" />{emailMessage}</div>}
+              <input required type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="Novo e-mail" className="w-full rounded-xl border border-border bg-background px-3 py-2.5" />
+              <div className="relative"><KeyRound className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" /><input required type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} placeholder="Senha atual" className="w-full rounded-xl border border-border bg-background py-2.5 pl-10 pr-3" /></div>
+              <button type="submit" className="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold hover:bg-accent">Enviar confirmação</button>
+            </form>}
           </section>
         </div>
       </div>

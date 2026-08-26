@@ -49,8 +49,10 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - `GET /api/auth/me`: retorna o perfil do usuário autenticado sem expor credenciais.
 - `PATCH /api/auth/me`: atualiza o nome e o telefone do próprio usuário.
 - `POST /api/auth/change-password`: altera a senha mediante validação da senha atual.
+- `POST /api/auth/email-change/request`: inicia a troca de e-mail após validar a senha atual.
+- `POST /api/auth/email-change/confirm`: confirma o novo endereço por token de 15 minutos e invalida sessões anteriores.
 
-O telefone do usuário é opcional e armazenado separadamente dos dados de contato dos candidatos. A troca de e-mail será concluída em uma etapa específica com confirmação no novo endereço.
+O telefone do usuário é opcional e armazenado separadamente dos dados de contato dos candidatos. Tokens de confirmação são armazenados somente como hash.
 
 ### Organização e encerramento
 

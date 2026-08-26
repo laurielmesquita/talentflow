@@ -99,7 +99,6 @@
   "97": "f7fafd77c98b_add_tenant_and_multi_tenancy.py",
   "98": "DeleteConfirmModal.tsx",
   "99": "[0.2.0] — 2026-06-17",
-  "100": "[0.3.0] — 2026-06-18",
   "101": "[0.5.0] — 2026-06-20",
   "102": "[0.6.0] — 2026-06-20",
   "103": "[0.9.0] — 2026-06-21",
@@ -109,13 +108,8 @@
   "107": "[2.6.0] — 2026-08-26",
   "108": "4a7e2d1c9f10_add_tenant_owner.py",
   "109": "5b8f3e2a1c70_add_tenant_closure_schedule.py",
-  "110": "[0.8.0] — 2026-06-21",
   "111": "start-render.sh",
-  "112": "resolve_job_id",
-  "113": "sandbox.py",
-  "114": "Category",
   "115": "[Unreleased]",
   "116": "7d2e4f6a8b90_add_phone_to_users.py",
-  "117": "8e3f5a7b9c01_add_email_change_requests.py",
-  "118": "[0.7.0] — 2026-06-21"
+  "117": "8e3f5a7b9c01_add_email_change_requests.py"
 }

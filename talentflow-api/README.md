@@ -51,8 +51,9 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - `POST /api/auth/change-password`: altera a senha mediante validação da senha atual.
 - `POST /api/auth/email-change/request`: inicia a troca de e-mail após validar a senha atual.
 - `POST /api/auth/email-change/confirm`: confirma o novo endereço por token de 15 minutos e invalida sessões anteriores.
+- `GET /api/auth/me/export`: exporta os dados pessoais do usuário autenticado em JSON.
 
-O telefone do usuário é opcional e armazenado separadamente dos dados de contato dos candidatos. Tokens de confirmação são armazenados somente como hash.
+O telefone do usuário é opcional e armazenado separadamente dos dados de contato dos candidatos. Preferências persistidas incluem fuso horário, notificações operacionais e tema. Tokens de confirmação são armazenados somente como hash. A exportação é individual; a exportação completa da organização permanece uma operação exclusiva do Owner.
 
 ### Organização e encerramento
 

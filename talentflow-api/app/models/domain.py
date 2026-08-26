@@ -165,6 +165,9 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     phone = Column(String, nullable=True)
     token_version = Column(Integer, nullable=False, default=0, server_default="0")
+    timezone = Column(String, nullable=False, default="America/Sao_Paulo", server_default="America/Sao_Paulo")
+    email_notifications = Column(Boolean, nullable=False, default=True, server_default="true")
+    theme = Column(String, nullable=False, default="system", server_default="system")
     hashed_password = Column(String, nullable=False)
     full_name = Column(String, nullable=False)
     role = Column(String, nullable=False, default="Recruiter")  # SuperAdmin, Manager, Recruiter

@@ -27,6 +27,9 @@ class ChangePasswordRequest(BaseModel):
 class ProfileUpdateRequest(BaseModel):
     full_name: str | None = Field(default=None, min_length=2, max_length=120)
     phone: str | None = Field(default=None, max_length=32)
+    timezone: str | None = Field(default=None, max_length=64)
+    email_notifications: bool | None = None
+    theme: Literal["system", "light", "dark"] | None = None
 
 
 class EmailChangeRequestPayload(BaseModel):

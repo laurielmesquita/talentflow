@@ -1,6 +1,6 @@
-# Technical Snapshot — TalentFlow v2.5.0
+# Technical Snapshot — TalentFlow v2.5.1
 **Gerado em:** 2026-08-26 · **Sessão:** Migração Render Free concluída após v2.5.0
-**Status do Projeto:** v2.5.0 (estável; API no Render e frontend Vercel em produção)
+**Status do Projeto:** v2.5.1 (estável; API no Render e frontend Vercel em produção)
 
 ---
 
@@ -17,7 +17,7 @@ AI:        Groq API (Llama 3.3 70B) · Google Gemini 2.5 Flash (OCR)
 Auth:      PyJWT + Bcrypt · Dual-Cookie (HttpOnly API + Non-HttpOnly Edge) · ?token= cross-origin
 Deploy:    Vercel (web: tlntflow.vercel.app) · Render (API: talentflow-api-free.onrender.com) · Fly.io (fallback parado)
 Repo:      github.com/laurielmesquita/talentflow.git
-Versão:    2.5.0
+Versão:    2.5.1
 ```
 
 ---
@@ -43,7 +43,7 @@ Versão:    2.5.0
 
 ---
 
-## 3. Backlog Prioritário para v2.5.0
+## 3. Backlog Prioritário para v2.6.0
 
 - [ ] **Extração do `CandidateService`:** Decompor `app/api/candidates.py` em serviço dedicado.
 - [ ] **Otimização da Árvore de Versões:** Substituir a query `db.query(Candidate).all()` por busca recursiva direcionada por `parent_id`.

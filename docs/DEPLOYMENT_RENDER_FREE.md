@@ -25,7 +25,7 @@ Os nomes das variáveis estão declarados no Blueprint sem valores sensíveis. O
 ## Validação registrada
 
 1. Confirmar resposta `2xx` em `/health`.
-2. Conferir que a versão exibida na raiz é `2.5.0`.
+2. Conferir que a versão exibida na raiz é `2.5.1`.
 3. Validar login, logout e cookies dual-cookie.
 4. Validar isolamento entre tenants.
 5. Validar upload e recuperação de PDF pelo Cloudinary.

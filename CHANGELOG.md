@@ -5,7 +5,13 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 ---
 
-## [Unreleased] — 2026-08-24
+## [Unreleased]
+
+Próxima versão em planejamento. A exclusão segura de conta está prevista para a linha 2.6.x.
+
+## [2.5.1] — 2026-08-25
+
+Versão de manutenção que consolida a migração da API para o Render Free, a estabilização operacional pós-migração e o registro das validações de produção.
 
 ### Adicionado
 - **Migração para Render Free:** API publicada e promovida para produção na branch `main`, com health check, execução controlada das migrações Alembic e documentação operacional em `docs/DEPLOYMENT_RENDER_FREE.md`.

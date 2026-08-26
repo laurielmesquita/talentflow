@@ -1,7 +1,7 @@
 # Registro de mudança — Migração da API para Render Free
 
 **Data:** 2026-08-24  
-**Branch:** `feat/render-free-migration`  
+**Branch:** `main`
 **Status:** Migração concluída; API Render e frontend Vercel em produção
 
 ## Contexto
@@ -24,6 +24,10 @@ O TalentFlow migrou a API do Fly.io para o plano gratuito do Render, com o objet
 - Migrações Alembic executadas durante a inicialização.
 - Endpoint `/health` respondendo `200 OK`.
 - Suíte local da API: `24 passed`.
+- Registro e login: `200`.
+- Cookie `token`: `HttpOnly`, `Secure`, `SameSite=Lax`.
+- Rotas autenticadas de jobs, candidatos, categorias e dashboard: `200`.
+- Logout: `200`.
 
 URL temporária de validação: <https://talentflow-api-free.onrender.com>
 
@@ -36,12 +40,11 @@ URL temporária de validação: <https://talentflow-api-free.onrender.com>
 
 ## Decisão de rollout
 
-O frontend de produção aponta para o Render, com CSP compatível e variáveis configuradas na Vercel. O Fly.io está parado e permanece apenas como fallback manual. A validação autenticada completa continua como melhoria operacional, sem bloquear a operação pública atual.
+O frontend de produção aponta para o Render, com CSP compatível e variáveis configuradas na Vercel. O Fly.io está parado e permanece apenas como fallback manual. Os fluxos autenticados básicos foram validados; upload/PDF, processamento de IA, e-mails e Stripe continuam como testes funcionais específicos.
 
 > O workflow do Fly.io foi mantido como fallback manual para impedir que o merge acione novos deploys ou reabra a cobrança operacional automaticamente.
 
 ## Próximos passos
 
-1. Executar a validação funcional autenticada com uma conta de teste controlada.
-2. Monitorar o primeiro despertar da instância gratuita após inatividade.
-3. Regenerar os artefatos do Graphify quando o executável estiver disponível.
+1. Monitorar o primeiro despertar da instância gratuita após inatividade.
+2. Regenerar os artefatos do Graphify quando o executável estiver disponível.

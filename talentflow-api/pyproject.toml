@@ -1,6 +1,6 @@
 [project]
 name = "talentflow-api"
-version = "2.5.1"
+version = "2.6.0"
 description = "Motor de Ingestão e Triagem Inteligente B2B"
 readme = "README.md"
 requires-python = ">=3.11"

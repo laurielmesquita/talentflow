@@ -1,6 +1,6 @@
-# Technical Snapshot — TalentFlow v2.5.1
+# Technical Snapshot — TalentFlow v2.6.0
 **Gerado em:** 2026-08-26 · **Sessão:** Migração Render Free concluída após v2.5.0
-**Status do Projeto:** v2.5.1 (estável; API no Render e frontend Vercel em produção)
+**Status do Projeto:** v2.6.0 (estável; API no Render e frontend Vercel em produção)
 
 ---
 
@@ -17,7 +17,7 @@ AI:        Groq API (Llama 3.3 70B) · Google Gemini 2.5 Flash (OCR)
 Auth:      PyJWT + Bcrypt · Dual-Cookie (HttpOnly API + Non-HttpOnly Edge) · ?token= cross-origin
 Deploy:    Vercel (web: tlntflow.vercel.app) · Render (API: talentflow-api-free.onrender.com) · Fly.io (fallback parado)
 Repo:      github.com/laurielmesquita/talentflow.git
-Versão:    2.5.1
+Versão:    2.6.0
 ```
 
 ---
@@ -41,9 +41,14 @@ Versão:    2.5.1
 11. **AGENTS.md:** Reconstruída tabela completa de endpoints (35, não 23), adicionados 6 services + 2 schemas, 16 componentes frontend + 3 rotas + 5 libs/types, removidos 5 phantoms documentais.
 12. **CHANGELOG:** Adicionado entry `[2.4.0]` consolidando todas as funcionalidades implementadas desde a v2.3.0.
 
+### Gerenciamento de usuários (v2.6.0)
+1. **API administrativa:** `GET/POST /api/users`, `PATCH/DELETE /api/users/:id`, sempre limitados ao tenant autenticado.
+2. **Desativação segura:** a remoção de usuário revoga o acesso sem apagar dados da organização nem quebrar o histórico de auditoria.
+3. **Guardrails de privilégio:** somente `Manager` e `SuperAdmin` administram usuários; o último gerente ativo e o próprio acesso administrativo não podem ser removidos.
+
 ---
 
-## 3. Backlog Prioritário para v2.6.0
+## 3. Backlog Prioritário para v2.7.0
 
 - [ ] **Extração do `CandidateService`:** Decompor `app/api/candidates.py` em serviço dedicado.
 - [ ] **Otimização da Árvore de Versões:** Substituir a query `db.query(Candidate).all()` por busca recursiva direcionada por `parent_id`.

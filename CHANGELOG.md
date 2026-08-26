@@ -7,7 +7,23 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 ## [Unreleased]
 
-Próxima versão em planejamento. A exclusão segura de conta está prevista para a linha 2.6.x.
+Próxima versão em planejamento. O encerramento seguro de organizações e a purga de dados estão previstos para a linha 2.7.x.
+
+## [2.6.0] — 2026-08-26
+
+Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organização.
+
+### Adicionado
+- **API de usuários (`/api/users`):** listagem, criação, edição e desativação de usuários por tenant.
+- **Painel de usuários (`/users`):** interface administrativa para gerenciar membros da organização.
+
+### Segurança
+- Acesso restrito a `Manager` e `SuperAdmin`.
+- Consultas sempre limitadas ao tenant autenticado.
+- Senhas armazenadas somente com hash.
+- O último gerente ativo não pode ser removido ou rebaixado.
+- O usuário não pode remover ou desativar o próprio acesso administrativo.
+- A exclusão de usuário é uma desativação reversível e não remove dados da organização.
 
 ## [2.5.1] — 2026-08-25
 

@@ -2,7 +2,7 @@
 
 ## Objetivo
 
-Executar o `talentflow-api` em um Web Service gratuito do Render durante a fase de validação do produto, mantendo o Neon como banco e o Cloudinary como storage.
+Executar o `talentflow-api` no Web Service gratuito do Render durante a fase de maturação do produto, mantendo o Neon como banco e o Cloudinary como storage.
 
 ## Configuração
 
@@ -25,7 +25,7 @@ Os nomes das variáveis estão declarados no Blueprint sem valores sensíveis. O
 ## Validação registrada
 
 1. Confirmar resposta `2xx` em `/health`.
-2. Conferir que a versão exibida na raiz é `2.5.1`.
+2. Conferir que a versão exibida na raiz é `2.6.0`.
 3. Validar login, logout e cookies dual-cookie.
 4. Validar isolamento entre tenants.
 5. Validar upload e recuperação de PDF pelo Cloudinary.

@@ -28,13 +28,13 @@ git status
 ```
 
 ### Passo 2: Adicionar os Arquivos ao Stage
-Você pode adicionar todos os arquivos modificados e o novo Snapshot Técnico v2.3.2:
+Você pode adicionar todos os arquivos modificados e os documentos da alteração atual:
 ```bash
 git add .
 ```
 Ou selecionar cirurgicamente:
 ```bash
-git add talentflow-web/next.config.ts talentflow-web/src/components/PDFViewer.tsx docs/technical-snapshot-v2.3.2-opencode.md
+git add talentflow-web/next.config.ts talentflow-web/src/components/PDFViewer.tsx docs/technical-snapshot.md
 ```
 
 ### Passo 3: Criar o Commit Seguindo a Convenção de Nomenclatura
@@ -51,18 +51,18 @@ git push origin main
 
 ## 3. Monitoramento dos Deploys em Produção
 
-Após realizar o `git push origin main`, a Vercel inicia o deploy do frontend automaticamente. O Render acompanha a branch configurada para validação; o Fly.io não é acionado automaticamente.
+Após o merge na `main`, a Vercel inicia o deploy do frontend automaticamente e o Render acompanha a `main` para a API principal. O Fly.io não é acionado automaticamente.
 
 ### A. Frontend (Vercel)
 - **URL de Produção:** `https://tlntflow.vercel.app`
 - **Dashboard de Acompanhamento:** [vercel.com](https://vercel.com)
 - **Tempo estimado de build:** ~45 a 60 segundos (Next.js 16 + Turbopack).
 
-### B. Backend de produção (Render Free)
+### B. Backend principal (Render Free)
 - **URL da API:** `https://talentflow-api-free.onrender.com`
 - **Branch:** `main`
 - **Health check:** `/health`
-- **Observação:** o frontend só deve ser redirecionado após a validação funcional completa.
+- **Observação:** o frontend de produção já utiliza esta API; alterações devem ser validadas no preview antes do merge.
 
 ### C. Backend fallback manual parado (Fly.io)
 - **URL da API:** `https://talentflow-api.fly.dev`

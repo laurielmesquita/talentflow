@@ -19,7 +19,7 @@ O diferencial visual do TalentFlow: uma tela de auditoria em **split 50/50** que
 ## 🏗 Arquitetura e Engenharia de Frontend
 
 ### 1. Stack Base
-- **Next.js 16 (App Router):** Framework React com Server Components, Server Actions e suporte nativo ao Turbopack.
+- **Next.js 16 (App Router):** Framework React com Server Components e suporte nativo ao Turbopack.
 - **React 19:** Biblioteca UI com renderização concorrente avançada.
 - **Tailwind CSS v4 (OKLCH Color Space):** Sistema de design semântico baseado no espaço de cores perceptual OKLCH com suporte nativo a temas Claro/Escuro via `next-themes`.
 - **Framer Motion 12:** Animações baseadas em física de molas (`spring physics`) e transições de entrada escalonadas.
@@ -68,3 +68,5 @@ npm run build
 ## 🚢 Deploy
 O frontend é implantado automaticamente na plataforma **Vercel** ao enviar commits para a branch `main`.
 - **Produção Web:** [`tlntflow.vercel.app`](https://tlntflow.vercel.app)
+- **API principal:** [`talentflow-api-free.onrender.com`](https://talentflow-api-free.onrender.com)
+- **API fallback:** Fly.io parado, reativado somente por operação manual.

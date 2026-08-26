@@ -25,8 +25,8 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - **Alembic:** Engine leve de migrações e controle de versão do esquema SQL.
 - **Google Gemini 2.5 Flash:** O núcleo de processamento cognitivo multimodal. Utilizado para analisar PDFs escaneados (imagens) e extrair JSON determinístico via *structured outputs* (`response_schema`).
 - **Groq API (Llama 3.3 70B):** Responsável por processar e estruturar currículos com texto legível em milissegundos.
-- **Render Free:** Ambiente candidato de validação da API durante a migração de infraestrutura.
-- **Fly.io:** Ambiente anterior e fallback até a conclusão do rollout.
+- **Render Free:** Ambiente principal da API durante a fase de maturação do produto.
+- **Fly.io:** Ambiente anterior, parado e reservado apenas para fallback manual.
 
 ### 2. Ingestão de Dados e IA
 - O pipeline de triagem detecta a legibilidade do PDF (pdfplumber) e delega a extração (OCR) ao Gemini 2.5 Flash apenas quando necessário. Currículos de texto puro usam a Groq para máxima velocidade.
@@ -42,6 +42,7 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - **`backfill_quality_score.py`**: Rotina de *Data Engineering* desenvolvida para varrer a base de dados existente e aplicar a modelagem algorítmica de Scores de Qualidade retrospectivamente em candidatos antigos.
 - **`seed_jobs.py`**: Script para popular vagas de teste (ex: Técnico em Eletrônica) na base de dados.
 - **`seed.py`**: Script de inicialização rápida para popular tabelas de domínio estático (Categorias).
+- **`purge_tenants.py`**: Executor manual da purga permanente de tenants cuja carência venceu; aceita `--dry-run` e exige `--confirm` para apagar.
 
 ---
 
@@ -87,6 +88,6 @@ A arquitetura OpenAPI gera documentação Swagger UI automaticamente em `http://
 
 ## 🚢 Setup de Deploy
 
-O ambiente candidato usa o Render Free, configurado por [`render.yaml`](../render.yaml), com raiz `talentflow-api`, Dockerfile existente, health check em `/health` e inicialização por [`start-render.sh`](./start-render.sh). Consulte [`docs/DEPLOYMENT_RENDER_FREE.md`](../docs/DEPLOYMENT_RENDER_FREE.md) para o procedimento e os critérios de rollout.
+O ambiente principal usa o Render Free, configurado por [`render.yaml`](../render.yaml), com raiz `talentflow-api`, Dockerfile existente, health check em `/health` e inicialização por [`start-render.sh`](./start-render.sh). Consulte [`docs/DEPLOYMENT_RENDER_FREE.md`](../docs/DEPLOYMENT_RENDER_FREE.md) para o procedimento operacional.
 
-O Fly.io permanece disponível como fallback operacional e continua descrito em `fly.toml` e na GitHub Action `fly-deploy.yml` até o encerramento da validação.
+O Fly.io permanece parado como fallback operacional manual, descrito em `fly.toml` e na GitHub Action `fly-deploy.yml`. O merge na `main` não dispara o Fly.io.

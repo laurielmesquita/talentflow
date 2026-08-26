@@ -22,11 +22,11 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 desenhada para otimiza
 * **[Google Gemini API (2.5 Flash)](https://ai.google.dev)** — Modelo multimodal inteligente utilizado para OCR estruturado e análise de PDFs escaneados ou imagens.
 * **[Groq API (Llama 3.3 70B)](https://groq.com)** — Modelo de LLM com baixíssima latência para extração estruturada de dados textuais e geração de justificativas em português.
 * **[Neon.tech (PostgreSQL)](https://neon.tech)** — Banco de dados relacional serverless hospedado em nuvem com alta escalabilidade.
-* **[Cloudinary](https://cloudinary.com)** — Armazenamento seguro e processamento de imagens faciais de perfil dos candidatos.
+* **[Cloudinary](https://cloudinary.com)** — Armazenamento dos PDFs originais e das imagens de perfil dos candidatos, com recuperação autenticada.
 * **[Alembic](https://alembic.sqlalchemy.org)** — Ferramenta para versionamento e migrações estruturais do banco de dados relacional.
 * **[Render](https://render.com)** — Ambiente de produção gratuito da API durante a fase de maturação.
 * **[Fly.io](https://fly.io)** — Ambiente anterior, atualmente parado e reservado como fallback manual.
-* **[Bcrypt & PyJWT](https://pyjwt.readthedocs.io)** — Cifragem de credenciais (bcrypt) e controle de sessões JWT criptografados com HMAC-SHA256.
+* **[Bcrypt & PyJWT](https://pyjwt.readthedocs.io)** — Hash seguro de senhas com bcrypt e controle de sessões JWT assinados com HMAC-SHA256.
 * **[Brevo SMTP](https://www.brevo.com)** — Servidor SMTP transacional integrado para disparos de e-mails de onboarding (expiração de 7 dias) e redefinição de senha (expiração de 2 horas) com criptografia TLS.
 
 ### Frontend & UI Experience (Camada de Visão)
@@ -47,7 +47,7 @@ O **TalentFlow** é uma plataforma de triagem SaaS Tier-1 desenhada para otimiza
    * Suporte a tags e competências homônimas entre clientes através de uma restrição de unicidade composta do PostgreSQL: `UniqueConstraint('tenant_id', 'name')`.
 2. **Ingestão Concorrente Segura:**
    * Envio assíncrono controlado por `BackgroundTasks` no FastAPI.
-   * Controle de concorrência com semáforo (`asyncio.Semaphore(3)`) para proteger o limite de 512MB do ambiente de execução da API contra estouros.
+   * Controle de concorrência por fluxo: `Semaphore(2)` na ingestão em lote e `Semaphore(3)` no Smart Match, protegendo o limite de memória do Render Free.
 3. **Smart Match & Warm Path Cache:**
    * Interseção matemática rápida de competências e justificativa em português via IA (Llama 3.3 com fallback Gemini).
    * Persistência de resultados na tabela `job_matches` atuando como cache, reduzindo o tempo de consulta subsequente para menos de 50ms (*Warm Path*).
@@ -90,21 +90,19 @@ cp .env.example .env
 > [!IMPORTANT]
 > Configure as variáveis no `.env` com a string do banco de dados Neon (`DATABASE_URL`), as chaves de API (`GEMINI_API_KEY`, `GROQ_API_KEY`), chaves Cloudinary (`CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`), e credenciais SMTP Brevo (`SMTP_HOST`, `SMTP_PORT`, `SMTP_USERNAME`, `SMTP_PASSWORD`).
 
-Ative o ambiente virtual e instale as dependências:
+Sincronize o ambiente e instale as dependências com `uv`:
 ```bash
-python -m venv venv
-source venv/bin/activate  # No Windows: venv\Scripts\activate
-pip install -r requirements.txt
+uv sync
 ```
 
 Rode as migrações do banco de dados:
 ```bash
-alembic upgrade head
+uv run alembic upgrade head
 ```
 
 Inicialize o servidor FastAPI de desenvolvimento local:
 ```bash
-uvicorn app.main:app --reload --port 8000
+uv run uvicorn app.main:app --reload --port 8000
 ```
 * API ativa em: `http://localhost:8000`
 * Documentação interativa Swagger UI em: `http://localhost:8000/docs`
@@ -129,5 +127,5 @@ npm run dev
 ### 3️⃣ Ingestão Automatizada por Script CLI
 Com o backend rodando e ambiente virtual ativo em `talentflow-api`, execute a ingestão em lote via linha de comando:
 ```bash
-python ingest.py /caminho/para/diretorio/de/curriculos
+uv run python ingest.py /caminho/para/diretorio/de/curriculos
 ```

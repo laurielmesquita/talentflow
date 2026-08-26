@@ -181,6 +181,9 @@ def get_profile(current_user: User = Depends(get_current_user)):
         "email": current_user.email,
         "full_name": current_user.full_name,
         "phone": current_user.phone,
+        "timezone": current_user.timezone,
+        "email_notifications": current_user.email_notifications,
+        "theme": current_user.theme,
         "role": current_user.role,
         "is_active": current_user.is_active,
         "created_at": current_user.created_at,
@@ -199,6 +202,12 @@ def update_profile(
         current_user.full_name = changes["full_name"].strip()
     if "phone" in changes:
         current_user.phone = changes["phone"].strip() if changes["phone"] else None
+    if "timezone" in changes:
+        current_user.timezone = changes["timezone"].strip()
+    if "email_notifications" in changes:
+        current_user.email_notifications = changes["email_notifications"]
+    if "theme" in changes:
+        current_user.theme = changes["theme"]
     db.commit()
     db.refresh(current_user)
     return {
@@ -207,9 +216,39 @@ def update_profile(
         "email": current_user.email,
         "full_name": current_user.full_name,
         "phone": current_user.phone,
+        "timezone": current_user.timezone,
+        "email_notifications": current_user.email_notifications,
+        "theme": current_user.theme,
         "role": current_user.role,
         "is_active": current_user.is_active,
         "created_at": current_user.created_at,
+    }
+
+
+@router.get("/me/export")
+def export_personal_data(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Exporta os dados pessoais e de associação do usuário autenticado."""
+    tenant = db.query(Tenant).filter(Tenant.id == current_user.tenant_id).first()
+    return {
+        "exported_at": datetime.now(timezone.utc),
+        "user": {
+            "id": current_user.id,
+            "email": current_user.email,
+            "full_name": current_user.full_name,
+            "phone": current_user.phone,
+            "role": current_user.role,
+            "timezone": current_user.timezone,
+            "email_notifications": current_user.email_notifications,
+            "theme": current_user.theme,
+            "created_at": current_user.created_at,
+        },
+        "organization": {
+            "id": tenant.id if tenant else current_user.tenant_id,
+            "name": tenant.name if tenant else None,
+        },
     }
 
 

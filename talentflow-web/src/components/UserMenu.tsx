@@ -110,15 +110,15 @@ export default function UserMenu() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
-            className="absolute right-0 mt-2.5 w-64 bg-card/90 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl p-2.5 z-[100] origin-top-right"
+            className="absolute right-0 mt-2.5 w-72 bg-card/90 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl p-2.5 z-[100] origin-top-right"
           >
             {/* Header com dados do usuário */}
-            <div className="p-3 border-b border-border/60 flex flex-col gap-1.5 mb-2">
+            <div className="p-3 border-b border-border/60 flex flex-col gap-1.5 mb-2 min-w-0">
               <div className="flex items-center justify-between">
                 <p className="text-sm font-bold text-foreground truncate max-w-[140px]">
                   {userName || 'Carregando...'}
                 </p>
-                {getRoleBadge(userRole)}
+                <span className="shrink-0">{getRoleBadge(userRole)}</span>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <Mail className="w-3.5 h-3.5 shrink-0" />

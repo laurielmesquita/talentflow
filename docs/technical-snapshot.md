@@ -47,6 +47,11 @@ Versão:    2.6.0
 3. **Guardrails de privilégio:** somente `Manager` e `SuperAdmin` administram usuários; o último gerente ativo e o próprio acesso administrativo não podem ser removidos.
 4. **Proprietário explícito:** o primeiro `Manager` é associado ao tenant como `Owner`; seu acesso não pode ser desativado ou rebaixado antes de uma transferência formal.
 
+### Encerramento do tenant (em preparação para v2.7.0)
+1. A solicitação exige propriedade do tenant, senha atual e a confirmação literal `ENCERRAR ORGANIZAÇÃO`.
+2. A solicitação agenda a data de purga para 30 dias depois e pode ser cancelada pelo Owner.
+3. A purga física de banco e Cloudinary ainda não é disparada pelo endpoint; será executada por processo idempotente dedicado.
+
 ---
 
 ## 3. Backlog Prioritário para v2.7.0

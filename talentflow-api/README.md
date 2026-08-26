@@ -50,6 +50,8 @@ O endpoint `GET /api/candidates/{candidate_id}/pdf` permite que o frontend exiba
 - `POST /api/tenant/closure`: Owner agenda o encerramento com senha atual e a confirmação literal `ENCERRAR ORGANIZAÇÃO`.
 - `DELETE /api/tenant/closure`: Owner cancela um encerramento pendente dentro da carência de 30 dias.
 
+Organizações legadas sem Owner são reparadas pela migração `6c1d2e3f4a50`, que prioriza um `Manager` ativo e, quando não existe Manager, associa o único `SuperAdmin` ativo.
+
 ---
 
 ## 🚀 Guia de Desenvolvimento (Setup Local)

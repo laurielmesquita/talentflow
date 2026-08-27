@@ -1,16 +1,16 @@
 # Graph Report - 05-Projetos  (2026-08-27)
 
 ## Corpus Check
-- 199 files · ~155,213 words
+- 200 files · ~155,430 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1243 nodes · 1998 edges · 113 communities (97 shown, 16 thin omitted)
+- 1246 nodes · 2009 edges · 112 communities (96 shown, 16 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 82 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4aa881b2`
+- Built from commit: `35152f90`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -65,7 +65,6 @@
 - postcss.config.mjs
 - forgot-password/page.tsx
 - privacy/page.tsx
-- design-switcher.tsx
 - ThemeProvider.tsx
 - vercel.json
 - talentflow-api
@@ -117,37 +116,37 @@
   talentflow-api/app/api/candidates.py → talentflow-api/app/api/deps.py
 - `ReplaceRequest` --uses--> `ScopedSession`  [INFERRED]
   talentflow-api/app/api/candidates.py → talentflow-api/app/api/deps.py
-- `ReplaceRequest` --uses--> `AuditLog`  [INFERRED]
-  talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
-- `ReplaceRequest` --uses--> `BatchJob`  [INFERRED]
-  talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
 - `ReplaceRequest` --uses--> `Candidate`  [INFERRED]
+  talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
+- `ReplaceRequest` --uses--> `Category`  [INFERRED]
+  talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
+- `ReplaceRequest` --uses--> `JobMatch`  [INFERRED]
   talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (113 total, 16 thin omitted)
+## Communities (112 total, 16 thin omitted)
 
 ### Community 0 - "candidates.py"
 Cohesion: 0.21
 Nodes (11): Factory de dependência FastAPI que verifica se o tenant do usuário logado tem ac, require_feature(), check_feature_access(), get_plan_features(), Any, Verifica se o plano especificado possui acesso à feature solicitada., Retorna o mapa de recursos e feature flags disponíveis para o plano do tenant., Testa a checagem booleana de acesso às features por plano (+3 more)
 
 ### Community 1 - "ScopedSession"
-Cohesion: 0.16
-Nodes (22): Base, datetime, FlagRequest, BatchJob, Candidate, Category, EmailChangeRequest, Experience (+14 more)
+Cohesion: 0.14
+Nodes (21): datetime, extract_cloudinary_public_id(), Category, _cloudinary_assets(), _delete_cloudinary_assets(), purge_due_tenants(), purge_tenant(), PurgeResult (+13 more)
 
 ### Community 2 - "apiFetch"
-Cohesion: 0.24
-Nodes (11): emptyForm, ManagedUser, UserRole, UsersPage(), UserMenu(), AuthSession, clearSession(), decodeJwtPayload() (+3 more)
+Cohesion: 0.16
+Nodes (10): emptyForm, ManagedUser, UserRole, UsersPage(), CandidateTable(), DeleteConfirmModal(), DeleteConfirmModalProps, Dialog() (+2 more)
 
 ### Community 3 - "devDependencies"
 Cohesion: 0.06
 Nodes (31): eslint, eslint-config-next, jsdom, tailwindcss, @tailwindcss/postcss, devDependencies, eslint, eslint-config-next (+23 more)
 
 ### Community 4 - "resolve_job_id"
-Cohesion: 0.11
-Nodes (28): delete_candidate(), extract_cloudinary_public_id(), flag_candidate(), get_batch_job_status(), get_candidate(), get_candidate_pdf(), get_candidate_versions(), get_cloudinary_pdf_bytes() (+20 more)
+Cohesion: 0.15
+Nodes (26): delete_candidate(), flag_candidate(), FlagRequest, process_batch_uploads_task(), process_single_file(), BackgroundTasks, BaseModel, Path (+18 more)
 
 ### Community 5 - "dependencies"
 Cohesion: 0.05
@@ -158,52 +157,56 @@ Cohesion: 0.07
 Nodes (28): dom, dom.iterable, esnext, **/*.mts, .next/dev/types/**/*.ts, next-env.d.ts, .next/types/**/*.ts, node_modules (+20 more)
 
 ### Community 7 - "deps.py"
-Cohesion: 0.20
-Nodes (8): getJobDetail(), JobDetailPage(), PageProps, DashboardClientProps, JobCardProps, JobFormDrawerProps, Job, JobFormData
+Cohesion: 0.19
+Nodes (9): getJobDetail(), JobDetailPage(), PageProps, JobCardProps, JobFormDrawerProps, Portal(), PortalProps, Job (+1 more)
 
 ### Community 8 - "DashboardClient.tsx"
-Cohesion: 0.13
-Nodes (15): Avatar(), CandidateStats, CategoryStats, container, DashboardClient(), DashboardStats, formatTimeAgo(), getInitials() (+7 more)
+Cohesion: 0.12
+Nodes (16): Avatar(), CandidateStats, CategoryStats, container, DashboardClient(), DashboardClientProps, DashboardStats, formatTimeAgo() (+8 more)
 
 ### Community 9 - "api/auth.py"
-Cohesion: 0.08
-Nodes (48): Response, change_password(), confirm_email_change(), export_personal_data(), forgot_password(), get_profile(), login(), logout() (+40 more)
+Cohesion: 0.07
+Nodes (53): Response, change_password(), confirm_email_change(), export_personal_data(), forgot_password(), get_profile(), login(), logout() (+45 more)
 
 ### Community 10 - "components.json"
 Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 11 - "public_apply.py"
-Cohesion: 0.12
-Nodes (23): apply_to_job(), _detect_divergences(), _generate_otp(), get_application_status(), OTPVerifyRequest, BackgroundTasks, BaseModel, Path (+15 more)
+Cohesion: 0.13
+Nodes (22): apply_to_job(), _detect_divergences(), _generate_otp(), get_application_status(), OTPVerifyRequest, BackgroundTasks, BaseModel, Path (+14 more)
 
 ### Community 12 - "main.py"
-Cohesion: 0.17
-Nodes (6): Testa se o endpoint GET /health responde adequadamente, Testa se o endpoint GET /api/health responde adequadamente, Testa se o endpoint raiz GET / responde com status ok e versão 2.6.0, test_api_health_endpoint(), test_health_endpoint(), test_root_endpoint()
+Cohesion: 0.13
+Nodes (10): main(), print_report(), Any, run_benchmark(), Testa se o endpoint GET /health responde adequadamente, Testa se o endpoint GET /api/health responde adequadamente, Testa se o endpoint raiz GET / responde com status ok e versão 2.6.0, test_api_health_endpoint() (+2 more)
 
 ### Community 13 - "app/page.tsx"
 Cohesion: 0.05
 Nodes (31): react, react, metadata, getPublicJobs(), metadata, PublicJobsPage(), generateMetadata(), getPublicJob() (+23 more)
 
 ### Community 14 - "JobApplicationForm.tsx"
-Cohesion: 0.57
-Nodes (6): JobUpdate, match_candidates(), update_job(), JobMatch, MockUser, run_tests()
+Cohesion: 0.20
+Nodes (19): Base, create_job(), JobCreate, JobUpdate, match_candidates(), BaseModel, _serialize_job(), update_job() (+11 more)
+
+### Community 15 - "index.ts"
+Cohesion: 0.22
+Nodes (6): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), ApiError
 
 ### Community 16 - "candidates/page.tsx"
-Cohesion: 0.12
-Nodes (13): CandidatesPage(), metadata, CandidateTable(), DeleteConfirmModal(), Category, SearchAndFiltersProps, getCandidates(), getCategories() (+5 more)
+Cohesion: 0.15
+Nodes (9): CandidatesPage(), metadata, BatchUploadButtonProps, UploadStatus, Category, SearchAndFiltersProps, getCandidates(), getCategories() (+1 more)
 
 ### Community 17 - "Job"
-Cohesion: 0.06
-Nodes (50): Candidate, BaseModel, replace_candidate(), ReplaceRequest, extract_resume_sandbox(), BaseModel, Request, UploadFile (+42 more)
+Cohesion: 0.08
+Nodes (35): Candidate, get_candidate(), list_candidates(), UUID, Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo,, get_dashboard_stats(), get_job(), list_jobs() (+27 more)
 
 ### Community 18 - "Navbar.tsx"
-Cohesion: 0.12
-Nodes (6): AppShellProps, JobMatchViewer(), Match, MatchResponse, NAV_LINKS, PageHeaderProps
+Cohesion: 0.22
+Nodes (3): AppShellProps, NAV_LINKS, PageHeaderProps
 
 ### Community 19 - "services/auth.py"
 Cohesion: 0.15
-Nodes (12): create_checkout_session(), create_customer_portal_session(), Request, Session, Cria uma sessão de checkout no Stripe para o plano escolhido., Cria uma sessão no portal do cliente (para gerenciar assinaturas, ver faturas, e, Recebe eventos assíncronos do Stripe (assinatura criada, cancelada, falha no pag, stripe_webhook() (+4 more)
+Nodes (22): calculate_file_hash(), _cleanup(), _configure_cloudinary(), extract_and_upload_photo(), extract_candidate_from_pdf(), extract_text(), ingest_directory(), process_ocr_via_gemini() (+14 more)
 
 ### Community 20 - "jobs/page.tsx"
 Cohesion: 0.29
@@ -214,8 +217,8 @@ Cohesion: 0.12
 Nodes (15): [0.1.0] — 2026-06-16, [0.2.0] — 2026-06-17, [0.3.0] — 2026-06-18, [0.4.0] — 2026-06-19, [0.5.0] — 2026-06-20, [0.7.0] — 2026-06-21, [0.8.0] — 2026-06-21, Adicionado (+7 more)
 
 ### Community 22 - "sandbox.py"
-Cohesion: 0.26
-Nodes (11): _cloudinary_assets(), _delete_cloudinary_assets(), purge_tenant(), Session, UUID, Return unique Cloudinary public IDs and resource types for a tenant., Delete assets and raise on provider errors so the DB is not purged., Purge one due tenant. Returns None when it is not eligible.      The tenant is l (+3 more)
+Cohesion: 0.43
+Nodes (6): extract_resume_sandbox(), BaseModel, Request, UploadFile, SandboxExperience, SandboxResponse
 
 ### Community 23 - "generate-og.js"
 Cohesion: 0.33
@@ -242,16 +245,16 @@ Cohesion: 0.40
 Nodes (5): brandDir, fs, optimizeImages(), path, sharp
 
 ### Community 29 - "preset-provider.tsx"
-Cohesion: 0.29
-Nodes (7): list_candidates(), UUID, Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo,, Testa se a listagem de candidatos inclui original_pdf_url e pdf_url em cada item, Testa se o detalhe do candidato retorna os campos pdf_url e original_pdf_url cor, test_get_candidate_returns_original_pdf_url(), test_list_candidates_includes_original_pdf_url()
+Cohesion: 0.40
+Nodes (5): generate_slug(), Session, Gera um slug único global para uma vaga a partir do seu título.     Caso o slug, Gera um slug URL-friendly a partir de uma string de texto.     Normaliza acentos, slugify()
 
 ### Community 31 - "PDFViewer.tsx"
-Cohesion: 0.23
-Nodes (21): _active_manager_count(), create_user(), deactivate_user(), _get_user_or_404(), _protect_last_manager(), _protect_owner(), _protect_super_admin_grant(), UUID (+13 more)
+Cohesion: 0.50
+Nodes (4): get_candidate_pdf(), get_cloudinary_pdf_bytes(), Serviço de Proxy Inline de PDF:     Consome o arquivo original do Cloudinary via, Gera URL assinada autenticada no Cloudinary e recupera os bytes do PDF original.
 
 ### Community 32 - "button.tsx"
-Cohesion: 0.23
-Nodes (9): Button(), buttonVariants, NumberTicker(), NumberTickerProps, ShimmerButton, ShimmerButtonProps, ShineBorder(), ShineBorderProps (+1 more)
+Cohesion: 0.13
+Nodes (12): EmptyStateProps, PageSkeleton(), PageSkeletonProps, Button(), buttonVariants, NumberTicker(), NumberTickerProps, ShimmerButton (+4 more)
 
 ### Community 33 - "proxy.ts"
 Cohesion: 0.70
@@ -262,12 +265,8 @@ Cohesion: 0.07
 Nodes (26): 10. Deploy, 11. Regras de Modificação, 1. Visão Geral do Serviço, 2. Estrutura de Diretórios, 3. Design System — Tailwind CSS v4 + OKLCH, 4. Arquitetura de Componentes, 5. Autenticação no Frontend, 6. Setup de Desenvolvimento Local (+18 more)
 
 ### Community 36 - "SearchAndFilters.tsx"
-Cohesion: 0.10
-Nodes (28): CategoryCreate, CategoryUpdate, create_category(), delete_category(), list_categories(), BaseModel, update_category(), get_current_user() (+20 more)
-
-### Community 53 - "reset-password/page.tsx"
-Cohesion: 0.23
-Nodes (4): LoginContent(), AuthShell(), setCookie(), setSession()
+Cohesion: 0.06
+Nodes (64): create_checkout_session(), create_customer_portal_session(), Request, Session, Cria uma sessão de checkout no Stripe para o plano escolhido., Cria uma sessão no portal do cliente (para gerenciar assinaturas, ver faturas, e, Recebe eventos assíncronos do Stripe (assinatura criada, cancelada, falha no pag, stripe_webhook() (+56 more)
 
 ### Community 54 - "CandidateCard.tsx"
 Cohesion: 0.29
@@ -275,7 +274,7 @@ Nodes (6): API — segurança e confiabilidade, Decisões e limites, Objetivo, R
 
 ### Community 55 - "DeleteConfirmModal.tsx"
 Cohesion: 0.12
-Nodes (16): ConfirmEmailPage(), Preferences, BatchUploadButtonProps, UploadStatus, CategoriesDashboard(), Category, JobDetailView(), JobFormDrawer() (+8 more)
+Nodes (21): LoginContent(), ConfirmEmailPage(), CategoriesDashboard(), Category, JobDetailView(), JobFormDrawer(), JobMatchViewer(), Match (+13 more)
 
 ### Community 57 - "number-ticker.tsx"
 Cohesion: 0.12
@@ -290,16 +289,12 @@ Cohesion: 0.28
 Nodes (20): cancel_closure(), get_closure_status(), _get_current_tenant(), request_closure(), _require_owner(), transfer_owner(), BaseModel, TenantClosureRequest (+12 more)
 
 ### Community 62 - "migrate_db_data.py"
-Cohesion: 0.07
-Nodes (42): get_dashboard_stats(), create_job(), get_job(), JobCreate, list_jobs(), BaseModel, _serialize_job(), get_public_job() (+34 more)
+Cohesion: 0.13
+Nodes (17): get_public_job(), list_public_jobs(), Session, Retorna a listagem de todas as vagas ativas no portal público.     Não exige aut, Retorna os detalhes de uma vaga pública específica identificada pelo slug semânt, _serialize_public_job(), PublicJobResponse, BaseModel (+9 more)
 
 ### Community 66 - "forgot-password/page.tsx"
-Cohesion: 0.29
-Nodes (3): metadata, PageProps, CandidateAuditWorkspaceProps
-
-### Community 70 - "design-switcher.tsx"
-Cohesion: 0.33
-Nodes (3): EmptyStateProps, PageSkeleton(), PageSkeletonProps
+Cohesion: 0.17
+Nodes (7): metadata, PageProps, CandidateAuditWorkspaceProps, Candidate, CandidatesResponse, CandidateStats, Experience
 
 ### Community 71 - "ThemeProvider.tsx"
 Cohesion: 0.17
@@ -366,8 +361,8 @@ Cohesion: 0.83
 Nodes (3): _request(), test_checkout_webhook_updates_tenant_and_is_idempotent(), test_webhook_is_unavailable_without_secret()
 
 ### Community 94 - "ApiError"
-Cohesion: 0.11
-Nodes (15): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), messageFor(), Profile, SettingsProfilePage() (+7 more)
+Cohesion: 0.15
+Nodes (13): Preferences, SettingsPreferencesPage(), messageFor(), Profile, SettingsProfilePage(), SettingsSecurityPage(), PublicJob, icons (+5 more)
 
 ### Community 95 - "[1.2.0] — 2026-06-23"
 Cohesion: 0.67
@@ -398,11 +393,11 @@ Cohesion: 0.67
 Nodes (3): [2.6.0] — 2026-08-26, Adicionado, Segurança
 
 ### Community 115 - "[Unreleased]"
-Cohesion: 0.40
-Nodes (5): Administração organizacional, Configurações de conta, Fundação UX/UI, Preparação do encerramento de organização, [Unreleased]
+Cohesion: 0.33
+Nodes (6): Administração organizacional, Configurações de conta, Fundação UX/UI, Portal público, Preparação do encerramento de organização, [Unreleased]
 
 ## Knowledge Gaps
-- **393 isolated node(s):** `pre-commit.sh script`, `talentflow-api`, `start-render.sh script`, `$schema`, `style` (+388 more)
+- **394 isolated node(s):** `pre-commit.sh script`, `talentflow-api`, `start-render.sh script`, `$schema`, `style` (+389 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 

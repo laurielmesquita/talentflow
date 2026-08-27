@@ -82,7 +82,7 @@ function LoginContent() {
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />
 
       {/* Header */}
-      <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/40 backdrop-blur-md">
         <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
@@ -117,7 +117,7 @@ function LoginContent() {
         </div>
       </header>
 
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex w-full flex-1 items-center justify-center p-4">
         <motion.div 
           layout
           transition={{ type: "spring", stiffness: 350, damping: 32 }}
@@ -328,7 +328,6 @@ function LoginContent() {
                   id="email"
                   type="email"
                   required
-                  minLength={isSignUp ? 8 : undefined}
                   disabled={loading}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -361,6 +360,7 @@ function LoginContent() {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  minLength={isSignUp ? 8 : undefined}
                   disabled={loading}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}

@@ -48,6 +48,11 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - Feedbacks de autenticação passaram a usar regiões acessíveis de alerta e status.
 - Páginas de configurações avisam antes do fechamento quando há alterações ainda não salvas.
 
+### Testes e entrega
+- Adicionada infraestrutura Playwright com três cenários E2E para validação de senha, controle de exibição por teclado e confirmação de recuperação de acesso.
+- Corrigido o recorte horizontal do fluxo de login em telas mobile ao organizar o `AuthShell` verticalmente.
+- Validado o fluxo de acesso em desktop e mobile no navegador integrado; o mapa Graphify foi atualizado.
+
 ## [2.6.0] — 2026-08-26
 
 Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organização.

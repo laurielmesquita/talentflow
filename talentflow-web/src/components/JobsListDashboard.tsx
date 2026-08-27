@@ -6,8 +6,8 @@ import { Plus, Briefcase, Search, Sparkles, X, AlertTriangle } from "lucide-reac
 import { motion, AnimatePresence } from "framer-motion";
 import JobCard from "./JobCard";
 import JobFormDrawer from "./JobFormDrawer";
-import Navbar from "@/components/Navbar";
-import PageHeader from "@/components/PageHeader";
+import AppShell from "@/components/AppShell";
+import { Input } from "@/components/ui/input";
 import Portal from "@/components/Portal";
 import { apiFetch } from "@/lib/api";
 import type { Job } from "@/types";
@@ -112,16 +112,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
   });
 
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-       <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[150px] pointer-events-none -z-10" />
-
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Page Header */}
-      <PageHeader
+    <AppShell className="selection:bg-primary/30"
         title="Gestão de Vagas"
         subtitle="Publique e gerencie vagas para divulgar externamente e coletar inscrições de candidatos."
         actions={
@@ -133,7 +124,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
             Nova Vaga
           </button>
         }
-      />
+      >
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
@@ -141,12 +132,12 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
          <div className="glass-panel-strong flex flex-col md:flex-row gap-4 justify-between items-center mb-8 p-4 rounded-2xl">
           <div className="relative w-full md:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
-            <input
+            <Input
               type="text"
               placeholder="Buscar por título, local ou habilidade..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-               className="w-full pl-10 pr-4 py-2.5 bg-background/35 border border-border/70 rounded-xl text-sm text-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-colors"
+               className="h-11 border-border/70 bg-background/35 pl-10"
             />
           </div>
 
@@ -320,6 +311,6 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
           </Portal>
         )}
       </AnimatePresence>
-    </div>
+    </AppShell>
   );
 }

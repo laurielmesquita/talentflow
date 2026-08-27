@@ -148,14 +148,14 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const btnClass: Record<UploadStatus, string> = {
     idle: 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-md shadow-primary/20',
     uploading: 'bg-primary/80 text-primary-foreground/80 cursor-not-allowed',
-    success: 'bg-emerald-600 text-white',
+    success: 'bg-success text-primary-foreground',
     error: 'bg-destructive text-destructive-foreground',
   };
 
   const successCount = progress.total - batchErrors.length;
 
   const modalContent = showSummaryModal && batchErrors.length > 0 ? (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-foreground/80 backdrop-blur-sm animate-in fade-in duration-200" role="dialog" aria-modal="true" aria-label="Resumo do upload em lote">
       <div className="w-full max-w-lg bg-card border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative animate-in zoom-in duration-200">
         <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
           <AlertCircle className="w-5.5 h-5.5 text-amber-500" />

@@ -8,12 +8,8 @@ export const metadata: Metadata = {
 };
 import BatchUploadButton from '@/components/BatchUploadButton';
 import SearchAndFilters from '@/components/SearchAndFilters';
-import Navbar from '@/components/Navbar';
-import PageHeader from '@/components/PageHeader';
+import AppShell from '@/components/AppShell';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import type { Candidate, CandidatesResponse } from '@/types/candidate';
-import type { Category } from '@/types/category';
 
 import { getCandidates } from '@/lib/data/candidates';
 import { getCategories } from '@/lib/data/categories';
@@ -39,16 +35,7 @@ export default async function CandidatesPage({
   const stats = data.stats || { total: 0, active: 0, flagged: 0, average_quality: null };
 
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[150px] pointer-events-none -z-10" />
-
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Page Header */}
-      <PageHeader
+    <AppShell
         title="Banco de Talentos"
         subtitle="Triagem inteligente e Ingestão otimista de currículos."
         actions={
@@ -70,7 +57,7 @@ export default async function CandidatesPage({
             <BatchUploadButton />
           </>
         }
-      />
+      >
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
@@ -79,7 +66,7 @@ export default async function CandidatesPage({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {/* Card 1: Total de Talentos */}
           <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-indigo-500/10 text-indigo-500 dark:text-indigo-400">
+            <div className="p-3 rounded-xl bg-info/10 text-info">
               <Users className="w-6 h-6" />
             </div>
             <div>
@@ -90,7 +77,7 @@ export default async function CandidatesPage({
 
           {/* Card 2: Perfis Ativos */}
           <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-500 dark:text-emerald-400">
+            <div className="p-3 rounded-xl bg-success/10 text-success">
               <UserCheck className="w-6 h-6" />
             </div>
             <div>
@@ -101,7 +88,7 @@ export default async function CandidatesPage({
 
           {/* Card 3: Quality Score Médio */}
           <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-purple-500/10 text-purple-500 dark:text-purple-400">
+            <div className="p-3 rounded-xl bg-primary/10 text-primary">
               <Sparkles className="w-6 h-6" />
             </div>
             <div>
@@ -114,7 +101,7 @@ export default async function CandidatesPage({
 
           {/* Card 4: Sinalizados */}
           <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
-            <div className="p-3 rounded-xl bg-rose-500/10 text-rose-500 dark:text-rose-400">
+            <div className="p-3 rounded-xl bg-destructive/10 text-destructive">
               <ShieldAlert className="w-6 h-6" />
             </div>
             <div>
@@ -138,6 +125,6 @@ export default async function CandidatesPage({
           pageSize={limitNum}
         />
       </main>
-    </div>
+    </AppShell>
   );
 }

@@ -134,7 +134,7 @@ export default function UserMenu() {
             <div className="flex flex-col gap-1">
 
               <Link
-                href="/settings"
+                href="/settings/profile"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all"
               >
@@ -143,7 +143,7 @@ export default function UserMenu() {
               </Link>
 
               <Link
-                href="/change-password"
+                href="/settings/security"
                 onClick={() => setIsOpen(false)}
                 className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/15 transition-all"
               >

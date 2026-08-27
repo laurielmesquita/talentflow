@@ -50,7 +50,7 @@ export default function LandingPage() {
             {/* Badge */}
             <div className="opacity-0-initial animate-fade-in delay-100 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide w-fit shadow-[0_0_24px_color-mix(in_oklch,var(--primary)_12%,transparent)]">
               <Sparkles className="w-3.5 h-3.5" />
-              Motor de IA para Triagem de Talentos
+              Triagem inteligente, decisão humana
             </div>
 
             {/* H1 */}
@@ -63,9 +63,9 @@ export default function LandingPage() {
 
             {/* Subtitle */}
             <p className="opacity-0-initial animate-fade-in-up delay-300 text-lg text-muted-foreground leading-relaxed max-w-lg">
-              TalentFlow usa Groq e Gemini para processar, estruturar e ranquear CVs em PDF — com uma{" "}
-              <span className="text-foreground font-medium">justificativa clara para cada decisão</span>.
-              Não apenas um score. Uma conversa sobre cada candidato.
+              TalentFlow transforma currículos em perfis comparáveis e organiza o ranking para cada vaga — com uma{" "}
+              <span className="text-foreground font-medium">justificativa clara que apoia a decisão do recrutador</span>.
+              Não apenas um score. Contexto para avaliar cada candidato.
             </p>
 
             {/* CTAs */}
@@ -75,7 +75,7 @@ export default function LandingPage() {
                 id="cta-hero-primary"
                 className="group flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-[1.02] transition-all font-semibold py-3.5 px-7 rounded-xl shadow-lg shadow-primary/20 text-base"
               >
-                Começar Grátis
+                Criar conta gratuitamente
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <a
@@ -88,22 +88,10 @@ export default function LandingPage() {
               </a>
             </div>
 
-            {/* Social proof micro */}
-              <div className="opacity-0-initial animate-fade-in delay-500 flex items-center gap-3 pt-2">
-              <div className="flex -space-x-2">
-                {["#6366f1", "#8b5cf6", "#a78bfa", "#c4b5fd"].map((color, i) => (
-                  <div
-                    key={i}
-                    className="w-7 h-7 rounded-full border-2 border-background flex items-center justify-center"
-                    style={{ backgroundColor: color }}
-                  >
-                    <span className="text-[9px] font-bold text-white">{String.fromCharCode(65 + i)}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Equipes de R&S já testando a plataforma
-              </p>
+            <div className="opacity-0-initial animate-fade-in delay-500 flex flex-wrap gap-x-5 gap-y-2 pt-2 text-xs text-muted-foreground">
+              <span>✓ Sem cartão de crédito</span>
+              <span>✓ Dados isolados por empresa</span>
+              <span>✓ Decisão final sempre humana</span>
             </div>
           </div>
 
@@ -179,7 +167,7 @@ export default function LandingPage() {
               image: "/visuals/problemas/decisoes-sem-dados-analiticas.jpg",
               imageAlt: "Profissional analisando documentos para tomar uma decisao de contratacao",
               title: "Decisões sem dados",
-              desc: "Contratações baseadas em intuição e disponibilidade, não em critérios objetivos. Viés inconsciente no topo do funil.",
+              desc: "Decisões baseadas em intuição e disponibilidade, sem critérios consistentes para comparar os perfis e justificar prioridades.",
             },
           ].map((item, i) => (
             <RevealSection key={item.title} delay={i * 0.1}>
@@ -249,7 +237,7 @@ export default function LandingPage() {
                       Smart Match com Explicabilidade
                     </h3>
                     <span className="shrink-0 rounded-full border border-primary/20 bg-primary/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-widest text-primary">
-                      Diferencial exclusivo
+                      Decisão explicável
                     </span>
                   </div>
                   <p className="text-muted-foreground leading-relaxed">
@@ -350,8 +338,8 @@ export default function LandingPage() {
                 <div className="space-y-3 p-6">
                   <h3 className="text-base font-bold text-foreground">Engine Híbrido de IA</h3>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    Groq (Llama 3.3 70B) para PDFs de texto nativo. Gemini 2.5 Flash para
-                    documentos escaneados via OCR. O melhor modelo para cada tipo de arquivo.
+                    O sistema seleciona o processamento adequado para documentos digitais e
+                    escaneados, preservando a experiência em um único fluxo de trabalho.
                   </p>
                 </div>
               </div>
@@ -480,7 +468,7 @@ export default function LandingPage() {
             <div className="relative z-10 max-w-2xl">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-semibold tracking-wide mb-6">
                 <Sparkles className="w-3.5 h-3.5" />
-                Acesso Antecipado
+                Comece com clareza
               </div>
 
               <h2 id="cta-title" className="text-3xl md:text-5xl font-extrabold tracking-tight mb-5 text-foreground">
@@ -491,8 +479,8 @@ export default function LandingPage() {
               </h2>
 
               <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto md:mx-0 mb-10 leading-relaxed">
-                Junte-se às equipes que já estão transformando sua operação de R&S com
-                inteligência artificial. Sem planilhas. Sem achismos.
+                Centralize currículos, crie vagas e compare candidatos com um fluxo de IA que
+                mantém o recrutador no controle. Sem planilhas. Sem achismos.
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
@@ -502,7 +490,7 @@ export default function LandingPage() {
                   className="group relative overflow-hidden inline-flex items-center gap-2.5 bg-primary text-primary-foreground hover:bg-primary/90 hover:scale-[1.03] active:scale-[0.99] transition-all font-bold py-4 px-9 rounded-xl shadow-lg shadow-primary/20 text-base"
                 >
                   <span className="absolute inset-0 animate-shimmer bg-gradient-to-r from-transparent via-white/15 to-transparent" aria-hidden="true" />
-                  <span className="relative">Solicitar Acesso Gratuito</span>
+                  <span className="relative">Criar conta gratuitamente</span>
                   <ArrowRight className="relative w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
                 <Link
@@ -518,7 +506,7 @@ export default function LandingPage() {
                 <span>✓ Sem cartão de crédito</span>
                 <span>✓ Configuração em minutos</span>
                 <span>✓ Dados isolados por empresa</span>
-                <span>✓ Em conformidade com a LGPD</span>
+                <span>✓ Privacidade por desenho</span>
               </div>
             </div>
           </div>

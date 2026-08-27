@@ -120,6 +120,8 @@ export default function Navbar() {
           <button
             onClick={() => setMobileMenuOpen((prev) => !prev)}
             aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu de navegação'}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
             className="md:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
             <AnimatePresence mode="wait" initial={false}>
@@ -171,7 +173,7 @@ export default function Navbar() {
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
               className="absolute top-full inset-x-0 bg-background/95 backdrop-blur-2xl border-b border-border/80 shadow-2xl z-50 md:hidden overflow-hidden"
             >
-              <nav className="p-4 space-y-1.5 max-w-7xl mx-auto">
+              <nav id="mobile-navigation" className="p-4 space-y-1.5 max-w-7xl mx-auto">
                 <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-2">
                   Navegação do Sistema
                 </p>

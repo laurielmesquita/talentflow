@@ -1,9 +1,11 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import { UserPlus, Pencil, UserX, Users, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { UserPlus, Pencil, UserX, Loader2 } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import { getSession } from '@/lib/auth';
+import AppShell from '@/components/AppShell';
+import StatusMessage from '@/components/StatusMessage';
 
 type UserRole = 'Manager' | 'Recruiter' | 'SuperAdmin';
 
@@ -90,20 +92,21 @@ export default function UsersPage() {
 
   const session = getSession();
   if (session.role !== 'Manager' && session.role !== 'SuperAdmin') {
-    return <main className="min-h-screen p-8 text-foreground">Acesso restrito aos administradores.</main>;
+    return (
+      <AppShell title="Usuários da organização" subtitle="Gerencie os acessos administrativos da sua empresa.">
+        <main className="mx-auto w-full max-w-6xl px-6 py-10">
+          <StatusMessage tone="info">Acesso restrito aos administradores da organização.</StatusMessage>
+        </main>
+      </AppShell>
+    );
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground px-6 py-10">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 mb-2">
-          <Users className="w-7 h-7 text-primary" />
-          <h1 className="text-3xl font-bold tracking-tight">Usuários da organização</h1>
-        </div>
-        <p className="text-muted-foreground mb-8">Gerencie quem pode acessar o TalentFlow. Desativar um usuário não remove os dados da empresa.</p>
+    <AppShell title="Usuários da organização" subtitle="Gerencie quem pode acessar o TalentFlow. Desativar um usuário não remove os dados da empresa.">
+      <main className="mx-auto w-full max-w-6xl px-6 py-10">
 
-        {error && <div className="mb-5 flex gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive"><AlertCircle className="w-5 h-5 shrink-0" />{error}</div>}
-        {success && <div className="mb-5 flex gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-600"><CheckCircle2 className="w-5 h-5 shrink-0" />{success}</div>}
+        {error && <StatusMessage tone="error" className="mb-5">{error}</StatusMessage>}
+        {success && <StatusMessage tone="success" className="mb-5">{success}</StatusMessage>}
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
           <section className="rounded-2xl border border-border/80 bg-card/40 p-5 shadow-sm">
@@ -149,7 +152,7 @@ export default function UsersPage() {
             </form>
           </section>
         </div>
-      </div>
-    </main>
+      </main>
+    </AppShell>
   );
 }

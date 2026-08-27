@@ -12,6 +12,8 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 ### Fundação UX/UI
 - Adicionado `AppShell` reutilizável para páginas operacionais autenticadas, aplicado inicialmente a Organização e Usuários.
 - Adicionados primitivos compartilhados de feedback: `StatusMessage`, `EmptyState` e `PageSkeleton`.
+- Adicionados tokens semânticos de sucesso, alerta e informação, além de `ui/Input` e `ui/Dialog` com acessibilidade de teclado e gerenciamento de foco.
+- Atualizado o modal de exclusão de candidato para o diálogo compartilhado e ajustado o `PageHeader` para ações e textos responsivos.
 - Melhorada a navegação assistiva com foco visível global, redução de movimento e estados ARIA para menus móveis e de conta.
 - Padronizada a validação visual de senha mínima para 8 caracteres no fluxo de alteração de senha.
 - Atualizado o mapa Graphify após a mudança estrutural e adicionados testes para os novos primitivos de feedback.

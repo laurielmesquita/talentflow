@@ -1,9 +1,13 @@
 'use client';
 
 import { FormEvent, useEffect, useState } from 'react';
-import { UserPlus, Pencil, UserX, Users, Loader2, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { UserPlus, Pencil, UserX, Loader2 } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import { getSession } from '@/lib/auth';
+import AppShell from '@/components/AppShell';
+import StatusMessage from '@/components/StatusMessage';
+import { Dialog } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 type UserRole = 'Manager' | 'Recruiter' | 'SuperAdmin';
 
@@ -27,13 +31,14 @@ export default function UsersPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [userToDeactivate, setUserToDeactivate] = useState<ManagedUser | null>(null);
 
   const loadUsers = async () => {
     setLoading(true);
     try {
       setUsers(await apiFetch<ManagedUser[]>('/api/users'));
-    } catch (err: any) {
-      setError(err.message || 'Não foi possível carregar os usuários.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Não foi possível carregar os usuários.');
     } finally {
       setLoading(false);
     }
@@ -68,42 +73,44 @@ export default function UsersPage() {
       }
       resetForm();
       await loadUsers();
-    } catch (err: any) {
-      setError(err.message || 'Não foi possível salvar o usuário.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Não foi possível salvar o usuário.');
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDeactivate = async (user: ManagedUser) => {
-    if (!window.confirm(`Desativar o acesso de ${user.full_name}? Os dados da organização serão preservados.`)) return;
+  const handleDeactivate = async () => {
+    if (!userToDeactivate) return;
     setError(null);
     setSuccess(null);
     try {
-      await apiFetch(`/api/users/${user.id}`, { method: 'DELETE' });
+      await apiFetch(`/api/users/${userToDeactivate.id}`, { method: 'DELETE' });
       setSuccess('Acesso do usuário desativado.');
+      setUserToDeactivate(null);
       await loadUsers();
-    } catch (err: any) {
-      setError(err.message || 'Não foi possível desativar o usuário.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Não foi possível desativar o usuário.');
     }
   };
 
   const session = getSession();
   if (session.role !== 'Manager' && session.role !== 'SuperAdmin') {
-    return <main className="min-h-screen p-8 text-foreground">Acesso restrito aos administradores.</main>;
+    return (
+      <AppShell title="Usuários da organização" subtitle="Gerencie os acessos administrativos da sua empresa.">
+        <main className="mx-auto w-full max-w-6xl px-6 py-10">
+          <StatusMessage tone="info">Acesso restrito aos administradores da organização.</StatusMessage>
+        </main>
+      </AppShell>
+    );
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground px-6 py-10">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex items-center gap-3 mb-2">
-          <Users className="w-7 h-7 text-primary" />
-          <h1 className="text-3xl font-bold tracking-tight">Usuários da organização</h1>
-        </div>
-        <p className="text-muted-foreground mb-8">Gerencie quem pode acessar o TalentFlow. Desativar um usuário não remove os dados da empresa.</p>
+    <AppShell title="Usuários da organização" subtitle="Gerencie quem pode acessar o TalentFlow. Desativar um usuário não remove os dados da empresa.">
+      <main className="mx-auto w-full max-w-6xl px-6 py-10">
 
-        {error && <div className="mb-5 flex gap-2 rounded-xl border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive"><AlertCircle className="w-5 h-5 shrink-0" />{error}</div>}
-        {success && <div className="mb-5 flex gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-4 text-sm text-emerald-600"><CheckCircle2 className="w-5 h-5 shrink-0" />{success}</div>}
+        {error && <StatusMessage tone="error" className="mb-5">{error}</StatusMessage>}
+        {success && <StatusMessage tone="success" className="mb-5">{success}</StatusMessage>}
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_360px]">
           <section className="rounded-2xl border border-border/80 bg-card/40 p-5 shadow-sm">
@@ -122,7 +129,7 @@ export default function UsersPage() {
                     </div>
                     {user.is_active && <div className="flex shrink-0 gap-1">
                       <button aria-label={`Editar ${user.full_name}`} onClick={() => { setEditing(user); setForm({ full_name: user.full_name, email: user.email, phone: user.phone || '', password: '', role: user.role }); }} className="rounded-lg p-2 text-muted-foreground hover:bg-accent hover:text-foreground"><Pencil className="w-4 h-4" /></button>
-                      <button aria-label={`Desativar ${user.full_name}`} onClick={() => void handleDeactivate(user)} className="rounded-lg p-2 text-destructive/80 hover:bg-destructive/10 hover:text-destructive"><UserX className="w-4 h-4" /></button>
+                      <button aria-label={`Desativar ${user.full_name}`} onClick={() => setUserToDeactivate(user)} className="rounded-lg p-2 text-destructive/80 hover:bg-destructive/10 hover:text-destructive"><UserX className="w-4 h-4" /></button>
                     </div>}
                   </div>
                 ))}
@@ -133,10 +140,10 @@ export default function UsersPage() {
           <section className="rounded-2xl border border-border/80 bg-card/40 p-5 shadow-sm">
             <h2 className="mb-4 flex items-center gap-2 text-lg font-semibold">{editing ? <Pencil className="w-5 h-5 text-primary" /> : <UserPlus className="w-5 h-5 text-primary" />}{editing ? 'Editar usuário' : 'Novo usuário'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input required minLength={2} value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="Nome completo" className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
-              <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="E-mail corporativo" className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
-              <input type="tel" maxLength={32} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Telefone (opcional)" className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
-              <input required={!editing} minLength={8} type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={editing ? 'Nova senha (opcional)' : 'Senha (mínimo 8 caracteres)'} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm" />
+              <Input required minLength={2} value={form.full_name} onChange={(e) => setForm({ ...form, full_name: e.target.value })} placeholder="Nome completo" />
+              <Input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="E-mail corporativo" />
+              <Input type="tel" maxLength={32} value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder="Telefone (opcional)" />
+              <Input required={!editing} minLength={8} type="password" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={editing ? 'Nova senha (opcional)' : 'Senha (mínimo 8 caracteres)'} />
               <select value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })} className="w-full rounded-xl border border-border bg-background px-3 py-2 text-sm">
                 <option value="Recruiter">Recrutador</option>
                 <option value="Manager">Gerente</option>
@@ -149,7 +156,10 @@ export default function UsersPage() {
             </form>
           </section>
         </div>
-      </div>
-    </main>
+        <Dialog isOpen={Boolean(userToDeactivate)} onClose={() => setUserToDeactivate(null)} ariaLabel="Confirmar desativação de usuário">
+          <div className="space-y-4"><div className="flex items-center gap-3 text-destructive"><UserX className="h-6 w-6" /><h2 className="text-lg font-semibold">Desativar acesso</h2></div><p className="text-sm text-muted-foreground">Deseja desativar o acesso de <strong className="text-foreground">{userToDeactivate?.full_name}</strong>? Os dados da organização serão preservados.</p><div className="flex justify-end gap-3"><button type="button" onClick={() => setUserToDeactivate(null)} className="rounded-xl border border-border px-4 py-2 text-sm font-semibold hover:bg-accent">Cancelar</button><button type="button" onClick={() => void handleDeactivate()} className="rounded-xl bg-destructive px-4 py-2 text-sm font-semibold text-primary-foreground">Desativar acesso</button></div></div>
+        </Dialog>
+      </main>
+    </AppShell>
   );
 }

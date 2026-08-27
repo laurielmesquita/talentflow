@@ -17,6 +17,7 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - Melhorada a navegação assistiva com foco visível global, redução de movimento e estados ARIA para menus móveis e de conta.
 - Padronizada a validação visual de senha mínima para 8 caracteres no fluxo de alteração de senha.
 - Atualizado o mapa Graphify após a mudança estrutural e adicionados testes para os novos primitivos de feedback.
+- Dashboard migrado para o `AppShell`, removendo a composição local duplicada da navegação autenticada.
 
 ### Configurações de conta
 - Confirmação de alteração de e-mail integrada ao shell de configurações, com estados claros de carregamento, sucesso e erro.

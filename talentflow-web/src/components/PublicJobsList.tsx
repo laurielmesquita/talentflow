@@ -6,6 +6,7 @@ import { Search, MapPin, Briefcase, Clock, ChevronRight, Sparkles } from "lucide
 import { motion, AnimatePresence } from "framer-motion";
 import { formatDistanceToNow } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { Input } from "@/components/ui/input";
 
 interface PublicJob {
   id: string;
@@ -54,7 +55,7 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
               time de talentos
             </span>
           </h1>
-          <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-10">
+          <p className="mx-auto mb-10 max-w-2xl text-lg text-muted-foreground md:text-xl">
             Estamos sempre em busca de pessoas incríveis. Encontre a oportunidade perfeita para o seu próximo grande passo profissional.
           </p>
 
@@ -63,12 +64,12 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
             <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-purple-500/20 rounded-2xl blur-xl transition-all duration-500 group-hover:blur-2xl opacity-50" />
              <div className="relative flex items-center glass-panel-strong rounded-2xl p-2 shadow-xl">
               <Search className="w-6 h-6 text-slate-400 ml-4" />
-              <input
+              <Input
                 type="text"
                 placeholder="Busque por cargo, tecnologia ou localização..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                 className="w-full bg-transparent border-none text-foreground placeholder:text-muted-foreground px-4 py-3 focus:outline-none focus:ring-0 text-lg"
+                className="h-auto border-0 bg-transparent px-4 py-3 text-lg shadow-none focus-visible:border-0 focus-visible:ring-0"
               />
             </div>
           </div>
@@ -85,9 +86,9 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
               exit={{ opacity: 0, scale: 0.95 }}
                className="text-center py-20 glass-panel-strong border-border/70 rounded-3xl"
             >
-              <Briefcase className="w-16 h-16 text-slate-300 dark:text-slate-700 mx-auto mb-6" />
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Nenhuma vaga encontrada</h3>
-              <p className="text-slate-500 dark:text-slate-400">
+              <Briefcase className="mx-auto mb-6 h-16 w-16 text-muted-foreground/40" />
+              <h3 className="mb-2 text-2xl font-bold text-foreground">Nenhuma vaga encontrada</h3>
+              <p className="text-muted-foreground">
                 Não encontramos nenhuma vaga correspondente à sua busca. Tente outros termos.
               </p>
             </motion.div>
@@ -107,21 +108,21 @@ export default function PublicJobsList({ initialJobs }: { initialJobs: PublicJob
                       
                       <div className="relative flex flex-col md:flex-row md:items-center justify-between gap-6 z-10">
                         <div className="flex-1">
-                          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 group-hover:text-primary transition-colors">
+                          <h2 className="mb-4 text-2xl font-bold text-foreground transition-colors group-hover:text-primary">
                             {job.title}
                           </h2>
                           
-                          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-600 dark:text-slate-400">
-                            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
+                          <div className="flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
+                            <div className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
                               <MapPin className="w-4 h-4" />
                               <span className="font-medium">{job.location}</span>
                             </div>
-                            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
+                            <div className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
                               <Briefcase className="w-4 h-4" />
                               <span className="font-medium">{job.employment_type} &bull; {job.work_model}</span>
                             </div>
                             {job.created_at && (
-                              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-full">
+                              <div className="flex items-center gap-1.5 rounded-full bg-muted px-3 py-1.5">
                                 <Clock className="w-4 h-4" />
                                 <span className="font-medium">
                                   {formatDistanceToNow(new Date(job.created_at), { locale: ptBR, addSuffix: true })}

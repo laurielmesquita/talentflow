@@ -235,8 +235,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/package.json": {
-    "mtime": 1787772558.0404568,
-    "ast_hash": "da29236715f5f482559cec6ca84d2567",
+    "mtime": 1787801252.444033,
+    "ast_hash": "14717a9fc9d4dd5b4e6f2437d0092fb8",
     "semantic_hash": ""
   },
   "talentflow-web/postcss.config.mjs": {
@@ -255,8 +255,8 @@
     "semantic_hash": "a7b6fa63ea468e2f2894ae0e89153067"
   },
   "talentflow-web/src/app/candidates/page.tsx": {
-    "mtime": 1787539551.2346785,
-    "ast_hash": "2117aa0bdc1864b39354a56d4022d61f",
+    "mtime": 1787798892.2304292,
+    "ast_hash": "712638f318aa806164c25d3b16f2b1f3",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/categories/page.tsx": {
@@ -265,8 +265,8 @@
     "semantic_hash": "81f837cbf35729c694c33c1971f95003"
   },
   "talentflow-web/src/app/change-password/page.tsx": {
-    "mtime": 1787796140.1574404,
-    "ast_hash": "0ba372243c4de672ae29dd5e0c6e729b",
+    "mtime": 1787797183.0159316,
+    "ast_hash": "fe6ca048ab0f1fbe4af34900319deed1",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/dashboard/page.tsx": {
@@ -275,8 +275,8 @@
     "semantic_hash": "0fd6a00aa8f2991576c46203b42bea74"
   },
   "talentflow-web/src/app/forgot-password/page.tsx": {
-    "mtime": 1786476230.7785962,
-    "ast_hash": "e9140c0ff3159a9bd8981387022161d3",
+    "mtime": 1787801003.8296316,
+    "ast_hash": "8a54d586bbc327feb7719a28f3cc6bd7",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/jobs/[slug]/page.tsx": {
@@ -300,23 +300,23 @@
     "semantic_hash": "d5896346b13ee15cade1d6fbc01bc198"
   },
   "talentflow-web/src/app/login/page.tsx": {
-    "mtime": 1786476230.7812448,
-    "ast_hash": "bbbd89dce24fe594b4d6bf9eb6fe189a",
+    "mtime": 1787802766.003322,
+    "ast_hash": "96721454fadec25afffc650b16fe2a54",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/page.tsx": {
-    "mtime": 1786476230.7824786,
-    "ast_hash": "11e576b5193aee12a4d9467b506a3803",
+    "mtime": 1787803350.6220593,
+    "ast_hash": "a301ff45f5cfdaa7397f837ad7e46395",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/privacy/page.tsx": {
-    "mtime": 1786476230.7838376,
-    "ast_hash": "1d0c243ec1e1524fff3316c0b358ed13",
+    "mtime": 1787800743.5966249,
+    "ast_hash": "70370af62306f30e1927fee56002f129",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/reset-password/page.tsx": {
-    "mtime": 1786476230.7852097,
-    "ast_hash": "5bbbbbba96497758567dc0b73411a725",
+    "mtime": 1787801002.6596537,
+    "ast_hash": "0ef49f1105155611fd8a56654cbde212",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/smart-match/page.tsx": {
@@ -325,8 +325,8 @@
     "semantic_hash": "0508e00cea817426c6b96457daa4cf95"
   },
   "talentflow-web/src/app/terms/page.tsx": {
-    "mtime": 1786476230.788884,
-    "ast_hash": "4e9277bdabb2b4ef4c816e6b05b4cd9a",
+    "mtime": 1787800744.7750604,
+    "ast_hash": "25dc36bc18cbc6a347f1d291ceb98488",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/vagas/[slug]/page.tsx": {
@@ -335,14 +335,14 @@
     "semantic_hash": "869db505c24cca73dca6516194c2b5f4"
   },
   "talentflow-web/src/app/vagas/page.tsx": {
-    "mtime": 1782449636.9686964,
-    "ast_hash": "2d6f0fbb7fbe407518da24458cbe0c2c",
-    "semantic_hash": "2d6f0fbb7fbe407518da24458cbe0c2c"
+    "mtime": 1787800741.2875412,
+    "ast_hash": "ba5106f58ed65d68249775bef258fcac",
+    "semantic_hash": ""
   },
   "talentflow-web/src/components/BatchUploadButton.tsx": {
-    "mtime": 1785819959.3848836,
-    "ast_hash": "96f597d5927de9402ab55da963d8134b",
-    "semantic_hash": "96f597d5927de9402ab55da963d8134b"
+    "mtime": 1787799595.4726152,
+    "ast_hash": "57de90f13097b08937c1e46e1700056d",
+    "semantic_hash": ""
   },
   "talentflow-web/src/components/CandidateTable.tsx": {
     "mtime": 1786476230.79219,
@@ -355,14 +355,14 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/DashboardClient.tsx": {
-    "mtime": 1786476230.7952807,
-    "ast_hash": "129e5e7cc0e30e9bb5a56b53f67b8b3a",
+    "mtime": 1787798650.7115455,
+    "ast_hash": "b10ea65536843760e2035c8d1a18d9d1",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/DeleteConfirmModal.tsx": {
-    "mtime": 1781596307.7491903,
-    "ast_hash": "e04f2c1012d5cbc88c3bae8256f27e1e",
-    "semantic_hash": "e04f2c1012d5cbc88c3bae8256f27e1e"
+    "mtime": 1787796605.9724233,
+    "ast_hash": "0f34b30bc254ad617771299e2dbf1154",
+    "semantic_hash": ""
   },
   "talentflow-web/src/components/Footer.tsx": {
     "mtime": 1787772558.0444524,
@@ -400,8 +400,8 @@
     "semantic_hash": "2f68f1101af00579a117f78e0f382e47"
   },
   "talentflow-web/src/components/JobsListDashboard.tsx": {
-    "mtime": 1786476230.8008,
-    "ast_hash": "2af0e6b8b0aa2a53db7878a359fe5009",
+    "mtime": 1787799296.6190138,
+    "ast_hash": "a83460050f1aa5bcebb18cb2bb36a6d9",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/LandingHeader.tsx": {
@@ -415,9 +415,9 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/PageHeader.tsx": {
-    "mtime": 1782286491.9571939,
-    "ast_hash": "b1102051126c57fa23ee321813529968",
-    "semantic_hash": "b1102051126c57fa23ee321813529968"
+    "mtime": 1787796727.5214174,
+    "ast_hash": "b40d0831221f1acf577cdfe2a9d4a37e",
+    "semantic_hash": ""
   },
   "talentflow-web/src/components/Portal.tsx": {
     "mtime": 1782088395.9384031,
@@ -430,8 +430,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/PublicJobsList.tsx": {
-    "mtime": 1786476230.8103924,
-    "ast_hash": "ba54731cd64364ad22b994db1d3696ed",
+    "mtime": 1787800742.4261656,
+    "ast_hash": "383a73a47d455273765358a7923939cc",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/RevealSection.tsx": {
@@ -460,8 +460,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/SmartMatchDashboard.tsx": {
-    "mtime": 1786476230.8165672,
-    "ast_hash": "b7dc352b6f55535582fa3a8de9ca5bb9",
+    "mtime": 1787799586.5477417,
+    "ast_hash": "e0be595d5c808441902fcf72fafa6ad1",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/ThemeProvider.tsx": {
@@ -475,8 +475,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/UserMenu.tsx": {
-    "mtime": 1787795892.7546694,
-    "ast_hash": "8edd3600bd0ced3aa76e3f4359809e02",
+    "mtime": 1787797166.6719024,
+    "ast_hash": "0b206a2d55bf1246d80af86648d7f6d9",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/ui/button.tsx": {
@@ -645,9 +645,9 @@
     "semantic_hash": "65aa81f75f94b025bd86f6f9c81eafab"
   },
   "talentflow-web/vitest.config.mts": {
-    "mtime": 1785836951.8288562,
-    "ast_hash": "ebf274c78f40484b0e8c023c9c835d48",
-    "semantic_hash": "ebf274c78f40484b0e8c023c9c835d48"
+    "mtime": 1787803454.5098026,
+    "ast_hash": "d95821dc40c59d0810dcffd36d16660c",
+    "semantic_hash": ""
   },
   ".github/workflows/fly-deploy.yml": {
     "mtime": 1787705843.560448,
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1787796225.1552653,
-    "ast_hash": "96e8bb7d22d5140135bf2569a3cda827",
+    "mtime": 1787803954.813038,
+    "ast_hash": "cf931a747611a26e0cc29f78891448b5",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -675,8 +675,8 @@
     "semantic_hash": ""
   },
   "docs/DESIGN.md": {
-    "mtime": 1785549950.1411846,
-    "ast_hash": "46bdadf7f37ef8d5b2dc0dca6f3326f3",
+    "mtime": 1787796729.833039,
+    "ast_hash": "780bc34e9f5f26700c794da8c4318721",
     "semantic_hash": ""
   },
   "docs/architecture-review-api.md": {
@@ -1065,13 +1065,13 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/app/organization/page.tsx": {
-    "mtime": 1787796142.458032,
-    "ast_hash": "982164ada71bb44222ac66018c5862ba",
+    "mtime": 1787798311.5053606,
+    "ast_hash": "8ac739837b9f8d6ea9ee66293c34fe11",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/users/page.tsx": {
-    "mtime": 1787796141.3067021,
-    "ast_hash": "a87a553fbd586b87e0c4d2780190d59a",
+    "mtime": 1787798291.3405755,
+    "ast_hash": "494b597d37526a50842627ff63e21e37",
     "semantic_hash": ""
   },
   "docs/DEPLOYMENT_RENDER_FREE.md": {
@@ -1100,13 +1100,13 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/app/settings/confirm-email/page.tsx": {
-    "mtime": 1787785921.9849925,
-    "ast_hash": "375ed7579a764ec816f26db0ee642796",
+    "mtime": 1787798261.8920817,
+    "ast_hash": "ef37cf704823d38952a7ad9ddfdfce3d",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/settings/page.tsx": {
-    "mtime": 1787786652.1167326,
-    "ast_hash": "34fd73a6414a4566fdd04c454ec31f9a",
+    "mtime": 1787797181.8768253,
+    "ast_hash": "e50bf8136606cdc524d3dfaa07186508",
     "semantic_hash": ""
   },
   "talentflow-api/alembic/versions/9f4a6b8c0d12_add_user_preferences.py": {
@@ -1115,8 +1115,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/AppShell.tsx": {
-    "mtime": 1787795884.606676,
-    "ast_hash": "dd3a5d827cf287510782fa1da8d58cda",
+    "mtime": 1787798655.9835298,
+    "ast_hash": "0ddd917246eb961ef996ac893d700191",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/EmptyState.tsx": {
@@ -1130,13 +1130,88 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/StatusMessage.tsx": {
-    "mtime": 1787795885.928072,
-    "ast_hash": "64902018e1980cc3a1e4c5280bf990b9",
+    "mtime": 1787796581.8985145,
+    "ast_hash": "6f92e1133f40bbe48aa32f08ae41be26",
     "semantic_hash": ""
   },
   "talentflow-web/src/test/feedback-components.test.tsx": {
     "mtime": 1787796034.985678,
     "ast_hash": "c1921e64db44827a9da03a69ead59681",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/components/ui/dialog.tsx": {
+    "mtime": 1787796728.6694715,
+    "ast_hash": "1d35f609ae18dd15ca01e91fdd515c61",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/components/ui/input.tsx": {
+    "mtime": 1787796583.043327,
+    "ast_hash": "fbbdfd4e1eddff40a56c3f876f46034c",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/test/Dialog.test.tsx": {
+    "mtime": 1787796651.4040382,
+    "ast_hash": "605798b2f70c08e7e3f000fed95e943a",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/app/settings/layout.tsx": {
+    "mtime": 1787797165.5158796,
+    "ast_hash": "662270cf3247723c0b3ca07ed0a6e983",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/app/settings/preferences/page.tsx": {
+    "mtime": 1787801007.28351,
+    "ast_hash": "537ca8f99a88e74bcbda5bf06a1c9095",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/app/settings/privacy/page.tsx": {
+    "mtime": 1787797276.4293075,
+    "ast_hash": "5b96d4f347b237edc8fc914f67b01962",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/app/settings/profile/page.tsx": {
+    "mtime": 1787801004.9933348,
+    "ast_hash": "9b3222ee6477679f8fc2d001f8984447",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/app/settings/security/page.tsx": {
+    "mtime": 1787801006.1306083,
+    "ast_hash": "37ca7a64a0f3fa02885af8336762188b",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/components/SettingsNavigation.tsx": {
+    "mtime": 1787797163.2090364,
+    "ast_hash": "8f74284f7e18300c4b85457b74db3be7",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/components/SettingsShell.tsx": {
+    "mtime": 1787797164.3653114,
+    "ast_hash": "a727fd8b4d29bc5e5a92a42cd1d0b282",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/components/AuthShell.tsx": {
+    "mtime": 1787802764.137742,
+    "ast_hash": "1d850f4b44b9fd37793650892d367a44",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/components/PublicLegalShell.tsx": {
+    "mtime": 1787800740.1325753,
+    "ast_hash": "4bfaa6bff57ba66b09e64287c956b6b7",
+    "semantic_hash": ""
+  },
+  "talentflow-web/src/hooks/useUnsavedChanges.ts": {
+    "mtime": 1787801000.3578887,
+    "ast_hash": "9c9e233a6451ac28f45f2d5c9d993f9e",
+    "semantic_hash": ""
+  },
+  "talentflow-web/e2e/account-access.spec.ts": {
+    "mtime": 1787803915.6514428,
+    "ast_hash": "8f672d5e3863a2b07d49b888bf31cf12",
+    "semantic_hash": ""
+  },
+  "talentflow-web/playwright.config.ts": {
+    "mtime": 1787801582.1493154,
+    "ast_hash": "4a29827ddda203b582846febd82f5bfd",
     "semantic_hash": ""
   }
 }

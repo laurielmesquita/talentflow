@@ -11,8 +11,8 @@ interface StatusMessageProps {
 
 const styles: Record<StatusTone, string> = {
   error: 'border-destructive/30 bg-destructive/10 text-destructive',
-  success: 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400',
-  info: 'border-primary/25 bg-primary/10 text-foreground',
+  success: 'border-success/30 bg-success/10 text-success',
+  info: 'border-info/25 bg-info/10 text-foreground',
 };
 
 const icons = {

@@ -18,7 +18,7 @@ import {
   ShieldAlert,
   Sparkles,
 } from 'lucide-react';
-import Navbar from '@/components/Navbar';
+import AppShell from '@/components/AppShell';
 import { getSession } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
 
@@ -269,13 +269,11 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
   }, [selectedJobId]);
 
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground selection:bg-primary/20">
+    <AppShell className="selection:bg-primary/20">
 
       {/* Dot-grid background — sutil, não invasivo */}
       <div className="fixed inset-0 bg-dot-grid pointer-events-none opacity-45 -z-10" />
       <div className="ambient-warm-orb" aria-hidden="true" />
-
-      <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-8">
 
@@ -538,6 +536,6 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
 
         </motion.div>
       </main>
-    </div>
+    </AppShell>
   );
 }

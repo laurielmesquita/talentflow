@@ -8,6 +8,7 @@ import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft, User, Building, CheckCircl
 import { motion, AnimatePresence } from 'framer-motion';
 import { setSession } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
+import AuthShell from '@/components/AuthShell';
 
 function LoginContent() {
   const router = useRouter();
@@ -36,6 +37,10 @@ function LoginContent() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSignUp && password.length < 8) {
+      setError('A senha deve conter pelo menos 8 caracteres.');
+      return;
+    }
     setLoading(true);
     setError(null);
 
@@ -71,13 +76,13 @@ function LoginContent() {
   };
 
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30 select-none">
+    <AuthShell>
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse duration-[6000ms]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />
 
       {/* Header */}
-      <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/40 backdrop-blur-md">
         <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
           <Link href="/" className="flex items-center gap-3 group">
             <div className="relative w-8.5 h-8.5 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
@@ -112,7 +117,7 @@ function LoginContent() {
         </div>
       </header>
 
-      <div className="flex-1 flex items-center justify-center p-4">
+      <div className="flex w-full flex-1 items-center justify-center p-4">
         <motion.div 
           layout
           transition={{ type: "spring", stiffness: 350, damping: 32 }}
@@ -198,7 +203,7 @@ function LoginContent() {
 
           {/* Error Alert */}
           {error && (
-            <div className="mb-6 px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium animate-shake">
+            <div role="alert" aria-live="assertive" className="mb-6 px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium animate-shake">
               {error}
             </div>
           )}
@@ -208,6 +213,8 @@ function LoginContent() {
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
+              role="status"
+              aria-live="polite"
               className="flex flex-col items-center justify-center py-12 gap-4"
             >
               <motion.div
@@ -353,17 +360,19 @@ function LoginContent() {
                   id="password"
                   type={showPassword ? 'text' : 'password'}
                   required
+                  minLength={isSignUp ? 8 : undefined}
                   disabled={loading}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Sua senha secreta"
+                  placeholder={isSignUp ? 'Mínimo de 8 caracteres' : 'Sua senha secreta'}
                   className="w-full pl-11 pr-11 py-3 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 disabled:opacity-50"
                 />
                 <button
                   type="button"
-                  tabIndex={-1}
+                  aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  aria-pressed={showPassword}
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3.5 text-muted-foreground hover:text-foreground transition-colors"
+                  className="absolute right-3.5 rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                 >
                   {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                 </button>
@@ -388,7 +397,7 @@ function LoginContent() {
           )}
         </motion.div>
       </div>
-    </div>
+    </AuthShell>
   );
 }
 

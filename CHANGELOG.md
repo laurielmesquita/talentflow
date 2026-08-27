@@ -12,11 +12,17 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 ### Fundação UX/UI
 - Adicionado `AppShell` reutilizável para páginas operacionais autenticadas, aplicado inicialmente a Organização e Usuários.
 - Adicionados primitivos compartilhados de feedback: `StatusMessage`, `EmptyState` e `PageSkeleton`.
+- Adicionados tokens semânticos de sucesso, alerta e informação, além de `ui/Input` e `ui/Dialog` com acessibilidade de teclado e gerenciamento de foco.
+- Atualizado o modal de exclusão de candidato para o diálogo compartilhado e ajustado o `PageHeader` para ações e textos responsivos.
 - Melhorada a navegação assistiva com foco visível global, redução de movimento e estados ARIA para menus móveis e de conta.
 - Padronizada a validação visual de senha mínima para 8 caracteres no fluxo de alteração de senha.
 - Atualizado o mapa Graphify após a mudança estrutural e adicionados testes para os novos primitivos de feedback.
+- Dashboard migrado para o `AppShell`, removendo a composição local duplicada da navegação autenticada.
 
 ### Configurações de conta
+- Confirmação de alteração de e-mail integrada ao shell de configurações, com estados claros de carregamento, sucesso e erro.
+- Criado `SettingsShell` com navegação persistente no desktop e rolável no mobile para Perfil, Segurança, Preferências e Privacidade e dados.
+- Novas rotas de conta: `/settings/profile`, `/settings/security`, `/settings/preferences` e `/settings/privacy`; os caminhos legados de configurações e senha redirecionam para a nova estrutura.
 - Criada a central `/settings`, separando perfil individual, segurança, preferências e privacidade das funções administrativas da organização.
 - Adicionada edição do nome e telefone do próprio usuário por `GET/PATCH /api/auth/me`.
 - Adicionado telefone opcional ao gerenciamento administrativo de usuários.
@@ -27,6 +33,30 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 ### Preparação do encerramento de organização
 - Adicionado fluxo de solicitação/cancelamento com confirmação reforçada e carência de 30 dias; a purga física permanece separada e controlada.
 - Adicionado executor manual idempotente para purga de dados do tenant e assets do Cloudinary após a carência.
+
+### Administração organizacional
+- A confirmação de desativação de usuários agora usa diálogo acessível e campos compartilhados, preservando o comportamento administrativo existente.
+
+### Portal público
+- Criado `PublicLegalShell` para centralizar a navegação institucional e o layout das páginas de Termos e Privacidade.
+- A busca e os estados vazios de vagas públicas agora usam tokens semânticos e o componente compartilhado `ui/Input`.
+- Atualizado o mapa Graphify após a consolidação das páginas públicas.
+
+### Qualidade de interação
+- Cadastro, redefinição e alteração de senha reforçam o mínimo de 8 caracteres no próprio formulário.
+- Botões de revelar senha voltaram a ser acessíveis por teclado e anunciam seu estado para leitores de tela.
+- Feedbacks de autenticação passaram a usar regiões acessíveis de alerta e status.
+- Páginas de configurações avisam antes do fechamento quando há alterações ainda não salvas.
+
+### Testes e entrega
+- Adicionada infraestrutura Playwright com três cenários E2E para validação de senha, controle de exibição por teclado e confirmação de recuperação de acesso.
+- Corrigido o recorte horizontal do fluxo de login em telas mobile ao organizar o `AuthShell` verticalmente.
+- Validado o fluxo de acesso em desktop e mobile no navegador integrado; o mapa Graphify foi atualizado.
+
+### Landing comercial
+- A narrativa da landing foi alinhada a benefícios verificáveis: triagem inteligente, decisão humana e justificativas explicáveis.
+- Removida a prova social não verificável e substituída por sinais de confiança coerentes com o produto.
+- CTA, seção de recursos e chamada final agora usam linguagem consistente de criação gratuita e privacidade por desenho.
 
 ## [2.6.0] — 2026-08-26
 

@@ -19,6 +19,7 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - Atualizado o mapa Graphify após a mudança estrutural e adicionados testes para os novos primitivos de feedback.
 
 ### Configurações de conta
+- Confirmação de alteração de e-mail integrada ao shell de configurações, com estados claros de carregamento, sucesso e erro.
 - Criado `SettingsShell` com navegação persistente no desktop e rolável no mobile para Perfil, Segurança, Preferências e Privacidade e dados.
 - Novas rotas de conta: `/settings/profile`, `/settings/security`, `/settings/preferences` e `/settings/privacy`; os caminhos legados de configurações e senha redirecionam para a nova estrutura.
 - Criada a central `/settings`, separando perfil individual, segurança, preferências e privacidade das funções administrativas da organização.
@@ -31,6 +32,9 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 ### Preparação do encerramento de organização
 - Adicionado fluxo de solicitação/cancelamento com confirmação reforçada e carência de 30 dias; a purga física permanece separada e controlada.
 - Adicionado executor manual idempotente para purga de dados do tenant e assets do Cloudinary após a carência.
+
+### Administração organizacional
+- A confirmação de desativação de usuários agora usa diálogo acessível e campos compartilhados, preservando o comportamento administrativo existente.
 
 ## [2.6.0] — 2026-08-26
 

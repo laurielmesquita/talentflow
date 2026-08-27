@@ -6659,7 +6659,7 @@
       "label": "CandidatesPage()",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L21",
+      "source_location": "L17",
       "_origin": "ast",
       "id": "talentflow_web_src_app_candidates_page_candidatespage",
       "community": 16,
@@ -7146,8 +7146,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "organization/page.tsx"
     },
     {
@@ -7157,8 +7157,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_closurestatus",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "closurestatus"
     },
     {
@@ -7168,8 +7168,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_closurestate",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "closurestate"
     },
     {
@@ -7179,8 +7179,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_manageduser",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "manageduser"
     },
     {
@@ -7190,8 +7190,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_formatdate",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "formatdate()"
     },
     {
@@ -7201,8 +7201,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_organizationpage",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "organizationpage()"
     },
     {
@@ -7366,8 +7366,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_preferences_page",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "preferences/page.tsx"
     },
     {
@@ -7377,8 +7377,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_preferences_page_preferences",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "preferences"
     },
     {
@@ -7388,8 +7388,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_preferences_page_settingspreferencespage",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "settingspreferencespage()"
     },
     {
@@ -7399,8 +7399,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_privacy_page",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "settings/privacy/page.tsx"
     },
     {
@@ -7410,8 +7410,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_privacy_page_settingsprivacypage",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "settingsprivacypage()"
     },
     {
@@ -7817,8 +7817,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidatetable",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "candidatetable.tsx"
     },
     {
@@ -7828,8 +7828,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidatetable_scorering",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "scorering()"
     },
     {
@@ -7839,8 +7839,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidatetable_candidatetable",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "candidatetable()"
     },
     {
@@ -8103,8 +8103,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_deleteconfirmmodal",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "deleteconfirmmodal.tsx"
     },
     {
@@ -8114,8 +8114,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_components_deleteconfirmmodal_deleteconfirmmodalprops",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "deleteconfirmmodalprops"
     },
     {
@@ -8125,8 +8125,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "talentflow_web_src_components_deleteconfirmmodal_deleteconfirmmodal",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "deleteconfirmmodal()"
     },
     {
@@ -8554,8 +8554,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 96,
+      "community_name": "[2.3.0] \u2014 2026-08-04",
       "norm_label": "pdfviewer.tsx"
     },
     {
@@ -8565,8 +8565,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer_pdfviewerprops",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 96,
+      "community_name": "[2.3.0] \u2014 2026-08-04",
       "norm_label": "pdfviewerprops"
     },
     {
@@ -8576,8 +8576,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer_getcookie",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 96,
+      "community_name": "[2.3.0] \u2014 2026-08-04",
       "norm_label": "getcookie()"
     },
     {
@@ -8587,8 +8587,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer_pdfviewer",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 96,
+      "community_name": "[2.3.0] \u2014 2026-08-04",
       "norm_label": "pdfviewer()"
     },
     {
@@ -9027,8 +9027,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_statusmessage",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "statusmessage.tsx"
     },
     {
@@ -9038,8 +9038,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "talentflow_web_src_components_statusmessage_statustone",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "statustone"
     },
     {
@@ -9049,8 +9049,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_web_src_components_statusmessage_statusmessageprops",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "statusmessageprops"
     },
     {
@@ -9060,8 +9060,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_statusmessage_styles",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "styles"
     },
     {
@@ -9071,8 +9071,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "talentflow_web_src_components_statusmessage_icons",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "icons"
     },
     {
@@ -9082,8 +9082,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "talentflow_web_src_components_statusmessage_statusmessage",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "statusmessage()"
     },
     {
@@ -9302,8 +9302,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_dialog",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "dialog.tsx"
     },
     {
@@ -9313,8 +9313,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_dialog_dialogprops",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "dialogprops"
     },
     {
@@ -9324,8 +9324,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_dialog_focusableselector",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "focusableselector"
     },
     {
@@ -9335,8 +9335,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_dialog_dialog",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "dialog()"
     },
     {
@@ -9489,8 +9489,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_api_apierror",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "apierror"
     },
     {
@@ -9500,8 +9500,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_api_apierror_constructor",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": ".constructor()"
     },
     {
@@ -9687,8 +9687,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_safeerror",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "safeerror.ts"
     },
     {
@@ -9698,8 +9698,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_safeerror_safeerror",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "safeerror()"
     },
     {
@@ -9786,8 +9786,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_test_dialog_test",
-      "community": 96,
-      "community_name": "[2.3.0] \u2014 2026-08-04",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "dialog.test.tsx"
     },
     {
@@ -9808,8 +9808,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_test_pdfviewer_test",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 96,
+      "community_name": "[2.3.0] \u2014 2026-08-04",
       "norm_label": "pdfviewer.test.tsx"
     },
     {
@@ -27405,7 +27405,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L21",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page",
@@ -27421,6 +27421,18 @@
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page",
       "target": "talentflow_web_src_app_candidates_page_metadata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/candidates/page.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_candidates_page",
+      "target": "talentflow_web_src_components_appshell",
       "confidence_score": 1.0
     },
     {
@@ -27452,30 +27464,6 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L11",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_components_navbar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L12",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_components_pageheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
       "source_location": "L10",
       "weight": 1.0,
       "_origin": "ast",
@@ -27488,7 +27476,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L18",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page",
@@ -27500,7 +27488,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L18",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page",
@@ -27512,7 +27500,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L19",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page",
@@ -27524,71 +27512,11 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L19",
+      "source_location": "L15",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page",
       "target": "talentflow_web_src_lib_data_categories_getcategories",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_types_candidate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_types_candidate_candidate",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L15",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_types_candidate_candidatesresponse",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_types_category",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L16",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_app_candidates_page",
-      "target": "talentflow_web_src_types_category_category",
       "confidence_score": 1.0
     },
     {
@@ -27597,7 +27525,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L34",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page_candidatespage",
@@ -27609,7 +27537,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/candidates/page.tsx",
-      "source_location": "L35",
+      "source_location": "L31",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_candidates_page_candidatespage",
@@ -36458,5 +36386,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "3a68e871ff4889d67ebffb30af13c9ca1752a860"
+  "built_at_commit": "a9b81ea382795ae9c62fe2a2501d157cc104f757"
 }

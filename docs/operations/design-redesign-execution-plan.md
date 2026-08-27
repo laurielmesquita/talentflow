@@ -170,12 +170,12 @@ Modelo recomendado: Luna Médio para executar a matriz; Sol Alto para auditoria 
 
 ## 3.1 Versionamento da entrega
 
-O redesign integral é tratado como uma nova versão do produto. A implementação está registrada como release candidate `3.0.0-rc.1`.
+O redesign integral é tratado como a versão `3.0.0` do produto, após homologação local e aprovação do PO para publicação.
 
 - durante homologação visual e técnica: `3.0.0-rc.1`;
 - após aprovação do PO e todos os gates: `3.0.0`;
 - versões dos documentos (`0.x`) não substituem a versão do produto;
-- package e lockfile já registram `3.0.0-rc.1`; a tag final `v3.0.0` será criada somente após homologação e aprovação do PO.
+- package e lockfile registram `3.0.0`; a tag final `v3.0.0` acompanha a publicação.
 
 ## 5. Estratégia de branch e entregas
 
@@ -219,3 +219,4 @@ Nenhuma etapa é considerada concluída sem:
 | 0.2 | 2026-08-27 | Blocos 1 a 6 executados: fundação visual, landing, shell, fluxos principais, estados, imagem autoral e auditorias técnicas | Escopo autorizado pelo PO |
 | 0.3 | 2026-08-27 | Correções de qualidade: rota pública independente do build local, tipagens e lint direcionado; redesign classificado como release `3.0.0` | Decisão do PO |
 | 0.4 | 2026-08-27 | Fechamento técnico local: lint global zerado, tipagens corrigidas, Portal compatível com testes, build de produção e E2E aprovados | Execução autorizada pelo PO |
+| 0.5 | 2026-08-27 | Homologação aprovada e release final `3.0.0` preparada para publicação | Autorização explícita do PO |

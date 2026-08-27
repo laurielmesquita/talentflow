@@ -9,9 +9,9 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 Próxima versão em planejamento. O encerramento seguro de organizações e a purga de dados estão previstos para a linha 2.7.x.
 
-## [3.0.0-rc.1] — 2026-08-27
+## [3.0.0] — 2026-08-27
 
-Release candidate do redesign integral do TalentFlow, abrangendo landing page, navegação responsiva, superfícies operacionais, direção visual, acessibilidade, motion e documentação de produto.
+Release do redesign integral do TalentFlow, abrangendo landing page, navegação responsiva, superfícies operacionais, direção visual, acessibilidade, motion e documentação de produto.
 
 ### Design e experiência
 - Nova direção visual premium baseada em Clareza Humana, com oliva profundo, verde-líquen, branco amplo e carvão.

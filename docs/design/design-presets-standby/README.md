@@ -20,7 +20,7 @@ Este diretório contém o módulo de **Design Presets** (estilos visuais inspira
 Caso deseje reativar a alternância dinâmica de presets visuais:
 
 1. **Restaurar os arquivos de estilos CSS**:
-   Copie os arquivos de `docs/design-presets-standby/presets/` de volta para `talentflow-web/src/styles/presets/`.
+   Copie os arquivos de `docs/design/design-presets-standby/presets/` de volta para `talentflow-web/src/styles/presets/`.
 
 2. **Reimportar os Presets no `src/app/globals.css`**:
    Adicione os imports no topo do `globals.css`:

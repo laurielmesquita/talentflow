@@ -12,7 +12,7 @@ O TalentFlow migrou a API do Fly.io para o plano gratuito do Render, com o objet
 
 - Criado o Blueprint [`render.yaml`](../../render.yaml) para o Web Service Docker.
 - Criado o script [`talentflow-api/start-render.sh`](../../talentflow-api/start-render.sh), que executa as migrações Alembic e inicia o Uvicorn na porta fornecida pelo Render.
-- Adicionado o guia operacional [`DEPLOYMENT_RENDER_FREE.md`](../DEPLOYMENT_RENDER_FREE.md).
+- Adicionado o guia operacional [`DEPLOYMENT_RENDER_FREE.md`](../operations/DEPLOYMENT_RENDER_FREE.md).
 - Tornada idempotente a migração de unicidade de e-mail de candidatos, evitando falha quando um dos índices legados não existe.
 - Configurado o serviço `talentflow-api-free` no Render, acompanhando a branch `main`.
 - Preparado o frontend para o novo backend: a CSP aceita o domínio Render e a variável `NEXT_PUBLIC_API_URL` foi configurada na Vercel para Production e Preview.

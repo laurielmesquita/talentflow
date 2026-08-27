@@ -67,10 +67,11 @@ talentflow/
 ```
 
 Para uma documentação detalhada sobre regras e conceitos, consulte:
-* [Funcionalidades & Diferenciais (Visão Comercial)](./docs/features_business.md)
-* [Funcionalidades & Arquitetura (Visão Técnica)](./docs/features_technical.md)
-* [Resumo de Funcionalidades](./docs/features_summary.md)
-* [Technical Snapshot & Post-Mortem](./docs/technical-snapshot.md)
+* [Índice da documentação](./docs/README.md)
+* [Funcionalidades & Diferenciais (Visão Comercial)](./docs/product/features_business.md)
+* [Funcionalidades & Arquitetura (Visão Técnica)](./docs/product/features_technical.md)
+* [Resumo de Funcionalidades](./docs/product/features_summary.md)
+* [Technical Snapshot & Post-Mortem](./docs/architecture/technical-snapshot.md)
 
 ---
 

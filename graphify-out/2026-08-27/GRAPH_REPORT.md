@@ -1,16 +1,16 @@
-# Graph Report - 05-Projetos  (2026-08-27)
+# Graph Report - 05-Projetos  (2026-08-26)
 
 ## Corpus Check
-- 189 files · ~153,614 words
+- 187 files · ~155,039 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1202 nodes · 1936 edges · 126 communities (109 shown, 17 thin omitted)
+- 1214 nodes · 1948 edges · 114 communities (99 shown, 15 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 82 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9d6d613b`
+- Built from commit: `e96aaa1f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -96,20 +96,8 @@
 - 6c1d2e3f4a50_backfill_missing_tenant_owner.py
 - [2.5.1] — 2026-08-25
 - [2.6.0] — 2026-08-26
-- Guia de Troubleshooting: Resolução de Tarefas Travadas e `manage_task`
 - start-render.sh
-- TalentFlow: Funcionalidades e Diferenciais (Visão Comercial)
-- vagas/[slug]/page.tsx
-- ADR-0001 — Stack e organização do monorepo
 - [Unreleased]
-- sandbox.py
-- README.md
-- Documentação do TalentFlow
-- RevealSection.tsx
-- Decisões arquiteturais
-- Design Presets — Standby Archive
-- HeroVisual.tsx
-- [0.3.0] — 2026-06-18
 
 ## God Nodes (most connected - your core abstractions)
 1. `User` - 65 edges
@@ -128,41 +116,41 @@
   talentflow-api/app/api/candidates.py → talentflow-api/app/api/deps.py
 - `ReplaceRequest` --uses--> `ScopedSession`  [INFERRED]
   talentflow-api/app/api/candidates.py → talentflow-api/app/api/deps.py
-- `ReplaceRequest` --uses--> `BatchJob`  [INFERRED]
+- `ReplaceRequest` --uses--> `JobMatch`  [INFERRED]
   talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
-- `ReplaceRequest` --uses--> `Candidate`  [INFERRED]
+- `ReplaceRequest` --uses--> `User`  [INFERRED]
   talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
-- `ReplaceRequest` --uses--> `Category`  [INFERRED]
-  talentflow-api/app/api/candidates.py → talentflow-api/app/models/domain.py
+- `ReplaceRequest` --uses--> `CandidateExtraction`  [INFERRED]
+  talentflow-api/app/api/candidates.py → talentflow-api/app/schemas/extraction.py
 
 ## Import Cycles
 - None detected.
 
-## Communities (126 total, 17 thin omitted)
+## Communities (114 total, 15 thin omitted)
 
 ### Community 0 - "candidates.py"
-Cohesion: 0.13
-Nodes (28): UploadFile, upload_resume(), Tarefa de background: extrai o PDF com Gemini, calcula quality score,     detect, _run_ai_pipeline_background(), calculate_file_hash(), _cleanup(), _configure_cloudinary(), extract_and_upload_photo() (+20 more)
+Cohesion: 0.15
+Nodes (22): calculate_file_hash(), _configure_cloudinary(), extract_and_upload_photo(), extract_candidate_from_pdf(), extract_text(), ingest_directory(), process_ocr_via_gemini(), process_single_pdf() (+14 more)
 
 ### Community 1 - "ScopedSession"
-Cohesion: 0.19
-Nodes (17): Base, OTPVerifyRequest, BaseModel, BatchJob, Candidate, Category, EmailChangeRequest, Experience (+9 more)
+Cohesion: 0.23
+Nodes (18): Base, flag_candidate(), FlagRequest, BaseModel, ReplaceRequest, unflag_candidate(), AuditLog, BatchJob (+10 more)
 
 ### Community 2 - "apiFetch"
 Cohesion: 0.12
-Nodes (26): ChangePasswordPage(), LoginContent(), ConfirmEmailPage(), errorMessage(), Profile, SettingsPage(), emptyForm, ManagedUser (+18 more)
+Nodes (24): ChangePasswordPage(), LoginContent(), ConfirmEmailPage(), errorMessage(), Profile, SettingsPage(), emptyForm, ManagedUser (+16 more)
 
 ### Community 3 - "devDependencies"
-Cohesion: 0.06
-Nodes (31): eslint, eslint-config-next, jsdom, tailwindcss, @tailwindcss/postcss, devDependencies, eslint, eslint-config-next (+23 more)
+Cohesion: 0.05
+Nodes (40): eslint, eslint-config-next, jsdom, tailwindcss, @tailwindcss/postcss, devDependencies, eslint, eslint-config-next (+32 more)
 
 ### Community 4 - "resolve_job_id"
-Cohesion: 0.15
-Nodes (23): delete_candidate(), extract_cloudinary_public_id(), flag_candidate(), FlagRequest, get_candidate_pdf(), get_cloudinary_pdf_bytes(), BackgroundTasks, BaseModel (+15 more)
+Cohesion: 0.11
+Nodes (26): delete_candidate(), extract_cloudinary_public_id(), get_candidate_pdf(), get_candidate_versions(), get_cloudinary_pdf_bytes(), list_candidates(), process_batch_uploads_task(), process_single_file() (+18 more)
 
 ### Community 5 - "dependencies"
-Cohesion: 0.05
-Nodes (38): @base-ui/react, class-variance-authority, clsx, date-fns, framer-motion, lucide-react, motion, next (+30 more)
+Cohesion: 0.06
+Nodes (31): @base-ui/react, class-variance-authority, clsx, date-fns, framer-motion, lucide-react, motion, next (+23 more)
 
 ### Community 6 - "compilerOptions"
 Cohesion: 0.07
@@ -177,28 +165,28 @@ Cohesion: 0.13
 Nodes (15): Avatar(), CandidateStats, CategoryStats, container, DashboardClient(), DashboardStats, formatTimeAgo(), getInitials() (+7 more)
 
 ### Community 9 - "api/auth.py"
-Cohesion: 0.05
-Nodes (85): datetime, Response, change_password(), confirm_email_change(), export_personal_data(), forgot_password(), get_profile(), login() (+77 more)
+Cohesion: 0.07
+Nodes (53): Response, change_password(), confirm_email_change(), export_personal_data(), forgot_password(), get_profile(), login(), logout() (+45 more)
 
 ### Community 10 - "components.json"
 Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 11 - "public_apply.py"
-Cohesion: 0.11
-Nodes (22): apply_to_job(), _detect_divergences(), _generate_otp(), get_application_status(), BackgroundTasks, Path, Request, Session (+14 more)
+Cohesion: 0.12
+Nodes (22): apply_to_job(), _detect_divergences(), _generate_otp(), get_application_status(), OTPVerifyRequest, BackgroundTasks, BaseModel, Path (+14 more)
 
 ### Community 12 - "main.py"
 Cohesion: 0.13
 Nodes (10): main(), print_report(), Any, run_benchmark(), Testa se o endpoint GET /health responde adequadamente, Testa se o endpoint GET /api/health responde adequadamente, Testa se o endpoint raiz GET / responde com status ok e versão 2.6.0, test_api_health_endpoint() (+2 more)
 
 ### Community 13 - "app/page.tsx"
-Cohesion: 0.24
-Nodes (6): metadata, SandboxDemo, SandboxDemoWrapper(), ScrollToTop(), ThreeOrbBackdrop, ThreeOrbBackdropDynamic()
+Cohesion: 0.13
+Nodes (11): metadata, signals, RevealSection(), RevealSectionProps, RevealVariant, variants, SandboxDemo, SandboxDemoWrapper() (+3 more)
 
 ### Community 14 - "JobApplicationForm.tsx"
-Cohesion: 0.25
-Nodes (6): FieldError, FormData, JobApplicationForm(), JobApplicationFormProps, Step, validateForm()
+Cohesion: 0.14
+Nodes (11): generateMetadata(), getPublicJob(), PageProps, PublicJobPage(), FieldError, FormData, JobApplicationForm(), JobApplicationFormProps (+3 more)
 
 ### Community 15 - "index.ts"
 Cohesion: 0.29
@@ -209,16 +197,16 @@ Cohesion: 0.14
 Nodes (12): CandidatesPage(), metadata, CandidateTable(), DeleteConfirmModalProps, getCandidates(), getCategories(), Candidate, CandidatesResponse (+4 more)
 
 ### Community 17 - "Job"
-Cohesion: 0.11
-Nodes (21): Candidate, get_candidate(), list_candidates(), UUID, Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo,, _alert(), calculate_quality_score(), TalentFlow — CV Quality Score Engine (v1.0)  Responsabilidade única: calcular a (+13 more)
+Cohesion: 0.15
+Nodes (18): Candidate, replace_candidate(), CandidateExtraction, ExperienceItem, BaseModel, _alert(), calculate_quality_score(), TalentFlow — CV Quality Score Engine (v1.0)  Responsabilidade única: calcular a (+10 more)
 
 ### Community 18 - "Navbar.tsx"
-Cohesion: 0.13
-Nodes (6): AppShellProps, JobMatchViewer(), Match, MatchResponse, NAV_LINKS, PageHeaderProps
+Cohesion: 0.29
+Nodes (3): JobMatchViewer(), Match, MatchResponse
 
 ### Community 19 - "services/auth.py"
-Cohesion: 0.23
-Nodes (21): _active_manager_count(), create_user(), deactivate_user(), _get_user_or_404(), _protect_last_manager(), _protect_owner(), _protect_super_admin_grant(), UUID (+13 more)
+Cohesion: 0.06
+Nodes (63): create_checkout_session(), create_customer_portal_session(), Request, Session, Cria uma sessão de checkout no Stripe para o plano escolhido., Cria uma sessão no portal do cliente (para gerenciar assinaturas, ver faturas, e, Recebe eventos assíncronos do Stripe (assinatura criada, cancelada, falha no pag, stripe_webhook() (+55 more)
 
 ### Community 20 - "jobs/page.tsx"
 Cohesion: 0.29
@@ -226,27 +214,27 @@ Nodes (7): Job, JobsPage(), metadata, Job, metadata, SmartMatchPage(), getJobs()
 
 ### Community 21 - "schemas/auth.py"
 Cohesion: 0.12
-Nodes (15): [0.1.0] — 2026-06-16, [0.4.0] — 2026-06-19, [0.6.0] — 2026-06-20, [0.7.0] — 2026-06-21, [0.8.0] — 2026-06-21, [0.9.0] — 2026-06-21, [1.0.0] — 2026-06-21, Adicionado (+7 more)
+Nodes (15): [0.3.0] — 2026-06-18, [0.4.0] — 2026-06-19, [0.6.0] — 2026-06-20, [0.7.0] — 2026-06-21, [0.8.0] — 2026-06-21, [0.9.0] — 2026-06-21, [1.0.0] — 2026-06-21, Adicionado (+7 more)
 
 ### Community 22 - "sandbox.py"
-Cohesion: 0.13
-Nodes (17): get_public_job(), list_public_jobs(), Session, Retorna a listagem de todas as vagas ativas no portal público.     Não exige aut, Retorna os detalhes de uma vaga pública específica identificada pelo slug semânt, _serialize_public_job(), PublicJobResponse, BaseModel (+9 more)
+Cohesion: 0.06
+Nodes (39): datetime, get_public_job(), list_public_jobs(), Session, Retorna a listagem de todas as vagas ativas no portal público.     Não exige aut, Retorna os detalhes de uma vaga pública específica identificada pelo slug semânt, _serialize_public_job(), extract_resume_sandbox() (+31 more)
 
 ### Community 23 - "generate-og.js"
 Cohesion: 0.33
 Nodes (6): backupDir, brandDir, fs, generateOgImage(), path, sharp
 
 ### Community 24 - "CandidateAuditWorkspace.tsx"
-Cohesion: 0.20
-Nodes (10): 1️⃣ Inicialização do Backend & Banco de Dados, 2️⃣ Inicialização do Frontend, 3️⃣ Ingestão Automatizada por Script CLI, ⚙️ Arquitetura de Destaque no Repositório, Backend, Infraestrutura & IA (Data Ingestion Pipeline), 📂 Estrutura do Monorepo, Frontend & UI Experience (Camada de Visão), ⚙️ Instalação e Execução Local (+2 more)
+Cohesion: 0.04
+Nodes (41): 1. Ingestão e Processamento Inteligente de Currículos, 2. Banco de Talentos e Gestão de Candidatos, 3. Gestão de Vagas e Compatibilidade (Smart Match com IA), 4. Arquitetura SaaS Multi-Tenant (B2B), 5. Auditoria Interativa de Currículos (Workspace Side-by-Side), 6. Portal Público de Vagas e Candidatura, 7. Landing Page de Marketing e Captação de Leads, TalentFlow: Funcionalidades e Diferenciais (Visão Comercial) (+33 more)
 
 ### Community 25 - "layout.tsx"
 Cohesion: 0.25
 Nodes (6): Footer, inter, jetbrainsMono, metadata, { version }, ThemeProvider()
 
 ### Community 26 - "send_reset_password_email"
-Cohesion: 0.12
-Nodes (16): get_batch_job_status(), get_candidate_versions(), Consulta o estado de processamento de um lote de upload.     Retorna percentual, CategoryCreate, CategoryUpdate, create_category(), delete_category(), list_categories() (+8 more)
+Cohesion: 0.07
+Nodes (27): 1. Objetivo, 2. Diagnóstico, 3.1 Conceito, 3.2 Estratégia híbrida aprovada, 3.3 Moodboards aprovados, 3. Direção Visual Principal, 3D e motion, 4. O que foi entregue (fundação técnica) (+19 more)
 
 ### Community 27 - "generate_slug"
 Cohesion: 0.06
@@ -257,8 +245,8 @@ Cohesion: 0.40
 Nodes (5): brandDir, fs, optimizeImages(), path, sharp
 
 ### Community 29 - "preset-provider.tsx"
-Cohesion: 0.36
-Nodes (8): get_dashboard_stats(), get_job(), list_jobs(), _serialize_job(), _tenant_expression_seen(), test_dashboard_applies_tenant_filter_to_all_aggregate_queries(), test_job_from_another_tenant_is_not_found(), test_job_listing_uses_the_scoped_query()
+Cohesion: 0.19
+Nodes (13): get_candidate(), get_dashboard_stats(), get_job(), list_jobs(), Testa se a listagem de candidatos inclui original_pdf_url e pdf_url em cada item, Testa se o detalhe do candidato retorna os campos pdf_url e original_pdf_url cor, test_get_candidate_returns_original_pdf_url(), test_list_candidates_includes_original_pdf_url() (+5 more)
 
 ### Community 31 - "PDFViewer.tsx"
 Cohesion: 0.50
@@ -285,24 +273,24 @@ Cohesion: 0.29
 Nodes (6): API — segurança e confiabilidade, Decisões e limites, Objetivo, Registro de evolução — Hardening e consolidação, Validação prevista, Web — consolidação estrutural
 
 ### Community 55 - "DeleteConfirmModal.tsx"
-Cohesion: 0.17
-Nodes (11): getJobDetail(), JobDetailPage(), PageProps, BatchUploadButtonProps, UploadStatus, DashboardClientProps, JobCardProps, JobFormDrawerProps (+3 more)
+Cohesion: 0.16
+Nodes (11): BatchUploadButtonProps, UploadStatus, Category, DashboardClientProps, JobCardProps, JobFormDrawerProps, PageHeaderProps, Portal() (+3 more)
 
 ### Community 57 - "number-ticker.tsx"
-Cohesion: 0.18
-Nodes (15): _cloudinary_assets(), _delete_cloudinary_assets(), purge_due_tenants(), purge_tenant(), Session, UUID, Purge every currently due tenant, one committed tenant at a time., Return unique Cloudinary public IDs and resource types for a tenant. (+7 more)
+Cohesion: 0.12
+Nodes (15): 1. Visão Geral da Pipeline de CI/CD, 2. Passo a Passo Completo para Salvar & Subir Alterações (Git Workflow), 3. Monitoramento dos Deploys em Produção, 4. Deploys Manuais de Emergência (Se a pipeline falhar), 5. Padrão de Mensagens de Commit (Conventional Commits), A. Deploy Manual do Backend fallback (Fly.io), A. Frontend (Vercel), B. Backend principal (Render Free) (+7 more)
 
 ### Community 58 - "shimmer-button.tsx"
 Cohesion: 0.06
 Nodes (29): Contexto, Decisão de rollout, Implementação registrada, Incidentes e correções, Próximos passos, Registro de mudança — Migração da API para Render Free, Validação realizada, Configuração (+21 more)
 
 ### Community 59 - "shine-border.tsx"
-Cohesion: 0.12
-Nodes (15): 1. Visão Geral da Pipeline de CI/CD, 2. Passo a Passo Completo para Salvar & Subir Alterações (Git Workflow), 3. Monitoramento dos Deploys em Produção, 4. Deploys Manuais de Emergência (Se a pipeline falhar), 5. Padrão de Mensagens de Commit (Conventional Commits), A. Deploy Manual do Backend fallback (Fly.io), A. Frontend (Vercel), B. Backend principal (Render Free) (+7 more)
+Cohesion: 0.28
+Nodes (20): cancel_closure(), get_closure_status(), _get_current_tenant(), request_closure(), _require_owner(), transfer_owner(), BaseModel, TenantClosureRequest (+12 more)
 
 ### Community 62 - "migrate_db_data.py"
-Cohesion: 0.28
-Nodes (12): create_job(), JobCreate, JobUpdate, match_candidates(), BaseModel, update_job(), JobMatch, JobResponse (+4 more)
+Cohesion: 0.24
+Nodes (15): create_job(), JobCreate, JobUpdate, match_candidates(), BaseModel, _serialize_job(), update_job(), JobMatch (+7 more)
 
 ### Community 70 - "design-switcher.tsx"
 Cohesion: 0.17
@@ -321,16 +309,16 @@ Cohesion: 0.40
 Nodes (4): downgrade(), Upgrade schema: substitui indice global por indice composto por tenant., Downgrade schema: restaura indice global (nao recomendado)., upgrade()
 
 ### Community 77 - "2. Padrões por Módulo de Negócio"
-Cohesion: 0.17
-Nodes (12): 10. Integração de Billing Stripe, 11. Utilitários de Infraestrutura, 1. Backend & IA (Data Ingestion Pipeline), 2. Arquitetura Multi-Tenant SaaS (B2B), 3. Engine de Smart Match & Warm Path Cache, 4. Frontend Next.js & Performance Visual (UX), 5. Autenticação, RBAC e Segurança de Sessão, 6. Serviço Proxy de PDF & Workspace de Auditoria (+4 more)
+Cohesion: 0.25
+Nodes (7): 1. Filosofia Visual, 2. Padrões por Módulo de Negócio, 3. Animações e Microinterações, A. Gestão de Candidatos & Kanban (`/candidates`), B. Smart Match & Inteligência Artificial (`/smart-match`), C. Dashboard & Tabelas (`/dashboard`, `/jobs`), Sistema de Design & UX - TalentFlow (ATS & AI Recruitment Platform)
 
 ### Community 78 - "Fases de Execução do Review"
-Cohesion: 0.23
-Nodes (9): Dependency class to restrict access based on user roles., RoleChecker, _request(), test_current_user_accepts_http_only_cookie(), test_current_user_rejects_missing_token(), test_role_checker_allows_configured_role(), test_role_checker_rejects_role_outside_allowlist(), test_scoped_session_filters_queries_by_tenant() (+1 more)
-
-### Community 79 - "Guia de Troubleshooting: Resolução de Tarefas Travadas e `manage_task`"
 Cohesion: 0.20
 Nodes (7): Directriz de Validação, Fase 1: Síntese e Extração de Apontamentos, Fase 2: Auditoria Cruzada com o Codebase Real, Fase 3: Matriz de Priorização e ROI Técnico, Fase 4: Apresentação Executiva & Alinhamento de Decisões, Fases de Execução do Review, Plano de Ação: Review Estruturado de Arquitetura (TalentFlow API & Web)
+
+### Community 79 - "Guia de Troubleshooting: Resolução de Tarefas Travadas e `manage_task`"
+Cohesion: 0.25
+Nodes (7): 1. O Que É o `manage_task`, 2. Diagnóstico Técnico do Travamento na UI, 3. Como Solicitar a Limpeza ao Agente, 4. Fluxo de Execução Interno do Agente, Causa Raiz, Guia de Troubleshooting: Resolução de Tarefas Travadas e `manage_task`, Prompts Recomendados:
 
 ### Community 80 - "2. Padrões por Módulo de Negócio"
 Cohesion: 0.25
@@ -345,8 +333,8 @@ Cohesion: 0.50
 Nodes (4): CategoriesPage(), Category, getCategories(), metadata
 
 ### Community 83 - "Design Presets — Standby Archive"
-Cohesion: 0.20
-Nodes (9): 1. Stack & Arquitetura Atual, 2. Novas Funcionalidades (desde a v2.4.0), 3. Backlog Prioritário para v2.7.0, 4. Diretrizes de Governança (`AGENTS.md`), 📚 Consolidação Documental, Encerramento do tenant (em preparação para v2.7.0), Gerenciamento de usuários (v2.6.0), 🚀 Serviço Proxy de PDF & Workspace de Auditoria (+1 more)
+Cohesion: 0.50
+Nodes (3): 🔄 Como Reativar o Design Presets no Futuro, Design Presets — Standby Archive, 📁 Estrutura dos Arquivos em Standby
 
 ### Community 85 - "architecture-review-api.md"
 Cohesion: 0.50
@@ -373,12 +361,12 @@ Cohesion: 0.83
 Nodes (3): _request(), test_checkout_webhook_updates_tenant_and_is_idempotent(), test_webhook_is_unavailable_without_secret()
 
 ### Community 92 - "SearchAndFilters.tsx"
-Cohesion: 0.31
-Nodes (9): process_batch_uploads_task(), process_single_file(), Path, Atualiza com segurança o progresso de um BatchJob.     Trabalha com uma nova ses, Executa a extração síncrona de um PDF e persiste no banco de dados.     Verifica, Envolve a execução da extração síncrona dentro do semáforo global     e executa, Task de Background que consome arquivos do lote de forma sequencial,     garanti, run_extraction_and_save() (+1 more)
+Cohesion: 0.67
+Nodes (3): getJobDetail(), JobDetailPage(), PageProps
 
 ### Community 94 - "ApiError"
-Cohesion: 0.22
-Nodes (6): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), ApiError
+Cohesion: 0.17
+Nodes (7): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), AppShellProps, ApiError
 
 ### Community 95 - "[1.2.0] — 2026-06-23"
 Cohesion: 0.67
@@ -389,12 +377,8 @@ Cohesion: 0.67
 Nodes (3): [2.3.0] — 2026-08-04, Adicionado, Modificado
 
 ### Community 98 - "DeleteConfirmModal.tsx"
-Cohesion: 0.33
-Nodes (6): react, react, getClientSnapshot(), getServerSnapshot(), subscribe(), ThemeToggle()
-
-### Community 102 - "[0.6.0] — 2026-06-20"
-Cohesion: 0.25
-Nodes (7): 1. Filosofia Visual, 2. Padrões por Módulo de Negócio, 3. Animações e Microinterações, A. Gestão de Candidatos & Kanban (`/candidates`), B. Smart Match & Inteligência Artificial (`/smart-match`), C. Dashboard & Tabelas (`/dashboard`, `/jobs`), Sistema de Design & UX - TalentFlow (ATS & AI Recruitment Platform)
+Cohesion: 0.29
+Nodes (5): NAV_LINKS, getClientSnapshot(), getServerSnapshot(), subscribe(), ThemeToggle()
 
 ### Community 103 - "[0.9.0] — 2026-06-21"
 Cohesion: 0.33
@@ -412,60 +396,24 @@ Nodes (4): [2.5.1] — 2026-08-25, Adicionado, Corrigido, Validado
 Cohesion: 0.67
 Nodes (3): [2.6.0] — 2026-08-26, Adicionado, Segurança
 
-### Community 110 - "Guia de Troubleshooting: Resolução de Tarefas Travadas e `manage_task`"
-Cohesion: 0.25
-Nodes (7): 1. O Que É o `manage_task`, 2. Diagnóstico Técnico do Travamento na UI, 3. Como Solicitar a Limpeza ao Agente, 4. Fluxo de Execução Interno do Agente, Causa Raiz, Guia de Troubleshooting: Resolução de Tarefas Travadas e `manage_task`, Prompts Recomendados:
-
-### Community 112 - "TalentFlow: Funcionalidades e Diferenciais (Visão Comercial)"
-Cohesion: 0.25
-Nodes (8): 1. Ingestão e Processamento Inteligente de Currículos, 2. Banco de Talentos e Gestão de Candidatos, 3. Gestão de Vagas e Compatibilidade (Smart Match com IA), 4. Arquitetura SaaS Multi-Tenant (B2B), 5. Auditoria Interativa de Currículos (Workspace Side-by-Side), 6. Portal Público de Vagas e Candidatura, 7. Landing Page de Marketing e Captação de Leads, TalentFlow: Funcionalidades e Diferenciais (Visão Comercial)
-
-### Community 113 - "vagas/[slug]/page.tsx"
-Cohesion: 0.32
-Nodes (5): generateMetadata(), getPublicJob(), PageProps, PublicJobPage(), PublicJobDetailProps
-
-### Community 114 - "ADR-0001 — Stack e organização do monorepo"
-Cohesion: 0.29
-Nodes (6): ADR-0001 — Stack e organização do monorepo, Alternativas consideradas, Consequências, Contexto, Decisão, Referências
-
 ### Community 115 - "[Unreleased]"
 Cohesion: 0.50
 Nodes (4): Configurações de conta, Fundação UX/UI, Preparação do encerramento de organização, [Unreleased]
 
-### Community 118 - "sandbox.py"
-Cohesion: 0.43
-Nodes (6): extract_resume_sandbox(), BaseModel, Request, UploadFile, SandboxExperience, SandboxResponse
-
-### Community 120 - "Documentação do TalentFlow"
-Cohesion: 0.40
-Nodes (4): Convenção de revisão, Documentação do TalentFlow, Mapa rápido, Regras de manutenção
-
-### Community 121 - "RevealSection.tsx"
-Cohesion: 0.40
-Nodes (4): RevealSection(), RevealSectionProps, RevealVariant, variants
-
-### Community 122 - "Decisões arquiteturais"
-Cohesion: 0.50
-Nodes (3): Convenção, Decisões arquiteturais, Template mínimo
-
-### Community 123 - "Design Presets — Standby Archive"
-Cohesion: 0.50
-Nodes (3): 🔄 Como Reativar o Design Presets no Futuro, Design Presets — Standby Archive, 📁 Estrutura dos Arquivos em Standby
-
 ## Knowledge Gaps
-- **376 isolated node(s):** `pre-commit.sh script`, `talentflow-api`, `start-render.sh script`, `$schema`, `style` (+371 more)
+- **387 isolated node(s):** `pre-commit.sh script`, `talentflow-api`, `start-render.sh script`, `$schema`, `style` (+382 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `ThemeToggle()` connect `DeleteConfirmModal.tsx` to `apiFetch`, `Navbar.tsx`?**
-  _High betweenness centrality (0.033) - this node is a cross-community bridge._
-- **Why does `User` connect `api/auth.py` to `candidates.py`, `ScopedSession`, `resolve_job_id`, `Fases de Execução do Review`, `Job`, `services/auth.py`, `send_reset_password_email`, `migrate_db_data.py`?**
-  _High betweenness centrality (0.033) - this node is a cross-community bridge._
-- **Why does `dependencies` connect `dependencies` to `DeleteConfirmModal.tsx`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
+- **Why does `ThemeToggle()` connect `DeleteConfirmModal.tsx` to `dependencies`?**
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `User` connect `services/auth.py` to `ScopedSession`, `resolve_job_id`, `api/auth.py`, `Job`, `shine-border.tsx`, `preset-provider.tsx`, `migrate_db_data.py`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+- **Why does `dependencies` connect `dependencies` to `devDependencies`?**
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `User` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?**
   _`User` has 9 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 7 inferred relationships involving `ScopedSession` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?**

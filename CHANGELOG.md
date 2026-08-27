@@ -50,7 +50,7 @@ Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organ
 Versão de manutenção que consolida a migração da API para o Render Free, a estabilização operacional pós-migração e o registro das validações de produção.
 
 ### Adicionado
-- **Migração para Render Free:** API publicada e promovida para produção na branch `main`, com health check, execução controlada das migrações Alembic e documentação operacional em `docs/DEPLOYMENT_RENDER_FREE.md`.
+- **Migração para Render Free:** API publicada e promovida para produção na branch `main`, com health check, execução controlada das migrações Alembic e documentação operacional em `docs/operations/DEPLOYMENT_RENDER_FREE.md`.
 - **Registro de evolução:** Incidentes dos primeiros deploys, correções aplicadas e critérios de rollout documentados em `docs/change-records/2026-08-24-render-free-migration.md`.
 - **Frontend em produção:** CSP permite o domínio Render e `NEXT_PUBLIC_API_URL` está configurada na Vercel para Production e Preview.
 

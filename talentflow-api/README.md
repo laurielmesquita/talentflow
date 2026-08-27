@@ -108,6 +108,6 @@ A arquitetura OpenAPI gera documentação Swagger UI automaticamente em `http://
 
 ## 🚢 Setup de Deploy
 
-O ambiente principal usa o Render Free, configurado por [`render.yaml`](../render.yaml), com raiz `talentflow-api`, Dockerfile existente, health check em `/health` e inicialização por [`start-render.sh`](./start-render.sh). Consulte [`docs/DEPLOYMENT_RENDER_FREE.md`](../docs/DEPLOYMENT_RENDER_FREE.md) para o procedimento operacional.
+O ambiente principal usa o Render Free, configurado por [`render.yaml`](../render.yaml), com raiz `talentflow-api`, Dockerfile existente, health check em `/health` e inicialização por [`start-render.sh`](./start-render.sh). Consulte [`docs/operations/DEPLOYMENT_RENDER_FREE.md`](../docs/operations/DEPLOYMENT_RENDER_FREE.md) para o procedimento operacional.
 
 O Fly.io permanece parado como fallback operacional manual, descrito em `fly.toml` e na GitHub Action `fly-deploy.yml`. O merge na `main` não dispara o Fly.io.

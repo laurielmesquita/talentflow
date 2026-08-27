@@ -34,7 +34,7 @@ git add .
 ```
 Ou selecionar cirurgicamente:
 ```bash
-git add talentflow-web/next.config.ts talentflow-web/src/components/PDFViewer.tsx docs/technical-snapshot.md
+git add talentflow-web/next.config.ts talentflow-web/src/components/PDFViewer.tsx docs/architecture/technical-snapshot.md
 ```
 
 ### Passo 3: Criar o Commit Seguindo a Convenção de Nomenclatura

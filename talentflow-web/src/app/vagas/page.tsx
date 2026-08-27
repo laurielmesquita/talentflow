@@ -37,12 +37,12 @@ export default async function PublicJobsPage() {
     <>
       <LandingHeader />
       <Suspense fallback={
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-background text-muted-foreground">
           <div className="relative">
             <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
             <div className="absolute inset-0 bg-primary/10 blur-xl rounded-full"></div>
           </div>
-          <p className="mt-4 text-slate-500 font-medium animate-pulse">Carregando oportunidades...</p>
+          <p className="mt-4 animate-pulse font-medium">Carregando oportunidades...</p>
         </div>
       }>
         <PublicJobsList initialJobs={jobs} />

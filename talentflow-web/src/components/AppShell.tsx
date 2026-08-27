@@ -21,8 +21,7 @@ export default function AppShell({
   className = '',
 }: AppShellProps) {
   return (
-    <div className={`dashboard-atmosphere flex-1 bg-background text-foreground ${className}`}>
-      <div className="ambient-warm-orb" aria-hidden="true" />
+    <div className={`flex-1 bg-background text-foreground ${className}`}>
       <Navbar />
       {title && <PageHeader title={title} subtitle={subtitle} actions={actions} />}
       {children}

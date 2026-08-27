@@ -25,7 +25,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
 
   // Sync props to state
   useEffect(() => {
-    setJobs(initialJobs);
+    queueMicrotask(() => setJobs(initialJobs));
   }, [initialJobs]);
 
   const selectedJob = jobs.find((j) => j.id === jobId);
@@ -75,7 +75,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
             </h3>
 
             {jobs.length === 0 ? (
-              <div className="glass-panel-strong p-8 rounded-2xl border-border/50 text-center">
+              <div className="glass-panel-strong border-l-2 border-l-primary p-8 text-center">
                 <Briefcase className="w-8 h-8 text-muted-foreground mx-auto mb-2 opacity-40" />
                 <p className="text-xs text-muted-foreground">Nenhuma vaga cadastrada.</p>
               </div>
@@ -146,7 +146,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
           {/* Coluna direita: Painel de Match & Detalhes com Brilho High-Tech */}
           <div className="lg:col-span-2">
             {!selectedJob ? (
-              <div className="glass-panel-strong border-border/50 rounded-2xl p-12 min-h-[500px] flex flex-col items-center justify-center text-muted-foreground">
+              <div className="glass-panel-strong border-border/50 p-12 min-h-[500px] flex flex-col items-center justify-center text-muted-foreground">
                 {jobs.length === 0 ? (
                   <>
                     <Briefcase className="w-12 h-12 mb-4 opacity-20 text-muted-foreground" />
@@ -157,7 +157,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
                   </>
                 ) : (
                   <>
-                    <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 text-primary shadow-[0_0_20px_rgba(var(--primary),0.15)]">
+                    <div className="w-14 h-14 bg-accent/50 border border-primary/20 flex items-center justify-center mb-4 text-primary">
                       <Target className="w-7 h-7 animate-pulse" />
                     </div>
                     <p className="text-base font-semibold text-foreground">Selecione uma vaga ao lado</p>
@@ -168,7 +168,7 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
                 )}
               </div>
             ) : (
-              <div className="glass-panel-strong border-primary/25 shadow-[0_0_35px_color-mix(in_oklch,var(--primary)_12%,transparent)] rounded-2xl p-6 min-h-[500px] flex flex-col transition-all duration-300">
+              <div className="glass-panel-strong border-l-2 border-l-primary p-6 min-h-[500px] flex flex-col transition-all duration-300">
                 
                 {/* Header do painel detalhado */}
                 <div className="flex flex-col md:flex-row md:items-start justify-between border-b border-border/40 pb-5 mb-5 gap-4">

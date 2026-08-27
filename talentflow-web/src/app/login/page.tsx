@@ -28,7 +28,7 @@ function LoginContent() {
 
   useEffect(() => {
     if (searchParams.get('signup') === 'true') {
-      setIsSignUp(true);
+      queueMicrotask(() => setIsSignUp(true));
     }
     return () => {
       if (successTimer.current) clearTimeout(successTimer.current);
@@ -56,7 +56,7 @@ function LoginContent() {
         body = { email, password };
       }
 
-      const data = await apiFetch(endpoint, {
+      const data = await apiFetch<{ access_token: string; role: string; full_name: string; email: string }>(endpoint, {
         method: 'POST',
         body: JSON.stringify(body),
       });
@@ -69,8 +69,8 @@ function LoginContent() {
       successTimer.current = setTimeout(() => {
         window.location.href = redirect;
       }, 1500);
-    } catch (err: any) {
-      setError(err.message || 'Erro de conexão com o servidor.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro de conexão com o servidor.');
       setLoading(false);
     }
   };

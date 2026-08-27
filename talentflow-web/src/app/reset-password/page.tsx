@@ -19,7 +19,7 @@ function ResetPasswordContent() {
 
   useEffect(() => {
     if (!token) {
-      setError('Token de redefinição ausente. Utilize o link enviado por e-mail.');
+      queueMicrotask(() => setError('Token de redefinição ausente. Utilize o link enviado por e-mail.'));
     }
   }, [token]);
 
@@ -58,8 +58,8 @@ function ResetPasswordContent() {
       }
 
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Erro de conexão.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro de conexão.');
     } finally {
       setLoading(false);
     }

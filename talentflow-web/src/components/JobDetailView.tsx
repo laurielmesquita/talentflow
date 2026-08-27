@@ -82,7 +82,7 @@ export default function JobDetailView({ initialJob }: { initialJob: Job }) {
 
   const handleEditSuccess = async () => {
     try {
-      const updatedJob = await apiFetch(`/api/jobs/${job.id}`);
+      const updatedJob = await apiFetch<Job>(`/api/jobs/${job.id}`);
       setJob(updatedJob);
     } catch (error) {
       console.error("Erro ao recarregar dados da vaga:", error);

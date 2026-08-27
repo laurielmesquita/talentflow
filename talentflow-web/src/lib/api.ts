@@ -8,9 +8,9 @@ interface ApiOptions extends RequestInit {
 
 export class ApiError extends Error {
   status: number;
-  data: any;
+  data: unknown;
 
-  constructor(message: string, status: number, data?: any) {
+  constructor(message: string, status: number, data?: unknown) {
     super(message);
     this.name = 'ApiError';
     this.status = status;
@@ -18,7 +18,7 @@ export class ApiError extends Error {
   }
 }
 
-export async function apiFetch<T = any>(path: string, options: ApiOptions = {}): Promise<T> {
+export async function apiFetch<T = unknown>(path: string, options: ApiOptions = {}): Promise<T> {
   const { skipAuth, ...fetchOptions } = options;
 
   const headers: Record<string, string> = {
@@ -57,7 +57,7 @@ export async function apiFetch<T = any>(path: string, options: ApiOptions = {}):
 
   if (!res.ok) {
     throw new ApiError(
-      data.detail || `Erro ${res.status}`,
+      (data as { detail?: string }).detail || `Erro ${res.status}`,
       res.status,
       data
     );

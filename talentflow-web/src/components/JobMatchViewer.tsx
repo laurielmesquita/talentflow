@@ -47,29 +47,26 @@ export default function JobMatchViewer() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!jobId) {
-      setData(null);
-      setError(null);
-      return;
-    }
-
     let cancelled = false;
-    setLoading(true);
-    setError(null);
-
-    apiFetch(`/api/jobs/${jobId}/match`)
-      .then((json) => {
-        if (!cancelled) {
-          setData(json);
-          setLoading(false);
-        }
-      })
-      .catch(() => {
-        if (!cancelled) {
-          setError('Erro ao carregar compatibilidade. Verifique se a API está rodando.');
-          setLoading(false);
-        }
-      });
+    queueMicrotask(() => {
+      if (!jobId) {
+        setData(null);
+        setError(null);
+        return;
+      }
+      setLoading(true);
+      setError(null);
+      apiFetch<MatchResponse>(`/api/jobs/${jobId}/match`)
+        .then((json) => {
+          if (!cancelled) { setData(json); setLoading(false); }
+        })
+        .catch(() => {
+          if (!cancelled) {
+            setError('Erro ao carregar compatibilidade. Verifique se a API está rodando.');
+            setLoading(false);
+          }
+        });
+    });
 
     return () => {
       cancelled = true;
@@ -80,7 +77,7 @@ export default function JobMatchViewer() {
   if (!jobId) {
     return (
       <div className="h-full flex flex-col items-center justify-center text-muted-foreground py-20">
-        <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4 text-primary shadow-[0_0_20px_rgba(var(--primary),0.15)]">
+        <div className="w-14 h-14 bg-accent/50 border border-primary/20 flex items-center justify-center mb-4 text-primary">
           <Target className="w-7 h-7 animate-pulse" />
         </div>
         <p className="text-base font-semibold text-foreground">Selecione uma vaga ao lado</p>
@@ -213,7 +210,7 @@ export default function JobMatchViewer() {
                     initial={{ width: 0 }}
                     animate={{ width: `${cand.match_score}%` }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] as [number, number, number, number], delay: 0.15 * idx }}
-                    className="h-full rounded-full bg-gradient-to-r from-primary/70 via-primary to-emerald-400"
+                    className="h-full bg-primary"
                   />
                 </div>
 
@@ -240,4 +237,3 @@ export default function JobMatchViewer() {
     </div>
   );
 }
-

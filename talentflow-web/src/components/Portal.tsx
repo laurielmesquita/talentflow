@@ -9,12 +9,7 @@ interface PortalProps {
 }
 
 export default function Portal({ children, lockScroll = false }: PortalProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
+  const [mounted] = useState(() => typeof window !== 'undefined');
 
   useEffect(() => {
     if (!mounted || !lockScroll) return;

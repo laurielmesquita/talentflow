@@ -188,8 +188,8 @@ export default function JobApplicationForm({ jobSlug, jobTitle, onClose }: JobAp
       const data = await res.json();
       setApplicationId(data.application_id);
       setStep("otp");
-    } catch (err: any) {
-      setErrors({ general: err.message });
+    } catch (err: unknown) {
+      setErrors({ general: err instanceof Error ? err.message : 'Erro ao enviar candidatura.' });
     } finally {
       setIsSubmitting(false);
     }

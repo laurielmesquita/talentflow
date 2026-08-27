@@ -22,7 +22,7 @@ export default function PrivacyPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">1. Visão Geral e Compromisso LGPD</h2>
             <p>
-              Esta Política de Privacidade descreve como a plataforma TalentFlow ("Plataforma"), de propriedade e operada pela Space Square, coleta, armazena, processa, utiliza e protege as informações e dados pessoais de seus usuários e dos candidatos cujos currículos são triados no sistema, em conformidade estrita com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).
+              Esta Política de Privacidade descreve como a plataforma TalentFlow (&quot;Plataforma&quot;), de propriedade e operada pela Space Square, coleta, armazena, processa, utiliza e protege as informações e dados pessoais de seus usuários e dos candidatos cujos currículos são triados no sistema, em conformidade estrita com a Lei Geral de Proteção de Dados (LGPD - Lei nº 13.709/2018).
             </p>
           </section>
 
@@ -32,7 +32,7 @@ export default function PrivacyPage() {
               De acordo com os conceitos da LGPD, os papéis de tratamento no ecossistema TalentFlow são definidos da seguinte forma:
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li><strong>Controlador:</strong> A empresa cliente ("Tenant") que contrata o TalentFlow e realiza o upload dos currículos e informações de vagas. O Tenant decide quais currículos processar, de quais fontes obtê-los, os prazos de retenção e as decisões finais de recrutamento.</li>
+              <li><strong>Controlador:</strong> A empresa cliente (&quot;Tenant&quot;) que contrata o TalentFlow e realiza o upload dos currículos e informações de vagas. O Tenant decide quais currículos processar, de quais fontes obtê-los, os prazos de retenção e as decisões finais de recrutamento.</li>
               <li><strong>Operador:</strong> A Space Square (TalentFlow), que atua estritamente seguindo as diretrizes e instruções técnicas do Tenant para fornecer as funcionalidades de OCR, extração de dados e pontuação de compatibilidade baseada em Inteligência Artificial.</li>
               <li><strong>Encarregado de Dados (DPO):</strong> O canal oficial para comunicação sobre privacidade com o Operador é o e-mail: <a href="mailto:plataforma.talentflow@outlook.com" className="text-primary hover:underline">plataforma.talentflow@outlook.com</a>.</li>
             </ul>

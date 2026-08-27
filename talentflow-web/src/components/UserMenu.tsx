@@ -27,9 +27,11 @@ export default function UserMenu() {
 
   useEffect(() => {
     const session = getSession();
-    setUserName(session.name);
-    setUserEmail(session.email);
-    setUserRole(session.role);
+    queueMicrotask(() => {
+      setUserName(session.name);
+      setUserEmail(session.email);
+      setUserRole(session.role);
+    });
   }, []);
 
   // Fechar dropdown ao clicar fora

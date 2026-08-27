@@ -34,7 +34,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    setJobs(initialJobs);
+    queueMicrotask(() => setJobs(initialJobs));
   }, [initialJobs]);
 
   const handleOpenCreateDrawer = () => {
@@ -118,7 +118,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
         actions={
           <button
             onClick={handleOpenCreateDrawer}
-            className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-md shadow-primary/10 cursor-pointer"
+            className="flex items-center gap-2 bg-primary hover:bg-primary/95 text-primary-foreground px-4 py-2.5 text-sm font-semibold transition-all cursor-pointer"
           >
             <Plus className="w-4 h-4" />
             Nova Vaga
@@ -127,9 +127,9 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
       >
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
+      <main className="mx-auto w-full max-w-7xl flex-1 px-5 py-8 sm:px-6 sm:py-10">
         {/* Filtros e Busca */}
-         <div className="glass-panel-strong flex flex-col md:flex-row gap-4 justify-between items-center mb-8 p-4 rounded-2xl">
+         <div className="glass-panel-strong flex flex-col md:flex-row gap-4 justify-between items-center mb-8 p-4">
           <div className="relative w-full md:max-w-md">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground/60" />
             <Input
@@ -177,7 +177,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
 
         {/* Grid de Vagas */}
         {filteredJobs.length === 0 ? (
-           <div className="glass-panel-strong border-dashed border-border/70 rounded-2xl p-16 text-center">
+           <div className="glass-panel-strong border-dashed border-border/70 p-16 text-center">
             <Briefcase className="w-12 h-12 text-slate-400 mx-auto mb-4 opacity-50" />
             <h4 className="text-lg font-bold text-foreground mb-1">Nenhuma vaga encontrada</h4>
             <p className="text-sm text-muted-foreground max-w-sm mx-auto">
@@ -206,7 +206,7 @@ export default function JobsListDashboard({ initialJobs }: { initialJobs: Job[] 
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 50 }}
-             className="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel-strong text-foreground px-6 py-3 rounded-2xl shadow-xl z-[150] text-sm font-semibold flex items-center gap-2"
+             className="fixed bottom-6 left-1/2 -translate-x-1/2 glass-panel-strong text-foreground px-6 py-3 shadow-xl z-[150] text-sm font-semibold flex items-center gap-2"
           >
             <Sparkles className="w-4 h-4 text-primary animate-pulse" />
             {toastMessage}

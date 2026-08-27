@@ -2,25 +2,21 @@ import { Suspense } from "react";
 import PublicJobsList from "@/components/PublicJobsList";
 import LandingHeader from "@/components/LandingHeader";
 
-// Revalidar a página a cada 60 segundos (Incremental Static Regeneration)
-export const revalidate = 60;
+// A lista pública depende da API em runtime; o build não deve depender de uma API local.
+export const dynamic = "force-dynamic";
 
 async function getPublicJobs() {
   try {
     const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
     // Chama o endpoint público, sem autenticação
-    const res = await fetch(`${API_URL}/api/public/vagas`, {
-      next: { revalidate: 60 } // ISR
-    });
+    const res = await fetch(`${API_URL}/api/public/vagas`, { cache: "no-store" });
     
     if (!res.ok) {
-      console.error("Failed to fetch public jobs:", res.status);
       return [];
     }
     
     return res.json();
-  } catch (error) {
-    console.error("Error fetching public jobs:", error);
+  } catch {
     return [];
   }
 }

@@ -43,7 +43,8 @@ export default function JobFormDrawer({
 
   // Preenche o formulário se estiver em modo de edição
   useEffect(() => {
-    if (jobToEdit) {
+    queueMicrotask(() => {
+      if (jobToEdit) {
       setTitle(jobToEdit.title || "");
       setLocation(jobToEdit.location || "");
       setEmploymentType(jobToEdit.employment_type || "CLT (Efetivo)");
@@ -74,8 +75,9 @@ export default function JobFormDrawer({
       setAppSubject("");
       setDeadline("");
       setSkills([]);
-    }
-    setError(null);
+      }
+      setError(null);
+    });
   }, [jobToEdit, isOpen]);
 
   // Bloquear scroll do body quando aberto
@@ -144,8 +146,8 @@ export default function JobFormDrawer({
 
       onSubmitSuccess();
       onClose();
-    } catch (err: any) {
-      setError(err.message || "Erro ao salvar a vaga. Tente novamente.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro ao salvar a vaga. Tente novamente.");
     } finally {
       setLoading(false);
     }
@@ -171,12 +173,12 @@ export default function JobFormDrawer({
         animate={{ x: 0 }}
         exit={{ x: "100%" }}
         transition={{ type: "spring", damping: 25, stiffness: 220 }}
-        className="relative w-full max-w-2xl h-full bg-card dark:bg-slate-900 border-l border-border dark:border-white/10 shadow-2xl flex flex-col z-10 text-foreground overflow-hidden"
+        className="relative w-full max-w-2xl h-full bg-card border-l border-border shadow-2xl flex flex-col z-10 text-foreground overflow-hidden"
       >
         {/* Header */}
-        <div className="p-6 border-b border-border dark:border-white/10 flex items-center justify-between bg-card/90 dark:bg-slate-900/90 backdrop-blur sticky top-0 z-20">
+        <div className="p-6 border-b border-border flex items-center justify-between bg-card sticky top-0 z-20">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+            <div className="w-10 h-10 bg-accent/50 border border-primary/20 flex items-center justify-center text-primary">
               <Briefcase className="w-5 h-5" />
             </div>
             <div>
@@ -198,7 +200,7 @@ export default function JobFormDrawer({
         </div>
 
         {/* Form Scroll Area */}
-        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 bg-card dark:bg-slate-900">
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 bg-card">
           {error && (
             <div className="p-4 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-sm">
               {error}

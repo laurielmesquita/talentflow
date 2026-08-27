@@ -133,7 +133,7 @@ export default function CandidateTable({
     if (loadedCandidates[candId] || loadingDetails[candId]) return;
     setLoadingDetails(prev => ({ ...prev, [candId]: true }));
     try {
-      const detail = await apiFetch(`/api/candidates/${candId}`);
+      const detail = await apiFetch<Candidate>(`/api/candidates/${candId}`);
       setLoadedCandidates(prev => ({ ...prev, [candId]: detail }));
     } catch (e) {
       console.error("Erro ao carregar detalhes do candidato:", e);
@@ -154,7 +154,7 @@ export default function CandidateTable({
     if (!flagReason.trim()) return;
     setSubmittingFlag(true);
     try {
-      const updatedCandidate = await apiFetch(`/api/candidates/${candId}/flag`, {
+      const updatedCandidate = await apiFetch<Candidate>(`/api/candidates/${candId}/flag`, {
         method: 'POST',
         body: JSON.stringify({ reason: flagReason }),
       });
@@ -198,7 +198,7 @@ export default function CandidateTable({
 
   useEffect(() => {
     if (initialCandidateId) {
-      fetchDetails(initialCandidateId);
+      queueMicrotask(() => { void fetchDetails(initialCandidateId); });
     }
   }, [initialCandidateId]);
 
@@ -267,7 +267,7 @@ export default function CandidateTable({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="flex items-center justify-between px-5 py-3.5 rounded-xl bg-primary/10 border border-primary/20 text-primary backdrop-blur-md shadow-xs"
+            className="flex items-center justify-between border-l-2 border-primary bg-accent/35 px-5 py-3.5 text-primary shadow-xs"
           >
             <div className="flex items-center gap-3">
               <Loader2 className="w-5 h-5 animate-spin text-primary" />
@@ -301,10 +301,9 @@ export default function CandidateTable({
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }}
                 key={cand.id}
-                 className="group relative flex flex-col glass-panel-strong rounded-2xl shadow-xs hover:border-primary/25 transition-colors overflow-hidden"
+                 className="group relative flex flex-col glass-panel-strong border-l-2 border-l-primary shadow-xs hover:border-primary/25 transition-colors overflow-hidden"
               >
                 {/* Iluminação interna sutil no hover */}
-                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/[0.03] to-primary/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
 
                 <div 
                   className="relative flex items-center p-4 cursor-pointer z-10"
@@ -355,7 +354,7 @@ export default function CandidateTable({
                         e.stopPropagation();
                         router.push(`/dashboard/candidates/${cand.id}/audit`);
                       }}
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white dark:text-indigo-300 text-xs font-bold tracking-tight transition-all duration-200 border border-indigo-500/30 shadow-sm"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary/10 hover:bg-primary text-primary hover:text-primary-foreground text-xs font-bold tracking-tight transition-all duration-200 border border-primary/30 shadow-sm"
                       title="Auditar & Comparar PDF Original vs. IA"
                     >
                       <FileCheck2 className="w-3.5 h-3.5 shrink-0" />
@@ -415,10 +414,10 @@ export default function CandidateTable({
                             </div>
 
                             {/* Banner de Acesso Rápido ao Workspace de Auditoria */}
-                            <div className="p-4 rounded-xl bg-gradient-to-r from-indigo-500/15 via-indigo-500/10 to-transparent border border-indigo-500/30 flex items-center justify-between shadow-sm">
+                            <div className="p-4 border-l-2 border-primary bg-accent/30 flex items-center justify-between shadow-sm">
                               <div className="space-y-0.5">
                                 <h5 className="text-xs font-bold text-foreground flex items-center gap-1.5">
-                                  <FileCheck2 className="w-4 h-4 text-indigo-400" />
+                                  <FileCheck2 className="w-4 h-4 text-primary" />
                                   Auditoria de Currículo Side-by-Side
                                 </h5>
                                 <p className="text-[11px] text-muted-foreground">
@@ -427,7 +426,7 @@ export default function CandidateTable({
                               </div>
                               <button
                                 onClick={() => router.push(`/dashboard/candidates/${fullCand.id}/audit`)}
-                                className="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all shadow-md shrink-0 ml-3"
+                                className="px-3.5 py-1.5 bg-primary hover:bg-primary/90 text-primary-foreground text-xs font-bold transition-all shadow-md shrink-0 ml-3"
                               >
                                 Abrir Workspace
                               </button>
@@ -543,7 +542,7 @@ export default function CandidateTable({
                               </h4>
                               {fullCand.experiences && fullCand.experiences.length > 0 ? (
                                 <div className="space-y-3">
-                                  {fullCand.experiences.map((exp: any, idx: number) => (
+                                  {fullCand.experiences.map((exp: { job_title?: string; company_name?: string; description?: string | null }, idx: number) => (
                                      <div key={idx} className="p-4 rounded-xl border border-border/50 bg-background/55 shadow-none">
                                       <div className="font-semibold text-sm text-foreground">{exp.job_title}</div>
                                       <div className="text-xs text-primary font-medium mt-0.5">{exp.company_name}</div>

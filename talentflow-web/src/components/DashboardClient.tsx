@@ -81,7 +81,7 @@ function NumberTicker({ value, suffix = '' }: { value: number; suffix?: string }
   const [display, setDisplay] = useState(0);
 
   useEffect(() => {
-    if (value === 0) { setDisplay(0); return; }
+    if (value === 0) { queueMicrotask(() => setDisplay(0)); return; }
     const duration = 900;
     const startTime = performance.now();
     const animate = (now: number) => {
@@ -158,7 +158,7 @@ function KpiCard({ label, title, value, valueSuffix = '', icon, href, linkLabel,
       variants={item}
       whileHover={{ y: -2 }}
       transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-      className="glass-panel glass-panel-interactive rounded-2xl p-5 flex flex-col justify-between gap-5"
+      className="glass-panel glass-panel-interactive border-l-2 border-l-primary p-5 flex flex-col justify-between gap-5"
     >
       <div className="flex-1">
         {/* Label + Icon */}
@@ -166,7 +166,7 @@ function KpiCard({ label, title, value, valueSuffix = '', icon, href, linkLabel,
           <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground/80">
             {label}
           </span>
-          <div className="p-1.5 rounded-xl bg-primary/10 text-primary border border-primary/20">
+          <div className="p-1.5 bg-accent/50 text-primary border border-primary/20">
             {icon}
           </div>
         </div>
@@ -190,7 +190,7 @@ function KpiCard({ label, title, value, valueSuffix = '', icon, href, linkLabel,
       {/* CTA */}
       <Link
         href={href}
-        className="flex items-center justify-between text-[12px] font-medium text-primary bg-primary/8 hover:bg-primary hover:text-primary-foreground px-3 py-2.5 rounded-xl border border-primary/15 hover:border-primary transition-all duration-150 group"
+        className="flex items-center justify-between text-[12px] font-medium text-primary bg-accent/35 hover:bg-primary hover:text-primary-foreground px-3 py-2.5 border border-primary/15 hover:border-primary transition-all duration-150 group"
       >
         {linkLabel}
         <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-150" />
@@ -243,9 +243,11 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
   const activeJobs = initialJobs.filter(j => j.is_active);
 
   useEffect(() => {
-    setMounted(true);
-    const session = getSession();
-    setUserName(session.name);
+    queueMicrotask(() => {
+      setMounted(true);
+      const session = getSession();
+      setUserName(session.name);
+    });
   }, []);
 
   useEffect(() => {
@@ -255,7 +257,7 @@ export default function DashboardClient({ initialStats, initialJobs }: Dashboard
       if (cached) { setMatches(cached); return; }
       setLoadingMatches(true);
       try {
-        const data = await apiFetch(`/api/jobs/${selectedJobId}/match`);
+        const data = await apiFetch<{ matches: Match[] }>(`/api/jobs/${selectedJobId}/match`);
         const list = data.matches || [];
         matchesCache.current.set(selectedJobId, list);
         setMatches(list);

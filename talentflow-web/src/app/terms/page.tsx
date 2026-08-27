@@ -22,14 +22,14 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">1. Aceitação dos Termos</h2>
             <p>
-              Ao acessar ou utilizar a plataforma TalentFlow ("Plataforma"), desenvolvida pela Space Square, você concorda em cumprir e estar legalmente vinculado a estes Termos de Uso. Se você não concordar com qualquer termo aqui descrito, não deverá utilizar nossos serviços.
+              Ao acessar ou utilizar a plataforma TalentFlow (&quot;Plataforma&quot;), desenvolvida pela Space Square, você concorda em cumprir e estar legalmente vinculado a estes Termos de Uso. Se você não concordar com qualquer termo aqui descrito, não deverá utilizar nossos serviços.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">2. Descrição dos Serviços</h2>
             <p>
-              O TalentFlow é um sistema de banco de talentos e triagem de currículos que utiliza tecnologias de reconhecimento óptico de caracteres (OCR) e algoritmos de processamento de linguagem natural por inteligência artificial (IA) para ler, classificar e analisar a compatibilidade de candidatos em relação a vagas especificadas pelas empresas licenciadas ("Tenants").
+              O TalentFlow é um sistema de banco de talentos e triagem de currículos que utiliza tecnologias de reconhecimento óptico de caracteres (OCR) e algoritmos de processamento de linguagem natural por inteligência artificial (IA) para ler, classificar e analisar a compatibilidade de candidatos em relação a vagas especificadas pelas empresas licenciadas (&quot;Tenants&quot;).
             </p>
             <p>
               <strong>Natureza de Apoio:</strong> A Plataforma é uma ferramenta auxiliar de triagem e recrutamento. Toda decisão final de contratação, descarte de currículos ou seleção de candidatos é de responsabilidade exclusiva dos recrutadores e representantes das empresas usuárias. A IA fornece justificativas e notas de compatibilidade consultivas, não vinculantes e que não constituem decisões automatizadas definitivas sem supervisão humana.
@@ -58,7 +58,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-xl font-bold text-foreground">5. Limitação de Responsabilidade</h2>
             <p>
-              O TalentFlow é disponibilizado "no estado em que se encontra". Embora nos esforcemos para manter a máxima acurácia do motor de OCR e do modelo de IA (Smart Match), não garantimos que a Plataforma estará livre de erros, que o processamento identificará com 100% de exatidão todas as competências dos candidatos, ou que o serviço operará sem interrupções.
+              O TalentFlow é disponibilizado &quot;no estado em que se encontra&quot;. Embora nos esforcemos para manter a máxima acurácia do motor de OCR e do modelo de IA (Smart Match), não garantimos que a Plataforma estará livre de erros, que o processamento identificará com 100% de exatidão todas as competências dos candidatos, ou que o serviço operará sem interrupções.
             </p>
             <p>
               A Space Square e o TalentFlow não serão responsáveis por danos indiretos, incidentais ou lucros cessantes decorrentes do uso ou da impossibilidade de uso da Plataforma, nem por decisões de contratação equivocadas tomadas com base nas análises geradas pelo sistema.

@@ -11,20 +11,20 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, subtitle, actions }: PageHeaderProps) {
   return (
-    <div className="border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-8">
+    <div className="border-b border-border bg-background">
+      <div className="mx-auto max-w-7xl px-5 py-7 sm:px-6 sm:py-9">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="flex-1 min-w-0"
+            className="min-w-0 flex-1"
           >
-            <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            <h1 className="text-3xl font-semibold tracking-[-0.04em] text-foreground sm:text-4xl">
               {title}
             </h1>
             {subtitle && (
-              <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
                 {subtitle}
               </p>
             )}

@@ -25,16 +25,14 @@ export default function JobCard({ job, onEdit, onDelete, onCopyLink }: JobCardPr
   const statusLabel = job.is_active && !isExpired ? "Ativa" : "Inativa/Encerrada";
 
   return (
-    <div className="group relative glass-panel glass-panel-interactive rounded-2xl p-6 flex flex-col justify-between min-h-[250px]">
-      {/* Glow effect on hover */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-purple-500/5 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+    <div className="group relative glass-panel glass-panel-interactive border-l-2 border-l-primary p-6 flex flex-col justify-between min-h-[250px]">
 
       <div className="relative z-10 space-y-4">
         {/* Top Header */}
         <div className="flex justify-between items-start gap-4">
           <div className="space-y-1">
-            <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusColor}`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${job.is_active && !isExpired ? "bg-emerald-500 animate-pulse" : "bg-slate-400"}`} />
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 text-xs font-semibold border ${statusColor}`}>
+              <span className={`w-1.5 h-1.5 ${job.is_active && !isExpired ? "bg-success" : "bg-muted-foreground"}`} />
               {statusLabel}
             </span>
             <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors line-clamp-1">
@@ -46,18 +44,18 @@ export default function JobCard({ job, onEdit, onDelete, onCopyLink }: JobCardPr
         {/* Metadados */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground font-medium">
           {job.location && (
-            <span className="flex items-center gap-1">
-              <MapPin className="w-3.5 h-3.5 text-slate-400" />
+              <span className="flex items-center gap-1">
+              <MapPin className="w-3.5 h-3.5 text-muted-foreground" />
               {job.location}
             </span>
           )}
-          <span className="flex items-center gap-1">
-            <Briefcase className="w-3.5 h-3.5 text-slate-400" />
+            <span className="flex items-center gap-1">
+            <Briefcase className="w-3.5 h-3.5 text-muted-foreground" />
             {job.work_model} • {job.employment_type}
           </span>
           {job.deadline && (
-            <span className="flex items-center gap-1">
-              <Calendar className="w-3.5 h-3.5 text-slate-400" />
+              <span className="flex items-center gap-1">
+              <Calendar className="w-3.5 h-3.5 text-muted-foreground" />
               Até {new Date(job.deadline).toLocaleDateString("pt-BR")}
             </span>
           )}
@@ -77,13 +75,13 @@ export default function JobCard({ job, onEdit, onDelete, onCopyLink }: JobCardPr
               .map((skill, idx) => (
                 <span
                   key={idx}
-                  className="text-[10px] uppercase font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-white/5 text-muted-foreground border border-slate-200 dark:border-white/10"
+                  className="text-[10px] uppercase font-semibold px-2 py-0.5 bg-secondary text-muted-foreground border border-border"
                 >
                   {skill.trim()}
                 </span>
               ))
           ) : (
-            <span className="text-[10px] italic text-slate-400">Sem skills exigidas</span>
+            <span className="text-[10px] italic text-muted-foreground">Sem skills exigidas</span>
           )}
           {job.required_skills && job.required_skills.split(",").length > 3 && (
             <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
@@ -94,27 +92,27 @@ export default function JobCard({ job, onEdit, onDelete, onCopyLink }: JobCardPr
       </div>
 
       {/* Ações no rodapé */}
-      <div className="relative z-10 flex items-center justify-between border-t border-slate-100 dark:border-white/5 pt-4 mt-6">
+      <div className="relative z-10 flex items-center justify-between border-t border-border pt-4 mt-6">
         {/* Ações gerenciais rápidas */}
         <div className="flex items-center gap-1.5">
           <button
             onClick={() => onEdit(job)}
             title="Editar vaga"
-            className="p-2 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 text-slate-500 hover:text-indigo-600 dark:hover:text-indigo-400 border border-slate-200 dark:border-white/5 transition-all cursor-pointer"
+            className="p-2 bg-secondary hover:bg-accent text-muted-foreground hover:text-primary border border-border transition-all cursor-pointer"
           >
             <Edit className="w-4 h-4" />
           </button>
           <button
             onClick={() => onDelete(job)}
             title="Excluir vaga"
-            className="p-2 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-rose-50 dark:hover:bg-rose-500/10 text-slate-500 hover:text-rose-600 dark:hover:text-rose-400 border border-slate-200 dark:border-white/5 transition-all cursor-pointer"
+            className="p-2 bg-secondary hover:bg-destructive/10 text-muted-foreground hover:text-destructive border border-border transition-all cursor-pointer"
           >
             <Trash2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => onCopyLink(job)}
             title="Copiar link público"
-            className="p-2 rounded-lg bg-slate-50 dark:bg-white/5 hover:bg-emerald-50 dark:hover:bg-emerald-500/10 text-slate-500 hover:text-emerald-600 dark:hover:text-emerald-400 border border-slate-200 dark:border-white/5 transition-all cursor-pointer"
+            className="p-2 bg-secondary hover:bg-accent text-muted-foreground hover:text-primary border border-border transition-all cursor-pointer"
           >
             <Link2 className="w-4 h-4" />
           </button>

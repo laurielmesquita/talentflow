@@ -11,6 +11,8 @@ interface BatchUploadButtonProps {
 }
 
 type UploadStatus = 'idle' | 'uploading' | 'success' | 'error';
+interface BatchError { filename?: string; error?: string; message?: string; }
+interface BatchStatus { processed: number; total: number; status: string; errors?: BatchError[]; }
 
 export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps) {
   const router = useRouter();
@@ -18,7 +20,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
   const pollIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const [status, setStatus] = useState<UploadStatus>('idle');
   const [progress, setProgress] = useState({ done: 0, total: 0 });
-  const [batchErrors, setBatchErrors] = useState<any[]>([]);
+  const [batchErrors, setBatchErrors] = useState<BatchError[]>([]);
   const [showSummaryModal, setShowSummaryModal] = useState(false);
 
   useEffect(() => {
@@ -35,7 +37,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
     }
     pollIntervalRef.current = setInterval(async () => {
       try {
-        const data = await apiFetch(`/api/batches/${batchId}`).catch(() => {
+        const data = await apiFetch<BatchStatus>(`/api/batches/${batchId}`).catch(() => {
           if (pollIntervalRef.current) clearInterval(pollIntervalRef.current);
           if (typeof window !== 'undefined') {
             window.dispatchEvent(new CustomEvent('candidates-processing-finished'));
@@ -104,7 +106,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         form.append('files', file);
       });
 
-      const data = await apiFetch('/api/batches/upload', {
+      const data = await apiFetch<{ batch_id: string }>('/api/batches/upload', {
         method: 'POST',
         body: form,
       });
@@ -156,7 +158,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
 
   const modalContent = showSummaryModal && batchErrors.length > 0 ? (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-foreground/80 backdrop-blur-sm animate-in fade-in duration-200" role="dialog" aria-modal="true" aria-label="Resumo do upload em lote">
-      <div className="w-full max-w-lg bg-card border border-border/80 rounded-2xl p-8 shadow-2xl flex flex-col relative animate-in zoom-in duration-200">
+      <div className="w-full max-w-lg bg-card border border-border/80 p-8 shadow-2xl flex flex-col relative animate-in zoom-in duration-200">
         <h3 className="text-xl font-bold text-foreground mb-2 flex items-center gap-2">
           <AlertCircle className="w-5.5 h-5.5 text-amber-500" />
           Resumo do Upload em Lote
@@ -176,7 +178,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
           {' Os seguintes arquivos foram ignorados por duplicidade ou erro:'}
         </p>
 
-        <div className="max-h-60 overflow-y-auto border border-border rounded-xl p-4 bg-background/50 flex flex-col gap-3 mb-6 select-text font-sans">
+        <div className="max-h-60 overflow-y-auto border border-border p-4 bg-background flex flex-col gap-3 mb-6 select-text font-sans">
           {batchErrors.map((err, idx) => (
             <div key={idx} className="flex justify-between items-start gap-3 text-xs border-b border-border/40 pb-2.5 last:border-0 last:pb-0">
               <span className="font-semibold text-foreground truncate max-w-[200px]" title={err.filename}>
@@ -191,7 +193,7 @@ export default function BatchUploadButton({ onSuccess }: BatchUploadButtonProps)
         
         <button
           onClick={() => setShowSummaryModal(false)}
-          className="w-full py-3 bg-primary text-primary-foreground font-semibold rounded-xl text-sm hover:bg-primary/95 transition-all active:scale-[0.98] shadow-lg shadow-primary/20"
+          className="w-full py-3 bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/95 transition-all active:scale-[0.98] shadow-lg shadow-primary/10"
         >
           Fechar Resumo
         </button>

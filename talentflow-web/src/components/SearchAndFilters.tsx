@@ -50,7 +50,7 @@ export default function SearchAndFilters({
 
   // Sincroniza o estado da busca se mudar externamente
   useEffect(() => {
-    setQuery(activeQuery || '');
+    queueMicrotask(() => setQuery(activeQuery || ''));
   }, [activeQuery]);
 
   const handleCategorySelect = (categoryName: string) => {
@@ -82,7 +82,7 @@ export default function SearchAndFilters({
             placeholder="Buscar por nome, cargo ou skill..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-             className="w-full glass-panel bg-background/35 border-border/70 rounded-xl pl-10 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+             className="w-full glass-panel bg-background border-border pl-10 pr-4 py-3 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
           />
           {query && (
             <button
@@ -124,7 +124,7 @@ export default function SearchAndFilters({
 
       {/* Collapsible Advanced Filters Panel */}
       {showAdvanced && (
-         <div className="glass-panel-strong rounded-2xl p-5 transition-all duration-300 animate-in fade-in slide-in-from-top-2">
+         <div className="glass-panel-strong border-l-2 border-l-primary p-5 transition-all duration-300 animate-in fade-in slide-in-from-top-2">
           <div className="flex flex-col gap-3">
             <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
               <Tag className="w-3.5 h-3.5" />

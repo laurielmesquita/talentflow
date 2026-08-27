@@ -61,7 +61,7 @@ export default function PDFViewer({ candidateId, pdfUrl, candidateName, classNam
   }, [candidateId, API_URL]);
 
   useEffect(() => {
-    fetchPdf();
+    queueMicrotask(() => { void fetchPdf(); });
     return () => {
       setBlobUrl((prev) => {
         if (prev) URL.revokeObjectURL(prev);

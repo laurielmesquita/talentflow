@@ -44,7 +44,7 @@ export default function UsersPage() {
     }
   };
 
-  useEffect(() => { void loadUsers(); }, []);
+  useEffect(() => { queueMicrotask(() => { void loadUsers(); }); }, []);
 
   const resetForm = () => {
     setForm(emptyForm);

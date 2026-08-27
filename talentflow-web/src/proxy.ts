@@ -5,7 +5,7 @@ import type { NextRequest } from 'next/server';
 const PUBLIC_ROUTES = ['/login', '/forgot-password', '/reset-password', '/terms', '/privacy', '/vagas'];
 
 // Helper para decodificar o payload do JWT no Edge Runtime de forma nativa (sem bibliotecas)
-function decodeJwt(token: string): any {
+function decodeJwt(token: string): Record<string, unknown> | null {
   try {
     const parts = token.split('.');
     if (parts.length !== 3) return null;
@@ -58,7 +58,8 @@ export function proxy(request: NextRequest) {
     const decoded = decodeJwt(token);
     
     // Se o token for inválido, corrompido ou estiver expirado, limpa o cookie e manda para login
-    const isExpired = decoded && decoded.exp && decoded.exp * 1000 < Date.now();
+    const exp = typeof decoded?.exp === 'number' ? decoded.exp : undefined;
+    const isExpired = Boolean(exp && exp * 1000 < Date.now());
     if (!decoded || isExpired) {
       if (isPublicRoute) {
         const response = NextResponse.next();

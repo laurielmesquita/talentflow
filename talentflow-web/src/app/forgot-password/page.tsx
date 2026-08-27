@@ -34,8 +34,8 @@ export default function ForgotPasswordPage() {
       }
 
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.message || 'Erro de conexão.');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Erro de conexão.');
     } finally {
       setLoading(false);
     }

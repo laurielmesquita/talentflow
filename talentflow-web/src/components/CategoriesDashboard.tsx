@@ -39,12 +39,12 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
 
   useEffect(() => {
     const session = getSession();
-    setUserRole(session.role);
+    queueMicrotask(() => setUserRole(session.role));
   }, []);
 
   // Sync props to state
   useEffect(() => {
-    setCategories(initialCategories);
+    queueMicrotask(() => setCategories(initialCategories));
   }, [initialCategories]);
 
   const handleOpenCreateModal = () => {
@@ -109,8 +109,8 @@ export default function CategoriesDashboard({ initialCategories }: { initialCate
 
       handleCloseModal();
       router.refresh(); // refresh Server Component props
-    } catch (error: any) {
-      setErrorMsg(error.message || "Erro de conexão com a API.");
+    } catch (error: unknown) {
+      setErrorMsg(error instanceof Error ? error.message : "Erro de conexão com a API.");
     } finally {
       setIsSubmitting(false);
     }

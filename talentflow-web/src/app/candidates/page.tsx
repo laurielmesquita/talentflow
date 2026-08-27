@@ -60,12 +60,12 @@ export default async function CandidatesPage({
       >
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="mx-auto max-w-7xl px-5 py-8 sm:px-6 sm:py-10">
 
         {/* KPI Cards Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
           {/* Card 1: Total de Talentos */}
-          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden border-l-2 border-l-primary p-5 flex items-center gap-4">
             <div className="p-3 rounded-xl bg-info/10 text-info">
               <Users className="w-6 h-6" />
             </div>
@@ -76,7 +76,7 @@ export default async function CandidatesPage({
           </div>
 
           {/* Card 2: Perfis Ativos */}
-          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden border-l-2 border-l-success p-5 flex items-center gap-4">
             <div className="p-3 rounded-xl bg-success/10 text-success">
               <UserCheck className="w-6 h-6" />
             </div>
@@ -87,7 +87,7 @@ export default async function CandidatesPage({
           </div>
 
           {/* Card 3: Quality Score Médio */}
-          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden border-l-2 border-l-primary p-5 flex items-center gap-4">
             <div className="p-3 rounded-xl bg-primary/10 text-primary">
               <Sparkles className="w-6 h-6" />
             </div>
@@ -100,7 +100,7 @@ export default async function CandidatesPage({
           </div>
 
           {/* Card 4: Sinalizados */}
-          <div className="glass-panel glass-panel-interactive relative overflow-hidden p-6 rounded-2xl flex items-center gap-4">
+          <div className="glass-panel glass-panel-interactive relative overflow-hidden border-l-2 border-l-destructive p-5 flex items-center gap-4">
             <div className="p-3 rounded-xl bg-destructive/10 text-destructive">
               <ShieldAlert className="w-6 h-6" />
             </div>

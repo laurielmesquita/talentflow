@@ -32,14 +32,14 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
 
   // Sincroniza estado com a prop se a URL mudar externamente
   useEffect(() => {
-    setCurrentId(candidateId);
+    queueMicrotask(() => setCurrentId(candidateId));
   }, [candidateId]);
 
   // Carrega lista de candidatos para permitir navegação Anterior / Próximo contínua
   useEffect(() => {
     async function fetchList() {
       try {
-        const data = await apiFetch("/api/candidates?limit=100");
+        const data = await apiFetch<{ candidates: Candidate[] }>("/api/candidates?limit=100");
         if (data && Array.isArray(data.candidates)) {
           setCandidateList(data.candidates);
         }
@@ -57,14 +57,14 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
       setLoading(true);
       setError(null);
       try {
-        const data = await apiFetch(`/api/candidates/${currentId}`);
+        const data = await apiFetch<Candidate>(`/api/candidates/${currentId}`);
         if (isMounted) {
           setCandidate(data);
           setLoading(false);
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         if (isMounted) {
-          setError(e?.message || "Erro ao carregar os dados de auditoria do candidato.");
+          setError(e instanceof Error ? e.message : "Erro ao carregar os dados de auditoria do candidato.");
           setLoading(false);
         }
       }
@@ -102,7 +102,7 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
     if (!flagReason.trim() || !candidate) return;
     setSubmittingFlag(true);
     try {
-      const updated = await apiFetch(`/api/candidates/${currentId}/flag`, {
+      const updated = await apiFetch<Candidate>(`/api/candidates/${currentId}/flag`, {
         method: "POST",
         body: JSON.stringify({ reason: flagReason }),
       });
@@ -120,7 +120,7 @@ export default function CandidateAuditWorkspace({ candidateId }: CandidateAuditW
   async function handleUnflag() {
     if (!window.confirm("Deseja realmente remover a sinalização deste candidato?") || !candidate) return;
     try {
-      const updated = await apiFetch(`/api/candidates/${currentId}/unflag`, {
+      const updated = await apiFetch<Candidate>(`/api/candidates/${currentId}/unflag`, {
         method: "POST",
       });
       setCandidate((prev) => prev ? { ...prev, is_flagged: updated.is_flagged, flagged_reason: null, flagged_at: null } : null);

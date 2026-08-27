@@ -64,8 +64,8 @@ async function getStats(token?: string): Promise<DashboardStats> {
     }
     if (!res.ok) throw new Error("Failed to fetch stats");
     return res.json();
-  } catch (error: any) {
-    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+  } catch (error: unknown) {
+    if ((error as { digest?: string }).digest?.startsWith('NEXT_REDIRECT')) {
       throw error;
     }
     console.error("Error fetching dashboard stats:", error);
@@ -94,8 +94,8 @@ async function getJobs(token?: string): Promise<Job[]> {
     }
     if (!res.ok) throw new Error("Failed to fetch jobs");
     return res.json();
-  } catch (error: any) {
-    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+  } catch (error: unknown) {
+    if ((error as { digest?: string }).digest?.startsWith('NEXT_REDIRECT')) {
       throw error;
     }
     console.error("Error fetching jobs for matching:", error);

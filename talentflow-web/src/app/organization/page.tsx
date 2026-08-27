@@ -61,7 +61,7 @@ export default function OrganizationPage() {
     }
   };
 
-  useEffect(() => { void loadClosure(); }, []);
+  useEffect(() => { queueMicrotask(() => { void loadClosure(); }); }, []);
 
   const handleTransfer = async (event: FormEvent) => {
     event.preventDefault();

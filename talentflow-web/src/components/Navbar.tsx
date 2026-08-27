@@ -33,7 +33,7 @@ export default function Navbar() {
 
   // Fechar menu mobile ao navegar
   useEffect(() => {
-    setMobileMenuOpen(false);
+    queueMicrotask(() => setMobileMenuOpen(false));
   }, [pathname]);
 
   // Travar o scroll do body quando o menu estiver aberto
@@ -55,9 +55,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-glass-border/70 bg-background/55 backdrop-blur-2xl transition-colors duration-300">
-      {/* Linha de acento superior */}
-      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+    <header className="sticky top-0 z-50 border-b border-border bg-background transition-colors duration-300">
 
       <div className="flex items-center justify-between px-4 sm:px-6 h-16 max-w-7xl mx-auto">
 
@@ -95,16 +93,16 @@ export default function Navbar() {
                 key={href}
                 href={href}
                 className={[
-                  'relative px-3 py-2 text-[13px] font-medium rounded-xl transition-all duration-150',
+                  'relative px-3 py-2 text-[13px] font-medium transition-colors duration-150',
                   active
-                    ? 'text-primary bg-primary/8'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/60',
+                    ? 'text-primary'
+                    : 'text-muted-foreground hover:text-foreground',
                 ].join(' ')}
               >
                 {label}
                 {/* Indicador ativo — barra inferior */}
                 {active && (
-                  <span className="absolute bottom-0 inset-x-3 h-[2px] rounded-full bg-primary" />
+                  <span className="absolute bottom-[-1px] inset-x-3 h-[2px] bg-primary" />
                 )}
               </Link>
             );
@@ -122,7 +120,7 @@ export default function Navbar() {
             aria-label={mobileMenuOpen ? 'Fechar menu' : 'Abrir menu de navegação'}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-navigation"
-            className="md:hidden p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="md:hidden p-2 text-muted-foreground hover:text-foreground hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
           >
             <AnimatePresence mode="wait" initial={false}>
               {mobileMenuOpen ? (
@@ -162,7 +160,7 @@ export default function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={() => setMobileMenuOpen(false)}
-              className="fixed inset-0 top-14 bg-black/40 backdrop-blur-xs z-40 md:hidden"
+              className="fixed inset-0 top-14 bg-foreground/20 z-40 md:hidden"
             />
 
             {/* Slide Down Menu Panel */}
@@ -171,7 +169,7 @@ export default function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-              className="absolute top-full inset-x-0 bg-background/95 backdrop-blur-2xl border-b border-border/80 shadow-2xl z-50 md:hidden overflow-hidden"
+              className="absolute top-full inset-x-0 bg-background border-b border-border z-50 md:hidden overflow-hidden"
             >
               <nav id="mobile-navigation" className="p-4 space-y-1.5 max-w-7xl mx-auto">
                 <p className="px-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/60 mb-2">
@@ -185,9 +183,9 @@ export default function Navbar() {
                       href={href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={[
-                        'flex items-center gap-3 px-3.5 py-2.5 text-[14px] font-medium rounded-xl transition-all duration-150',
+                        'flex items-center gap-3 px-3.5 py-2.5 text-[14px] font-medium transition-colors duration-150',
                         active
-                          ? 'text-primary bg-primary/10 font-semibold border border-primary/20 shadow-xs'
+                          ? 'text-primary bg-accent/40 font-semibold border-l-2 border-primary'
                           : 'text-muted-foreground hover:text-foreground hover:bg-accent/60',
                       ].join(' ')}
                     >

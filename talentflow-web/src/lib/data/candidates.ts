@@ -40,8 +40,8 @@ export async function getCandidates(
       };
     }
     return res.json();
-  } catch (error: any) {
-    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+  } catch (error: unknown) {
+    if ((error as { digest?: string }).digest?.startsWith('NEXT_REDIRECT')) {
       throw error;
     }
     return { 

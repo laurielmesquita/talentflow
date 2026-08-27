@@ -18,8 +18,8 @@ export async function getJobs(token?: string): Promise<Job[]> {
     }
     if (!res.ok) return [];
     return res.json();
-  } catch (error: any) {
-    if (error.digest?.startsWith('NEXT_REDIRECT')) {
+  } catch (error: unknown) {
+    if ((error as { digest?: string }).digest?.startsWith('NEXT_REDIRECT')) {
       throw error;
     }
     return [];

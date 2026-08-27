@@ -23,3 +23,10 @@
 - Utilize o `framer-motion` (v12) para transições de estado, modais e carregamento de listas.
 - **Performance de Renderização:** Anime estritamente propriedades aceleradas por GPU (`opacity`, `transform`), evitando alterar `height`, `width` ou `margin` em listas extensas para prevenir *Layout Reflows*.
 - Mantenha transições rápidas: `duration-200` para hovers e `duration-300` para modais/drawers.
+
+## 4. Primitivos compartilhados
+- **Shell operacional:** telas autenticadas devem usar `AppShell`; a página fornece apenas o conteúdo e, quando necessário, título, subtítulo e ações.
+- **Feedback:** use `StatusMessage` para retorno de erro, sucesso ou informação; use `EmptyState` e `PageSkeleton` em vez de estados vazios ou carregamentos criados localmente.
+- **Formulários:** use `ui/Input` para campos de texto. Estados inválidos devem associar a mensagem de erro ao respectivo campo e preservar foco visível.
+- **Diálogos:** use `ui/Dialog`, que fornece portal, bloqueio de rolagem, foco inicial/restaurado, trap de Tab e fechamento por Escape. Não construa overlays ou modais ad hoc.
+- **Estados semânticos:** prefira `success`, `warning`, `info` e `destructive` em vez de cores literais. As cores são tokens em OKLCH e funcionam em ambos os temas.

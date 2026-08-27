@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { createPortal } from 'react-dom';
+import { useState } from 'react';
 import { AlertTriangle, Trash2, X } from 'lucide-react';
+import { Dialog } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 
 interface DeleteConfirmModalProps {
   isOpen: boolean;
@@ -20,16 +21,6 @@ export default function DeleteConfirmModal({
   const [step, setStep] = useState<1 | 2>(1);
   const [confirmText, setConfirmText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    return () => setMounted(false);
-  }, []);
-
-  if (!isOpen) return null;
-  if (!mounted) return null;
-
   async function handleDelete() {
     if (confirmText !== 'EXCLUIR') return;
     setIsDeleting(true);
@@ -52,19 +43,12 @@ export default function DeleteConfirmModal({
     onClose();
   };
 
-  return createPortal(
-    <div className="fixed inset-0 z-[120] flex items-center justify-center p-4">
-      {/* Overlay */}
-      <div 
-        className="absolute inset-0 bg-black/60 dark:bg-black/85 backdrop-blur-md transition-opacity" 
-        onClick={handleClose}
-      />
-
-      {/* Modal Box */}
-      <div className="relative w-full max-w-md bg-white dark:bg-card border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl p-6 text-foreground overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+  return (
+    <Dialog isOpen={isOpen} onClose={handleClose} ariaLabel="Confirmar exclusão de candidato" className="overflow-hidden animate-in fade-in zoom-in-95 duration-200">
         
         {/* Close Button */}
         <button
+          type="button"
           onClick={handleClose}
           disabled={isDeleting}
           className="absolute top-4 right-4 text-muted-foreground hover:text-foreground transition-colors disabled:opacity-50"
@@ -127,13 +111,13 @@ export default function DeleteConfirmModal({
                 no campo abaixo:
               </p>
 
-              <input
+              <Input
                 type="text"
                 value={confirmText}
                 onChange={(e) => setConfirmText(e.target.value)}
                 placeholder="Digite EXCLUIR"
                 disabled={isDeleting}
-                className="w-full bg-slate-50 dark:bg-black/20 border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2 text-sm text-foreground placeholder-muted-foreground focus:outline-none focus:border-rose-500 transition-colors focus:ring-1 focus:ring-rose-500 disabled:opacity-50"
+                className="border-destructive/30 focus-visible:border-destructive focus-visible:ring-destructive/20"
               />
             </div>
 
@@ -167,8 +151,6 @@ export default function DeleteConfirmModal({
             </div>
           </div>
         )}
-      </div>
-    </div>,
-    document.body
+    </Dialog>
   );
 }

@@ -355,8 +355,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/DashboardClient.tsx": {
-    "mtime": 1786476230.7952807,
-    "ast_hash": "129e5e7cc0e30e9bb5a56b53f67b8b3a",
+    "mtime": 1787798650.7115455,
+    "ast_hash": "b10ea65536843760e2035c8d1a18d9d1",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/DeleteConfirmModal.tsx": {
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1787798342.6498842,
-    "ast_hash": "52cf6530a21573162512d538261dadc3",
+    "mtime": 1787798685.2959278,
+    "ast_hash": "17762d14a5f5247a1ade380af5a0239c",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1115,8 +1115,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/components/AppShell.tsx": {
-    "mtime": 1787795884.606676,
-    "ast_hash": "dd3a5d827cf287510782fa1da8d58cda",
+    "mtime": 1787798655.9835298,
+    "ast_hash": "0ddd917246eb961ef996ac893d700191",
     "semantic_hash": ""
   },
   "talentflow-web/src/components/EmptyState.tsx": {

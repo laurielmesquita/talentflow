@@ -13,6 +13,17 @@ Esta pasta contém a documentação versionada que acompanha o código do monore
 | [`decisions/`](./decisions/) | Decisões arquiteturais permanentes (ADRs) |
 | [`change-records/`](./change-records/) | Registros datados de mudanças e incidentes |
 
+## Documentos estratégicos ativos
+
+| Documento | Área | Status |
+| --- | --- | --- |
+| [Estratégia comercial e de posicionamento](./product/commercial-positioning-strategy.md) | Produto | v0.1 aprovada |
+| [Arquitetura da informação](./design/information-architecture.md) | Produto + Design | Baseline v0.1 ativa |
+| [Governança de Design e UX](./design/DESIGN.md) | Produto + Design + Frontend | Fonte canônica ativa |
+| [Direção visual](./design/visual-direction.md) | Produto + Design | v0.1 aprovada |
+| [Inventário de assets](./design/asset-inventory.md) | Design + Frontend | v0.1 ativo |
+| [Plano de execução do redesign](./operations/design-redesign-execution-plan.md) | Produto + Design + Engenharia | v0.3; release alvo 3.0.0 |
+
 ## Regras de manutenção
 
 - Toda documentação nova deve pertencer a uma dessas áreas e ser ligada a partir desta página.

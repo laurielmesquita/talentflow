@@ -116,6 +116,17 @@ talentflow-web/
 
 ## 3. Design System — Tailwind CSS v4 + OKLCH
 
+### Fontes canônicas obrigatórias
+
+Antes de alterar identidade, navegação, layout, componentes compartilhados ou motion, consultar:
+
+1. `../docs/design/DESIGN.md` — governança e precedência;
+2. `../docs/design/visual-direction.md` — paleta, composição, imagem e intensidade por superfície;
+3. `../docs/design/information-architecture.md` — navegação, hierarquia e jornadas;
+4. `../docs/product/commercial-positioning-strategy.md` — público, promessa e responsabilidade da IA.
+
+Não manter cópias dessas regras dentro de `talentflow-web/`. Mudanças de escopo aprovadas devem atualizar a fonte canônica em `docs/`.
+
 ### Princípio CSS-First
 O Tailwind v4 opera com `@import "tailwindcss"` no CSS — **não** existe `tailwind.config.js` tradicional. Toda a customização de tokens ocorre no `globals.css` via variáveis CSS.
 

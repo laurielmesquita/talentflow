@@ -72,6 +72,10 @@ Para uma documentação detalhada sobre regras e conceitos, consulte:
 * [Funcionalidades & Arquitetura (Visão Técnica)](./docs/product/features_technical.md)
 * [Resumo de Funcionalidades](./docs/product/features_summary.md)
 * [Technical Snapshot & Post-Mortem](./docs/architecture/technical-snapshot.md)
+* [Governança de Design e UX](./docs/design/DESIGN.md)
+* [Direção Visual](./docs/design/visual-direction.md)
+* [Arquitetura da Informação](./docs/design/information-architecture.md)
+* [Plano de Execução do Redesign](./docs/operations/design-redesign-execution-plan.md)
 
 ---
 

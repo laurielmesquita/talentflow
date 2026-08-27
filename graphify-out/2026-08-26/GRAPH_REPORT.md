@@ -1,16 +1,16 @@
 # Graph Report - 05-Projetos  (2026-08-26)
 
 ## Corpus Check
-- 197 files · ~155,558 words
+- 197 files · ~155,478 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1239 nodes · 1990 edges · 119 communities (104 shown, 15 thin omitted)
+- 1239 nodes · 1984 edges · 119 communities (104 shown, 15 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 82 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `3a68e871`
+- Built from commit: `a9b81ea3`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -140,8 +140,8 @@ Cohesion: 0.24
 Nodes (18): Base, flag_candidate(), FlagRequest, BaseModel, ReplaceRequest, AuditLog, BatchJob, Candidate (+10 more)
 
 ### Community 2 - "apiFetch"
-Cohesion: 0.18
-Nodes (16): LoginContent(), ConfirmEmailPage(), UsersPage(), CategoriesDashboard(), Category, UserMenu(), apiFetch(), ApiOptions (+8 more)
+Cohesion: 0.13
+Nodes (22): LoginContent(), ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), ConfirmEmailPage(), UsersPage() (+14 more)
 
 ### Community 3 - "devDependencies"
 Cohesion: 0.06
@@ -160,8 +160,8 @@ Cohesion: 0.07
 Nodes (28): dom, dom.iterable, esnext, **/*.mts, .next/dev/types/**/*.ts, next-env.d.ts, .next/types/**/*.ts, node_modules (+20 more)
 
 ### Community 7 - "deps.py"
-Cohesion: 0.12
-Nodes (12): Preferences, messageFor(), Profile, SettingsProfilePage(), emptyForm, ManagedUser, UserRole, icons (+4 more)
+Cohesion: 0.13
+Nodes (13): messageFor(), Profile, SettingsProfilePage(), emptyForm, ManagedUser, UserRole, CandidateTable(), DeleteConfirmModal() (+5 more)
 
 ### Community 8 - "DashboardClient.tsx"
 Cohesion: 0.13
@@ -192,11 +192,11 @@ Cohesion: 0.33
 Nodes (6): react, react, getClientSnapshot(), getServerSnapshot(), subscribe(), ThemeToggle()
 
 ### Community 15 - "index.ts"
-Cohesion: 0.18
-Nodes (6): metadata, PageProps, CandidateAuditWorkspaceProps, getCookie(), PDFViewer(), PDFViewerProps
+Cohesion: 0.29
+Nodes (3): metadata, PageProps, CandidateAuditWorkspaceProps
 
 ### Community 16 - "candidates/page.tsx"
-Cohesion: 0.15
+Cohesion: 0.13
 Nodes (12): CandidatesPage(), metadata, Category, SearchAndFiltersProps, getCandidates(), getCategories(), Candidate, CandidatesResponse (+4 more)
 
 ### Community 17 - "Job"
@@ -368,16 +368,16 @@ Cohesion: 0.25
 Nodes (6): FieldError, FormData, JobApplicationForm(), JobApplicationFormProps, Step, validateForm()
 
 ### Community 94 - "ApiError"
-Cohesion: 0.22
-Nodes (6): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), ApiError
+Cohesion: 0.18
+Nodes (5): Preferences, icons, StatusMessageProps, StatusTone, styles
 
 ### Community 95 - "[1.2.0] — 2026-06-23"
 Cohesion: 0.67
 Nodes (3): [1.2.0] — 2026-06-23, Adicionado, Corrigido
 
 ### Community 96 - "[2.3.0] — 2026-08-04"
-Cohesion: 0.24
-Nodes (6): CandidateTable(), DeleteConfirmModal(), DeleteConfirmModalProps, Dialog(), DialogProps, focusableSelector
+Cohesion: 0.50
+Nodes (3): getCookie(), PDFViewer(), PDFViewerProps
 
 ### Community 98 - "DeleteConfirmModal.tsx"
 Cohesion: 0.38

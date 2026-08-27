@@ -6750,8 +6750,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_dashboard_candidates_id_audit_page",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "audit/page.tsx"
     },
     {
@@ -6761,8 +6761,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "talentflow_web_src_app_dashboard_candidates_id_audit_page_pageprops",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "pageprops"
     },
     {
@@ -6772,8 +6772,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_app_dashboard_candidates_id_audit_page_metadata",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "metadata"
     },
     {
@@ -6783,8 +6783,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_app_dashboard_candidates_id_audit_page_candidateauditpage",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "candidateauditpage()"
     },
     {
@@ -7146,8 +7146,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "organization/page.tsx"
     },
     {
@@ -7157,8 +7157,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_closurestatus",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "closurestatus"
     },
     {
@@ -7168,8 +7168,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_closurestate",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "closurestate"
     },
     {
@@ -7179,8 +7179,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_manageduser",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "manageduser"
     },
     {
@@ -7190,8 +7190,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_formatdate",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "formatdate()"
     },
     {
@@ -7201,8 +7201,8 @@
       "source_location": "L35",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_organizationpage",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "organizationpage()"
     },
     {
@@ -7399,8 +7399,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_privacy_page",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "settings/privacy/page.tsx"
     },
     {
@@ -7410,8 +7410,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_privacy_page_settingsprivacypage",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "settingsprivacypage()"
     },
     {
@@ -7421,8 +7421,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "profile/page.tsx"
     },
     {
@@ -7432,8 +7432,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page_profile",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "profile"
     },
     {
@@ -7443,8 +7443,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page_messagefor",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "messagefor()"
     },
     {
@@ -7454,8 +7454,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page_settingsprofilepage",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "settingsprofilepage()"
     },
     {
@@ -7465,8 +7465,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_security_page",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "security/page.tsx"
     },
     {
@@ -7476,8 +7476,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_security_page_settingssecuritypage",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "settingssecuritypage()"
     },
     {
@@ -7784,8 +7784,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidateauditworkspace",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "candidateauditworkspace.tsx"
     },
     {
@@ -7795,8 +7795,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidateauditworkspace_candidateauditworkspaceprops",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "candidateauditworkspaceprops"
     },
     {
@@ -7806,8 +7806,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidateauditworkspace_candidateauditworkspace",
-      "community": 15,
-      "community_name": "index.ts",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "candidateauditworkspace()"
     },
     {
@@ -8477,8 +8477,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobslistdashboard",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "jobslistdashboard.tsx"
     },
     {
@@ -8488,8 +8488,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobslistdashboard_jobslistdashboard",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "jobslistdashboard()"
     },
     {
@@ -9346,8 +9346,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_input",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "input.tsx"
     },
     {
@@ -9357,8 +9357,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_input_input",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 94,
+      "community_name": "ApiError",
       "norm_label": "input()"
     },
     {
@@ -9489,8 +9489,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_api_apierror",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "apierror"
     },
     {
@@ -9500,8 +9500,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_api_apierror_constructor",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": ".constructor()"
     },
     {
@@ -9687,8 +9687,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_safeerror",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "safeerror.ts"
     },
     {
@@ -9698,8 +9698,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_safeerror_safeerror",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "safeerror()"
     },
     {
@@ -29469,6 +29469,18 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/JobsListDashboard.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_jobslistdashboard",
+      "target": "talentflow_web_src_components_appshell",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/components/SettingsShell.tsx",
       "source_location": "L2",
       "weight": 1.0,
@@ -30964,30 +30976,6 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/components/JobsListDashboard.tsx",
-      "source_location": "L9",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_components_jobslistdashboard",
-      "target": "talentflow_web_src_components_navbar",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/components/JobsListDashboard.tsx",
-      "source_location": "L10",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "talentflow_web_src_components_jobslistdashboard",
-      "target": "talentflow_web_src_components_pageheader",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "imports_from",
-      "context": "import",
-      "confidence": "EXTRACTED",
-      "source_file": "talentflow-web/src/components/JobsListDashboard.tsx",
       "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
@@ -31005,6 +30993,30 @@
       "_origin": "ast",
       "source": "talentflow_web_src_components_jobslistdashboard",
       "target": "talentflow_web_src_components_portal_portal",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/JobsListDashboard.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_jobslistdashboard",
+      "target": "talentflow_web_src_components_ui_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/JobsListDashboard.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_jobslistdashboard",
+      "target": "talentflow_web_src_components_ui_input_input",
       "confidence_score": 1.0
     },
     {
@@ -36386,5 +36398,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "a9b81ea382795ae9c62fe2a2501d157cc104f757"
+  "built_at_commit": "6196c30af38869ecc11776820d2c6d2b791a22d4"
 }

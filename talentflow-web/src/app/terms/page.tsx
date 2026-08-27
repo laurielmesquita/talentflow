@@ -1,51 +1,9 @@
-import Link from 'next/link';
-import Image from 'next/image';
-import { ArrowLeft, Shield } from 'lucide-react';
+import { Shield } from 'lucide-react';
+import PublicLegalShell from '@/components/PublicLegalShell';
 
 export default function TermsPage() {
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30">
-      {/* Background Glows */}
-      <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 dark:bg-primary/5 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[500px] bg-purple-500/10 dark:bg-purple-500/5 rounded-full blur-[130px] pointer-events-none -z-10" />
-
-      {/* Header */}
-      <header className="border-b border-border/40 bg-background/40 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-9 h-9 rounded-xl overflow-hidden group-hover:scale-105 transition-all flex-shrink-0">
-              <Image
-                src="/brand/logo-dark.webp"
-                alt="TalentFlow Logo"
-                fill
-                sizes="36px"
-                className="object-contain dark:hidden"
-                priority
-              />
-              <Image
-                src="/brand/logo-light.webp"
-                alt="TalentFlow Logo"
-                fill
-                sizes="36px"
-                className="object-contain hidden dark:block"
-                priority
-              />
-            </div>
-            <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-              TalentFlow
-            </span>
-          </Link>
-
-          <Link 
-            href="/" 
-            className="flex items-center gap-2 text-sm font-semibold hover:text-primary transition-colors py-2 px-3 rounded-lg border border-border bg-background/50"
-          >
-            <ArrowLeft className="w-4 h-4" /> Voltar para Home
-          </Link>
-        </div>
-      </header>
-
-      {/* Main Content */}
+    <PublicLegalShell>
       <main className="max-w-4xl mx-auto px-6 py-16 md:py-24">
         <article className="glass-panel-strong rounded-3xl p-8 md:p-12 shadow-xl">
           <div className="flex items-center gap-3 mb-6 text-primary">
@@ -131,6 +89,6 @@ export default function TermsPage() {
         </article>
       </main>
 
-    </div>
+    </PublicLegalShell>
   );
 }

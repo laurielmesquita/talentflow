@@ -37,6 +37,11 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 ### Administração organizacional
 - A confirmação de desativação de usuários agora usa diálogo acessível e campos compartilhados, preservando o comportamento administrativo existente.
 
+### Portal público
+- Criado `PublicLegalShell` para centralizar a navegação institucional e o layout das páginas de Termos e Privacidade.
+- A busca e os estados vazios de vagas públicas agora usam tokens semânticos e o componente compartilhado `ui/Input`.
+- Atualizado o mapa Graphify após a consolidação das páginas públicas.
+
 ## [2.6.0] — 2026-08-26
 
 Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organização.

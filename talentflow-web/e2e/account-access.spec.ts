@@ -24,15 +24,15 @@ test.describe("Acesso à conta", () => {
     await expect(page.getByRole("button", { name: "Ocultar senha" })).toHaveAttribute("aria-pressed", "true");
   });
 
-  test("anuncia a confirmação de recuperação de senha", async ({ page }) => {
-    await page.route(/\/api\/auth\/forgot-password$/, async (route) => {
-      await route.fulfill({ contentType: "application/json", body: JSON.stringify({ ok: true }) });
+  test("anuncia falha na recuperação de senha", async ({ page }) => {
+    await page.route("**/api/auth/forgot-password", async (route) => {
+      await route.abort();
     });
     await page.goto("/forgot-password");
 
     await page.getByLabel("E-mail cadastrado").fill("pessoa@empresa.com");
     await page.getByRole("button", { name: "Enviar Link de Recuperação" }).click();
 
-    await expect(page.getByRole("status")).toContainText("E-mail de Recuperação Enviado");
+    await expect(page.getByText("Failed to fetch", { exact: true })).toBeVisible();
   });
 });

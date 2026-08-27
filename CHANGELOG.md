@@ -53,6 +53,11 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - Corrigido o recorte horizontal do fluxo de login em telas mobile ao organizar o `AuthShell` verticalmente.
 - Validado o fluxo de acesso em desktop e mobile no navegador integrado; o mapa Graphify foi atualizado.
 
+### Landing comercial
+- A narrativa da landing foi alinhada a benefícios verificáveis: triagem inteligente, decisão humana e justificativas explicáveis.
+- Removida a prova social não verificável e substituída por sinais de confiança coerentes com o produto.
+- CTA, seção de recursos e chamada final agora usam linguagem consistente de criação gratuita e privacidade por desenho.
+
 ## [2.6.0] — 2026-08-26
 
 Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organização.

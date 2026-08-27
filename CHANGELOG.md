@@ -19,6 +19,8 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - Atualizado o mapa Graphify após a mudança estrutural e adicionados testes para os novos primitivos de feedback.
 
 ### Configurações de conta
+- Criado `SettingsShell` com navegação persistente no desktop e rolável no mobile para Perfil, Segurança, Preferências e Privacidade e dados.
+- Novas rotas de conta: `/settings/profile`, `/settings/security`, `/settings/preferences` e `/settings/privacy`; os caminhos legados de configurações e senha redirecionam para a nova estrutura.
 - Criada a central `/settings`, separando perfil individual, segurança, preferências e privacidade das funções administrativas da organização.
 - Adicionada edição do nome e telefone do próprio usuário por `GET/PATCH /api/auth/me`.
 - Adicionado telefone opcional ao gerenciamento administrativo de usuários.

@@ -42,6 +42,12 @@ Próxima versão em planejamento. O encerramento seguro de organizações e a pu
 - A busca e os estados vazios de vagas públicas agora usam tokens semânticos e o componente compartilhado `ui/Input`.
 - Atualizado o mapa Graphify após a consolidação das páginas públicas.
 
+### Qualidade de interação
+- Cadastro, redefinição e alteração de senha reforçam o mínimo de 8 caracteres no próprio formulário.
+- Botões de revelar senha voltaram a ser acessíveis por teclado e anunciam seu estado para leitores de tela.
+- Feedbacks de autenticação passaram a usar regiões acessíveis de alerta e status.
+- Páginas de configurações avisam antes do fechamento quando há alterações ainda não salvas.
+
 ## [2.6.0] — 2026-08-26
 
 Adiciona o primeiro ciclo de gerenciamento administrativo de usuários por organização.

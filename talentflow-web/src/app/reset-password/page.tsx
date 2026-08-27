@@ -71,7 +71,7 @@ function ResetPasswordContent() {
       <div className="w-full max-w-md glass-panel-strong rounded-3xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
         
         {success ? (
-          <div className="flex flex-col items-center text-center py-4">
+            <div role="status" aria-live="polite" className="flex flex-col items-center text-center py-4">
             <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 mb-4">
               <CheckCircle2 className="w-6 h-6" />
             </div>
@@ -98,7 +98,7 @@ function ResetPasswordContent() {
 
             {/* Error Alert */}
             {error && (
-              <div className="mb-6 px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium flex items-start gap-2">
+              <div role="alert" aria-live="assertive" className="mb-6 px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium flex items-start gap-2">
                 <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
                 <span>{error}</span>
               </div>
@@ -119,6 +119,7 @@ function ResetPasswordContent() {
                       id="password"
                       type={showPassword ? 'text' : 'password'}
                       required
+                      minLength={8}
                       disabled={loading}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -127,9 +128,10 @@ function ResetPasswordContent() {
                     />
                     <button
                       type="button"
-                      tabIndex={-1}
+                      aria-label={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                      aria-pressed={showPassword}
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 text-muted-foreground hover:text-foreground transition-colors"
+                      className="absolute right-3.5 rounded p-1 text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                     >
                       {showPassword ? <EyeOff className="w-4.5 h-4.5" /> : <Eye className="w-4.5 h-4.5" />}
                     </button>
@@ -148,6 +150,7 @@ function ResetPasswordContent() {
                       id="confirmPassword"
                       type={showPassword ? 'text' : 'password'}
                       required
+                      minLength={8}
                       disabled={loading}
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}

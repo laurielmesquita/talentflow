@@ -31,8 +31,8 @@ export default function ChangePasswordPage() {
       return;
     }
 
-    if (newPassword.length < 6) {
-      setError('A nova senha deve conter pelo menos 6 caracteres.');
+    if (newPassword.length < 8) {
+      setError('A nova senha deve conter pelo menos 8 caracteres.');
       return;
     }
 
@@ -115,7 +115,7 @@ export default function ChangePasswordPage() {
 
         {/* Subtext */}
         <p className="text-muted-foreground text-sm max-w-xl leading-relaxed">
-          Escolha uma senha forte de no mínimo 6 caracteres e não a reutilize em outras contas corporativas.
+          Escolha uma senha forte de no mínimo 8 caracteres e não a reutilize em outras contas corporativas.
         </p>
 
         {/* Form Card Box */}
@@ -178,7 +178,7 @@ export default function ChangePasswordPage() {
                     disabled={loading || success}
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
-                    placeholder="Mínimo de 6 caracteres"
+                    placeholder="Mínimo de 8 caracteres"
                     className="w-full pl-11 pr-4 py-3 bg-background/50 border border-border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 disabled:opacity-50"
                   />
                 </div>
@@ -197,6 +197,7 @@ export default function ChangePasswordPage() {
                     id="confirmPassword"
                     type="password"
                     required
+                    minLength={8}
                     disabled={loading || success}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}

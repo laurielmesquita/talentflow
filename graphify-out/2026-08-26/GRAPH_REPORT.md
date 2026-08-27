@@ -1,16 +1,16 @@
 # Graph Report - 05-Projetos  (2026-08-26)
 
 ## Corpus Check
-- 181 files · ~154,063 words
+- 187 files · ~154,956 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1192 nodes · 1920 edges · 119 communities (102 shown, 17 thin omitted)
+- 1213 nodes · 1947 edges · 120 communities (104 shown, 16 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 82 edges (avg confidence: 0.52)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `b92927b8`
+- Built from commit: `e96aaa1f`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -45,7 +45,6 @@
 - generate_slug
 - optimize-images.js
 - preset-provider.tsx
-- ConflictModal.tsx
 - PDFViewer.tsx
 - button.tsx
 - proxy.ts
@@ -89,7 +88,7 @@
 - [2.3.0] — 2026-08-04
 - DeleteConfirmModal.tsx
 - [0.2.0] — 2026-06-17
-- [0.3.0] — 2026-06-18
+- save_candidate_to_db
 - [0.5.0] — 2026-06-20
 - [0.6.0] — 2026-06-20
 - [0.9.0] — 2026-06-21
@@ -97,16 +96,17 @@
 - 6c1d2e3f4a50_backfill_missing_tenant_owner.py
 - [2.5.1] — 2026-08-25
 - [2.6.0] — 2026-08-26
-- [0.8.0] — 2026-06-21
+- public_jobs.py
 - start-render.sh
 - resolve_job_id
+- get_candidate
 - sandbox.py
-- Category
 - [Unreleased]
+- BatchUploadButton.tsx
 - [0.7.0] — 2026-06-21
 
 ## God Nodes (most connected - your core abstractions)
-1. `User` - 64 edges
+1. `User` - 65 edges
 2. `ScopedSession` - 55 edges
 3. `apiFetch()` - 30 edges
 4. `JobPosition` - 26 edges
@@ -132,15 +132,15 @@
 ## Import Cycles
 - None detected.
 
-## Communities (119 total, 17 thin omitted)
+## Communities (120 total, 16 thin omitted)
 
 ### Community 0 - "candidates.py"
 Cohesion: 0.19
 Nodes (18): calculate_file_hash(), extract_and_upload_photo(), extract_candidate_from_pdf(), extract_text(), ingest_directory(), process_ocr_via_gemini(), process_single_pdf(), Path (+10 more)
 
 ### Community 1 - "ScopedSession"
-Cohesion: 0.32
-Nodes (14): Base, JobUpdate, match_candidates(), update_job(), BatchJob, Candidate, JobApplication, JobMatch (+6 more)
+Cohesion: 0.23
+Nodes (15): Base, JobUpdate, match_candidates(), update_job(), BatchJob, Candidate, Category, JobMatch (+7 more)
 
 ### Community 2 - "apiFetch"
 Cohesion: 0.12
@@ -172,7 +172,7 @@ Nodes (16): Avatar(), CandidateStats, CategoryStats, container, DashboardClient(
 
 ### Community 9 - "api/auth.py"
 Cohesion: 0.08
-Nodes (51): Response, change_password(), confirm_email_change(), forgot_password(), get_profile(), login(), logout(), Request (+43 more)
+Nodes (50): Response, change_password(), confirm_email_change(), export_personal_data(), forgot_password(), get_profile(), login(), logout() (+42 more)
 
 ### Community 10 - "components.json"
 Cohesion: 0.09
@@ -180,7 +180,7 @@ Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent 
 
 ### Community 11 - "public_apply.py"
 Cohesion: 0.15
-Nodes (16): apply_to_job(), _generate_otp(), get_application_status(), OTPVerifyRequest, BackgroundTasks, BaseModel, Path, Request (+8 more)
+Nodes (18): apply_to_job(), _generate_otp(), get_application_status(), OTPVerifyRequest, BackgroundTasks, BaseModel, Path, Request (+10 more)
 
 ### Community 12 - "main.py"
 Cohesion: 0.13
@@ -199,16 +199,16 @@ Cohesion: 0.29
 Nodes (3): metadata, PageProps, CandidateAuditWorkspaceProps
 
 ### Community 16 - "candidates/page.tsx"
-Cohesion: 0.15
-Nodes (11): CandidatesPage(), metadata, DeleteConfirmModalProps, getCandidates(), getCategories(), Candidate, CandidatesResponse, CandidateStats (+3 more)
+Cohesion: 0.17
+Nodes (11): CandidatesPage(), metadata, Category, SearchAndFiltersProps, getCandidates(), getCategories(), Candidate, CandidatesResponse (+3 more)
 
 ### Community 17 - "Job"
 Cohesion: 0.20
 Nodes (12): Candidate, _alert(), calculate_quality_score(), TalentFlow — CV Quality Score Engine (v1.0)  Responsabilidade única: calcular a, Gera uma mensagem de alerta padronizada para um campo ausente/insuficiente., Retorna o tier textual do score para uso na API e frontend.     - 'high'   : 80–, Calcula o CV Quality Score de 0–100 e retorna uma lista de alertas     para camp, score_tier() (+4 more)
 
 ### Community 18 - "Navbar.tsx"
-Cohesion: 0.20
-Nodes (4): JobMatchViewer(), Match, MatchResponse, PageHeaderProps
+Cohesion: 0.21
+Nodes (4): DeleteConfirmModalProps, JobMatchViewer(), Match, MatchResponse
 
 ### Community 19 - "services/auth.py"
 Cohesion: 0.06
@@ -254,10 +254,6 @@ Nodes (5): brandDir, fs, optimizeImages(), path, sharp
 Cohesion: 0.24
 Nodes (10): get_dashboard_stats(), get_job(), list_jobs(), _serialize_job(), generate_match_justification(), Gera uma justificativa de compatibilidade profissional e curta (max 2 frases), _tenant_expression_seen(), test_dashboard_applies_tenant_filter_to_all_aggregate_queries() (+2 more)
 
-### Community 30 - "ConflictModal.tsx"
-Cohesion: 0.24
-Nodes (9): get_candidate(), list_candidates(), UUID, Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo,, Testa se a listagem de candidatos inclui original_pdf_url e pdf_url em cada item, Testa se o detalhe do candidato retorna os campos pdf_url e original_pdf_url cor, test_get_candidate_returns_original_pdf_url(), test_list_candidates_includes_original_pdf_url() (+1 more)
-
 ### Community 31 - "PDFViewer.tsx"
 Cohesion: 0.50
 Nodes (3): getCookie(), PDFViewer(), PDFViewerProps
@@ -283,8 +279,8 @@ Cohesion: 0.29
 Nodes (6): API — segurança e confiabilidade, Decisões e limites, Objetivo, Registro de evolução — Hardening e consolidação, Validação prevista, Web — consolidação estrutural
 
 ### Community 55 - "DeleteConfirmModal.tsx"
-Cohesion: 0.18
-Nodes (10): getJobDetail(), JobDetailPage(), PageProps, BatchUploadButtonProps, UploadStatus, JobCardProps, JobFormDrawerProps, Portal() (+2 more)
+Cohesion: 0.16
+Nodes (10): getJobDetail(), JobDetailPage(), PageProps, JobCardProps, JobFormDrawerProps, PageHeaderProps, Portal(), PortalProps (+2 more)
 
 ### Community 57 - "number-ticker.tsx"
 Cohesion: 0.12
@@ -295,16 +291,16 @@ Cohesion: 0.06
 Nodes (29): Contexto, Decisão de rollout, Implementação registrada, Incidentes e correções, Próximos passos, Registro de mudança — Migração da API para Render Free, Validação realizada, Configuração (+21 more)
 
 ### Community 59 - "shine-border.tsx"
-Cohesion: 0.28
-Nodes (20): cancel_closure(), get_closure_status(), _get_current_tenant(), request_closure(), _require_owner(), transfer_owner(), BaseModel, TenantClosureRequest (+12 more)
+Cohesion: 0.25
+Nodes (22): cancel_closure(), get_closure_status(), _get_current_tenant(), request_closure(), _require_owner(), transfer_owner(), BaseModel, TenantClosureRequest (+14 more)
 
 ### Community 62 - "migrate_db_data.py"
 Cohesion: 0.23
 Nodes (10): create_job(), JobCreate, BaseModel, JobPosition, generate_slug(), Session, Gera um slug único global para uma vaga a partir do seu título.     Caso o slug, Gera um slug URL-friendly a partir de uma string de texto.     Normaliza acentos (+2 more)
 
 ### Community 70 - "design-switcher.tsx"
-Cohesion: 0.33
-Nodes (9): replace_candidate(), ReplaceRequest, CandidateExtraction, ExperienceItem, BaseModel, Testa a estruturação canônica de extração de candidatos, Testa se o schema ExperienceItem valida dados de experiência corretamente, test_candidate_extraction_validation() (+1 more)
+Cohesion: 0.17
+Nodes (7): EmptyStateProps, PageSkeleton(), PageSkeletonProps, icons, StatusMessageProps, StatusTone, styles
 
 ### Community 71 - "ThemeProvider.tsx"
 Cohesion: 0.17
@@ -370,9 +366,13 @@ Nodes (4): [2.5.0] — 2026-08-17, Adicionado, Corrigido, Modificado
 Cohesion: 0.83
 Nodes (3): _request(), test_checkout_webhook_updates_tenant_and_is_idempotent(), test_webhook_is_unavailable_without_secret()
 
+### Community 92 - "SearchAndFilters.tsx"
+Cohesion: 0.33
+Nodes (9): replace_candidate(), ReplaceRequest, CandidateExtraction, ExperienceItem, BaseModel, Testa a estruturação canônica de extração de candidatos, Testa se o schema ExperienceItem valida dados de experiência corretamente, test_candidate_extraction_validation() (+1 more)
+
 ### Community 94 - "ApiError"
-Cohesion: 0.22
-Nodes (6): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), ApiError
+Cohesion: 0.17
+Nodes (7): ClosureState, ClosureStatus, formatDate(), ManagedUser, OrganizationPage(), AppShellProps, ApiError
 
 ### Community 95 - "[1.2.0] — 2026-06-23"
 Cohesion: 0.67
@@ -386,7 +386,7 @@ Nodes (3): [2.3.0] — 2026-08-04, Adicionado, Modificado
 Cohesion: 0.26
 Nodes (6): ChangePasswordPage(), NAV_LINKS, getClientSnapshot(), getServerSnapshot(), subscribe(), ThemeToggle()
 
-### Community 100 - "[0.3.0] — 2026-06-18"
+### Community 100 - "save_candidate_to_db"
 Cohesion: 0.20
 Nodes (11): upload_resume(), _detect_divergences(), Compara os dados submetidos pelo candidato no formulário com os extraídos pelo G, Tarefa de background: extrai o PDF com Gemini, calcula quality score,     detect, _run_ai_pipeline_background(), Experience, _cleanup(), Session (+3 more)
 
@@ -406,7 +406,7 @@ Nodes (4): [2.5.1] — 2026-08-25, Adicionado, Corrigido, Validado
 Cohesion: 0.67
 Nodes (3): [2.6.0] — 2026-08-26, Adicionado, Segurança
 
-### Community 110 - "[0.8.0] — 2026-06-21"
+### Community 110 - "public_jobs.py"
 Cohesion: 0.27
 Nodes (9): get_public_job(), list_public_jobs(), Session, Retorna a listagem de todas as vagas ativas no portal público.     Não exige aut, Retorna os detalhes de uma vaga pública específica identificada pelo slug semânt, _serialize_public_job(), JobResponse, PublicJobResponse (+1 more)
 
@@ -414,7 +414,11 @@ Nodes (9): get_public_job(), list_public_jobs(), Session, Retorna a listagem de 
 Cohesion: 0.24
 Nodes (9): Session, Busca uma vaga no banco pelo ID (UUID) ou pelo slug semântico.     Se must_be_ac, resolve_job_id(), Testa a resolução de vaga quando um slug é fornecido e encontrado no banco, Testa a resolução de vaga quando o slug não é encontrado no banco, Testa a resolução de vaga quando um UUID válido é fornecido, test_resolve_job_id_with_slug_found(), test_resolve_job_id_with_slug_not_found() (+1 more)
 
-### Community 113 - "sandbox.py"
+### Community 113 - "get_candidate"
+Cohesion: 0.24
+Nodes (9): get_candidate(), list_candidates(), UUID, Lista candidatos com filtros de categoria e busca textual (nome, skills, cargo,, Testa se a listagem de candidatos inclui original_pdf_url e pdf_url em cada item, Testa se o detalhe do candidato retorna os campos pdf_url e original_pdf_url cor, test_get_candidate_returns_original_pdf_url(), test_list_candidates_includes_original_pdf_url() (+1 more)
+
+### Community 114 - "sandbox.py"
 Cohesion: 0.43
 Nodes (6): extract_resume_sandbox(), BaseModel, Request, UploadFile, SandboxExperience, SandboxResponse
 
@@ -423,19 +427,19 @@ Cohesion: 0.67
 Nodes (3): Configurações de conta, Preparação do encerramento de organização, [Unreleased]
 
 ## Knowledge Gaps
-- **379 isolated node(s):** `pre-commit.sh script`, `talentflow-api`, `start-render.sh script`, `$schema`, `style` (+374 more)
+- **386 isolated node(s):** `pre-commit.sh script`, `talentflow-api`, `start-render.sh script`, `$schema`, `style` (+381 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **17 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **16 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `User` connect `services/auth.py` to `ScopedSession`, `[0.3.0] — 2026-06-18`, `design-switcher.tsx`, `deps.py`, `api/auth.py`, `Category`, `sandbox.py`, `migrate_db_data.py`, `shine-border.tsx`, `preset-provider.tsx`, `ConflictModal.tsx`?**
-  _High betweenness centrality (0.034) - this node is a cross-community bridge._
 - **Why does `ThemeToggle()` connect `DeleteConfirmModal.tsx` to `dependencies`?**
-  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `User` connect `services/auth.py` to `ScopedSession`, `save_candidate_to_db`, `deps.py`, `api/auth.py`, `get_candidate`, `sandbox.py`, `shine-border.tsx`, `SearchAndFilters.tsx`, `preset-provider.tsx`, `migrate_db_data.py`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `devDependencies`?**
-  _High betweenness centrality (0.026) - this node is a cross-community bridge._
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `User` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?**
   _`User` has 9 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 7 inferred relationships involving `ScopedSession` (e.g. with `FlagRequest` and `ReplaceRequest`) actually correct?**

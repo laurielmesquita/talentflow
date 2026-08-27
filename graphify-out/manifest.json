@@ -305,8 +305,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/src/app/page.tsx": {
-    "mtime": 1786476230.7824786,
-    "ast_hash": "11e576b5193aee12a4d9467b506a3803",
+    "mtime": 1787803350.6220593,
+    "ast_hash": "a301ff45f5cfdaa7397f837ad7e46395",
     "semantic_hash": ""
   },
   "talentflow-web/src/app/privacy/page.tsx": {
@@ -645,9 +645,9 @@
     "semantic_hash": "65aa81f75f94b025bd86f6f9c81eafab"
   },
   "talentflow-web/vitest.config.mts": {
-    "mtime": 1785836951.8288562,
-    "ast_hash": "ebf274c78f40484b0e8c023c9c835d48",
-    "semantic_hash": "ebf274c78f40484b0e8c023c9c835d48"
+    "mtime": 1787803454.5098026,
+    "ast_hash": "d95821dc40c59d0810dcffd36d16660c",
+    "semantic_hash": ""
   },
   ".github/workflows/fly-deploy.yml": {
     "mtime": 1787705843.560448,
@@ -655,8 +655,8 @@
     "semantic_hash": ""
   },
   "CHANGELOG.md": {
-    "mtime": 1787801059.9285648,
-    "ast_hash": "c2787ed771656ac55d4eedea9a7034e5",
+    "mtime": 1787803954.813038,
+    "ast_hash": "cf931a747611a26e0cc29f78891448b5",
     "semantic_hash": ""
   },
   "CLAUDE.md": {
@@ -1205,8 +1205,8 @@
     "semantic_hash": ""
   },
   "talentflow-web/e2e/account-access.spec.ts": {
-    "mtime": 1787801801.1459854,
-    "ast_hash": "6394c8edf06de725535278323378cf6e",
+    "mtime": 1787803915.6514428,
+    "ast_hash": "8f672d5e3863a2b07d49b888bf31cf12",
     "semantic_hash": ""
   },
   "talentflow-web/playwright.config.ts": {

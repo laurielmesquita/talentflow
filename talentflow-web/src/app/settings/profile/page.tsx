@@ -5,6 +5,7 @@ import { KeyRound, Mail, Phone, User } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
 import StatusMessage from '@/components/StatusMessage';
 import { Input } from '@/components/ui/input';
+import { useUnsavedChanges } from '@/hooks/useUnsavedChanges';
 
 type Profile = { email: string; full_name: string; phone: string | null };
 const messageFor = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback;
@@ -19,6 +20,8 @@ export default function SettingsProfilePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const hasUnsavedChanges = Boolean(profile && (fullName !== profile.full_name || phone !== (profile.phone ?? '') || newEmail || currentPassword));
+  useUnsavedChanges(hasUnsavedChanges);
 
   useEffect(() => {
     void apiFetch<Profile>('/api/auth/me').then((data) => { setProfile(data); setFullName(data.full_name); setPhone(data.phone ?? ''); }).catch((reason: unknown) => setError(messageFor(reason, 'Não foi possível carregar seu perfil.'))).finally(() => setIsLoading(false));

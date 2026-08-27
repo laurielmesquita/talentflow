@@ -47,7 +47,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md glass-panel-strong rounded-3xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
         
         {success ? (
-          <div className="flex flex-col items-center text-center py-4">
+          <div role="status" aria-live="polite" className="flex flex-col items-center text-center py-4">
             <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500 mb-4">
               <CheckCircle2 className="w-6 h-6" />
             </div>
@@ -74,7 +74,7 @@ export default function ForgotPasswordPage() {
 
             {/* Error Alert */}
             {error && (
-              <div className="mb-6 px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium animate-shake">
+              <div role="alert" aria-live="assertive" className="mb-6 px-4 py-3 rounded-lg bg-destructive/10 border border-destructive/20 text-destructive text-sm font-medium animate-shake">
                 {error}
               </div>
             )}

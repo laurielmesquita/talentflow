@@ -8,6 +8,7 @@ import { Lock, Mail, Eye, EyeOff, Loader2, ArrowLeft, User, Building, CheckCircl
 import { motion, AnimatePresence } from 'framer-motion';
 import { setSession } from '@/lib/auth';
 import { apiFetch } from '@/lib/api';
+import AuthShell from '@/components/AuthShell';
 
 function LoginContent() {
   const router = useRouter();
@@ -71,7 +72,7 @@ function LoginContent() {
   };
 
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans relative overflow-hidden selection:bg-primary/30 select-none">
+    <AuthShell>
       {/* Background Ambient Glows */}
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse duration-[6000ms]" />
       <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />
@@ -388,7 +389,7 @@ function LoginContent() {
           )}
         </motion.div>
       </div>
-    </div>
+    </AuthShell>
   );
 }
 

@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Mail, ArrowLeft, Loader2, CheckCircle2 } from 'lucide-react';
+import AuthShell from '@/components/AuthShell';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -41,9 +42,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="dashboard-atmosphere flex-1 w-full bg-background text-foreground flex items-center justify-center p-4 relative overflow-hidden font-sans select-none">
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/5 rounded-full blur-[100px] pointer-events-none -z-10 animate-pulse duration-[6000ms]" />
-      <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px] pointer-events-none -z-10 animate-pulse duration-[8000ms]" />
+    <AuthShell>
 
       <div className="w-full max-w-md glass-panel-strong rounded-3xl p-8 shadow-2xl flex flex-col relative transition-all duration-300">
         
@@ -129,6 +128,6 @@ export default function ForgotPasswordPage() {
           </>
         )}
       </div>
-    </div>
+    </AuthShell>
   );
 }

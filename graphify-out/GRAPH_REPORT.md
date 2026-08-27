@@ -170,8 +170,8 @@ Cohesion: 0.09
 Nodes (21): aliases, components, hooks, lib, ui, utils, iconLibrary, menuAccent (+13 more)
 
 ### Community 11 - "public_apply.py"
-Cohesion: 0.13
-Nodes (21): apply_to_job(), _detect_divergences(), _generate_otp(), get_application_status(), BackgroundTasks, Path, Request, Session (+13 more)
+Cohesion: 0.12
+Nodes (22): apply_to_job(), _detect_divergences(), _generate_otp(), get_application_status(), OTPVerifyRequest, BackgroundTasks, BaseModel, Path (+14 more)
 
 ### Community 12 - "main.py"
 Cohesion: 0.13
@@ -348,6 +348,10 @@ Nodes (4): [2.5.0] — 2026-08-17, Adicionado, Corrigido, Modificado
 ### Community 91 - "test_billing_webhook.py"
 Cohesion: 0.83
 Nodes (3): _request(), test_checkout_webhook_updates_tenant_and_is_idempotent(), test_webhook_is_unavailable_without_secret()
+
+### Community 92 - "SearchAndFilters.tsx"
+Cohesion: 0.67
+Nodes (3): getJobDetail(), JobDetailPage(), PageProps
 
 ### Community 94 - "ApiError"
 Cohesion: 0.18

@@ -244,6 +244,11 @@
     letter-spacing: -0.022em;
     font-weight: 600;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
 }
 
 /* ── Candidate New-Glow (usa primary) ───────────────────────────────────── */
@@ -408,6 +413,15 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
   .dashboard-atmosphere::before,
   .dashboard-atmosphere::after,
   .ambient-warm-orb {

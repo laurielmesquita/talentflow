@@ -2306,8 +2306,8 @@
       "source_location": "L394",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_send_otp_email",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "_send_otp_email()"
     },
     {
@@ -3494,8 +3494,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_api_app_services_email_send_email",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "send_email()"
     },
     {
@@ -3538,8 +3538,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "talentflow_api_app_services_email_rationale_7",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "dispara um e-mail formatado em html utilizando o servidor smtp configurado."
     },
     {
@@ -7894,8 +7894,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidatetable",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "candidatetable.tsx"
     },
     {
@@ -7905,8 +7905,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidatetable_scorering",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "scorering()"
     },
     {
@@ -7916,8 +7916,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "talentflow_web_src_components_candidatetable_candidatetable",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "candidatetable()"
     },
     {
@@ -9005,8 +9005,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_searchandfilters",
-      "community": 16,
-      "community_name": "candidates/page.tsx",
+      "community": 100,
+      "community_name": "save_candidate_to_db",
       "norm_label": "searchandfilters.tsx"
     },
     {
@@ -9016,8 +9016,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "talentflow_web_src_components_searchandfilters_category",
-      "community": 16,
-      "community_name": "candidates/page.tsx",
+      "community": 100,
+      "community_name": "save_candidate_to_db",
       "norm_label": "category"
     },
     {
@@ -9027,8 +9027,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_searchandfilters_searchandfiltersprops",
-      "community": 16,
-      "community_name": "candidates/page.tsx",
+      "community": 100,
+      "community_name": "save_candidate_to_db",
       "norm_label": "searchandfiltersprops"
     },
     {
@@ -9038,8 +9038,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "talentflow_web_src_components_searchandfilters_searchandfilters",
-      "community": 16,
-      "community_name": "candidates/page.tsx",
+      "community": 100,
+      "community_name": "save_candidate_to_db",
       "norm_label": "searchandfilters()"
     },
     {
@@ -11161,8 +11161,8 @@
       "source_location": "L359",
       "_origin": "ast",
       "id": "changelog_0_1_0_2026_06_16",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "community": 102,
+      "community_name": "[0.6.0] \u2014 2026-06-20",
       "norm_label": "[0.1.0] \u2014 2026-06-16"
     },
     {
@@ -30810,6 +30810,40 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/EmptyState.tsx",
+      "source_location": "L11",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_emptystate",
+      "target": "talentflow_web_src_components_emptystate_emptystate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/EmptyState.tsx",
+      "source_location": "L3",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_emptystate",
+      "target": "talentflow_web_src_components_emptystate_emptystateprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/test/feedback-components.test.tsx",
+      "source_location": "L4",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_test_feedback_components_test",
+      "target": "talentflow_web_src_components_emptystate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/components/Footer.tsx",
       "source_location": "L11",
       "weight": 1.0,
@@ -31699,6 +31733,52 @@
       "_origin": "ast",
       "source": "talentflow_web_src_components_pageheader",
       "target": "talentflow_web_src_components_pageheader_pageheaderprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/PageSkeleton.tsx",
+      "source_location": "L6",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_pageskeleton",
+      "target": "talentflow_web_src_components_pageskeleton_pageskeleton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/components/PageSkeleton.tsx",
+      "source_location": "L1",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_components_pageskeleton",
+      "target": "talentflow_web_src_components_pageskeleton_pageskeletonprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/test/feedback-components.test.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_test_feedback_components_test",
+      "target": "talentflow_web_src_components_pageskeleton",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/test/feedback-components.test.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_test_feedback_components_test",
+      "target": "talentflow_web_src_components_pageskeleton_pageskeleton",
       "confidence_score": 1.0
     },
     {
@@ -34144,7 +34224,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L139",
+      "source_location": "L146",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_4_0_2026_08_04",
@@ -34210,7 +34290,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L192",
+      "source_location": "L199",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_1_0_2026_07_20",
@@ -34320,7 +34400,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L263",
+      "source_location": "L270",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0_2026_06_22",

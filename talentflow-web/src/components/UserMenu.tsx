@@ -91,6 +91,9 @@ export default function UserMenu() {
       {/* Botão de Trigger */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-expanded={isOpen}
+        aria-haspopup="menu"
+        aria-label="Abrir menu da conta"
         className="flex items-center gap-2.5 p-1.5 pr-3 rounded-2xl bg-secondary/10 hover:bg-secondary/20 transition-all border border-border/10 cursor-pointer group"
       >
         <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-primary to-purple-600 flex items-center justify-center text-primary-foreground font-bold text-sm shadow-md shadow-primary/10">
@@ -111,6 +114,7 @@ export default function UserMenu() {
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.15, ease: 'easeOut' }}
             className="absolute right-0 mt-2.5 w-72 bg-card/90 backdrop-blur-xl border border-border/80 rounded-2xl shadow-2xl p-2.5 z-[100] origin-top-right"
+            role="menu"
           >
             {/* Header com dados do usuário */}
             <div className="p-3 border-b border-border/60 flex flex-col gap-1.5 mb-2 min-w-0">

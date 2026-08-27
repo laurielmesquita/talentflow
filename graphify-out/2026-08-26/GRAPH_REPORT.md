@@ -288,8 +288,8 @@ Cohesion: 0.06
 Nodes (29): Contexto, Decisão de rollout, Implementação registrada, Incidentes e correções, Próximos passos, Registro de mudança — Migração da API para Render Free, Validação realizada, Configuração (+21 more)
 
 ### Community 59 - "shine-border.tsx"
-Cohesion: 0.28
-Nodes (20): cancel_closure(), get_closure_status(), _get_current_tenant(), request_closure(), _require_owner(), transfer_owner(), BaseModel, TenantClosureRequest (+12 more)
+Cohesion: 0.25
+Nodes (22): cancel_closure(), get_closure_status(), _get_current_tenant(), request_closure(), _require_owner(), transfer_owner(), BaseModel, TenantClosureRequest (+14 more)
 
 ### Community 62 - "migrate_db_data.py"
 Cohesion: 0.07

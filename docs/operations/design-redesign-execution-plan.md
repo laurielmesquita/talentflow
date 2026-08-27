@@ -170,12 +170,12 @@ Modelo recomendado: Luna Médio para executar a matriz; Sol Alto para auditoria 
 
 ## 3.1 Versionamento da entrega
 
-O redesign integral é tratado como uma nova versão do produto. A versão atual `2.6.0` permanece vigente durante a implementação.
+O redesign integral é tratado como uma nova versão do produto. A implementação está registrada como release candidate `3.0.0-rc.1`.
 
 - durante homologação visual e técnica: `3.0.0-rc.1`;
 - após aprovação do PO e todos os gates: `3.0.0`;
 - versões dos documentos (`0.x`) não substituem a versão do produto;
-- package, changelog e tags só serão atualizados no fechamento, em commit próprio.
+- package e lockfile já registram `3.0.0-rc.1`; a tag final `v3.0.0` será criada somente após homologação e aprovação do PO.
 
 ## 5. Estratégia de branch e entregas
 

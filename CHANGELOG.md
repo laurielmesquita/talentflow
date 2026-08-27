@@ -9,6 +9,19 @@ Todas as atualizações notáveis deste projeto são documentadas neste arquivo,
 
 Próxima versão em planejamento. O encerramento seguro de organizações e a purga de dados estão previstos para a linha 2.7.x.
 
+## [3.0.0-rc.1] — 2026-08-27
+
+Release candidate do redesign integral do TalentFlow, abrangendo landing page, navegação responsiva, superfícies operacionais, direção visual, acessibilidade, motion e documentação de produto.
+
+### Design e experiência
+- Nova direção visual premium baseada em Clareza Humana, com oliva profundo, verde-líquen, branco amplo e carvão.
+- Landing page e áreas internas reconstruídas com composição assimétrica, fotografia humana diversa e screenshots reais do produto.
+- Navegação mobile funcional, menu autenticado com retorno ao sistema e estados de loading, vazio, erro e sucesso refinados.
+
+### Qualidade
+- ESLint global, TypeScript, testes unitários, testes E2E e build de produção aprovados localmente.
+- Testes da API aprovados: 41 casos.
+
 ### Fundação UX/UI
 - Adicionado `AppShell` reutilizável para páginas operacionais autenticadas, aplicado inicialmente a Organização e Usuários.
 - Adicionados primitivos compartilhados de feedback: `StatusMessage`, `EmptyState` e `PageSkeleton`.

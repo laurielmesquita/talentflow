@@ -8,8 +8,7 @@ import {
 } from "lucide-react";
 import { motion } from "framer-motion";
 import JobMatchViewer from "./JobMatchViewer";
-import Navbar from "@/components/Navbar";
-import PageHeader from "@/components/PageHeader";
+import AppShell from "@/components/AppShell";
 import type { Job } from "@/types";
 
 export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[] }) {
@@ -59,19 +58,10 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
   }
 
   return (
-    <div className="dashboard-atmosphere flex-1 flex flex-col bg-background text-foreground font-sans selection:bg-primary/30 transition-colors duration-300 relative overflow-x-hidden">
-      {/* Background Ambient Glows */}
-      <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute top-[20%] right-1/4 w-[600px] h-[600px] bg-secondary/30 rounded-full blur-[150px] pointer-events-none -z-10" />
-
-      {/* Navbar */}
-      <Navbar />
-
-      {/* Page Header */}
-      <PageHeader
+    <AppShell className="selection:bg-primary/30"
         title="Smart Match de Vagas"
         subtitle="Cruze automaticamente os requisitos das vagas estruturadas com as habilidades dos candidatos."
-      />
+      >
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8 w-full flex-1">
@@ -303,6 +293,6 @@ export default function SmartMatchDashboard({ initialJobs }: { initialJobs: Job[
           </div>
         </div>
       </main>
-    </div>
+    </AppShell>
   );
 }

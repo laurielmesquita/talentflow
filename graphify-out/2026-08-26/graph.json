@@ -1404,8 +1404,8 @@
       "source_location": "L557",
       "_origin": "ast",
       "id": "talentflow_api_app_api_candidates_get_candidate_versions",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "get_candidate_versions()"
     },
     {
@@ -1437,8 +1437,8 @@
       "source_location": "L700",
       "_origin": "ast",
       "id": "talentflow_api_app_api_candidates_unflag_candidate",
-      "community": 1,
-      "community_name": "ScopedSession",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "unflag_candidate()"
     },
     {
@@ -1525,8 +1525,8 @@
       "source_location": "L932",
       "_origin": "ast",
       "id": "talentflow_api_app_api_candidates_get_batch_job_status",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 4,
+      "community_name": "resolve_job_id",
       "norm_label": "get_batch_job_status()"
     },
     {
@@ -1624,8 +1624,8 @@
       "source_location": "L936",
       "_origin": "ast",
       "id": "talentflow_api_app_api_candidates_rationale_936",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 4,
+      "community_name": "resolve_job_id",
       "norm_label": "consulta o estado de processamento de um lote de upload.     retorna percentual"
     },
     {
@@ -1635,8 +1635,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "categories.py"
     },
     {
@@ -1646,8 +1646,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_categorycreate",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "categorycreate"
     },
     {
@@ -1657,8 +1657,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_py_basemodel",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "basemodel"
     },
     {
@@ -1668,8 +1668,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_categoryupdate",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "categoryupdate"
     },
     {
@@ -1679,8 +1679,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_list_categories",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "list_categories()"
     },
     {
@@ -1690,8 +1690,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_create_category",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "create_category()"
     },
     {
@@ -1701,8 +1701,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_update_category",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "update_category()"
     },
     {
@@ -1712,8 +1712,8 @@
       "source_location": "L69",
       "_origin": "ast",
       "id": "talentflow_api_app_api_categories_delete_category",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "delete_category()"
     },
     {
@@ -1723,8 +1723,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_api_dashboard",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 1,
+      "community_name": "ScopedSession",
       "norm_label": "dashboard.py"
     },
     {
@@ -1833,8 +1833,8 @@
       "source_location": "L90",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "scopedsession"
     },
     {
@@ -1866,8 +1866,8 @@
       "source_location": "L99",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_query",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".query()"
     },
     {
@@ -1877,8 +1877,8 @@
       "source_location": "L126",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_add",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".add()"
     },
     {
@@ -1888,8 +1888,8 @@
       "source_location": "L132",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_commit",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".commit()"
     },
     {
@@ -1899,8 +1899,8 @@
       "source_location": "L135",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_rollback",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".rollback()"
     },
     {
@@ -1910,8 +1910,8 @@
       "source_location": "L138",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_refresh",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".refresh()"
     },
     {
@@ -1921,8 +1921,8 @@
       "source_location": "L141",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_delete",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".delete()"
     },
     {
@@ -1932,8 +1932,8 @@
       "source_location": "L144",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_scopedsession_execute",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": ".execute()"
     },
     {
@@ -1943,8 +1943,8 @@
       "source_location": "L148",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_get_scoped_db",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "get_scoped_db()"
     },
     {
@@ -1954,8 +1954,8 @@
       "source_location": "L158",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_require_feature",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "require_feature()"
     },
     {
@@ -1998,8 +1998,8 @@
       "source_location": "L91",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_rationale_91",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "wrapper para session do sqlalchemy que injeta automaticamente o filtro de tenant"
     },
     {
@@ -2009,8 +2009,8 @@
       "source_location": "L152",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_rationale_152",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "dependencia de banco de dados que retorna um scopedsession atrelado ao tenant_id"
     },
     {
@@ -2020,8 +2020,8 @@
       "source_location": "L159",
       "_origin": "ast",
       "id": "talentflow_api_app_api_deps_rationale_159",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "factory de dependencia fastapi que verifica se o tenant do usuario logado tem ac"
     },
     {
@@ -2130,8 +2130,8 @@
       "source_location": "L129",
       "_origin": "ast",
       "id": "talentflow_api_app_api_jobs_delete_job",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 62,
+      "community_name": "migrate_db_data.py",
       "norm_label": "delete_job()"
     },
     {
@@ -2152,8 +2152,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 0,
+      "community_name": "candidates.py",
       "norm_label": "public_apply.py"
     },
     {
@@ -2174,8 +2174,8 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_detect_divergences",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 0,
+      "community_name": "candidates.py",
       "norm_label": "_detect_divergences()"
     },
     {
@@ -2185,8 +2185,8 @@
       "source_location": "L85",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_run_ai_pipeline_background",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 0,
+      "community_name": "candidates.py",
       "norm_label": "_run_ai_pipeline_background()"
     },
     {
@@ -2306,8 +2306,8 @@
       "source_location": "L394",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_send_otp_email",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "_send_otp_email()"
     },
     {
@@ -2317,8 +2317,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_rationale_1",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 0,
+      "community_name": "candidates.py",
       "norm_label": "talentflow \u2014 public apply router (step 6)  endpoints publicos para o fluxo de ca"
     },
     {
@@ -2339,8 +2339,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_rationale_57",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 0,
+      "community_name": "candidates.py",
       "norm_label": "compara os dados submetidos pelo candidato no formulario com os extraidos pelo g"
     },
     {
@@ -2350,8 +2350,8 @@
       "source_location": "L86",
       "_origin": "ast",
       "id": "talentflow_api_app_api_public_apply_rationale_86",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 0,
+      "community_name": "candidates.py",
       "norm_label": "tarefa de background: extrai o pdf com gemini, calcula quality score,     detect"
     },
     {
@@ -2625,8 +2625,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "users.py"
     },
     {
@@ -2636,8 +2636,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_get_user_or_404",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "_get_user_or_404()"
     },
     {
@@ -2647,8 +2647,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_py_uuid",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "uuid"
     },
     {
@@ -2658,8 +2658,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_active_manager_count",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "_active_manager_count()"
     },
     {
@@ -2669,8 +2669,8 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_protect_super_admin_grant",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "_protect_super_admin_grant()"
     },
     {
@@ -2680,8 +2680,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_protect_last_manager",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "_protect_last_manager()"
     },
     {
@@ -2691,8 +2691,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_protect_owner",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "_protect_owner()"
     },
     {
@@ -2702,8 +2702,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_list_users",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "list_users()"
     },
     {
@@ -2713,8 +2713,8 @@
       "source_location": "L63",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_create_user",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "create_user()"
     },
     {
@@ -2724,8 +2724,8 @@
       "source_location": "L87",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_update_user",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "update_user()"
     },
     {
@@ -2735,8 +2735,8 @@
       "source_location": "L131",
       "_origin": "ast",
       "id": "talentflow_api_app_api_users_deactivate_user",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "deactivate_user()"
     },
     {
@@ -2955,8 +2955,8 @@
       "source_location": "L150",
       "_origin": "ast",
       "id": "talentflow_api_app_models_domain_jobmatch",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 1,
+      "community_name": "ScopedSession",
       "norm_label": "jobmatch"
     },
     {
@@ -2966,8 +2966,8 @@
       "source_location": "L161",
       "_origin": "ast",
       "id": "talentflow_api_app_models_domain_user",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 36,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "user"
     },
     {
@@ -2977,8 +2977,8 @@
       "source_location": "L182",
       "_origin": "ast",
       "id": "talentflow_api_app_models_domain_emailchangerequest",
-      "community": 1,
-      "community_name": "ScopedSession",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "emailchangerequest"
     },
     {
@@ -2988,8 +2988,8 @@
       "source_location": "L193",
       "_origin": "ast",
       "id": "talentflow_api_app_models_domain_passwordreset",
-      "community": 1,
-      "community_name": "ScopedSession",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "passwordreset"
     },
     {
@@ -3318,8 +3318,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_schemas_user",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "user.py"
     },
     {
@@ -3329,8 +3329,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "talentflow_api_app_schemas_user_userresponse",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "userresponse"
     },
     {
@@ -3340,8 +3340,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "talentflow_api_app_schemas_user_py_basemodel",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "basemodel"
     },
     {
@@ -3351,8 +3351,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "talentflow_api_app_schemas_user_usercreaterequest",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "usercreaterequest"
     },
     {
@@ -3362,8 +3362,8 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "talentflow_api_app_schemas_user_userupdaterequest",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "userupdaterequest"
     },
     {
@@ -3384,8 +3384,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_api_app_services_auth_hash_password",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "hash_password()"
     },
     {
@@ -3417,8 +3417,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "timedelta",
-      "community": 59,
-      "community_name": "shine-border.tsx",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "timedelta"
     },
     {
@@ -3439,8 +3439,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "talentflow_api_app_services_auth_rationale_7",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "criptografa uma senha usando bcrypt."
     },
     {
@@ -3494,8 +3494,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_api_app_services_email_send_email",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "send_email()"
     },
     {
@@ -3538,8 +3538,8 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "talentflow_api_app_services_email_rationale_7",
-      "community": 11,
-      "community_name": "public_apply.py",
+      "community": 9,
+      "community_name": "api/auth.py",
       "norm_label": "dispara um e-mail formatado em html utilizando o servidor smtp configurado."
     },
     {
@@ -3571,8 +3571,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_app_services_features",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "features.py"
     },
     {
@@ -3582,8 +3582,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "talentflow_api_app_services_features_get_plan_features",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "get_plan_features()"
     },
     {
@@ -3593,8 +3593,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "talentflow_api_app_services_features_py_any",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "any"
     },
     {
@@ -3604,8 +3604,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_api_app_services_features_check_feature_access",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "check_feature_access()"
     },
     {
@@ -3615,8 +3615,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_api_app_services_features_rationale_6",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "retorna o mapa de recursos e feature flags disponiveis para o plano do tenant."
     },
     {
@@ -3626,8 +3626,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_api_app_services_features_rationale_14",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "verifica se o plano especificado possui acesso a feature solicitada."
     },
     {
@@ -4363,8 +4363,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_measure_performance",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 12,
+      "community_name": "main.py",
       "norm_label": "measure_performance.py"
     },
     {
@@ -4374,8 +4374,8 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "talentflow_api_measure_performance_before_cursor_execute",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 12,
+      "community_name": "main.py",
       "norm_label": "before_cursor_execute()"
     },
     {
@@ -4385,8 +4385,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "talentflow_api_measure_performance_run_benchmark",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 12,
+      "community_name": "main.py",
       "norm_label": "run_benchmark()"
     },
     {
@@ -4396,8 +4396,8 @@
       "source_location": "",
       "_origin": "ast",
       "id": "talentflow_api_measure_performance_py_any",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 12,
+      "community_name": "main.py",
       "norm_label": "any"
     },
     {
@@ -4407,8 +4407,8 @@
       "source_location": "L71",
       "_origin": "ast",
       "id": "talentflow_api_measure_performance_print_report",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 12,
+      "community_name": "main.py",
       "norm_label": "print_report()"
     },
     {
@@ -4418,8 +4418,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "talentflow_api_measure_performance_main",
-      "community": 62,
-      "community_name": "migrate_db_data.py",
+      "community": 12,
+      "community_name": "main.py",
       "norm_label": "main()"
     },
     {
@@ -4693,8 +4693,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_features",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "test_features.py"
     },
     {
@@ -4704,8 +4704,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_features_test_get_plan_features_defaults",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "test_get_plan_features_defaults()"
     },
     {
@@ -4715,8 +4715,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_features_test_check_feature_access",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "test_check_feature_access()"
     },
     {
@@ -4726,8 +4726,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_features_rationale_6",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "testa se get_plan_features retorna o mapa correto para planos free, pro e enterp"
     },
     {
@@ -4737,8 +4737,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_features_rationale_22",
-      "community": 36,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 19,
+      "community_name": "services/auth.py",
       "norm_label": "testa a checagem booleana de acesso as features por plano"
     },
     {
@@ -5067,8 +5067,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_tenant_isolation_endpoints_test_candidate_from_another_tenant_is_not_found",
-      "community": 29,
-      "community_name": "preset-provider.tsx",
+      "community": 62,
+      "community_name": "migrate_db_data.py",
       "norm_label": "test_candidate_from_another_tenant_is_not_found()"
     },
     {
@@ -5265,8 +5265,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_users.py"
     },
     {
@@ -5276,8 +5276,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_query_for",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "_query_for()"
     },
     {
@@ -5287,8 +5287,8 @@
       "source_location": "L25",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_create_user_hashes_password_and_creates_recruiter",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_create_user_hashes_password_and_creates_recruiter()"
     },
     {
@@ -5298,8 +5298,8 @@
       "source_location": "L45",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_manager_cannot_grant_super_admin_role",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_manager_cannot_grant_super_admin_role()"
     },
     {
@@ -5309,8 +5309,8 @@
       "source_location": "L59",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_owner_cannot_be_deactivated_before_transfer",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_owner_cannot_be_deactivated_before_transfer()"
     },
     {
@@ -5320,8 +5320,8 @@
       "source_location": "L68",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_deactivate_user_cannot_remove_last_active_manager",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_deactivate_user_cannot_remove_last_active_manager()"
     },
     {
@@ -5331,8 +5331,8 @@
       "source_location": "L81",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_update_user_cannot_disable_own_access",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_update_user_cannot_disable_own_access()"
     },
     {
@@ -5342,8 +5342,8 @@
       "source_location": "L98",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_update_user_rejects_duplicate_email",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_update_user_rejects_duplicate_email()"
     },
     {
@@ -5353,8 +5353,8 @@
       "source_location": "L116",
       "_origin": "ast",
       "id": "talentflow_api_tests_test_users_test_update_user_normalizes_optional_phone",
-      "community": 19,
-      "community_name": "services/auth.py",
+      "community": 31,
+      "community_name": "PDFViewer.tsx",
       "norm_label": "test_update_user_normalizes_optional_phone()"
     },
     {
@@ -6926,8 +6926,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_jobs_slug_page",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "jobs/[slug]/page.tsx"
     },
     {
@@ -6937,8 +6937,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_app_jobs_slug_page_pageprops",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "pageprops"
     },
     {
@@ -6948,8 +6948,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_app_jobs_slug_page_getjobdetail",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "getjobdetail()"
     },
     {
@@ -6959,8 +6959,8 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "talentflow_web_src_app_jobs_slug_page_jobdetailpage",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "jobdetailpage()"
     },
     {
@@ -7154,7 +7154,7 @@
       "label": "ClosureStatus",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_closurestatus",
       "community": 94,
@@ -7165,7 +7165,7 @@
       "label": "ClosureState",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_closurestate",
       "community": 94,
@@ -7176,7 +7176,7 @@
       "label": "ManagedUser",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L19",
+      "source_location": "L20",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_manageduser",
       "community": 94,
@@ -7187,7 +7187,7 @@
       "label": "formatDate()",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L29",
+      "source_location": "L30",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_formatdate",
       "community": 94,
@@ -7198,7 +7198,7 @@
       "label": "OrganizationPage()",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L34",
+      "source_location": "L35",
       "_origin": "ast",
       "id": "talentflow_web_src_app_organization_page_organizationpage",
       "community": 94,
@@ -7399,8 +7399,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_privacy_page",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "settings/privacy/page.tsx"
     },
     {
@@ -7410,8 +7410,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_privacy_page_settingsprivacypage",
-      "community": 7,
-      "community_name": "deps.py",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "settingsprivacypage()"
     },
     {
@@ -7421,8 +7421,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "profile/page.tsx"
     },
     {
@@ -7432,8 +7432,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page_profile",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "profile"
     },
     {
@@ -7443,8 +7443,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page_messagefor",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "messagefor()"
     },
     {
@@ -7454,8 +7454,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_profile_page_settingsprofilepage",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "settingsprofilepage()"
     },
     {
@@ -7465,8 +7465,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_security_page",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "security/page.tsx"
     },
     {
@@ -7476,8 +7476,8 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "talentflow_web_src_app_settings_security_page_settingssecuritypage",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "settingssecuritypage()"
     },
     {
@@ -7553,48 +7553,48 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_users_page",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "users/page.tsx"
     },
     {
       "label": "UserRole",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L10",
+      "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_app_users_page_userrole",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "userrole"
     },
     {
       "label": "ManagedUser",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L12",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_app_users_page_manageduser",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "manageduser"
     },
     {
       "label": "emptyForm",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "_origin": "ast",
       "id": "talentflow_web_src_app_users_page_emptyform",
-      "community": 2,
-      "community_name": "apiFetch",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "emptyform"
     },
     {
       "label": "UsersPage()",
       "file_type": "code",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L24",
+      "source_location": "L26",
       "_origin": "ast",
       "id": "talentflow_web_src_app_users_page_userspage",
       "community": 2,
@@ -7608,8 +7608,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_slug_page",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "vagas/[slug]/page.tsx"
     },
     {
@@ -7619,8 +7619,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_slug_page_pageprops",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "pageprops"
     },
     {
@@ -7630,8 +7630,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_slug_page_getpublicjob",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "getpublicjob()"
     },
     {
@@ -7641,8 +7641,8 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_slug_page_generatemetadata",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "generatemetadata()"
     },
     {
@@ -7652,8 +7652,8 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_slug_page_publicjobpage",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "publicjobpage()"
     },
     {
@@ -7663,8 +7663,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_page",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "vagas/page.tsx"
     },
     {
@@ -7674,8 +7674,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_page_getpublicjobs",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "getpublicjobs()"
     },
     {
@@ -7685,8 +7685,8 @@
       "source_location": "L28",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_page_metadata",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "metadata"
     },
     {
@@ -7696,8 +7696,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "talentflow_web_src_app_vagas_page_publicjobspage",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "publicjobspage()"
     },
     {
@@ -7707,8 +7707,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_appshell",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "appshell.tsx"
     },
     {
@@ -7718,8 +7718,8 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "talentflow_web_src_components_appshell_appshellprops",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "appshellprops"
     },
     {
@@ -7729,8 +7729,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_components_appshell_appshell",
-      "community": 94,
-      "community_name": "ApiError",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "appshell()"
     },
     {
@@ -7850,8 +7850,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_categoriesdashboard",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "categoriesdashboard.tsx"
     },
     {
@@ -7861,8 +7861,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_components_categoriesdashboard_category",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "category"
     },
     {
@@ -7872,8 +7872,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "talentflow_web_src_components_categoriesdashboard_categoriesdashboard",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "categoriesdashboard()"
     },
     {
@@ -7960,8 +7960,8 @@
       "source_location": "L74",
       "_origin": "ast",
       "id": "talentflow_web_src_components_dashboardclient_dashboardclientprops",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "dashboardclientprops"
     },
     {
@@ -8202,8 +8202,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_herovisual",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 113,
+      "community_name": "HeroVisual.tsx",
       "norm_label": "herovisual.tsx"
     },
     {
@@ -8213,8 +8213,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_components_herovisual_signals",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 113,
+      "community_name": "HeroVisual.tsx",
       "norm_label": "signals"
     },
     {
@@ -8224,8 +8224,8 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "talentflow_web_src_components_herovisual_herovisual",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 113,
+      "community_name": "HeroVisual.tsx",
       "norm_label": "herovisual()"
     },
     {
@@ -8235,8 +8235,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "jobapplicationform.tsx"
     },
     {
@@ -8246,8 +8246,8 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_jobapplicationformprops",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "jobapplicationformprops"
     },
     {
@@ -8257,8 +8257,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_step",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "step"
     },
     {
@@ -8268,8 +8268,8 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_formdata",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "formdata"
     },
     {
@@ -8279,8 +8279,8 @@
       "source_location": "L33",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_fielderror",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "fielderror"
     },
     {
@@ -8290,8 +8290,8 @@
       "source_location": "L43",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_validateform",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "validateform()"
     },
     {
@@ -8301,8 +8301,8 @@
       "source_location": "L57",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_progressbar",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "progressbar()"
     },
     {
@@ -8312,8 +8312,8 @@
       "source_location": "L88",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_inputfield",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "inputfield()"
     },
     {
@@ -8323,8 +8323,8 @@
       "source_location": "L125",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobapplicationform_jobapplicationform",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 92,
+      "community_name": "SearchAndFilters.tsx",
       "norm_label": "jobapplicationform()"
     },
     {
@@ -8334,8 +8334,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobcard",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "jobcard.tsx"
     },
     {
@@ -8345,8 +8345,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobcard_jobcardprops",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "jobcardprops"
     },
     {
@@ -8356,8 +8356,8 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobcard_jobcard",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "jobcard()"
     },
     {
@@ -8400,8 +8400,8 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "talentflow_web_src_components_jobformdrawer_jobformdrawerprops",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "jobformdrawerprops"
     },
     {
@@ -8521,8 +8521,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_navbar",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "navbar.tsx"
     },
     {
@@ -8532,8 +8532,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "talentflow_web_src_components_navbar_nav_links",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "nav_links"
     },
     {
@@ -8543,8 +8543,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "talentflow_web_src_components_navbar_navbar",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "navbar()"
     },
     {
@@ -8554,8 +8554,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer",
-      "community": 31,
-      "community_name": "PDFViewer.tsx",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "pdfviewer.tsx"
     },
     {
@@ -8565,8 +8565,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer_pdfviewerprops",
-      "community": 31,
-      "community_name": "PDFViewer.tsx",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "pdfviewerprops"
     },
     {
@@ -8576,8 +8576,8 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer_getcookie",
-      "community": 31,
-      "community_name": "PDFViewer.tsx",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "getcookie()"
     },
     {
@@ -8587,8 +8587,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pdfviewer_pdfviewer",
-      "community": 31,
-      "community_name": "PDFViewer.tsx",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "pdfviewer()"
     },
     {
@@ -8598,8 +8598,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pageheader",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "pageheader.tsx"
     },
     {
@@ -8609,8 +8609,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pageheader_pageheaderprops",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "pageheaderprops"
     },
     {
@@ -8620,8 +8620,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_pageheader_pageheader",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 18,
+      "community_name": "Navbar.tsx",
       "norm_label": "pageheader()"
     },
     {
@@ -8697,8 +8697,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_publicjobdetail",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "publicjobdetail.tsx"
     },
     {
@@ -8708,8 +8708,8 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "talentflow_web_src_components_publicjobdetail_publicjobdetailprops",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "publicjobdetailprops"
     },
     {
@@ -8719,8 +8719,8 @@
       "source_location": "L30",
       "_origin": "ast",
       "id": "talentflow_web_src_components_publicjobdetail_publicjobdetail",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 99,
+      "community_name": "[0.2.0] \u2014 2026-06-17",
       "norm_label": "publicjobdetail()"
     },
     {
@@ -8730,8 +8730,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_publicjobslist",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "publicjobslist.tsx"
     },
     {
@@ -8741,8 +8741,8 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "talentflow_web_src_components_publicjobslist_publicjob",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "publicjob"
     },
     {
@@ -8752,8 +8752,8 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "talentflow_web_src_components_publicjobslist_publicjobslist",
-      "community": 14,
-      "community_name": "JobApplicationForm.tsx",
+      "community": 101,
+      "community_name": "[0.5.0] \u2014 2026-06-20",
       "norm_label": "publicjobslist()"
     },
     {
@@ -8763,8 +8763,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_revealsection",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 102,
+      "community_name": "[0.6.0] \u2014 2026-06-20",
       "norm_label": "revealsection.tsx"
     },
     {
@@ -8774,8 +8774,8 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "talentflow_web_src_components_revealsection_revealvariant",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 102,
+      "community_name": "[0.6.0] \u2014 2026-06-20",
       "norm_label": "revealvariant"
     },
     {
@@ -8785,8 +8785,8 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "talentflow_web_src_components_revealsection_revealsectionprops",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 102,
+      "community_name": "[0.6.0] \u2014 2026-06-20",
       "norm_label": "revealsectionprops"
     },
     {
@@ -8796,8 +8796,8 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "talentflow_web_src_components_revealsection_variants",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 102,
+      "community_name": "[0.6.0] \u2014 2026-06-20",
       "norm_label": "variants"
     },
     {
@@ -8807,8 +8807,8 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "talentflow_web_src_components_revealsection_revealsection",
-      "community": 13,
-      "community_name": "app/page.tsx",
+      "community": 102,
+      "community_name": "[0.6.0] \u2014 2026-06-20",
       "norm_label": "revealsection()"
     },
     {
@@ -9346,8 +9346,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_input",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "input.tsx"
     },
     {
@@ -9357,8 +9357,8 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "talentflow_web_src_components_ui_input_input",
-      "community": 32,
-      "community_name": "button.tsx",
+      "community": 7,
+      "community_name": "deps.py",
       "norm_label": "input()"
     },
     {
@@ -9511,8 +9511,8 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "talentflow_web_src_lib_api_apifetch",
-      "community": 55,
-      "community_name": "DeleteConfirmModal.tsx",
+      "community": 2,
+      "community_name": "apiFetch",
       "norm_label": "apifetch()"
     },
     {
@@ -9808,8 +9808,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_test_pdfviewer_test",
-      "community": 31,
-      "community_name": "PDFViewer.tsx",
+      "community": 15,
+      "community_name": "index.ts",
       "norm_label": "pdfviewer.test.tsx"
     },
     {
@@ -9929,8 +9929,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_types_job",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "job.ts"
     },
     {
@@ -9940,8 +9940,8 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "talentflow_web_src_types_job_job",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 55,
+      "community_name": "DeleteConfirmModal.tsx",
       "norm_label": "job"
     },
     {
@@ -9951,8 +9951,8 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "talentflow_web_src_types_job_jobformdata",
-      "community": 92,
-      "community_name": "SearchAndFilters.tsx",
+      "community": 16,
+      "community_name": "candidates/page.tsx",
       "norm_label": "jobformdata"
     },
     {
@@ -10366,7 +10366,7 @@
       "label": "Prepara\u00e7\u00e3o do encerramento de organiza\u00e7\u00e3o",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L31",
+      "source_location": "L32",
       "_origin": "ast",
       "id": "changelog_prepara\u00e7\u00e3o_do_encerramento_de_organiza\u00e7\u00e3o",
       "community": 115,
@@ -10374,10 +10374,21 @@
       "norm_label": "preparacao do encerramento de organizacao"
     },
     {
+      "label": "Administra\u00e7\u00e3o organizacional",
+      "file_type": "document",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L36",
+      "_origin": "ast",
+      "id": "changelog_administra\u00e7\u00e3o_organizacional",
+      "community": 115,
+      "community_name": "[Unreleased]",
+      "norm_label": "administracao organizacional"
+    },
+    {
       "label": "[2.6.0] \u2014 2026-08-26",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L35",
+      "source_location": "L39",
       "_origin": "ast",
       "id": "changelog_2_6_0_2026_08_26",
       "community": 107,
@@ -10388,7 +10399,7 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L39",
+      "source_location": "L43",
       "_origin": "ast",
       "id": "changelog_adicionado",
       "community": 107,
@@ -10399,7 +10410,7 @@
       "label": "Seguran\u00e7a",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L44",
+      "source_location": "L48",
       "_origin": "ast",
       "id": "changelog_seguran\u00e7a",
       "community": 107,
@@ -10410,7 +10421,7 @@
       "label": "[2.5.1] \u2014 2026-08-25",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L52",
+      "source_location": "L56",
       "_origin": "ast",
       "id": "changelog_2_5_1_2026_08_25",
       "community": 106,
@@ -10421,9 +10432,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L56",
+      "source_location": "L60",
       "_origin": "ast",
-      "id": "changelog_adicionado_56",
+      "id": "changelog_adicionado_60",
       "community": 106,
       "community_name": "[2.5.1] \u2014 2026-08-25",
       "norm_label": "adicionado"
@@ -10432,7 +10443,7 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L61",
+      "source_location": "L65",
       "_origin": "ast",
       "id": "changelog_corrigido",
       "community": 106,
@@ -10443,7 +10454,7 @@
       "label": "Validado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L64",
+      "source_location": "L68",
       "_origin": "ast",
       "id": "changelog_validado",
       "community": 106,
@@ -10454,7 +10465,7 @@
       "label": "[2.5.0] \u2014 2026-08-17",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L68",
+      "source_location": "L72",
       "_origin": "ast",
       "id": "changelog_2_5_0_2026_08_17",
       "community": 90,
@@ -10465,9 +10476,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L72",
+      "source_location": "L76",
       "_origin": "ast",
-      "id": "changelog_adicionado_72",
+      "id": "changelog_adicionado_76",
       "community": 90,
       "community_name": "[2.5.0] \u2014 2026-08-17",
       "norm_label": "adicionado"
@@ -10476,9 +10487,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L78",
+      "source_location": "L82",
       "_origin": "ast",
-      "id": "changelog_corrigido_78",
+      "id": "changelog_corrigido_82",
       "community": 90,
       "community_name": "[2.5.0] \u2014 2026-08-17",
       "norm_label": "corrigido"
@@ -10487,7 +10498,7 @@
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L87",
+      "source_location": "L91",
       "_origin": "ast",
       "id": "changelog_modificado",
       "community": 90,
@@ -10498,7 +10509,7 @@
       "label": "[2.4.0] \u2014 2026-08-04",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L95",
+      "source_location": "L99",
       "_origin": "ast",
       "id": "changelog_2_4_0_2026_08_04",
       "community": 89,
@@ -10509,9 +10520,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L99",
+      "source_location": "L103",
       "_origin": "ast",
-      "id": "changelog_adicionado_99",
+      "id": "changelog_adicionado_103",
       "community": 89,
       "community_name": "[2.4.0] \u2014 2026-08-04",
       "norm_label": "adicionado"
@@ -10520,9 +10531,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L107",
+      "source_location": "L111",
       "_origin": "ast",
-      "id": "changelog_corrigido_107",
+      "id": "changelog_corrigido_111",
       "community": 89,
       "community_name": "[2.4.0] \u2014 2026-08-04",
       "norm_label": "corrigido"
@@ -10531,9 +10542,9 @@
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L113",
+      "source_location": "L117",
       "_origin": "ast",
-      "id": "changelog_modificado_113",
+      "id": "changelog_modificado_117",
       "community": 89,
       "community_name": "[2.4.0] \u2014 2026-08-04",
       "norm_label": "modificado"
@@ -10542,40 +10553,40 @@
       "label": "[2.3.0] \u2014 2026-08-04",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L118",
+      "source_location": "L122",
       "_origin": "ast",
       "id": "changelog_2_3_0_2026_08_04",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "community": 103,
+      "community_name": "[0.9.0] \u2014 2026-06-21",
       "norm_label": "[2.3.0] \u2014 2026-08-04"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L122",
+      "source_location": "L126",
       "_origin": "ast",
-      "id": "changelog_adicionado_122",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "id": "changelog_adicionado_126",
+      "community": 103,
+      "community_name": "[0.9.0] \u2014 2026-06-21",
       "norm_label": "adicionado"
     },
     {
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L132",
+      "source_location": "L136",
       "_origin": "ast",
-      "id": "changelog_modificado_132",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "id": "changelog_modificado_136",
+      "community": 103,
+      "community_name": "[0.9.0] \u2014 2026-06-21",
       "norm_label": "modificado"
     },
     {
       "label": "[2.2.0] \u2014 2026-08-04",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L137",
+      "source_location": "L141",
       "_origin": "ast",
       "id": "changelog_2_2_0_2026_08_04",
       "community": 88,
@@ -10586,9 +10597,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L141",
+      "source_location": "L145",
       "_origin": "ast",
-      "id": "changelog_adicionado_141",
+      "id": "changelog_adicionado_145",
       "community": 88,
       "community_name": "[2.2.0] \u2014 2026-08-04",
       "norm_label": "adicionado"
@@ -10597,9 +10608,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L150",
+      "source_location": "L154",
       "_origin": "ast",
-      "id": "changelog_corrigido_150",
+      "id": "changelog_corrigido_154",
       "community": 88,
       "community_name": "[2.2.0] \u2014 2026-08-04",
       "norm_label": "corrigido"
@@ -10608,9 +10619,9 @@
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L156",
+      "source_location": "L160",
       "_origin": "ast",
-      "id": "changelog_modificado_156",
+      "id": "changelog_modificado_160",
       "community": 88,
       "community_name": "[2.2.0] \u2014 2026-08-04",
       "norm_label": "modificado"
@@ -10619,7 +10630,7 @@
       "label": "[2.1.0] \u2014 2026-07-20",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L162",
+      "source_location": "L166",
       "_origin": "ast",
       "id": "changelog_2_1_0_2026_07_20",
       "community": 86,
@@ -10630,9 +10641,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L166",
+      "source_location": "L170",
       "_origin": "ast",
-      "id": "changelog_adicionado_166",
+      "id": "changelog_adicionado_170",
       "community": 86,
       "community_name": "architecture-review-web.md",
       "norm_label": "adicionado"
@@ -10641,9 +10652,9 @@
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L173",
+      "source_location": "L177",
       "_origin": "ast",
-      "id": "changelog_modificado_173",
+      "id": "changelog_modificado_177",
       "community": 86,
       "community_name": "architecture-review-web.md",
       "norm_label": "modificado"
@@ -10652,9 +10663,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L177",
+      "source_location": "L181",
       "_origin": "ast",
-      "id": "changelog_corrigido_177",
+      "id": "changelog_corrigido_181",
       "community": 86,
       "community_name": "architecture-review-web.md",
       "norm_label": "corrigido"
@@ -10663,7 +10674,7 @@
       "label": "[1.3.0] \u2014 2026-06-24",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L188",
+      "source_location": "L192",
       "_origin": "ast",
       "id": "changelog_1_3_0_2026_06_24",
       "community": 85,
@@ -10674,9 +10685,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L192",
+      "source_location": "L196",
       "_origin": "ast",
-      "id": "changelog_adicionado_192",
+      "id": "changelog_adicionado_196",
       "community": 85,
       "community_name": "architecture-review-api.md",
       "norm_label": "adicionado"
@@ -10685,9 +10696,9 @@
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L197",
+      "source_location": "L201",
       "_origin": "ast",
-      "id": "changelog_modificado_197",
+      "id": "changelog_modificado_201",
       "community": 85,
       "community_name": "architecture-review-api.md",
       "norm_label": "modificado"
@@ -10696,9 +10707,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L203",
+      "source_location": "L207",
       "_origin": "ast",
-      "id": "changelog_corrigido_203",
+      "id": "changelog_corrigido_207",
       "community": 85,
       "community_name": "architecture-review-api.md",
       "norm_label": "corrigido"
@@ -10707,7 +10718,7 @@
       "label": "[1.2.0] \u2014 2026-06-23",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L209",
+      "source_location": "L213",
       "_origin": "ast",
       "id": "changelog_1_2_0_2026_06_23",
       "community": 95,
@@ -10718,9 +10729,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L213",
+      "source_location": "L217",
       "_origin": "ast",
-      "id": "changelog_adicionado_213",
+      "id": "changelog_adicionado_217",
       "community": 95,
       "community_name": "[1.2.0] \u2014 2026-06-23",
       "norm_label": "adicionado"
@@ -10729,9 +10740,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L219",
+      "source_location": "L223",
       "_origin": "ast",
-      "id": "changelog_corrigido_219",
+      "id": "changelog_corrigido_223",
       "community": 95,
       "community_name": "[1.2.0] \u2014 2026-06-23",
       "norm_label": "corrigido"
@@ -10740,7 +10751,7 @@
       "label": "[1.1.0] \u2014 2026-06-22",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L227",
+      "source_location": "L231",
       "_origin": "ast",
       "id": "changelog_1_1_0_2026_06_22",
       "community": 81,
@@ -10751,9 +10762,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L231",
+      "source_location": "L235",
       "_origin": "ast",
-      "id": "changelog_adicionado_231",
+      "id": "changelog_adicionado_235",
       "community": 81,
       "community_name": "vagas/page.tsx",
       "norm_label": "adicionado"
@@ -10762,9 +10773,9 @@
       "label": "Modificado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L237",
+      "source_location": "L241",
       "_origin": "ast",
-      "id": "changelog_modificado_237",
+      "id": "changelog_modificado_241",
       "community": 81,
       "community_name": "vagas/page.tsx",
       "norm_label": "modificado"
@@ -10773,9 +10784,9 @@
       "label": "Corrigido",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L241",
+      "source_location": "L245",
       "_origin": "ast",
-      "id": "changelog_corrigido_241",
+      "id": "changelog_corrigido_245",
       "community": 81,
       "community_name": "vagas/page.tsx",
       "norm_label": "corrigido"
@@ -10784,73 +10795,73 @@
       "label": "[1.0.0] \u2014 2026-06-21",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L251",
+      "source_location": "L255",
       "_origin": "ast",
       "id": "changelog_1_0_0_2026_06_21",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "community": 118,
+      "community_name": "[1.0.0] \u2014 2026-06-21",
       "norm_label": "[1.0.0] \u2014 2026-06-21"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L255",
+      "source_location": "L259",
       "_origin": "ast",
-      "id": "changelog_adicionado_255",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "id": "changelog_adicionado_259",
+      "community": 118,
+      "community_name": "[1.0.0] \u2014 2026-06-21",
       "norm_label": "adicionado"
     },
     {
       "label": "[0.9.0] \u2014 2026-06-21",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L263",
+      "source_location": "L267",
       "_origin": "ast",
       "id": "changelog_0_9_0_2026_06_21",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "community": 114,
+      "community_name": "[0.9.0] \u2014 2026-06-21",
       "norm_label": "[0.9.0] \u2014 2026-06-21"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L265",
+      "source_location": "L269",
       "_origin": "ast",
-      "id": "changelog_adicionado_265",
-      "community": 21,
-      "community_name": "schemas/auth.py",
+      "id": "changelog_adicionado_269",
+      "community": 114,
+      "community_name": "[0.9.0] \u2014 2026-06-21",
       "norm_label": "adicionado"
     },
     {
       "label": "[0.8.0] \u2014 2026-06-21",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L272",
+      "source_location": "L276",
       "_origin": "ast",
       "id": "changelog_0_8_0_2026_06_21",
-      "community": 103,
-      "community_name": "[0.9.0] \u2014 2026-06-21",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "[0.8.0] \u2014 2026-06-21"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L274",
+      "source_location": "L278",
       "_origin": "ast",
-      "id": "changelog_adicionado_274",
-      "community": 103,
-      "community_name": "[0.9.0] \u2014 2026-06-21",
+      "id": "changelog_adicionado_278",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
     },
     {
       "label": "[0.7.0] \u2014 2026-06-21",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L280",
+      "source_location": "L284",
       "_origin": "ast",
       "id": "changelog_0_7_0_2026_06_21",
       "community": 21,
@@ -10861,9 +10872,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L282",
+      "source_location": "L286",
       "_origin": "ast",
-      "id": "changelog_adicionado_282",
+      "id": "changelog_adicionado_286",
       "community": 21,
       "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
@@ -10872,7 +10883,7 @@
       "label": "[0.6.0] \u2014 2026-06-20",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L289",
+      "source_location": "L293",
       "_origin": "ast",
       "id": "changelog_0_6_0_2026_06_20",
       "community": 100,
@@ -10883,9 +10894,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L291",
+      "source_location": "L295",
       "_origin": "ast",
-      "id": "changelog_adicionado_291",
+      "id": "changelog_adicionado_295",
       "community": 100,
       "community_name": "save_candidate_to_db",
       "norm_label": "adicionado"
@@ -10894,29 +10905,29 @@
       "label": "[0.5.0] \u2014 2026-06-20",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L298",
+      "source_location": "L302",
       "_origin": "ast",
       "id": "changelog_0_5_0_2026_06_20",
-      "community": 101,
-      "community_name": "[0.5.0] \u2014 2026-06-20",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "[0.5.0] \u2014 2026-06-20"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L300",
+      "source_location": "L304",
       "_origin": "ast",
-      "id": "changelog_adicionado_300",
-      "community": 101,
-      "community_name": "[0.5.0] \u2014 2026-06-20",
+      "id": "changelog_adicionado_304",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
     },
     {
       "label": "[0.4.0] \u2014 2026-06-19",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L307",
+      "source_location": "L311",
       "_origin": "ast",
       "id": "changelog_0_4_0_2026_06_19",
       "community": 21,
@@ -10927,9 +10938,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L309",
+      "source_location": "L313",
       "_origin": "ast",
-      "id": "changelog_adicionado_309",
+      "id": "changelog_adicionado_313",
       "community": 21,
       "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
@@ -10938,7 +10949,7 @@
       "label": "[0.3.0] \u2014 2026-06-18",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L315",
+      "source_location": "L319",
       "_origin": "ast",
       "id": "changelog_0_3_0_2026_06_18",
       "community": 21,
@@ -10949,9 +10960,9 @@
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L317",
+      "source_location": "L321",
       "_origin": "ast",
-      "id": "changelog_adicionado_317",
+      "id": "changelog_adicionado_321",
       "community": 21,
       "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
@@ -10960,44 +10971,44 @@
       "label": "[0.2.0] \u2014 2026-06-17",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L323",
+      "source_location": "L327",
       "_origin": "ast",
       "id": "changelog_0_2_0_2026_06_17",
-      "community": 99,
-      "community_name": "[0.2.0] \u2014 2026-06-17",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "[0.2.0] \u2014 2026-06-17"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L325",
+      "source_location": "L329",
       "_origin": "ast",
-      "id": "changelog_adicionado_325",
-      "community": 99,
-      "community_name": "[0.2.0] \u2014 2026-06-17",
+      "id": "changelog_adicionado_329",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
     },
     {
       "label": "[0.1.0] \u2014 2026-06-16",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L333",
+      "source_location": "L337",
       "_origin": "ast",
       "id": "changelog_0_1_0_2026_06_16",
-      "community": 102,
-      "community_name": "[0.6.0] \u2014 2026-06-20",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "[0.1.0] \u2014 2026-06-16"
     },
     {
       "label": "Adicionado",
       "file_type": "document",
       "source_file": "CHANGELOG.md",
-      "source_location": "L335",
+      "source_location": "L339",
       "_origin": "ast",
-      "id": "changelog_adicionado_335",
-      "community": 102,
-      "community_name": "[0.6.0] \u2014 2026-06-20",
+      "id": "changelog_adicionado_339",
+      "community": 21,
+      "community_name": "schemas/auth.py",
       "norm_label": "adicionado"
     },
     {
@@ -28259,7 +28270,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page",
@@ -28270,7 +28281,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page",
@@ -28281,7 +28292,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L29",
+      "source_location": "L30",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page",
@@ -28292,7 +28303,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L19",
+      "source_location": "L20",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page",
@@ -28303,7 +28314,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L34",
+      "source_location": "L35",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page",
@@ -28332,6 +28343,30 @@
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page",
       "target": "talentflow_web_src_components_statusmessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/organization/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_organization_page",
+      "target": "talentflow_web_src_components_ui_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/organization/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_organization_page",
+      "target": "talentflow_web_src_components_ui_input_input",
       "confidence_score": 1.0
     },
     {
@@ -28399,7 +28434,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L136",
+      "source_location": "L137",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page_organizationpage",
@@ -28412,7 +28447,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/organization/page.tsx",
-      "source_location": "L53",
+      "source_location": "L54",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_organization_page_organizationpage",
@@ -28658,7 +28693,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/settings/confirm-email/page.tsx",
-      "source_location": "L20",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_settings_confirm_email_page_confirmemailpage",
@@ -28670,7 +28705,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/settings/confirm-email/page.tsx",
-      "source_location": "L24",
+      "source_location": "L17",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_settings_confirm_email_page_confirmemailpage",
@@ -29099,7 +29134,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L22",
+      "source_location": "L24",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page",
@@ -29110,7 +29145,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L12",
+      "source_location": "L14",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page",
@@ -29121,7 +29156,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L10",
+      "source_location": "L12",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page",
@@ -29132,7 +29167,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L24",
+      "source_location": "L26",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page",
@@ -29161,6 +29196,54 @@
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page",
       "target": "talentflow_web_src_components_statusmessage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/users/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_users_page",
+      "target": "talentflow_web_src_components_ui_dialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/users/page.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_users_page",
+      "target": "talentflow_web_src_components_ui_dialog_dialog",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/users/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_users_page",
+      "target": "talentflow_web_src_components_ui_input",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "talentflow-web/src/app/users/page.tsx",
+      "source_location": "L10",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "talentflow_web_src_app_users_page",
+      "target": "talentflow_web_src_components_ui_input_input",
       "confidence_score": 1.0
     },
     {
@@ -29217,7 +29300,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L65",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page_userspage",
@@ -29229,7 +29312,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "talentflow-web/src/app/users/page.tsx",
-      "source_location": "L93",
+      "source_location": "L97",
       "weight": 1.0,
       "_origin": "ast",
       "source": "talentflow_web_src_app_users_page_userspage",
@@ -33220,7 +33303,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L333",
+      "source_location": "L337",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33231,7 +33314,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L323",
+      "source_location": "L327",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33242,7 +33325,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L315",
+      "source_location": "L319",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33253,7 +33336,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L307",
+      "source_location": "L311",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33264,7 +33347,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L298",
+      "source_location": "L302",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33275,7 +33358,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L289",
+      "source_location": "L293",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33286,7 +33369,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L280",
+      "source_location": "L284",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33297,7 +33380,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L272",
+      "source_location": "L276",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33308,7 +33391,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L263",
+      "source_location": "L267",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33319,7 +33402,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L251",
+      "source_location": "L255",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33330,7 +33413,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L227",
+      "source_location": "L231",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33341,7 +33424,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L209",
+      "source_location": "L213",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33352,7 +33435,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L188",
+      "source_location": "L192",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33363,7 +33446,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L162",
+      "source_location": "L166",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33374,7 +33457,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L137",
+      "source_location": "L141",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33385,7 +33468,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L118",
+      "source_location": "L122",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33396,7 +33479,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L95",
+      "source_location": "L99",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33407,7 +33490,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L68",
+      "source_location": "L72",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33418,7 +33501,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L52",
+      "source_location": "L56",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33429,7 +33512,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L35",
+      "source_location": "L39",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
@@ -33445,6 +33528,17 @@
       "_origin": "ast",
       "source": "changelog_changelog_talentflow",
       "target": "changelog_unreleased",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L36",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "changelog_unreleased",
+      "target": "changelog_administra\u00e7\u00e3o_organizacional",
       "confidence_score": 1.0
     },
     {
@@ -33473,7 +33567,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L31",
+      "source_location": "L32",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_unreleased",
@@ -33484,7 +33578,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L39",
+      "source_location": "L43",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_6_0_2026_08_26",
@@ -33495,7 +33589,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L44",
+      "source_location": "L48",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_6_0_2026_08_26",
@@ -33506,18 +33600,18 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L56",
+      "source_location": "L60",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_5_1_2026_08_25",
-      "target": "changelog_adicionado_56",
+      "target": "changelog_adicionado_60",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L61",
+      "source_location": "L65",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_5_1_2026_08_25",
@@ -33528,7 +33622,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L64",
+      "source_location": "L68",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_5_1_2026_08_25",
@@ -33539,29 +33633,29 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L72",
+      "source_location": "L76",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_5_0_2026_08_17",
-      "target": "changelog_adicionado_72",
+      "target": "changelog_adicionado_76",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L78",
+      "source_location": "L82",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_5_0_2026_08_17",
-      "target": "changelog_corrigido_78",
+      "target": "changelog_corrigido_82",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L87",
+      "source_location": "L91",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_5_0_2026_08_17",
@@ -33572,99 +33666,110 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L99",
+      "source_location": "L103",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_4_0_2026_08_04",
-      "target": "changelog_adicionado_99",
+      "target": "changelog_adicionado_103",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L107",
+      "source_location": "L111",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_4_0_2026_08_04",
-      "target": "changelog_corrigido_107",
+      "target": "changelog_corrigido_111",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L113",
+      "source_location": "L117",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_4_0_2026_08_04",
-      "target": "changelog_modificado_113",
+      "target": "changelog_modificado_117",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L122",
+      "source_location": "L126",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_3_0_2026_08_04",
-      "target": "changelog_adicionado_122",
+      "target": "changelog_adicionado_126",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L132",
+      "source_location": "L136",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_3_0_2026_08_04",
-      "target": "changelog_modificado_132",
+      "target": "changelog_modificado_136",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L141",
+      "source_location": "L145",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_2_0_2026_08_04",
-      "target": "changelog_adicionado_141",
+      "target": "changelog_adicionado_145",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L150",
+      "source_location": "L154",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_2_0_2026_08_04",
-      "target": "changelog_corrigido_150",
+      "target": "changelog_corrigido_154",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L156",
+      "source_location": "L160",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_2_0_2026_08_04",
-      "target": "changelog_modificado_156",
+      "target": "changelog_modificado_160",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L166",
+      "source_location": "L170",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_1_0_2026_07_20",
-      "target": "changelog_adicionado_166",
+      "target": "changelog_adicionado_170",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L181",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "changelog_2_1_0_2026_07_20",
+      "target": "changelog_corrigido_181",
       "confidence_score": 1.0
     },
     {
@@ -33675,84 +33780,84 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_2_1_0_2026_07_20",
-      "target": "changelog_corrigido_177",
+      "target": "changelog_modificado_177",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L173",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "changelog_2_1_0_2026_07_20",
-      "target": "changelog_modificado_173",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "CHANGELOG.md",
-      "source_location": "L192",
+      "source_location": "L196",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_3_0_2026_06_24",
-      "target": "changelog_adicionado_192",
+      "target": "changelog_adicionado_196",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L203",
+      "source_location": "L207",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_3_0_2026_06_24",
-      "target": "changelog_corrigido_203",
+      "target": "changelog_corrigido_207",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L197",
+      "source_location": "L201",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_3_0_2026_06_24",
-      "target": "changelog_modificado_197",
+      "target": "changelog_modificado_201",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L213",
+      "source_location": "L217",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_2_0_2026_06_23",
-      "target": "changelog_adicionado_213",
+      "target": "changelog_adicionado_217",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L219",
+      "source_location": "L223",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_2_0_2026_06_23",
-      "target": "changelog_corrigido_219",
+      "target": "changelog_corrigido_223",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L231",
+      "source_location": "L235",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0_2026_06_22",
-      "target": "changelog_adicionado_231",
+      "target": "changelog_adicionado_235",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "CHANGELOG.md",
+      "source_location": "L245",
+      "weight": 1.0,
+      "_origin": "ast",
+      "source": "changelog_1_1_0_2026_06_22",
+      "target": "changelog_corrigido_245",
       "confidence_score": 1.0
     },
     {
@@ -33763,128 +33868,117 @@
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_1_0_2026_06_22",
-      "target": "changelog_corrigido_241",
+      "target": "changelog_modificado_241",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L237",
-      "weight": 1.0,
-      "_origin": "ast",
-      "source": "changelog_1_1_0_2026_06_22",
-      "target": "changelog_modificado_237",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "CHANGELOG.md",
-      "source_location": "L255",
+      "source_location": "L259",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_1_0_0_2026_06_21",
-      "target": "changelog_adicionado_255",
+      "target": "changelog_adicionado_259",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L265",
+      "source_location": "L269",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_9_0_2026_06_21",
-      "target": "changelog_adicionado_265",
+      "target": "changelog_adicionado_269",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L274",
+      "source_location": "L278",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_8_0_2026_06_21",
-      "target": "changelog_adicionado_274",
+      "target": "changelog_adicionado_278",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L282",
+      "source_location": "L286",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_7_0_2026_06_21",
-      "target": "changelog_adicionado_282",
+      "target": "changelog_adicionado_286",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L291",
+      "source_location": "L295",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_6_0_2026_06_20",
-      "target": "changelog_adicionado_291",
+      "target": "changelog_adicionado_295",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L300",
+      "source_location": "L304",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_5_0_2026_06_20",
-      "target": "changelog_adicionado_300",
+      "target": "changelog_adicionado_304",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L309",
+      "source_location": "L313",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_4_0_2026_06_19",
-      "target": "changelog_adicionado_309",
+      "target": "changelog_adicionado_313",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L317",
+      "source_location": "L321",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_3_0_2026_06_18",
-      "target": "changelog_adicionado_317",
+      "target": "changelog_adicionado_321",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L325",
+      "source_location": "L329",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_2_0_2026_06_17",
-      "target": "changelog_adicionado_325",
+      "target": "changelog_adicionado_329",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "CHANGELOG.md",
-      "source_location": "L335",
+      "source_location": "L339",
       "weight": 1.0,
       "_origin": "ast",
       "source": "changelog_0_1_0_2026_06_16",
-      "target": "changelog_adicionado_335",
+      "target": "changelog_adicionado_339",
       "confidence_score": 1.0
     },
     {
@@ -36364,5 +36458,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0897023c079d47c962541c0b8b83595c41e4f90a"
+  "built_at_commit": "ac9c1685086051017f82b9666786602c5f826a25"
 }
